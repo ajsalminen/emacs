@@ -7,3 +7,4 @@ syntax: glob
 *.elc
 /.recentf
 elispcache/*
+.emacs.d/eproject.lst

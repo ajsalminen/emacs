@@ -55,7 +55,7 @@
 (let ((path "~/.emacs.d/scala"))
   (setq load-path (cons path load-path))
   (load "scala-mode-auto.el"))
-
+(require 'scala-mode-auto)
 
 (setq mac-option-key-is-meta nil)
     (setq mac-command-key-is-meta t)
@@ -102,6 +102,13 @@
 (add-to-list 'load-path "~/.emacs.d/ecb-2.40")
 (require 'ecb)
 (setq ecb-layout-name "left1")
+
+(setq TeX-auto-save t)
+(setq TeX-parse-self t)
+(setq-default TeX-master nil)
+
+
+
 
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 
