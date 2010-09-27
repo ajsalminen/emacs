@@ -61,3 +61,39 @@
     (setq mac-command-key-is-meta t)
     (setq mac-command-modifier 'meta)
     (setq mac-option-modifier nil)
+
+(let ((path "~/.emacs.d"))
+  (setq load-path (cons path load-path))
+  (load "elisp-cache.el"))
+
+(let ((nfsdir "~/.emacs.d")
+      (cachedir "~/.elispcache"))
+   (setq load-path (append load-path (list cachedir nfsdir)))
+   (require 'elisp-cache)
+(setq elisp-cache-byte-compile-files t)
+
+   (elisp-cache nfsdir cachedir)
+  )
+
+(defun set-frame-size-according-to-resolution ()
+  (interactive)
+  (if window-system
+  (progn
+    ;; use 120 char wide window for largeish displays
+    ;; and smaller 80 column windows for smaller displays
+    ;; pick whatever numbers make sense for you
+    (if (> (x-display-pixel-width) 1280)
+        (add-to-list 'default-frame-alist (cons 'width 120))
+      (add-to-list 'default-frame-alist (cons 'width 80)))
+    ;; for the height, subtract a couple hundred pixels
+    ;; from the screen height (for panels, menubars and
+    ;; whatnot), then divide by the height of a char to
+    ;; get the height we want
+    (add-to-list 'default-frame-alist 
+                 (cons 'height (/ (- (x-display-pixel-height) 200) (frame-char-height)))))))
+
+(set-frame-size-according-to-resolution)
+(linum-mode)
+
+;;(byte-recompile-directory "~/.emacs.d" 0 t)
+
