@@ -122,6 +122,7 @@
 (require 'smart-tab)
 (global-smart-tab-mode t)
 
+(require 'yasnippet) ;; not yasnippet-bundle
 
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 
