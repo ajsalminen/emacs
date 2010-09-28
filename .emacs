@@ -212,7 +212,7 @@
 
 (setq hl-paren-colors
       '(;"#8f8f8f" ; this comes from Zenburn
-                   ; and I guess I'll try to make the far-outer parens look like this
+                                        ; and I guess I'll try to make the far-outer parens look like this
         "orange1" "yellow1" "greenyellow" "green1"
         "springgreen1" "cyan1" "slateblue1" "magenta1" "purple"))
 
@@ -226,6 +226,34 @@
 
 (show-paren-mode 1)
 (setq show-paren-delay 0)
+
+(autoload 'html-helper-mode "html-helper-mode" "Yay HTML" t)
+(setq auto-mode-alist (cons '("\\.html$" . html-helper-mode) auto-mode-alist))
+
+(require 'ispell)
+
+;; Make text-mode the default mode, so that we can use the tab-completion
+;; feature in files that don't have an extension.
+(setq default-major-mode 'text-mode)
+
+(global-set-key [C-tab] 'ispell-word)
+
+;; When running ispell, consider all 1-3 character words as correct.
+(setq ispell-extra-args '("-W" "3"))
+
+;;; ISpell / ASpell
+(setq ispell-silently-savep t) ;save new words in pdict without questioning
+(setq ispell-help-in-bufferp 'electric) ;get a better help buffer
+(setq ispell-program-name "/usr/local/bin/ispell")
+(setq ispell-list-command "list")
+
+;; Load flyspell mode
+(require 'flyspell)
+(dolist (hook '(text-mode-hook))
+  (add-hook hook (lambda () (flyspell-mode 1))))
+(dolist (hook '(change-log-mode-hook log-edit-mode-hook))
+  (add-hook hook (lambda () (flyspell-mode -1))))
+
 
 ;;(byte-recompile-directory "~/.emacs.d" 0 t)
 
