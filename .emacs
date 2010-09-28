@@ -52,10 +52,11 @@
 
 (add-to-list 'load-path "~/.emacs.d/color-theme")
 (require 'color-theme)
+(require 'color-theme-inkpot)
 (eval-after-load "color-theme"
   '(progn
      (color-theme-initialize)
-     (color-theme-hober)))
+     (color-theme-inkpot)))
 
 (let ((path "~/.emacs.d/scala"))
   (setq load-path (cons path load-path))
@@ -110,7 +111,9 @@
 (setq ecb-layout-name "left8")
 (setq ecb-auto-activate t)
 (setq ecb-tip-of-the-day nil)
-(setq ecb-maximize-ecb-window-after-selection t)
+(setq ecb-fix-window-size (quote width))
+(setq ecb-compile-window-width (quote edit-window))
+;;(setq ecb-maximize-ecb-window-after-selection t)
 
 
 (setq TeX-auto-save t)
@@ -194,6 +197,12 @@
 (require 'icicles)
 (icy-mode 1)
 (global-set-key "\C-x\ \C-r" 'icicle-recent-file)
+
+ 
+(global-hl-line-mode 1)
+ 
+;; To customize the background color
+(set-face-background 'hl-line "Black")  ;; Emacs 22 Only
 
 ;;(byte-recompile-directory "~/.emacs.d" 0 t)
 
