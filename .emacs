@@ -153,19 +153,47 @@
 
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 
-; make available extra CJK-font for carbon emacs in the menu
-(if (eq window-system 'mac) (require 'carbon-font))
-; about carbon emacs fonts, see:
-; /Applications/Emacs.app/Contents/Resources/site-lisp/mac/carbon-font.el
-(if (featurep 'carbon-emacs-package)
- (fixed-width-set-default-fontset
-   "-*-*-medium-r-normal--14-*-*-*-*-*-fontset-hirakaku_w6"))
+;;; Mac AntiAlias
+(setq mac-allow-anti-aliasing t)
+
+;;Font settings for CJK fonts on Cocoa Emacs
+(when (= emacs-major-version 23)
+  (create-fontset-from-ascii-font
+   "-apple-monaco-medium-normal-normal-*-12-*" nil "hirakaku12")
+
+  (set-default-font "fontset-hirakaku12")
+  (add-to-list 'default-frame-alist '(font . "fontset-hirakaku12"))
+
+  (set-fontset-font
+   "fontset-hirakaku12"
+   'japanese-jisx0208
+   "-apple-hiragino_kaku_gothic_pro-medium-normal-normal-*-14-*-iso10646-1")
+
+  (set-fontset-font
+   "fontset-hirakaku12"
+   'jisx0201
+   "-apple-hiragino_kaku_gothic_pro-medium-normal-normal-*-14-*-iso10646-1")
+
+  (set-fontset-font
+   "fontset-hirakaku12"
+   'japanese-jisx0212
+   "-apple-hiragino_kaku_gothic_pro-medium-normal-normal-*-14-*-iso10646-1")
+
+  (set-fontset-font
+   "fontset-hirakaku12"
+   'katakana-jisx0201
+   "-apple-hiragino_kaku_gothic_pro-medium-normal-normal-*-14-*-iso10646-1")
+)
 
 ;; recentf stuff
 (require 'recentf)
 (recentf-mode 1)
 (setq recentf-max-menu-items 25)
-(global-set-key "\C-x\ \C-r" 'recentf-open-files)
+;;(global-set-key "\C-x\ \C-r" 'recentf-open-files)
+
+(require 'icicles)
+(icy-mode 1)
+(global-set-key "\C-x\ \C-r" 'icicle-recent-file)
 
 ;;(byte-recompile-directory "~/.emacs.d" 0 t)
 
