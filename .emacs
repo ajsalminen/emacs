@@ -19,23 +19,23 @@
      (expand-file-name "~/.emacs.d/elpa/package.el"))
   (package-initialize))
 (custom-set-variables
-  ;; custom-set-variables was added by Custom.
-  ;; If you edit it by hand, you could mess it up, so be careful.
-  ;; Your init file should contain only one such instance.
-  ;; If there is more than one, they won't work right.
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
  '(ecb-options-version "2.40")
  '(inhibit-startup-screen t))
 (custom-set-faces
-  ;; custom-set-faces was added by Custom.
-  ;; If you edit it by hand, you could mess it up, so be careful.
-  ;; Your init file should contain only one such instance.
-  ;; If there is more than one, they won't work right.
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
  )
 
-    (setq backup-directory-alist
-          `((".*" . ,temporary-file-directory)))
-    (setq auto-save-file-name-transforms
-          `((".*" ,temporary-file-directory t)))
+(setq backup-directory-alist
+      `((".*" . ,temporary-file-directory)))
+(setq auto-save-file-name-transforms
+      `((".*" ,temporary-file-directory t)))
 
 (defun ib ()
   "indent whole buffer"
@@ -57,9 +57,9 @@
 (require 'scala-mode-auto)
 
 (setq mac-option-key-is-meta nil)
-    (setq mac-command-key-is-meta t)
-    (setq mac-command-modifier 'meta)
-    (setq mac-option-modifier nil)
+(setq mac-command-key-is-meta t)
+(setq mac-command-modifier 'meta)
+(setq mac-option-modifier nil)
 
 (let ((path "~/.emacs.d"))
   (setq load-path (cons path load-path))
@@ -67,29 +67,29 @@
 
 (let ((nfsdir "~/.emacs.d")
       (cachedir "~/.elispcache"))
-   (setq load-path (append load-path (list cachedir nfsdir)))
-   (require 'elisp-cache)
-(setq elisp-cache-byte-compile-files t)
+  (setq load-path (append load-path (list cachedir nfsdir)))
+  (require 'elisp-cache)
+  (setq elisp-cache-byte-compile-files t)
 
-   (elisp-cache nfsdir cachedir)
+  (elisp-cache nfsdir cachedir)
   )
 
 (defun set-frame-size-according-to-resolution ()
   (interactive)
   (if window-system
-  (progn
-    ;; use 120 char wide window for largeish displays
-    ;; and smaller 80 column windows for smaller displays
-    ;; pick whatever numbers make sense for you
-    (if (> (x-display-pixel-width) 1280)
-        (add-to-list 'default-frame-alist (cons 'width 120))
-      (add-to-list 'default-frame-alist (cons 'width 80)))
-    ;; for the height, subtract a couple hundred pixels
-    ;; from the screen height (for panels, menubars and
-    ;; whatnot), then divide by the height of a char to
-    ;; get the height we want
-    (add-to-list 'default-frame-alist
-                 (cons 'height (/ (- (x-display-pixel-height) 200) (frame-char-height)))))))
+      (progn
+        ;; use 120 char wide window for largeish displays
+        ;; and smaller 80 column windows for smaller displays
+        ;; pick whatever numbers make sense for you
+        (if (> (x-display-pixel-width) 1280)
+            (add-to-list 'default-frame-alist (cons 'width 120))
+          (add-to-list 'default-frame-alist (cons 'width 80)))
+        ;; for the height, subtract a couple hundred pixels
+        ;; from the screen height (for panels, menubars and
+        ;; whatnot), then divide by the height of a char to
+        ;; get the height we want
+        (add-to-list 'default-frame-alist
+                     (cons 'height (/ (- (x-display-pixel-height) 200) (frame-char-height)))))))
 
 (set-frame-size-according-to-resolution)
 
@@ -114,8 +114,8 @@
 
 ;; Reload .emacs file by typing: Mx reload.
 (defun reload () "Reloads .emacs interactively."
-(interactive)
-(load "~/.emacs"))
+  (interactive)
+  (load "~/.emacs"))
 
 (setq default-directory "~/projects/ghub")
 
@@ -123,6 +123,21 @@
 (global-smart-tab-mode t)
 
 (require 'yasnippet) ;; not yasnippet-bundle
+
+
+;;(set-frame-parameter (selected-frame) 'alpha '(<active> [<inactive>]))
+(set-frame-parameter (selected-frame) 'alpha '(85 50))
+(add-to-list 'default-frame-alist '(alpha 85 50))
+
+(eval-when-compile (require 'cl))
+(defun toggle-transparency ()
+  (interactive)
+  (if (/=
+       (cadr (frame-parameter nil 'alpha))
+       100)
+      (set-frame-parameter nil 'alpha '(100 100))
+    (set-frame-parameter nil 'alpha '(85 50))))
+(global-set-key (kbd "C-c t") 'toggle-transparency)
 
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 
