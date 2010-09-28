@@ -207,7 +207,25 @@
 (set-face-background 'hl-line "Black")  ;; Emacs 22 Only
 
 (require 'autopair)
+(require 'highlight-parentheses)
 (autopair-global-mode) ;; enable autopair in all buffers
+
+(setq hl-paren-colors
+      '(;"#8f8f8f" ; this comes from Zenburn
+                   ; and I guess I'll try to make the far-outer parens look like this
+        "orange1" "yellow1" "greenyellow" "green1"
+        "springgreen1" "cyan1" "slateblue1" "magenta1" "purple"))
+
+(add-hook 'emacs-lisp-mode-hook
+          '(lambda ()
+             (highlight-parentheses-mode)
+             (setq autopair-handle-action-fns
+                   (list 'autopair-default-handle-action
+                         '(lambda (action pair pos-before)
+                            (hl-paren-color-update))))))
+
+(show-paren-mode 1)
+(setq show-paren-delay 0)
 
 ;;(byte-recompile-directory "~/.emacs.d" 0 t)
 
