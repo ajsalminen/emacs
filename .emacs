@@ -146,9 +146,26 @@
 (global-set-key (kbd "C-c t") 'toggle-transparency)
 
 (require 'maxframe)
+
+;; offset for dock on left side
+(setq mf-offset-x 47)
 (add-hook 'window-setup-hook 'maximize-frame t)
 
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
+
+; make available extra CJK-font for carbon emacs in the menu
+(if (eq window-system 'mac) (require 'carbon-font))
+; about carbon emacs fonts, see:
+; /Applications/Emacs.app/Contents/Resources/site-lisp/mac/carbon-font.el
+(if (featurep 'carbon-emacs-package)
+ (fixed-width-set-default-fontset
+   "-*-*-medium-r-normal--14-*-*-*-*-*-fontset-hirakaku_w6"))
+
+;; recentf stuff
+(require 'recentf)
+(recentf-mode 1)
+(setq recentf-max-menu-items 25)
+(global-set-key "\C-x\ \C-r" 'recentf-open-files)
 
 ;;(byte-recompile-directory "~/.emacs.d" 0 t)
 
