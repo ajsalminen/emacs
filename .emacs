@@ -34,9 +34,9 @@
 
 (setq initial-scratch-message nil)
 
-    (let ((default-directory "~/.emacs.d/site-lisp/"))
-      (normal-top-level-add-to-load-path '("."))
-      (normal-top-level-add-subdirs-to-load-path))
+(let ((default-directory "~/.emacs.d/site-lisp/"))
+  (normal-top-level-add-to-load-path '("."))
+  (normal-top-level-add-subdirs-to-load-path))
 
 (setq backup-directory-alist
       `((".*" . ,temporary-file-directory)))
@@ -133,6 +133,8 @@
 
 (require 'yasnippet) ;; not yasnippet-bundle
 
+(require 'zencoding-mode)
+(add-hook 'sgml-mode-hook 'zencoding-mode) ;; Auto-start on any markup modesb
 
 ;;(set-frame-parameter (selected-frame) 'alpha '(<active> [<inactive>]))
 (set-frame-parameter (selected-frame) 'alpha '(85 50))
@@ -186,7 +188,7 @@
    "fontset-hirakaku12"
    'katakana-jisx0201
    "-apple-hiragino_kaku_gothic_pro-medium-normal-normal-*-14-*-iso10646-1")
-)
+  )
 
 ;; recentf stuff
 (require 'recentf)
@@ -198,11 +200,14 @@
 (icy-mode 1)
 (global-set-key "\C-x\ \C-r" 'icicle-recent-file)
 
- 
+
 (global-hl-line-mode 1)
- 
+
 ;; To customize the background color
 (set-face-background 'hl-line "Black")  ;; Emacs 22 Only
+
+(require 'autopair)
+(autopair-global-mode) ;; enable autopair in all buffers
 
 ;;(byte-recompile-directory "~/.emacs.d" 0 t)
 
@@ -210,15 +215,15 @@
 ;; startuptime. But that only helps if the .emacs.elc is newer
 ;; than the .emacs. So compile .emacs if it's not.
 (when (and user-init-file
-	   (equal (file-name-extension user-init-file) "elc"))
+           (equal (file-name-extension user-init-file) "elc"))
   (let* ((source (file-name-sans-extension user-init-file))
-	 (alt (concat source ".el")))
+         (alt (concat source ".el")))
     (setq source (cond ((file-exists-p alt) alt)
-		       ((file-exists-p source) source)
-		       (t nil)))
+                       ((file-exists-p source) source)
+                       (t nil)))
     (when source
       (when (file-newer-than-file-p source user-init-file)
-	(byte-compile-file source)
-	(load-file source)
-	(eval-buffer nil nil)
+        (byte-compile-file source)
+        (load-file source)
+        (eval-buffer nil nil)
         (delete-other-windows) ))))
