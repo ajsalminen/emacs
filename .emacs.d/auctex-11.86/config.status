@@ -438,7 +438,7 @@ Copyright (C) 2009 Free Software Foundation, Inc.
 This config.status script is free software; the Free Software Foundation
 gives unlimited permission to copy, distribute and modify it."
 
-ac_pwd='/Users/baron/projects/ghub/emacs/.emacs.d/auctex-11.86'
+ac_pwd='/Users/baron/projects/emacs/.emacs.d/auctex-11.86'
 srcdir='.'
 INSTALL='/usr/bin/install -c'
 test -n "$AWK" || AWK=awk
@@ -598,9 +598,9 @@ S["TEXI2DVI"]="/usr/bin/texi2dvi"
 S["TEXI2HTML"]="/usr/bin/texi2html"
 S["MAKEINFO"]="/usr/bin/makeinfo"
 S["PERL"]="/usr/bin/perl"
-S["DVIPS"]="/usr/local/texlive/p2009/bin/x86_64-apple-darwin10.2.0/dvips"
-S["PDFTEX"]="/usr/local/texlive/p2009/bin/x86_64-apple-darwin10.2.0/pdftex"
-S["TEX"]="/usr/local/texlive/p2009/bin/x86_64-apple-darwin10.2.0/tex"
+S["DVIPS"]=":"
+S["PDFTEX"]=":"
+S["TEX"]=":"
 S["lispautodir"]="\"/usr/local/var/auctex\""
 S["autodir"]="${localstatedir}/auctex"
 S["texsite"]=""

@@ -2,8 +2,8 @@
 
 ;;; Copyright (C) 2007 Daniel Debertin (debertin@gmail.com)
 
-;; Author: baron <baron@richstyles.local>
-;; Created: 2010-09-27 13:31:44+0900
+;; Author: ãƒãƒ­ãƒ³ ã‚µãƒ ã‚¨ãƒ« <baron@richstyles-2.local>
+;; Created: 2010-09-28 12:20:11+0900
 ;; Keywords: syntax
 ;; X-RCS: $Id$
 

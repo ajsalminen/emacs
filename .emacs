@@ -32,6 +32,12 @@
  ;; If there is more than one, they won't work right.
  )
 
+(setq initial-scratch-message nil)
+
+    (let ((default-directory "~/.emacs.d/site-lisp/"))
+      (normal-top-level-add-to-load-path '("."))
+      (normal-top-level-add-subdirs-to-load-path))
+
 (setq backup-directory-alist
       `((".*" . ,temporary-file-directory)))
 (setq auto-save-file-name-transforms
@@ -65,7 +71,7 @@
   (setq load-path (cons path load-path))
   (load "elisp-cache.el"))
 
-(let ((nfsdir "~/.emacs.d")
+(let ((nfsdir "~/.emacs.d/site-lisp")
       (cachedir "~/.elispcache"))
   (setq load-path (append load-path (list cachedir nfsdir)))
   (require 'elisp-cache)
@@ -139,7 +145,26 @@
     (set-frame-parameter nil 'alpha '(85 50))))
 (global-set-key (kbd "C-c t") 'toggle-transparency)
 
+(require 'maxframe)
+(add-hook 'window-setup-hook 'maximize-frame t)
+
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 
 ;;(byte-recompile-directory "~/.emacs.d" 0 t)
 
+;; I always compile my .emacs, saves me about two seconds
+;; startuptime. But that only helps if the .emacs.elc is newer
+;; than the .emacs. So compile .emacs if it's not.
+(when (and user-init-file
+	   (equal (file-name-extension user-init-file) "elc"))
+  (let* ((source (file-name-sans-extension user-init-file))
+	 (alt (concat source ".el")))
+    (setq source (cond ((file-exists-p alt) alt)
+		       ((file-exists-p source) source)
+		       (t nil)))
+    (when source
+      (when (file-newer-than-file-p source user-init-file)
+	(byte-compile-file source)
+	(load-file source)
+	(eval-buffer nil nil)
+        (delete-other-windows) ))))
