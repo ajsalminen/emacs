@@ -262,7 +262,11 @@
 (icy-mode 1)
 (global-set-key "\C-x\ \C-r" 'icicle-recent-file)
 
+(require 'magit)
+(require 'magit-svn)
  
+
+
 (global-hl-line-mode 1)
  
 ;; To customize the background color
