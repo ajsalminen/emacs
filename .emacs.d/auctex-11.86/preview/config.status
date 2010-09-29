@@ -438,7 +438,7 @@ Copyright (C) 2009 Free Software Foundation, Inc.
 This config.status script is free software; the Free Software Foundation
 gives unlimited permission to copy, distribute and modify it."
 
-ac_pwd='/Users/baron/projects/ghub/emacs/.emacs.d/auctex-11.86/preview'
+ac_pwd='/Users/baron/projects/emacs/.emacs.d/auctex-11.86/preview'
 srcdir='.'
 INSTALL='/usr/bin/install -c'
 test -n "$AWK" || AWK=awk
@@ -589,18 +589,18 @@ echo 'BEGIN {' >"$tmp/subs1.awk" &&
 cat >>"$tmp/subs1.awk" <<\_ACAWK &&
 S["LTLIBOBJS"]=""
 S["LIBOBJS"]=""
-S["TEXHASH"]="/usr/local/texlive/p2009/bin/x86_64-apple-darwin10.2.0/texhash"
+S["TEXHASH"]="/usr/local/texlive/p2009/bin/x86_64-apple-darwin10.2.0//texhash"
 S["packagetexstyles"]=""
 S["lisppackagetexstyles"]=""
 S["previewdocdir"]="/usr/local/texlive/p2009/texmf/doc/latex/styles"
 S["previewtexmfdir"]="/usr/local/texlive/p2009/texmf/tex/latex/preview"
 S["texmfdir"]="/usr/local/texlive/p2009/texmf"
-S["TEX"]="/usr/local/texlive/p2009/bin/x86_64-apple-darwin10.2.0/tex"
+S["TEX"]="/usr/local/texlive/p2009/bin/x86_64-apple-darwin10.2.0//tex"
 S["TEXMFGEN"]="preview.sty prauctex.def prauctex.cfg prshowbox.def prshowlabels.def prtracingall.def prtightpage.def prlyx.def prcounters.def prfootnotes.def"
-S["PDFLATEX"]="/usr/local/texlive/p2009/bin/x86_64-apple-darwin10.2.0/pdflatex"
-S["LATEX"]="/usr/local/texlive/p2009/bin/x86_64-apple-darwin10.2.0/latex"
+S["PDFLATEX"]="/usr/local/texlive/p2009/bin/x86_64-apple-darwin10.2.0//pdflatex"
+S["LATEX"]="/usr/local/texlive/p2009/bin/x86_64-apple-darwin10.2.0//latex"
 S["lispGS"]=""
-S["GS"]="gs"
+S["GS"]="NONE"
 S["auctexdir"]=".."
 S["PLAT_LISP"]="prv-emacs.el"
 S["packagedatadir"]="/usr/share/emacs/site-lisp/auctex"

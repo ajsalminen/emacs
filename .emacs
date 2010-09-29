@@ -34,14 +34,19 @@
 
 (setq initial-scratch-message nil)
 
-(let ((default-directory "~/.emacs.d/site-lisp/"))
-  (normal-top-level-add-to-load-path '("."))
-  (normal-top-level-add-subdirs-to-load-path))
+    (let ((default-directory "~/.emacs.d/site-lisp/"))
+      (normal-top-level-add-to-load-path '("."))
+      (normal-top-level-add-subdirs-to-load-path))
 
 (setq backup-directory-alist
       `((".*" . ,temporary-file-directory)))
 (setq auto-save-file-name-transforms
       `((".*" ,temporary-file-directory t)))
+
+;; PATH doesn't get inherited for OSX
+(when (equal system-type 'darwin)
+  (setenv "PATH" (concat "/usr/local/texlive/p2009/bin/x86_64-apple-darwin10.2.0/:/opt/local/bin:/usr/local/bin:" (getenv "PATH")))
+  (push "/opt/local/bin" exec-path))
 
 (defun ib ()
   "indent whole buffer"
@@ -115,11 +120,59 @@
 (setq ecb-compile-window-width (quote edit-window))
 ;;(setq ecb-maximize-ecb-window-after-selection t)
 
+(add-to-list 'load-path "~/.emacs.d/auctex-11.86")
+(load "auctex.el" nil t t)
+(add-to-list 'load-path "~/.emacs.d/auctex-11.86/preview")
+(load "preview-latex.el" nil t t)
+
 
 (setq TeX-auto-save t)
 (setq TeX-parse-self t)
 (setq-default TeX-master nil)
+(add-hook 'LaTeX-mode-hook 'auto-fill-mode)
+(add-hook 'LaTeX-mode-hook 'flyspell-mode)
+(add-hook 'LaTeX-mode-hook 'LaTeX-math-mode)
+(add-hook 'LaTeX-mode-hook 'turn-on-reftex)
+(add-hook 'LaTeX-mode-hook 'TeX-source-correlate-mode)
+;;(setq reftex-plug-into-AUCTeX t)
 
+(setq TeX-default-mode 'japanese-latex-mode)
+(setq japanese-TeX-command-default "pTeX")
+(setq japanese-LaTeX-command-default "pLaTeX")
+
+;; Minimal OS X-friendly configuration of AUCTeX. Since there is no
+;; DVI viewer for the platform, use pdftex/pdflatex by default for
+;; compilation. Furthermore, use 'open' to view the resulting PDF.
+;; Until Preview learns to refresh automatically on file updates, Skim
+;; (http://skim-app.sourceforge.net) is a nice PDF viewer.
+(setq TeX-PDF-mode t)
+(setq TeX-view-program-selection
+      '(((output-dvi style-pstricks)
+	 "dvips and PDF Viewer")
+	(output-dvi "PDF Viewer")
+	(output-pdf "PDF Viewer")
+	(output-html "Safari")))
+(setq TeX-view-program-list
+      '(("dvips and PDF Viewer" "%(o?)dvips %d -o && open %f")
+	("PDF Viewer" "open %o")
+	("Safari" "open %o")))
+
+(setq load-path (cons (expand-file-name "~/src/emacs/yatex1.74") load-path))
+(setq auto-mode-alist
+      (cons (cons "\\.tex$" 'yatex-mode) auto-mode-alist))
+(autoload 'yatex-mode "yatex" "Yet Another LaTeX mode" t)
+;;; platex と Skim
+(setq tex-command "~/Library/TeXShop/bin/platex2pdf-utf8"
+      dvi2-command "open -a Skim")
+;;; pdflatex と Skim
+;;(setq tex-command "pdflatex -synctex=1"
+;;     dvi2-command "open -a Skim")
+;;; platex と TeXShop
+;;(setq tex-command "~/Library/TeXShop/bin/platex2pdf-euc"
+;;      dvi2-command "open -a TeXShop")
+;;; pdflatex と TeXShop 
+;;(setq tex-command "pdflatex"
+;;      dvi2-command "open -a TeXShop")
 
 ;; Reload .emacs file by typing: Mx reload.
 (defun reload () "Reloads .emacs interactively."
@@ -133,8 +186,6 @@
 
 (require 'yasnippet) ;; not yasnippet-bundle
 
-(require 'zencoding-mode)
-(add-hook 'sgml-mode-hook 'zencoding-mode) ;; Auto-start on any markup modesb
 
 ;;(set-frame-parameter (selected-frame) 'alpha '(<active> [<inactive>]))
 (set-frame-parameter (selected-frame) 'alpha '(85 50))
@@ -188,7 +239,7 @@
    "fontset-hirakaku12"
    'katakana-jisx0201
    "-apple-hiragino_kaku_gothic_pro-medium-normal-normal-*-14-*-iso10646-1")
-  )
+)
 
 ;; recentf stuff
 (require 'recentf)
@@ -200,60 +251,11 @@
 (icy-mode 1)
 (global-set-key "\C-x\ \C-r" 'icicle-recent-file)
 
-
+ 
 (global-hl-line-mode 1)
-
+ 
 ;; To customize the background color
 (set-face-background 'hl-line "Black")  ;; Emacs 22 Only
-
-(require 'autopair)
-(require 'highlight-parentheses)
-(autopair-global-mode) ;; enable autopair in all buffers
-
-(setq hl-paren-colors
-      '(;"#8f8f8f" ; this comes from Zenburn
-                                        ; and I guess I'll try to make the far-outer parens look like this
-        "orange1" "yellow1" "greenyellow" "green1"
-        "springgreen1" "cyan1" "slateblue1" "magenta1" "purple"))
-
-(add-hook 'emacs-lisp-mode-hook
-          '(lambda ()
-             (highlight-parentheses-mode)
-             (setq autopair-handle-action-fns
-                   (list 'autopair-default-handle-action
-                         '(lambda (action pair pos-before)
-                            (hl-paren-color-update))))))
-
-(show-paren-mode 1)
-(setq show-paren-delay 0)
-
-(autoload 'html-helper-mode "html-helper-mode" "Yay HTML" t)
-(setq auto-mode-alist (cons '("\\.html$" . html-helper-mode) auto-mode-alist))
-
-(require 'ispell)
-
-;; Make text-mode the default mode, so that we can use the tab-completion
-;; feature in files that don't have an extension.
-(setq default-major-mode 'text-mode)
-
-(global-set-key [C-tab] 'ispell-word)
-
-;; When running ispell, consider all 1-3 character words as correct.
-(setq ispell-extra-args '("-W" "3"))
-
-;;; ISpell / ASpell
-(setq ispell-silently-savep t) ;save new words in pdict without questioning
-(setq ispell-help-in-bufferp 'electric) ;get a better help buffer
-(setq ispell-program-name "/usr/local/bin/ispell")
-(setq ispell-list-command "list")
-
-;; Load flyspell mode
-(require 'flyspell)
-(dolist (hook '(text-mode-hook))
-  (add-hook hook (lambda () (flyspell-mode 1))))
-(dolist (hook '(change-log-mode-hook log-edit-mode-hook))
-  (add-hook hook (lambda () (flyspell-mode -1))))
-
 
 ;;(byte-recompile-directory "~/.emacs.d" 0 t)
 
@@ -261,15 +263,17 @@
 ;; startuptime. But that only helps if the .emacs.elc is newer
 ;; than the .emacs. So compile .emacs if it's not.
 (when (and user-init-file
-           (equal (file-name-extension user-init-file) "elc"))
+	   (equal (file-name-extension user-init-file) "elc"))
   (let* ((source (file-name-sans-extension user-init-file))
-         (alt (concat source ".el")))
+	 (alt (concat source ".el")))
     (setq source (cond ((file-exists-p alt) alt)
-                       ((file-exists-p source) source)
-                       (t nil)))
+		       ((file-exists-p source) source)
+		       (t nil)))
     (when source
       (when (file-newer-than-file-p source user-init-file)
-        (byte-compile-file source)
-        (load-file source)
-        (eval-buffer nil nil)
+	(byte-compile-file source)
+	(load-file source)
+	(eval-buffer nil nil)
         (delete-other-windows) ))))
+
+(server-start)

@@ -22,10 +22,10 @@
 # MA 02110-1301, USA.
 
 
-LATEX=/usr/local/texlive/p2009/bin/x86_64-apple-darwin10.2.0/latex
-PDFLATEX=/usr/local/texlive/p2009/bin/x86_64-apple-darwin10.2.0/pdflatex
-TEX=/usr/local/texlive/p2009/bin/x86_64-apple-darwin10.2.0/tex
-TEXHASH=/usr/local/texlive/p2009/bin/x86_64-apple-darwin10.2.0/texhash
+LATEX=/usr/local/texlive/p2009/bin/x86_64-apple-darwin10.2.0//latex
+PDFLATEX=/usr/local/texlive/p2009/bin/x86_64-apple-darwin10.2.0//pdflatex
+TEX=/usr/local/texlive/p2009/bin/x86_64-apple-darwin10.2.0//tex
+TEXHASH=/usr/local/texlive/p2009/bin/x86_64-apple-darwin10.2.0//texhash
 
 prefix=/usr/local$(null)
 datarootdir=${prefix}/share$(null)
