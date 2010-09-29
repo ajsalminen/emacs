@@ -262,6 +262,8 @@
 (icy-mode 1)
 (global-set-key "\C-x\ \C-r" 'icicle-recent-file)
 
+(push "/usr/local/bin" exec-path)
+(add-to-list 'load-path "~/.emacs.d/magit")
 (require 'magit)
 (require 'magit-svn)
  
