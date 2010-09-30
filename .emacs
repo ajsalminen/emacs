@@ -43,6 +43,8 @@
 (setq auto-save-file-name-transforms
       `((".*" ,temporary-file-directory t)))
 
+(setq-default indent-tabs-mode nil)
+
 ;; PATH doesn't get inherited for OSX
 (when (equal system-type 'darwin)
   (setenv "PATH" (concat "/usr/local/texlive/p2009/bin/x86_64-apple-darwin10.2.0/:/opt/local/bin:/usr/local/bin:" (getenv "PATH")))
@@ -58,10 +60,11 @@
 (add-to-list 'load-path "~/.emacs.d/color-theme")
 (require 'color-theme)
 (require 'color-theme-inkpot)
+(require 'color-theme-arjen)
 (eval-after-load "color-theme"
   '(progn
      (color-theme-initialize)
-     (color-theme-inkpot)))
+     (color-theme-arjen)))
 
 (let ((path "~/.emacs.d/scala"))
   (setq load-path (cons path load-path))
@@ -262,11 +265,8 @@
 (icy-mode 1)
 (global-set-key "\C-x\ \C-r" 'icicle-recent-file)
 
-(push "/usr/local/bin" exec-path)
-(add-to-list 'load-path "~/.emacs.d/magit")
 (require 'magit)
-(require 'magit-svn)
- 
+(require 'magit-svn) 
 
 
 (global-hl-line-mode 1)
