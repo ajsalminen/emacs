@@ -10,3 +10,4 @@ elispcache/*
 .emacs.d/eproject.lst
 */CVS/*
 CVS
+.emacs.d/history

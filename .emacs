@@ -90,6 +90,54 @@
   (elisp-cache nfsdir cachedir)
   )
 
+
+;; Frame fiddling
+(defun set-frame-size-according-to-resolution ()
+  (interactive)
+  (if window-system
+      (progn
+        ;; use 120 char wide window for largeish displays
+        ;; and smaller 80 column windows for smaller displays
+        ;; pick whatever numbers make sense for you
+        (if (> (x-display-pixel-width) 1280)
+            (add-to-list 'default-frame-alist (cons 'width 160))
+          (add-to-list 'default-frame-alist (cons 'width 80)))
+        ;; for the height, subtract a couple hundred pixels
+        ;; from the screen height (for panels, menubars and
+        ;; whatnot), then divide by the height of a char to
+        ;; get the height we want
+        (add-to-list 'default-frame-alist
+                     (cons 'height (/ (- (x-display-pixel-height) 200) (frame-char-height)))))))
+
+(set-frame-size-according-to-resolution)
+
+(defun arrange-frame (w h x y)
+  "Set the width, height, and x/y position of the current frame"
+  (let ((frame (selected-frame)))
+    (delete-other-windows)
+    (set-frame-position frame x y)
+    (set-frame-size frame w h)))
+
+
+;;(arrange-frame 160 50 2 22)
+
+(setq auto-save-timeout 15)
+(defalias 'yes-or-no-p 'y-or-n-p) 
+
+
+
+
+;; Hard Code the window dimensions, that's how we roll
+(set-frame-position (selected-frame) 45 0)
+(add-to-list 'default-frame-alist (cons 'width 150))
+(add-to-list 'default-frame-alist (cons 'height 47))
+
+
+(setq truncate-lines nil)
+(setq truncate-partial-width-windows nil)
+
+
+
 (load-file "~/.emacs.d/cedet-1.0/common/cedet.el")
 (global-ede-mode 1)                      ; Enable the Project management system
 (semantic-load-enable-code-helpers)      ; Enable prototype help and smart completion
@@ -103,6 +151,7 @@
 (setq ecb-tip-of-the-day nil)
 (setq ecb-fix-window-size (quote width))
 (setq ecb-compile-window-width (quote edit-window))
+
 ;;(setq ecb-maximize-ecb-window-after-selection t)
 
 (add-to-list 'load-path "~/.emacs.d/auctex-11.86")
@@ -276,45 +325,16 @@
 
 ;;(byte-recompile-directory "~/.emacs.d" 0 t)
 
+;; Carbon Emacs keep Spotlight from triggering
+(when
+    (featurep 'carbon-emacs-package)
+(mac-add-ignore-shortcut '(control)))
 
-;; Frame fiddling
-(defun set-frame-size-according-to-resolution ()
-  (interactive)
-  (if window-system
-      (progn
-        ;; use 120 char wide window for largeish displays
-        ;; and smaller 80 column windows for smaller displays
-        ;; pick whatever numbers make sense for you
-        (if (> (x-display-pixel-width) 1280)
-            (add-to-list 'default-frame-alist (cons 'width 160))
-          (add-to-list 'default-frame-alist (cons 'width 80)))
-        ;; for the height, subtract a couple hundred pixels
-        ;; from the screen height (for panels, menubars and
-        ;; whatnot), then divide by the height of a char to
-        ;; get the height we want
-        (add-to-list 'default-frame-alist
-                     (cons 'height (/ (- (x-display-pixel-height) 200) (frame-char-height)))))))
-
-(set-frame-size-according-to-resolution)
-
-(defun arrange-frame (w h x y)
-  "Set the width, height, and x/y position of the current frame"
-  (let ((frame (selected-frame)))
-    (delete-other-windows)
-    (set-frame-position frame x y)
-    (set-frame-size frame w h)))
-
-
-;;(arrange-frame 160 50 2 22)
-
-
-;; Hard Code the window dimensions, that's how we roll
-(set-frame-position (selected-frame) 45 0)
-(add-to-list 'default-frame-alist (cons 'width 150))
-(add-to-list 'default-frame-alist (cons 'height 47))
-
-(setq truncate-lines nil)
-(setq truncate-partial-width-windows nil)
+;; Remember the place
+(require 'saveplace)
+(setq-default save-place t)
+(savehist-mode t)
+(setq server-visit-hook (quote (save-place-find-file-hook)))
 
 ;; toggle-max-window
 (when
@@ -325,6 +345,7 @@
 (set-frame-parameter nil 'fullscreen nil)
 (set-frame-parameter nil 'fullscreen 'fullboth)))
 (global-set-key "\M-\r" 'toggle-max-window))
+
 
 ;; I always compile my .emacs, saves me about two seconds
 ;; startuptime. But that only helps if the .emacs.elc is newer
@@ -343,4 +364,7 @@
 	(eval-buffer nil nil)
         (delete-other-windows) ))))
 
-(server-start)
+;;; Emacs Desktop – Saving sessions.
+;;(setq desktop-save-mode t)
+;;(desktop-load-default)
+;;(desktop-read)
