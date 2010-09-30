@@ -1,5 +1,5 @@
-This is srecode.info, produced by makeinfo version 4.9 from
-srecode.texi.
+これは srecode.info、srecode.texi より makeinfo バージョン
+4.8 によって作成されました。
 
 START-INFO-DIR-ENTRY
 * srecode: (srecode).       Template code generator
@@ -93,7 +93,7 @@ template files resides in the SRecode distribution.  User written
 templates files are saved in `~/.srecode', along with the SRecode map
 file.
 
- -- Variable: srecode-map-save-file
+ -- 変数: srecode-map-save-file
      The save location for SRecode's map file.
 
    Template files end with a `.srt' extension.  Details on how to write
@@ -269,7 +269,7 @@ to fill in a part of the template, then the minibuffer is used to query
 for that information.  SRecode also supports a field-edting mode that
 can be used instead.  To enable it set:
 
- -- Function: srecode-insert-ask-variable-method
+ -- 機能: srecode-insert-ask-variable-method
      Determine how to ask for a dictionary value when inserting a
      template.  Only the ASK style inserter will query the user for a
      value.  Dictionary value references that ask begin with the ?
@@ -892,7 +892,7 @@ File: srecode.info,  Node: Create a Dictionary,  Next: Setting Dictionary Values
 6.1 Create a Dictionary
 =======================
 
- -- Function: srecode-create-dictionary &optional buffer
+ -- 機能: srecode-create-dictionary &optional buffer
      Create a dictionary for BUFFER.  If BUFFER is not specified, use
      the current buffer.  The dictionary is initialized with no
      variables or enabled sections.  Any variables defined with `set'
@@ -910,17 +910,17 @@ this.
 
    In the simplest form, you can assocate a string with a variable.
 
- -- Function: srecode-dictionary-set-value dict name value
+ -- 機能: srecode-dictionary-set-value dict name value
      In dictionary DICT, set NAME to have VALUE.
 
    For section macros, you can have alternate values.  A section can
 either be toggled as visible, or it can act as a loop.
 
- -- Function: srecode-dictionary-show-section dict name
+ -- 機能: srecode-dictionary-show-section dict name
      In dictionary DICT, indicate that the section NAME should be
      exposed.
 
- -- Function: srecode-dictionary-add-section-dictionary dict name
+ -- 機能: srecode-dictionary-add-section-dictionary dict name
           show-only
      In dictionary DICT, add a section dictionary for section macro
      NAME.  Return the new dictionary.
@@ -975,7 +975,7 @@ in a macro.
    Your new subclass of the compound value needs to implement these
 methods:
 
- -- Function: srecode-compound-toString cp function dictionary
+ -- 機能: srecode-compound-toString cp function dictionary
      Convert the compound dictionary value CP to a string.  If FUNCTION
      is non-`nil', then FUNCTION is somehow applied to an aspect of the
      compound value.  The FUNCTION could be a fraction of some function
@@ -983,7 +983,7 @@ methods:
 
    The next method is for dumping out tables during debugging.
 
- -- Function: srecode-dump cp &optional indent
+ -- 機能: srecode-dump cp &optional indent
      Display information about this compound value.
 
    Here is an example of wrapping a semantic tag in a compound value:
@@ -1022,7 +1022,7 @@ Template Argument Dictionary Entries::.
 
    You can resolve an argument list into a dictionary with:
 
- -- Function: srecode-resolve-arguments temp dict
+ -- 機能: srecode-resolve-arguments temp dict
      Resolve all the arguments needed by the template TEMP.  Apply
      anything learned to the dictionary DICT.
 
@@ -1064,7 +1064,7 @@ entries based on those.
    In this way, a template author can get additional logic through more
 advanced arguments.
 
- -- Function: srecode-dictionary-lookup-name dict name
+ -- 機能: srecode-dictionary-lookup-name dict name
      Return information about the current DICT's value for NAME.  DICT
      is a dictionary, and NAME is a string that is the name of a symbol
      in the dictionary.  This function derives values for some special
@@ -1270,7 +1270,7 @@ SRecode utilities that use tags in templates.
      ring, or something handled via the variable
      `srecode-semantic-selected-tag'.
 
-      -- Variable: srecode-semantic-selected-tag
+      -- 変数: srecode-semantic-selected-tag
           The tag selected by a `:tag' template argument.  If this is
           `nil', then `senator-tag-ring' is used.
 
@@ -1472,7 +1472,7 @@ Emacs Lisp code yourself.
 7.1 Interactive Completion:
 ===========================
 
- -- Function: srecode-read-template-name prompt
+ -- 機能: srecode-read-template-name prompt
      Completing read for Semantic Recoder template names.  PROMPT is
      used to query for the name of the template desired.
 
@@ -1483,11 +1483,11 @@ Even if your program does not query the user for a template name, you
 will need to locate a template.  First, you need to locate the table to
 look the template up in.
 
- -- Function: srecode-table &optional mode
+ -- 機能: srecode-table &optional mode
      Return the currently active Semantic Recoder table for this buffer.
      Optional argument MODE specifies the mode table to use.
 
- -- Function: srecode-template-get-table tab template-name &optional
+ -- 機能: srecode-template-get-table tab template-name &optional
           context application
      Find in the template in mode table TAB, the template with
      TEMPLATE-NAME.  Optional argument CONTEXT specifies a context a
@@ -1522,7 +1522,7 @@ see *Note Argument Resolution::.
 There are several ways to insert a template.  It is easiest to just
 start with the main entry point.
 
- -- Function: srecode-insert-fcn template dictionary &optional stream
+ -- 機能: srecode-insert-fcn template dictionary &optional stream
      Insert TEMPLATE using DICTIONARY into STREAM.  If STREAM is nil,
      then use the current buffer.
 
@@ -1661,7 +1661,7 @@ to convert lists of tags, as produced by semantic back into code.
 it requires any particular language to have provided the correct
 templates to make it work.
 
- -- Function: srecode-semantic-insert-tag tag &optional style-option
+ -- 機能: srecode-semantic-insert-tag tag &optional style-option
           point-insert-fcn &rest dict-entries
      Insert TAG into a buffer using srecode templates at point.
 
@@ -1725,7 +1725,7 @@ templates.  A typical initialization would look like this:
    These two lines will load in the base templates for the major mode,
 and then the application specific templates.
 
- -- Function: srecode-load-tables-for-mode mmode &optional appname
+ -- 機能: srecode-load-tables-for-mode mmode &optional appname
      Load all the template files for MMODE.  Templates are found in the
      SRecode Template Map.  See "srecode-get-maps" for more.  APPNAME
      is the name of an application.  In this case, all template files
@@ -1742,60 +1742,60 @@ File: srecode.info,  Node: Index,  Prev: Application Writing,  Up: Top
 
 
 Tag Table:
-Node: Top168
-Node: Quick Start1551
-Ref: srecode-map-load-path2270
-Ref: srecode-insert2468
-Node: User Templates2861
-Ref: srecode-map-save-file3243
-Node: Parts of SRecode4752
-Node: SRecode Minor Mode8639
-Ref: srecode-insert-ask-variable-method10032
-Node: Template Writing11219
-Ref: `SRecode-template-mode'11363
-Node: Variables12482
-Node: String Values13508
-Node: Multi-string Values13937
-Node: Section Show14771
-Node: Special Variables15294
-Node: Automatic Loop Variables18380
-Node: Compound Variable Values19019
-Node: Templates19505
-Node: Template Section Dictionaries20380
-Node: Template Macros22890
-Node: Contexts26305
-Node: Prompts27347
-Node: Dictionaries29221
-Node: Create a Dictionary30164
-Ref: srecode-create-dictionary30373
-Node: Setting Dictionary Values30643
-Ref: srecode-dictionary-set-value31118
-Ref: srecode-dictionary-show-section31349
-Ref: srecode-dictionary-add-section-dictionary31516
-Node: Compound Dictionary Values32467
-Ref: srecode-dictionary-compound-value32939
-Ref: srecode-compound-toString33400
-Ref: srecode-dump33772
-Node: Argument Resolution34843
-Ref: srecode-resolve-arguments35313
-Node: Creating new Arguments35427
-Node: Querying a Dictionary36409
-Ref: srecode-dictionary-lookup-name36916
-Node: Template Argument Dictionary Entries37169
-Node: Base Arguments37795
-Node: Semantic Arguments41059
-Ref: srecode-semantic-selected-tag41697
-Node: Language Arguments43442
-Node: Developing Template Functions45531
-Ref: srecode-read-template-name47963
-Ref: srecode-table48342
-Ref: srecode-template-get-table48576
-Ref: srecode-insert-fcn49769
-Node: Template Naming Conventions49874
-Node: Inserting Tag Lists53546
-Ref: srecode-semantic-insert-tag54135
-Node: Application Writing55819
-Ref: srecode-load-tables-for-mode56748
-Node: Index57073
+Node: Top205
+Node: Quick Start1588
+Ref: srecode-map-load-path2307
+Ref: srecode-insert2505
+Node: User Templates2898
+Ref: srecode-map-save-file3278
+Node: Parts of SRecode4787
+Node: SRecode Minor Mode8674
+Ref: srecode-insert-ask-variable-method10065
+Node: Template Writing11252
+Ref: `SRecode-template-mode'11396
+Node: Variables12515
+Node: String Values13541
+Node: Multi-string Values13970
+Node: Section Show14804
+Node: Special Variables15327
+Node: Automatic Loop Variables18413
+Node: Compound Variable Values19052
+Node: Templates19538
+Node: Template Section Dictionaries20413
+Node: Template Macros22923
+Node: Contexts26338
+Node: Prompts27380
+Node: Dictionaries29254
+Node: Create a Dictionary30197
+Ref: srecode-create-dictionary30404
+Node: Setting Dictionary Values30674
+Ref: srecode-dictionary-set-value31147
+Ref: srecode-dictionary-show-section31376
+Ref: srecode-dictionary-add-section-dictionary31541
+Node: Compound Dictionary Values32492
+Ref: srecode-dictionary-compound-value32964
+Ref: srecode-compound-toString33423
+Ref: srecode-dump33793
+Node: Argument Resolution34864
+Ref: srecode-resolve-arguments35332
+Node: Creating new Arguments35446
+Node: Querying a Dictionary36428
+Ref: srecode-dictionary-lookup-name36933
+Node: Template Argument Dictionary Entries37186
+Node: Base Arguments37812
+Node: Semantic Arguments41076
+Ref: srecode-semantic-selected-tag41712
+Node: Language Arguments43457
+Node: Developing Template Functions45546
+Ref: srecode-read-template-name47976
+Ref: srecode-table48353
+Ref: srecode-template-get-table48585
+Ref: srecode-insert-fcn49776
+Node: Template Naming Conventions49881
+Node: Inserting Tag Lists53553
+Ref: srecode-semantic-insert-tag54140
+Node: Application Writing55824
+Ref: srecode-load-tables-for-mode56751
+Node: Index57076
 
 End Tag Table

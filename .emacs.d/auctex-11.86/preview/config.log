@@ -30,25 +30,13 @@ Kernel configured for up to 2 processors.
 Processor type: i486 (Intel 80486)
 Processors active: 0 1
 Primary memory available: 2.00 gigabytes
-Default processor set: 108 tasks, 477 threads, 2 processors
-Load average: 1.43, Mach factor: 0.87
+Default processor set: 118 tasks, 537 threads, 2 processors
+Load average: 1.36, Mach factor: 0.78
 /bin/machine           = unknown
 /usr/bin/oslevel       = unknown
 /bin/universe          = unknown
 
 PATH: /usr/local/texlive/p2009/bin/x86_64-apple-darwin10.2.0/
-PATH: /opt/local/bin
-PATH: /opt/local/sbin
-PATH: /usr/local/bin
-PATH: /usr/local
-PATH: /usr/local/bin
-PATH: /usr/local/mysql/bin/mysql
-PATH: /usr/local/bin/src
-PATH: /usr/local/bin
-PATH: /usr/local/sbin
-PATH: /usr/local/mysql/bin
-PATH: /opt/local/bin
-PATH: /opt/local/sbin
 PATH: /opt/local/bin
 PATH: /opt/local/sbin
 PATH: /usr/local/bin
@@ -80,8 +68,8 @@ configure:1852: result: /usr/bin/install -c
 configure:1915: checking for /usr/bin/emacs
 configure:1945: result: /usr/bin/emacs
 configure:1961: checking if /usr/bin/emacs is XEmacs
-/usr/bin/emacs -batch -no-site-file -eval (let* ((x (if (featurep (quote xemacs)) "yes" "no"))) (write-region (if (stringp x) x (prin1-to-string x)) nil "./conftest-10486"))
-Wrote /Users/baron/projects/emacs/.emacs.d/auctex-11.86/preview/conftest-10486
+/usr/bin/emacs -batch -no-site-file -eval (let* ((x (if (featurep (quote xemacs)) "yes" "no"))) (write-region (if (stringp x) x (prin1-to-string x)) nil "./conftest-94445"))
+Wrote /Users/baron/.emacs.d/auctex-11.86/preview/conftest-94445
 => no
 configure:1981: result: no
 configure:1985: checking for Emacs prefix
@@ -92,21 +80,21 @@ configure:1985: checking for Emacs prefix
         (setq prefix parent)
       (if (string= (file-name-nondirectory parent) "bin")
          (setq prefix (directory-file-name (file-name-directory parent)))))
-    prefix) (error NONE)))) (write-region (if (stringp x) x (prin1-to-string x)) nil "./conftest-10486")) /usr/bin/emacs
-Wrote /Users/baron/projects/emacs/.emacs.d/auctex-11.86/preview/conftest-10486
+    prefix) (error NONE)))) (write-region (if (stringp x) x (prin1-to-string x)) nil "./conftest-94445")) /usr/bin/emacs
+Wrote /Users/baron/.emacs.d/auctex-11.86/preview/conftest-94445
 => /usr
 configure:2004: result: "/usr"
 configure:2034: checking if Emacs is recent enough
 /usr/bin/emacs -batch -no-site-file -eval (let* ((x (cond ((< emacs-major-version 21) "no")
 			 ((> emacs-major-version 21) "yes")
 			 ((< emacs-minor-version 01) "no")
-			 (t "yes")))) (write-region (if (stringp x) x (prin1-to-string x)) nil "./conftest-10486"))
-Wrote /Users/baron/projects/emacs/.emacs.d/auctex-11.86/preview/conftest-10486
+			 (t "yes")))) (write-region (if (stringp x) x (prin1-to-string x)) nil "./conftest-94445"))
+Wrote /Users/baron/.emacs.d/auctex-11.86/preview/conftest-94445
 => yes
 configure:2048: result: yes
 configure:2086: checking if build directory is valid
-/usr/bin/emacs -batch -eval (let* ((x (if (or (member (directory-file-name default-directory) load-path)	      (member (file-name-as-directory default-directory) load-path))	 "no" "yes"))) (write-region (if (stringp x) x (prin1-to-string x)) nil "./conftest-10486"))
-Wrote /Users/baron/projects/emacs/.emacs.d/auctex-11.86/preview/conftest-10486
+/usr/bin/emacs -batch -eval (let* ((x (if (or (member (directory-file-name default-directory) load-path)	      (member (file-name-as-directory default-directory) load-path))	 "no" "yes"))) (write-region (if (stringp x) x (prin1-to-string x)) nil "./conftest-94445"))
+Wrote /Users/baron/.emacs.d/auctex-11.86/preview/conftest-94445
 => yes
 configure:2102: result: yes
 configure:2192: checking where lisp files go
@@ -135,8 +123,8 @@ configure:2192: checking where lisp files go
 		   (throw 22
                       (if (string= reldir ".") (directory-file-name prefix)
                         (concat (file-name-as-directory prefix)
-                                reldir))))))))))) (write-region (if (stringp x) x (prin1-to-string x)) nil "./conftest-10486")) ${datadir}/emacs /usr/local/share/emacs
-Wrote /Users/baron/projects/emacs/.emacs.d/auctex-11.86/preview/conftest-10486
+                                reldir))))))))))) (write-region (if (stringp x) x (prin1-to-string x)) nil "./conftest-94445")) ${datadir}/emacs /usr/local/share/emacs
+Wrote /Users/baron/.emacs.d/auctex-11.86/preview/conftest-94445
 => NONE
 /usr/bin/emacs -batch -eval (let* ((prefix(pop command-line-args-left)) (expanded(pop command-line-args-left)) (x (catch 22
        (let (reldir (dirs load-path))
@@ -163,8 +151,8 @@ Wrote /Users/baron/projects/emacs/.emacs.d/auctex-11.86/preview/conftest-10486
 		   (throw 22
                       (if (string= reldir ".") (directory-file-name prefix)
                         (concat (file-name-as-directory prefix)
-                                reldir))))))))))) (write-region (if (stringp x) x (prin1-to-string x)) nil "./conftest-10486")) ${libdir}/emacs /usr/local/lib/emacs
-Wrote /Users/baron/projects/emacs/.emacs.d/auctex-11.86/preview/conftest-10486
+                                reldir))))))))))) (write-region (if (stringp x) x (prin1-to-string x)) nil "./conftest-94445")) ${libdir}/emacs /usr/local/lib/emacs
+Wrote /Users/baron/.emacs.d/auctex-11.86/preview/conftest-94445
 => NONE
 /usr/bin/emacs -batch -eval (let* ((prefix(pop command-line-args-left)) (expanded(pop command-line-args-left)) (x (catch 22
        (let (reldir (dirs load-path))
@@ -191,8 +179,8 @@ Wrote /Users/baron/projects/emacs/.emacs.d/auctex-11.86/preview/conftest-10486
 		   (throw 22
                       (if (string= reldir ".") (directory-file-name prefix)
                         (concat (file-name-as-directory prefix)
-                                reldir))))))))))) (write-region (if (stringp x) x (prin1-to-string x)) nil "./conftest-10486")) /usr/share/emacs /usr/share/emacs
-Wrote /Users/baron/projects/emacs/.emacs.d/auctex-11.86/preview/conftest-10486
+                                reldir))))))))))) (write-region (if (stringp x) x (prin1-to-string x)) nil "./conftest-94445")) /usr/share/emacs /usr/share/emacs
+Wrote /Users/baron/.emacs.d/auctex-11.86/preview/conftest-94445
 => /usr/share/emacs/site-lisp
 configure:2264: result: /usr/share/emacs/site-lisp
 configure:2268: checking what file to use for preview startup
@@ -223,8 +211,8 @@ configure:2309: checking where the package lisp files go
               (t
 	       `(expand-file-name
                    ,(file-relative-name path startupdir)
-	           (file-name-directory load-file-name))))))))) (write-region (if (stringp x) x (prin1-to-string x)) nil "./conftest-10486")) /usr/share/emacs/site-lisp/auctex /usr/share/emacs/site-lisp /usr/share/emacs/site-lisp/preview-latex.el
-Wrote /Users/baron/projects/emacs/.emacs.d/auctex-11.86/preview/conftest-10486
+	           (file-name-directory load-file-name))))))))) (write-region (if (stringp x) x (prin1-to-string x)) nil "./conftest-94445")) /usr/share/emacs/site-lisp/auctex /usr/share/emacs/site-lisp /usr/share/emacs/site-lisp/preview-latex.el
+Wrote /Users/baron/.emacs.d/auctex-11.86/preview/conftest-94445
 => (expand-file-name "auctex" (file-name-directory load-file-name))
 configure:2390: result: /usr/share/emacs/site-lisp/auctex
 configure:2393: checking where the data files go
@@ -253,8 +241,8 @@ configure:2393: checking where the data files go
               (t
 	       `(expand-file-name
                    ,(file-relative-name path startupdir)
-	           (file-name-directory load-file-name))))))))) (write-region (if (stringp x) x (prin1-to-string x)) nil "./conftest-10486")) /usr/share/emacs/site-lisp/auctex /usr/share/emacs/site-lisp /usr/share/emacs/site-lisp/preview-latex.el
-Wrote /Users/baron/projects/emacs/.emacs.d/auctex-11.86/preview/conftest-10486
+	           (file-name-directory load-file-name))))))))) (write-region (if (stringp x) x (prin1-to-string x)) nil "./conftest-94445")) /usr/share/emacs/site-lisp/auctex /usr/share/emacs/site-lisp /usr/share/emacs/site-lisp/preview-latex.el
+Wrote /Users/baron/.emacs.d/auctex-11.86/preview/conftest-94445
 => (expand-file-name "auctex" (file-name-directory load-file-name))
 configure:2474: result: /usr/share/emacs/site-lisp/auctex
 configure:2481: checking for the location of AUCTeX's tex-site.el
@@ -263,8 +251,8 @@ configure:2541: checking for gs
 configure:2571: result: no
 configure:2541: checking for GSWIN32C.EXE
 configure:2571: result: no
-/usr/bin/emacs -batch -no-site-file -eval (let* ((dir(pop command-line-args-left))(x (if (member dir (list "NONE" (if (eq system-type 'windows-nt) "GSWIN32C.EXE" "gs"))) "" `(defvar preview-gs-command ,dir)))) (write-region (if (stringp x) x (prin1-to-string x)) nil "./conftest-10486")) NONE
-Wrote /Users/baron/projects/emacs/.emacs.d/auctex-11.86/preview/conftest-10486
+/usr/bin/emacs -batch -no-site-file -eval (let* ((dir(pop command-line-args-left))(x (if (member dir (list "NONE" (if (eq system-type 'windows-nt) "GSWIN32C.EXE" "gs"))) "" `(defvar preview-gs-command ,dir)))) (write-region (if (stringp x) x (prin1-to-string x)) nil "./conftest-94445")) NONE
+Wrote /Users/baron/.emacs.d/auctex-11.86/preview/conftest-94445
 => 
 configure:2596: checking for latex
 configure:2614: found /usr/local/texlive/p2009/bin/x86_64-apple-darwin10.2.0//latex
@@ -282,8 +270,8 @@ configure:2827: checking for prefix from kpsepath
         (setq prefix parent)
       (if (string= (file-name-nondirectory parent) "bin")
          (setq prefix (directory-file-name (file-name-directory parent)))))
-    prefix) (error NONE)))) (write-region (if (stringp x) x (prin1-to-string x)) nil "./conftest-10486")) kpsepath
-Wrote /Users/baron/projects/emacs/.emacs.d/auctex-11.86/preview/conftest-10486
+    prefix) (error NONE)))) (write-region (if (stringp x) x (prin1-to-string x)) nil "./conftest-94445")) kpsepath
+Wrote /Users/baron/.emacs.d/auctex-11.86/preview/conftest-94445
 => /usr/local/texlive/p2009
 configure:2851: result: "/usr/local/texlive/p2009"
 configure:2854: checking for TDS-compliant directory
@@ -315,8 +303,8 @@ configure:2854: checking for TDS-compliant directory
 		   (throw 22
                       (if (string= reldir ".") (directory-file-name prefix)
                         (concat (file-name-as-directory prefix)
-                                reldir))))))))))) (write-region (if (stringp x) x (prin1-to-string x)) nil "./conftest-10486")) ${datadir}/texmf /usr/local/share/texmf .:/Users/baron/.texlive2009/texmf-config/tex/latex//:/Users/baron/.texlive2009/texmf-var/tex/latex//:/Users/baron/texmf/tex/latex//:!!/usr/local/texlive/p2009/texmf-config/tex/latex//:!!/usr/local/texlive/p2009/texmf-var/tex/latex//:!!/usr/local/texlive/p2009/texmf/tex/latex//:!!/usr/local/texlive/p2009/../texmf-local/tex/latex//:!!/usr/local/texlive/p2009/texmf-dist/tex/latex//:/Users/baron/.texlive2009/texmf-config/tex/generic//:/Users/baron/.texlive2009/texmf-var/tex/generic//:/Users/baron/texmf/tex/generic//:!!/usr/local/texlive/p2009/texmf-config/tex/generic//:!!/usr/local/texlive/p2009/texmf-var/tex/generic//:!!/usr/local/texlive/p2009/texmf/tex/generic//:!!/usr/local/texlive/p2009/../texmf-local/tex/generic//:!!/usr/local/texlive/p2009/texmf-dist/tex/generic//:/Users/baron/.texlive2009/texmf-config/tex///:/Users/baron/.texlive2009/texmf-var/tex///:/Users/baron/texmf/tex///:!!/usr/local/texlive/p2009/texmf-config/tex///:!!/usr/local/texlive/p2009/texmf-var/tex///:!!/usr/local/texlive/p2009/texmf/tex///:!!/usr/local/texlive/p2009/../texmf-local/tex///:!!/usr/local/texlive/p2009/texmf-dist/tex///
-Wrote /Users/baron/projects/emacs/.emacs.d/auctex-11.86/preview/conftest-10486
+                                reldir))))))))))) (write-region (if (stringp x) x (prin1-to-string x)) nil "./conftest-94445")) ${datadir}/texmf /usr/local/share/texmf .:/Users/baron/.texlive2009/texmf-config/tex/latex//:/Users/baron/.texlive2009/texmf-var/tex/latex//:/Users/baron/texmf/tex/latex//:!!/usr/local/texlive/p2009/texmf-config/tex/latex//:!!/usr/local/texlive/p2009/texmf-var/tex/latex//:!!/usr/local/texlive/p2009/texmf/tex/latex//:!!/usr/local/texlive/p2009/../texmf-local/tex/latex//:!!/usr/local/texlive/p2009/texmf-dist/tex/latex//:/Users/baron/.texlive2009/texmf-config/tex/generic//:/Users/baron/.texlive2009/texmf-var/tex/generic//:/Users/baron/texmf/tex/generic//:!!/usr/local/texlive/p2009/texmf-config/tex/generic//:!!/usr/local/texlive/p2009/texmf-var/tex/generic//:!!/usr/local/texlive/p2009/texmf/tex/generic//:!!/usr/local/texlive/p2009/../texmf-local/tex/generic//:!!/usr/local/texlive/p2009/texmf-dist/tex/generic//:/Users/baron/.texlive2009/texmf-config/tex///:/Users/baron/.texlive2009/texmf-var/tex///:/Users/baron/texmf/tex///:!!/usr/local/texlive/p2009/texmf-config/tex///:!!/usr/local/texlive/p2009/texmf-var/tex///:!!/usr/local/texlive/p2009/texmf/tex///:!!/usr/local/texlive/p2009/../texmf-local/tex///:!!/usr/local/texlive/p2009/texmf-dist/tex///
+Wrote /Users/baron/.emacs.d/auctex-11.86/preview/conftest-94445
 => NONE
 /usr/bin/emacs -batch -no-site-file -eval (let* ((prefix(pop command-line-args-left)) (expanded(pop command-line-args-left)) (pathoutput(pop command-line-args-left))(x (catch 22
        (let (reldir (dirs (mapcar (lambda(x)
@@ -346,8 +334,8 @@ Wrote /Users/baron/projects/emacs/.emacs.d/auctex-11.86/preview/conftest-10486
 		   (throw 22
                       (if (string= reldir ".") (directory-file-name prefix)
                         (concat (file-name-as-directory prefix)
-                                reldir))))))))))) (write-region (if (stringp x) x (prin1-to-string x)) nil "./conftest-10486")) /usr/local/texlive/p2009/share/texmf-local /usr/local/texlive/p2009/share/texmf-local .:/Users/baron/.texlive2009/texmf-config/tex/latex//:/Users/baron/.texlive2009/texmf-var/tex/latex//:/Users/baron/texmf/tex/latex//:!!/usr/local/texlive/p2009/texmf-config/tex/latex//:!!/usr/local/texlive/p2009/texmf-var/tex/latex//:!!/usr/local/texlive/p2009/texmf/tex/latex//:!!/usr/local/texlive/p2009/../texmf-local/tex/latex//:!!/usr/local/texlive/p2009/texmf-dist/tex/latex//:/Users/baron/.texlive2009/texmf-config/tex/generic//:/Users/baron/.texlive2009/texmf-var/tex/generic//:/Users/baron/texmf/tex/generic//:!!/usr/local/texlive/p2009/texmf-config/tex/generic//:!!/usr/local/texlive/p2009/texmf-var/tex/generic//:!!/usr/local/texlive/p2009/texmf/tex/generic//:!!/usr/local/texlive/p2009/../texmf-local/tex/generic//:!!/usr/local/texlive/p2009/texmf-dist/tex/generic//:/Users/baron/.texlive2009/texmf-config/tex///:/Users/baron/.texlive2009/texmf-var/tex///:/Users/baron/texmf/tex///:!!/usr/local/texlive/p2009/texmf-config/tex///:!!/usr/local/texlive/p2009/texmf-var/tex///:!!/usr/local/texlive/p2009/texmf/tex///:!!/usr/local/texlive/p2009/../texmf-local/tex///:!!/usr/local/texlive/p2009/texmf-dist/tex///
-Wrote /Users/baron/projects/emacs/.emacs.d/auctex-11.86/preview/conftest-10486
+                                reldir))))))))))) (write-region (if (stringp x) x (prin1-to-string x)) nil "./conftest-94445")) /usr/local/texlive/p2009/share/texmf-local /usr/local/texlive/p2009/share/texmf-local .:/Users/baron/.texlive2009/texmf-config/tex/latex//:/Users/baron/.texlive2009/texmf-var/tex/latex//:/Users/baron/texmf/tex/latex//:!!/usr/local/texlive/p2009/texmf-config/tex/latex//:!!/usr/local/texlive/p2009/texmf-var/tex/latex//:!!/usr/local/texlive/p2009/texmf/tex/latex//:!!/usr/local/texlive/p2009/../texmf-local/tex/latex//:!!/usr/local/texlive/p2009/texmf-dist/tex/latex//:/Users/baron/.texlive2009/texmf-config/tex/generic//:/Users/baron/.texlive2009/texmf-var/tex/generic//:/Users/baron/texmf/tex/generic//:!!/usr/local/texlive/p2009/texmf-config/tex/generic//:!!/usr/local/texlive/p2009/texmf-var/tex/generic//:!!/usr/local/texlive/p2009/texmf/tex/generic//:!!/usr/local/texlive/p2009/../texmf-local/tex/generic//:!!/usr/local/texlive/p2009/texmf-dist/tex/generic//:/Users/baron/.texlive2009/texmf-config/tex///:/Users/baron/.texlive2009/texmf-var/tex///:/Users/baron/texmf/tex///:!!/usr/local/texlive/p2009/texmf-config/tex///:!!/usr/local/texlive/p2009/texmf-var/tex///:!!/usr/local/texlive/p2009/texmf/tex///:!!/usr/local/texlive/p2009/../texmf-local/tex///:!!/usr/local/texlive/p2009/texmf-dist/tex///
+Wrote /Users/baron/.emacs.d/auctex-11.86/preview/conftest-94445
 => NONE
 /usr/bin/emacs -batch -no-site-file -eval (let* ((prefix(pop command-line-args-left)) (expanded(pop command-line-args-left)) (pathoutput(pop command-line-args-left))(x (catch 22
        (let (reldir (dirs (mapcar (lambda(x)
@@ -377,8 +365,8 @@ Wrote /Users/baron/projects/emacs/.emacs.d/auctex-11.86/preview/conftest-10486
 		   (throw 22
                       (if (string= reldir ".") (directory-file-name prefix)
                         (concat (file-name-as-directory prefix)
-                                reldir))))))))))) (write-region (if (stringp x) x (prin1-to-string x)) nil "./conftest-10486")) /usr/local/texlive/p2009/share/texmf /usr/local/texlive/p2009/share/texmf .:/Users/baron/.texlive2009/texmf-config/tex/latex//:/Users/baron/.texlive2009/texmf-var/tex/latex//:/Users/baron/texmf/tex/latex//:!!/usr/local/texlive/p2009/texmf-config/tex/latex//:!!/usr/local/texlive/p2009/texmf-var/tex/latex//:!!/usr/local/texlive/p2009/texmf/tex/latex//:!!/usr/local/texlive/p2009/../texmf-local/tex/latex//:!!/usr/local/texlive/p2009/texmf-dist/tex/latex//:/Users/baron/.texlive2009/texmf-config/tex/generic//:/Users/baron/.texlive2009/texmf-var/tex/generic//:/Users/baron/texmf/tex/generic//:!!/usr/local/texlive/p2009/texmf-config/tex/generic//:!!/usr/local/texlive/p2009/texmf-var/tex/generic//:!!/usr/local/texlive/p2009/texmf/tex/generic//:!!/usr/local/texlive/p2009/../texmf-local/tex/generic//:!!/usr/local/texlive/p2009/texmf-dist/tex/generic//:/Users/baron/.texlive2009/texmf-config/tex///:/Users/baron/.texlive2009/texmf-var/tex///:/Users/baron/texmf/tex///:!!/usr/local/texlive/p2009/texmf-config/tex///:!!/usr/local/texlive/p2009/texmf-var/tex///:!!/usr/local/texlive/p2009/texmf/tex///:!!/usr/local/texlive/p2009/../texmf-local/tex///:!!/usr/local/texlive/p2009/texmf-dist/tex///
-Wrote /Users/baron/projects/emacs/.emacs.d/auctex-11.86/preview/conftest-10486
+                                reldir))))))))))) (write-region (if (stringp x) x (prin1-to-string x)) nil "./conftest-94445")) /usr/local/texlive/p2009/share/texmf /usr/local/texlive/p2009/share/texmf .:/Users/baron/.texlive2009/texmf-config/tex/latex//:/Users/baron/.texlive2009/texmf-var/tex/latex//:/Users/baron/texmf/tex/latex//:!!/usr/local/texlive/p2009/texmf-config/tex/latex//:!!/usr/local/texlive/p2009/texmf-var/tex/latex//:!!/usr/local/texlive/p2009/texmf/tex/latex//:!!/usr/local/texlive/p2009/../texmf-local/tex/latex//:!!/usr/local/texlive/p2009/texmf-dist/tex/latex//:/Users/baron/.texlive2009/texmf-config/tex/generic//:/Users/baron/.texlive2009/texmf-var/tex/generic//:/Users/baron/texmf/tex/generic//:!!/usr/local/texlive/p2009/texmf-config/tex/generic//:!!/usr/local/texlive/p2009/texmf-var/tex/generic//:!!/usr/local/texlive/p2009/texmf/tex/generic//:!!/usr/local/texlive/p2009/../texmf-local/tex/generic//:!!/usr/local/texlive/p2009/texmf-dist/tex/generic//:/Users/baron/.texlive2009/texmf-config/tex///:/Users/baron/.texlive2009/texmf-var/tex///:/Users/baron/texmf/tex///:!!/usr/local/texlive/p2009/texmf-config/tex///:!!/usr/local/texlive/p2009/texmf-var/tex///:!!/usr/local/texlive/p2009/texmf/tex///:!!/usr/local/texlive/p2009/../texmf-local/tex///:!!/usr/local/texlive/p2009/texmf-dist/tex///
+Wrote /Users/baron/.emacs.d/auctex-11.86/preview/conftest-94445
 => NONE
 /usr/bin/emacs -batch -no-site-file -eval (let* ((prefix(pop command-line-args-left)) (expanded(pop command-line-args-left)) (pathoutput(pop command-line-args-left))(x (catch 22
        (let (reldir (dirs (mapcar (lambda(x)
@@ -408,8 +396,8 @@ Wrote /Users/baron/projects/emacs/.emacs.d/auctex-11.86/preview/conftest-10486
 		   (throw 22
                       (if (string= reldir ".") (directory-file-name prefix)
                         (concat (file-name-as-directory prefix)
-                                reldir))))))))))) (write-region (if (stringp x) x (prin1-to-string x)) nil "./conftest-10486")) /usr/local/texlive/p2009/texmf-local /usr/local/texlive/p2009/texmf-local .:/Users/baron/.texlive2009/texmf-config/tex/latex//:/Users/baron/.texlive2009/texmf-var/tex/latex//:/Users/baron/texmf/tex/latex//:!!/usr/local/texlive/p2009/texmf-config/tex/latex//:!!/usr/local/texlive/p2009/texmf-var/tex/latex//:!!/usr/local/texlive/p2009/texmf/tex/latex//:!!/usr/local/texlive/p2009/../texmf-local/tex/latex//:!!/usr/local/texlive/p2009/texmf-dist/tex/latex//:/Users/baron/.texlive2009/texmf-config/tex/generic//:/Users/baron/.texlive2009/texmf-var/tex/generic//:/Users/baron/texmf/tex/generic//:!!/usr/local/texlive/p2009/texmf-config/tex/generic//:!!/usr/local/texlive/p2009/texmf-var/tex/generic//:!!/usr/local/texlive/p2009/texmf/tex/generic//:!!/usr/local/texlive/p2009/../texmf-local/tex/generic//:!!/usr/local/texlive/p2009/texmf-dist/tex/generic//:/Users/baron/.texlive2009/texmf-config/tex///:/Users/baron/.texlive2009/texmf-var/tex///:/Users/baron/texmf/tex///:!!/usr/local/texlive/p2009/texmf-config/tex///:!!/usr/local/texlive/p2009/texmf-var/tex///:!!/usr/local/texlive/p2009/texmf/tex///:!!/usr/local/texlive/p2009/../texmf-local/tex///:!!/usr/local/texlive/p2009/texmf-dist/tex///
-Wrote /Users/baron/projects/emacs/.emacs.d/auctex-11.86/preview/conftest-10486
+                                reldir))))))))))) (write-region (if (stringp x) x (prin1-to-string x)) nil "./conftest-94445")) /usr/local/texlive/p2009/texmf-local /usr/local/texlive/p2009/texmf-local .:/Users/baron/.texlive2009/texmf-config/tex/latex//:/Users/baron/.texlive2009/texmf-var/tex/latex//:/Users/baron/texmf/tex/latex//:!!/usr/local/texlive/p2009/texmf-config/tex/latex//:!!/usr/local/texlive/p2009/texmf-var/tex/latex//:!!/usr/local/texlive/p2009/texmf/tex/latex//:!!/usr/local/texlive/p2009/../texmf-local/tex/latex//:!!/usr/local/texlive/p2009/texmf-dist/tex/latex//:/Users/baron/.texlive2009/texmf-config/tex/generic//:/Users/baron/.texlive2009/texmf-var/tex/generic//:/Users/baron/texmf/tex/generic//:!!/usr/local/texlive/p2009/texmf-config/tex/generic//:!!/usr/local/texlive/p2009/texmf-var/tex/generic//:!!/usr/local/texlive/p2009/texmf/tex/generic//:!!/usr/local/texlive/p2009/../texmf-local/tex/generic//:!!/usr/local/texlive/p2009/texmf-dist/tex/generic//:/Users/baron/.texlive2009/texmf-config/tex///:/Users/baron/.texlive2009/texmf-var/tex///:/Users/baron/texmf/tex///:!!/usr/local/texlive/p2009/texmf-config/tex///:!!/usr/local/texlive/p2009/texmf-var/tex///:!!/usr/local/texlive/p2009/texmf/tex///:!!/usr/local/texlive/p2009/../texmf-local/tex///:!!/usr/local/texlive/p2009/texmf-dist/tex///
+Wrote /Users/baron/.emacs.d/auctex-11.86/preview/conftest-94445
 => NONE
 /usr/bin/emacs -batch -no-site-file -eval (let* ((prefix(pop command-line-args-left)) (expanded(pop command-line-args-left)) (pathoutput(pop command-line-args-left))(x (catch 22
        (let (reldir (dirs (mapcar (lambda(x)
@@ -439,8 +427,8 @@ Wrote /Users/baron/projects/emacs/.emacs.d/auctex-11.86/preview/conftest-10486
 		   (throw 22
                       (if (string= reldir ".") (directory-file-name prefix)
                         (concat (file-name-as-directory prefix)
-                                reldir))))))))))) (write-region (if (stringp x) x (prin1-to-string x)) nil "./conftest-10486")) /usr/local/texlive/p2009/texmf /usr/local/texlive/p2009/texmf .:/Users/baron/.texlive2009/texmf-config/tex/latex//:/Users/baron/.texlive2009/texmf-var/tex/latex//:/Users/baron/texmf/tex/latex//:!!/usr/local/texlive/p2009/texmf-config/tex/latex//:!!/usr/local/texlive/p2009/texmf-var/tex/latex//:!!/usr/local/texlive/p2009/texmf/tex/latex//:!!/usr/local/texlive/p2009/../texmf-local/tex/latex//:!!/usr/local/texlive/p2009/texmf-dist/tex/latex//:/Users/baron/.texlive2009/texmf-config/tex/generic//:/Users/baron/.texlive2009/texmf-var/tex/generic//:/Users/baron/texmf/tex/generic//:!!/usr/local/texlive/p2009/texmf-config/tex/generic//:!!/usr/local/texlive/p2009/texmf-var/tex/generic//:!!/usr/local/texlive/p2009/texmf/tex/generic//:!!/usr/local/texlive/p2009/../texmf-local/tex/generic//:!!/usr/local/texlive/p2009/texmf-dist/tex/generic//:/Users/baron/.texlive2009/texmf-config/tex///:/Users/baron/.texlive2009/texmf-var/tex///:/Users/baron/texmf/tex///:!!/usr/local/texlive/p2009/texmf-config/tex///:!!/usr/local/texlive/p2009/texmf-var/tex///:!!/usr/local/texlive/p2009/texmf/tex///:!!/usr/local/texlive/p2009/../texmf-local/tex///:!!/usr/local/texlive/p2009/texmf-dist/tex///
-Wrote /Users/baron/projects/emacs/.emacs.d/auctex-11.86/preview/conftest-10486
+                                reldir))))))))))) (write-region (if (stringp x) x (prin1-to-string x)) nil "./conftest-94445")) /usr/local/texlive/p2009/texmf /usr/local/texlive/p2009/texmf .:/Users/baron/.texlive2009/texmf-config/tex/latex//:/Users/baron/.texlive2009/texmf-var/tex/latex//:/Users/baron/texmf/tex/latex//:!!/usr/local/texlive/p2009/texmf-config/tex/latex//:!!/usr/local/texlive/p2009/texmf-var/tex/latex//:!!/usr/local/texlive/p2009/texmf/tex/latex//:!!/usr/local/texlive/p2009/../texmf-local/tex/latex//:!!/usr/local/texlive/p2009/texmf-dist/tex/latex//:/Users/baron/.texlive2009/texmf-config/tex/generic//:/Users/baron/.texlive2009/texmf-var/tex/generic//:/Users/baron/texmf/tex/generic//:!!/usr/local/texlive/p2009/texmf-config/tex/generic//:!!/usr/local/texlive/p2009/texmf-var/tex/generic//:!!/usr/local/texlive/p2009/texmf/tex/generic//:!!/usr/local/texlive/p2009/../texmf-local/tex/generic//:!!/usr/local/texlive/p2009/texmf-dist/tex/generic//:/Users/baron/.texlive2009/texmf-config/tex///:/Users/baron/.texlive2009/texmf-var/tex///:/Users/baron/texmf/tex///:!!/usr/local/texlive/p2009/texmf-config/tex///:!!/usr/local/texlive/p2009/texmf-var/tex///:!!/usr/local/texlive/p2009/texmf/tex///:!!/usr/local/texlive/p2009/../texmf-local/tex///:!!/usr/local/texlive/p2009/texmf-dist/tex///
+Wrote /Users/baron/.emacs.d/auctex-11.86/preview/conftest-94445
 => /usr/local/texlive/p2009/texmf
 configure:3058: result: /usr/local/texlive/p2009/texmf
 configure:3161: checking for texhash
@@ -460,8 +448,8 @@ configure:3287: checking for glaring installation conflicts
     (and (setq tmp (locate-library "preview-latex.el"))
          (not (string= (file-truename tmp)
                        (file-truename previewstartfile)))
-         (format "Conflicting previous startup file `%s' found!\n" tmp))))) (write-region (if (stringp x) x (prin1-to-string x)) nil "./conftest-10486")) /usr/share/emacs/site-lisp/auctex /usr/share/emacs/site-lisp/preview-latex.el
-Wrote /Users/baron/projects/emacs/.emacs.d/auctex-11.86/preview/conftest-10486
+         (format "Conflicting previous startup file `%s' found!\n" tmp))))) (write-region (if (stringp x) x (prin1-to-string x)) nil "./conftest-94445")) /usr/share/emacs/site-lisp/auctex /usr/share/emacs/site-lisp/preview-latex.el
+Wrote /Users/baron/.emacs.d/auctex-11.86/preview/conftest-94445
 => 
 configure:3349: result: probably none
 configure:3571: creating ./config.status

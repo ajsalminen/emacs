@@ -1,4 +1,5 @@
-This is wisent.info, produced by makeinfo version 4.9 from wisent.texi.
+これは wisent.info、wisent.texi より makeinfo バージョン 4.8
+によって作成されました。
 
    This manual documents the Wisent parser generator.
 
@@ -474,7 +475,7 @@ and Grammar, in the Bison manual for more information.
 
 Grammar translation (compilation) is achieved by the function:
 
- -- Function: wisent-compile-grammar grammar &optional start-list
+ -- 機能: wisent-compile-grammar grammar &optional start-list
      Compile GRAMMAR and return an LALR(1) automaton.
 
      Optional argument START-LIST is a list of start symbols
@@ -588,7 +589,7 @@ on the verbose report.
      To help debugging the grammar compiler itself, you can set this
      variable to print the content of some internal data structures:
 
-      -- Variable: wisent-debug-flag
+      -- 変数: wisent-debug-flag
           non-`nil' means enable some debug stuff.
 
 
@@ -940,7 +941,7 @@ by `wisent-compile-grammar' from a context-free grammar.
 
 The Wisent's parser is entered by calling the function:
 
- -- Function: wisent-parse automaton lexer &optional error start
+ -- 機能: wisent-parse automaton lexer &optional error start
      Parse input using the automaton specified in AUTOMATON.
 
     AUTOMATON
@@ -964,10 +965,10 @@ The Wisent's parser is entered by calling the function:
 The following two normal hooks permit to do some useful processing
 respectively before to start parsing, and after the parser terminated.
 
- -- Variable: wisent-pre-parse-hook
+ -- 変数: wisent-pre-parse-hook
      Normal hook run just before entering the LR parser engine.
 
- -- Variable: wisent-post-parse-hook
+ -- 変数: wisent-post-parse-hook
      Normal hook run just after the LR parser engine terminated.
 
 * Menu:
@@ -1015,7 +1016,7 @@ END
 When there are no more tokens to read the lexer must return the token
 `(list wisent-eoi-term)' to each request.
 
- -- Variable: wisent-eoi-term
+ -- 変数: wisent-eoi-term
      Predefined constant, End-Of-Input terminal symbol.
 
 `wisent-lex' is an example of a lexer that reads lexical tokens
@@ -1031,14 +1032,14 @@ File: wisent.info,  Node: Actions goodies,  Next: Report errors,  Prev: Writing 
 3.2 Variables and macros useful in grammar actions.
 ===================================================
 
- -- Variable: wisent-input
+ -- 変数: wisent-input
      The last token read.  This variable only has meaning in the scope
      of `wisent-parse'.
 
- -- Function: wisent-lexer
+ -- 機能: wisent-lexer
      Obtain the next terminal in input.
 
- -- Function: wisent-region &rest positions
+ -- 機能: wisent-region &rest positions
      Return the start/end positions of the region including POSITIONS.
      Each element of POSITIONS is a pair `(START-POS .  END-POS)' or
      `nil'.  The returned value is the pair
@@ -1057,7 +1058,7 @@ string containing the message to report.
 
 By default the parser uses this function to report error messages:
 
- -- Function: wisent-message string &rest args
+ -- 機能: wisent-message string &rest args
      Print a one-line message if `wisent-parse-verbose-flag' is set.
      Pass STRING and ARGS arguments to "message".
 
@@ -1065,7 +1066,7 @@ By default the parser uses this function to report error messages:
      `wisent-message' uses the following function to print lexical
      tokens:
 
-      -- Function: wisent-token-to-string token
+      -- 機能: wisent-token-to-string token
           Return a printed representation of lexical token TOKEN.
 
      The general printed form of a lexical token is:
@@ -1130,20 +1131,20 @@ Note that error recovery rules may have actions, just as any other
 rules can.  Here are some predefined hooks, variables, functions or
 macros, useful in such actions:
 
- -- Variable: wisent-nerrs
+ -- 変数: wisent-nerrs
      The number of parse errors encountered so far.
 
- -- Variable: wisent-recovering
+ -- 変数: wisent-recovering
      non-`nil' means that the parser is recovering.  This variable only
      has meaning in the scope of `wisent-parse'.
 
- -- Function: wisent-error msg
+ -- 機能: wisent-error msg
      Call the user supplied error reporting function with message MSG
      (*note Report errors::).
 
      For an example of use, *Note wisent-skip-token::.
 
- -- Function: wisent-errok
+ -- 機能: wisent-errok
      Resume generating error messages immediately for subsequent syntax
      errors.
 
@@ -1157,7 +1158,7 @@ macros, useful in such actions:
 
      For an example of use, *Note wisent-skip-token::.
 
- -- Function: wisent-clearin
+ -- 機能: wisent-clearin
      Discard the current lookahead token.  This will cause a new
      lexical token to be read.
 
@@ -1173,10 +1174,10 @@ macros, useful in such actions:
 
      For an example of use, *Note wisent-skip-token::.
 
- -- Function: wisent-abort
+ -- 機能: wisent-abort
      Abort parsing and save the lookahead token.
 
- -- Function: wisent-set-region start end
+ -- 機能: wisent-set-region start end
      Change the region of text matched by the current nonterminal.
      START and END are respectively the beginning and end positions of
      the region occupied by the group of components associated to this
@@ -1185,7 +1186,7 @@ macros, useful in such actions:
 
      For an example of use, *Note wisent-skip-token::.
 
- -- Variable: wisent-discarding-token-functions
+ -- 変数: wisent-discarding-token-functions
      List of functions to be called when discarding a lexical token.
      These functions receive the lexical token discarded.  When the
      parser encounters unexpected tokens, it can discards them, based
@@ -1199,7 +1200,7 @@ macros, useful in such actions:
      `wisent-collect-unmatched-syntax' to collect unmatched lexical
      tokens (*note Useful functions::).
 
- -- Function: wisent-skip-token
+ -- 機能: wisent-skip-token
      Skip the lookahead token in order to resume parsing.  Return nil.
      Must be used in error recovery semantic actions.
 
@@ -1212,7 +1213,7 @@ macros, useful in such actions:
           (wisent-clearin)
           (wisent-errok)))
 
- -- Function: wisent-skip-block
+ -- 機能: wisent-skip-block
      Safely skip a block in order to resume parsing.  Return nil.  Must
      be used in error recovery semantic actions.
 
@@ -1640,7 +1641,7 @@ File: wisent.info,  Node: Useful functions,  Prev: Start nonterminals,  Up: Gram
 Here is a description of some predefined functions it might be useful
 to know when writing new code to use Wisent in semantic:
 
- -- Function: wisent-collect-unmatched-syntax input
+ -- 機能: wisent-collect-unmatched-syntax input
      Add INPUT lexical token to the cache of unmatched tokens, in
      variable `semantic-unmatched-syntax-cache'.
 
@@ -1677,7 +1678,7 @@ different form (*note Writing a lexer::):
 
 `wisent-lex' is the default Wisent's lexer used in semantic.
 
- -- Function: wisent-lex
+ -- 機能: wisent-lex
      Return the next available lexical token in Wisent's form.
 
      The variable `wisent-lex-istream' contains the list of lexical
@@ -2140,69 +2141,69 @@ Index
 * token:                                 Wisent Grammar.      (line  15)
 * understanding the automaton:           Understanding the automaton.
                                                               (line   6)
-* wisent-abort:                          Error recovery.      (line  82)
-* wisent-cancel-debug-on-entry:          Debugging actions.   (line  43)
+* wisent-abort:                          Error recovery.      (line  83)
+* wisent-cancel-debug-on-entry:          Debugging actions.   (line  44)
 * wisent-clearin:                        Error recovery.      (line  66)
-* wisent-collect-unmatched-syntax:       Useful functions.    (line   9)
+* wisent-collect-unmatched-syntax:       Useful functions.    (line  10)
 * wisent-compile-grammar:                Compiling a grammar. (line  18)
 * wisent-debug-flag:                     Grammar Debugging.   (line  35)
 * wisent-debug-on-entry:                 Debugging actions.   (line  38)
-* wisent-debug-show-entry:               Debugging actions.   (line  47)
+* wisent-debug-show-entry:               Debugging actions.   (line  48)
 * wisent-discarding-token-functions:     Error recovery.      (line  94)
-* wisent-eoi-term:                       Writing a lexer.     (line  37)
-* wisent-errok:                          Error recovery.      (line  52)
-* wisent-error:                          Error recovery.      (line  46)
+* wisent-eoi-term:                       Writing a lexer.     (line  38)
+* wisent-errok:                          Error recovery.      (line  53)
+* wisent-error:                          Error recovery.      (line  47)
 * wisent-input:                          Actions goodies.     (line   6)
 * wisent-lex:                            Wisent Lex.          (line  30)
 * wisent-lex-istream:                    Wisent Lex.          (line  30)
-* wisent-lexer:                          Actions goodies.     (line  10)
+* wisent-lexer:                          Actions goodies.     (line  11)
 * wisent-message:                        Report errors.       (line  12)
 * wisent-nerrs:                          Error recovery.      (line  39)
-* wisent-parse:                          Wisent Parsing.      (line  35)
+* wisent-parse:                          Wisent Parsing.      (line  36)
 * wisent-parse-toggle-verbose-flag:      Report errors.       (line  35)
 * wisent-parse-verbose-flag:             Report errors.       (line  30)
-* wisent-post-parse-hook:                Wisent Parsing.      (line  62)
+* wisent-post-parse-hook:                Wisent Parsing.      (line  63)
 * wisent-pre-parse-hook:                 Wisent Parsing.      (line  59)
-* wisent-recovering:                     Error recovery.      (line  42)
-* wisent-region:                         Actions goodies.     (line  13)
-* wisent-set-region:                     Error recovery.      (line  85)
+* wisent-recovering:                     Error recovery.      (line  43)
+* wisent-region:                         Actions goodies.     (line  14)
+* wisent-set-region:                     Error recovery.      (line  86)
 * wisent-single-start-flag:              Compiling a grammar. (line  18)
-* wisent-skip-block:                     Error recovery.      (line 121)
-* wisent-skip-token:                     Error recovery.      (line 108)
+* wisent-skip-block:                     Error recovery.      (line 122)
+* wisent-skip-token:                     Error recovery.      (line 109)
 * wisent-toggle-verbose-flag:            Grammar Debugging.   (line  17)
 * wisent-token-to-string:                Report errors.       (line  21)
-* wisent-verbose-flag:                   Grammar Debugging.   (line  12)
+* wisent-verbose-flag:                   Grammar Debugging.   (line  13)
 * WY grammar format:                     Wisent Semantic.     (line  14)
 
 
 
 Tag Table:
-Node: Top1335
-Node: Wisent Overview1965
-Node: Wisent Grammar4167
-Node: Grammar format5383
-Ref: action11453
-Node: Example13691
-Node: Compiling a grammar15732
-Node: Conflicts17827
-Node: Grammar Debugging19400
-Node: Understanding the automaton20756
-Node: Wisent Parsing30354
-Node: Writing a lexer32850
-Node: Actions goodies34450
-Node: Report errors35169
-Node: Error recovery36757
-Ref: wisent-skip-token41086
-Node: Debugging actions42260
-Node: Wisent Semantic44094
-Node: Grammar styles44929
-Node: Iterative style45464
-Node: Bison style47810
-Node: Mixed style49475
-Node: Start nonterminals52070
-Node: Useful functions54886
-Node: Wisent Lex55439
-Node: GNU Free Documentation License56857
-Node: Index76594
+Node: Top1372
+Node: Wisent Overview2002
+Node: Wisent Grammar4204
+Node: Grammar format5420
+Ref: action11490
+Node: Example13728
+Node: Compiling a grammar15769
+Node: Conflicts17862
+Node: Grammar Debugging19435
+Node: Understanding the automaton20789
+Node: Wisent Parsing30387
+Node: Writing a lexer32877
+Node: Actions goodies34475
+Node: Report errors35188
+Node: Error recovery36772
+Ref: wisent-skip-token41083
+Node: Debugging actions42255
+Node: Wisent Semantic44089
+Node: Grammar styles44924
+Node: Iterative style45459
+Node: Bison style47805
+Node: Mixed style49470
+Node: Start nonterminals52065
+Node: Useful functions54881
+Node: Wisent Lex55432
+Node: GNU Free Documentation License56848
+Node: Index76585
 
 End Tag Table

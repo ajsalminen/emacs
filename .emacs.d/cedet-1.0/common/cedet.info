@@ -1,4 +1,5 @@
-This is cedet.info, produced by makeinfo version 4.9 from cedet.texi.
+これは cedet.info、cedet.texi より makeinfo バージョン 4.8
+によって作成されました。
 
    This manual documents CEDET, a collection of other tools.
 
@@ -584,7 +585,7 @@ up some macros.  You can do that in two ways.
    The first option is to create your own symbol map in Emacs Lisp.  You
 can customize the preprocessor symbol map.
 
- -- Variable: semantic-lex-c-preprocessor-symbol-map
+ -- 変数: semantic-lex-c-preprocessor-symbol-map
      Table of C Preprocessor keywords used by the Semantic C lexer.
      Each entry is a cons cell like this:   ( "KEYWORD" . "REPLACEMENT"
      ) Where KEYWORD is the macro that gets replaced in the lexical
@@ -614,7 +615,7 @@ can customize the preprocessor symbol map.
 custom C header file, and use the macros in that to initialize the
 preprocessor list.
 
- -- Variable: semantic-lex-c-preprocessor-symbol-file
+ -- 変数: semantic-lex-c-preprocessor-symbol-file
      List of C/C++ files that contain preprocessor macros for the C
      lexer.  Each entry is a filename and each file is parsed, and
      those macros are included in every C/C++ file parsed by semantic.
@@ -632,7 +633,7 @@ preprocessor list.
      implies that some blocks of code will not be parsed based on the
      values of the conditions in the #if blocks.
 
- -- Function: semantic-lex-c-nested-namespace-ignore-second
+ -- 機能: semantic-lex-c-nested-namespace-ignore-second
      Should _GLIBCXX_BEGIN_NESTED_NAMESPACE ignore the second namespace?
      It is really there, but if a majority of uses is to squeeze out
      the second namespace in use, then it should not be included.
@@ -1280,31 +1281,31 @@ Index
 
 
 Tag Table:
-Node: Top913
-Node: Overview1942
-Node: EIEIO4853
-Node: Semantic5864
-Node: SRecode7180
-Node: Speedbar7667
-Node: EDE8617
-Node: COGRE9941
-Node: Other Library Functions10476
-Node: Installation/Basic Configuration13072
-Node: JDEE Target15627
-Node: ECB Target16576
-Node: Project Management17299
-Node: Code Completion18634
-Node: Code Generation20258
-Node: C++ Features21027
-Ref: semantic-lex-c-preprocessor-symbol-map21655
-Ref: semantic-lex-c-preprocessor-symbol-file23007
-Ref: semantic-c-obey-conditional-section-parsing-flag23600
-Ref: semantic-lex-c-nested-namespace-ignore-second23847
-Node: GNU Global26131
-Node: ID Utils28167
-Node: CScope29689
-Node: Maintenance32084
-Node: GNU Free Documentation License32494
-Node: Index52229
+Node: Top950
+Node: Overview1979
+Node: EIEIO4890
+Node: Semantic5901
+Node: SRecode7217
+Node: Speedbar7704
+Node: EDE8654
+Node: COGRE9978
+Node: Other Library Functions10513
+Node: Installation/Basic Configuration13109
+Node: JDEE Target15664
+Node: ECB Target16613
+Node: Project Management17336
+Node: Code Completion18671
+Node: Code Generation20295
+Node: C++ Features21064
+Ref: semantic-lex-c-preprocessor-symbol-map21690
+Ref: semantic-lex-c-preprocessor-symbol-file23040
+Ref: semantic-c-obey-conditional-section-parsing-flag23633
+Ref: semantic-lex-c-nested-namespace-ignore-second23878
+Node: GNU Global26162
+Node: ID Utils28198
+Node: CScope29720
+Node: Maintenance32115
+Node: GNU Free Documentation License32525
+Node: Index52260
 
 End Tag Table

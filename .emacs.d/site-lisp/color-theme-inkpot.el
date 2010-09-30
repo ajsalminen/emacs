@@ -5,7 +5,7 @@
       (color-theme-install
        '(color-theme-inkpot
          ((foreground-color . "#cfbfad")
-          (background-color . "#1e1e27")
+          (background-color . "black")
           (border-color . "#3e3e5e")
           (cursor-color . "red")
           (background-mode . dark))

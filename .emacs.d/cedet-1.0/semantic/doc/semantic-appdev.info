@@ -1,5 +1,5 @@
-This is semantic-appdev.info, produced by makeinfo version 4.9 from
-app-dev-guide.texi.
+これは semantic-appdev.info、app-dev-guide.texi より makeinfo
+バージョン 4.8 によって作成されました。
 
    This manual documents Application Development with Semantic.
 
@@ -143,7 +143,7 @@ semantic source code.
      when a user has activated the Semantic Database  *note
      (lang-support-guide)semanticdb::.
 
- -- Function: semantic-tag-name tag
+ -- 機能: semantic-tag-name tag
      Return the name of TAG.  For functions, variables, classes,
      typedefs, etc., this is the identifier that is being defined.  For
      tags without an obvious associated name, this may be the statement
@@ -152,7 +152,7 @@ semantic source code.
      *Compatibility*: `semantic-tag-name' introduced in semantic
      version 2.0 supercedes `semantic-token-name' which is now obsolete.
 
- -- Function: semantic-tag-class tag
+ -- 機能: semantic-tag-class tag
      Return the class of TAG.  That is, the symbol `'variable',
      `'function', `'type', or other.  There is no limit to the symbols
      that may represent the class of a tag.  Each parser generates tags
@@ -209,13 +209,13 @@ given tag.
 1.2.1 Tag Predicates
 --------------------
 
- -- Function: semantic-tag-p tag
+ -- 機能: semantic-tag-p tag
      Return non-`nil' if TAG is most likely a semantic tag.
 
      *Compatibility*: `semantic-tag-p' introduced in semantic version
      2.0 supercedes `semantic-token-p' which is now obsolete.
 
- -- Function: semantic-equivalent-tag-p tag1 tag2
+ -- 機能: semantic-equivalent-tag-p tag1 tag2
      Compare TAG1 and TAG2 and return non-`nil' if they are equivalent.
      Use "equal" on elements the name, class, and position.  Use this
      function if tags are being copied and regrouped to test for if two
@@ -226,17 +226,17 @@ given tag.
      semantic version 2.0 supercedes `semantic-equivalent-tokens-p'
      which is now obsolete.
 
- -- Function: semantic-tag-similar-p tag1 tag2
+ -- 機能: semantic-tag-similar-p tag1 tag2
      Test to see if TAG1 and TAG2 are similar.  Two tags are similar if
      their name, datatype, and various attributes are the same.
 
      Similar tags that have sub-tags such as arg lists or type members,
      are similar w/out checking the sub-list of tags.
 
- -- Function: semantic-tag-of-class-p tag class
+ -- 機能: semantic-tag-of-class-p tag class
      Return non-`nil' if class of TAG is CLASS.
 
- -- Function: semantic-tag-faux-p tag
+ -- 機能: semantic-tag-faux-p tag
      Return non-`nil' if TAG is a FAUX tag.  FAUX tags are created to
      represent a construct that is not known to exist in the code.
 
@@ -244,7 +244,7 @@ given tag.
      cannot find the class, it will create a faux tag to represent the
      class to store those methods.
 
- -- Function: semantic-tag-type-compound-p tag
+ -- 機能: semantic-tag-type-compound-p tag
      Return non-`nil' the type of TAG is compound.  Compound implies a
      structure or similar data type.  Returns the list of tag members
      if it is compound.
@@ -252,7 +252,7 @@ given tag.
 1.2.2 Documentation
 -------------------
 
- -- Function: semantic-tag-docstring tag &optional buffer
+ -- 機能: semantic-tag-docstring tag &optional buffer
      Return the documentation of TAG.  That is the value defined by the
      `:documentation' attribute.  Optional argument BUFFER indicates
      where to get the text from.  If not provided, then only the
@@ -269,7 +269,7 @@ given tag.
 1.2.3 Common Flags
 ------------------
 
- -- Function: semantic-tag-variable-constant-p tag
+ -- 機能: semantic-tag-variable-constant-p tag
      Return non-`nil' if the variable that TAG describes is a constant.
      That is the value of the attribute `:constant-flag'.
 
@@ -277,7 +277,7 @@ given tag.
      semantic version 2.0 supercedes `semantic-token-variable-const'
      which is now obsolete.
 
- -- Function: semantic-tag-function-destructor-p tag
+ -- 機能: semantic-tag-function-destructor-p tag
      Return non-`nil' if TAG describes a destructor function.  That is
      the value of the `:destructor-flag' attribute.
 
@@ -285,7 +285,7 @@ given tag.
      in semantic version 2.0 supercedes
      `semantic-token-function-destructor' which is now obsolete.
 
- -- Function: semantic-tag-function-throws tag
+ -- 機能: semantic-tag-function-throws tag
      Return the exceptions the function that TAG describes can throw.
      That is the value of the `:throws' attribute.
 
@@ -293,7 +293,7 @@ given tag.
      semantic version 2.0 supercedes `semantic-token-function-throws'
      which is now obsolete.
 
- -- Function: semantic-tag-modifiers tag
+ -- 機能: semantic-tag-modifiers tag
      Return the value of the `:typemodifiers' attribute of TAG.
 
      *Compatibility*: `semantic-tag-modifiers' introduced in semantic
@@ -311,7 +311,7 @@ given tag.
 1.2.4 Functions
 ---------------
 
- -- Function: semantic-tag-function-arguments tag
+ -- 機能: semantic-tag-function-arguments tag
      Return the arguments of the function that TAG describes.  That is
      the value of the `:arguments' attribute.
 
@@ -322,7 +322,7 @@ given tag.
 1.2.5 Variables
 ---------------
 
- -- Function: semantic-tag-variable-default tag
+ -- 機能: semantic-tag-variable-default tag
      Return the default value of the variable that TAG describes.  That
      is the value of the attribute `:default-value'.
 
@@ -333,7 +333,7 @@ given tag.
 1.2.6 Data Types
 ----------------
 
- -- Function: semantic-tag-type tag
+ -- 機能: semantic-tag-type tag
      Return the value of the `:type' attribute of TAG.  For a function
      it would be the data type of the return value.  For a variable, it
      is the storage type of that variable.  For a data type, the type
@@ -342,7 +342,7 @@ given tag.
      *Compatibility*: `semantic-tag-type' introduced in semantic
      version 2.0 supercedes `semantic-token-type' which is now obsolete.
 
- -- Function: semantic-tag-of-type-p tag type
+ -- 機能: semantic-tag-of-type-p tag type
      Compare TAG's type against TYPE.  Non `nil' if equivalent.  TYPE
      can be a string, or a tag of class `'type'.  This can be complex
      since some tags might have a `:type' that is a tag, while other
@@ -353,13 +353,13 @@ given tag.
 1.2.7 Inheritance and Hierarchy
 -------------------------------
 
- -- Function: semantic-tag-named-parent tag
+ -- 機能: semantic-tag-named-parent tag
      Return the parent of TAG.  That is the value of the `:parent'
      attribute.  If a definition can occur outside an actual parent
      structure, but refers to that parent by name, then the `:parent'
      attribute should be used.
 
- -- Function: semantic-tag-function-parent tag
+ -- 機能: semantic-tag-function-parent tag
      Return the parent of the function that TAG describes.  That is the
      value of the `:parent' attribute.  A function has a parent if it
      is a method of a class, and if the function does not appear in
@@ -369,7 +369,7 @@ given tag.
      semantic version 2.0 supercedes `semantic-token-function-parent'
      which is now obsolete.
 
- -- Function: semantic-tag-type-superclasses tag
+ -- 機能: semantic-tag-type-superclasses tag
      Return the list of superclasses of the type that TAG describes.
 
      *Compatibility*: `semantic-tag-type-superclasses' introduced in
@@ -380,7 +380,7 @@ given tag.
      semantic version 2.0 supercedes `semantic-token-type-parent' which
      is now obsolete.
 
- -- Function: semantic-tag-type-interfaces tag
+ -- 機能: semantic-tag-type-interfaces tag
      Return the list of interfaces of the type that TAG describes.
 
      *Compatibility*: `semantic-tag-type-interfaces' introduced in
@@ -391,7 +391,7 @@ given tag.
      semantic version 2.0 supercedes `semantic-token-type-parent' which
      is now obsolete.
 
- -- Function: semantic-tag-type-members tag
+ -- 機能: semantic-tag-type-members tag
      Return the members of the type that TAG describes.  That is the
      value of the `:members' attribute.
 
@@ -402,7 +402,7 @@ given tag.
 1.2.8 Includes
 --------------
 
- -- Function: semantic-tag-include-system-p tag
+ -- 機能: semantic-tag-include-system-p tag
      Return non-`nil' if the include that TAG describes is a system
      include.  That is the value of the attribute `:system-flag'.
 
@@ -410,7 +410,7 @@ given tag.
      semantic version 2.0 supercedes `semantic-token-include-system'
      which is now obsolete.
 
- -- Function: semantic-tag-include-filename tag
+ -- 機能: semantic-tag-include-filename tag
      Return a filename representation of TAG.  The default action is to
      return the "semantic-tag-name".  Some languages do not use full
      filenames in their include statements.  Override this method to
@@ -424,25 +424,25 @@ given tag.
 1.2.9 Code
 ----------
 
- -- Function: semantic-tag-code-detail tag
+ -- 機能: semantic-tag-code-detail tag
      Return detail information from code that TAG describes.  That is
      the value of the attribute `:detail'.
 
 1.2.10 Tag Children
 -------------------
 
- -- Function: semantic-tag-components tag
+ -- 機能: semantic-tag-components tag
      Return a list of components for TAG.  A Component is a part of TAG
      which itself may be a TAG.  Examples include the elements of a
      structure in a tag of class `type, or the list of arguments to a
      tag of class `'function'.  This function can be overloaded (see
      "define-mode-local-override" for details).
 
- -- Function: semantic-tag-components-default tag
+ -- 機能: semantic-tag-components-default tag
      Return a list of components for TAG.  Perform the described task
      in "semantic-tag-components".
 
- -- Function: semantic-tag-children-compatibility tag &optional
+ -- 機能: semantic-tag-children-compatibility tag &optional
           positiononly
      Return children of TAG.  If POSITIONONLY is `nil', use
      "semantic-tag-components".  If POSITIONONLY is non-`nil', use
@@ -463,31 +463,31 @@ The functions in this answer questions regarding the overly such as the
 buffer in which the tags is located, the start and/or end position of
 the tag, and the overlay itself which spans the tags.
 
- -- Function: semantic-tag-start tag
+ -- 機能: semantic-tag-start tag
      Return the start location of TAG.
 
      *Compatibility*: `semantic-tag-start' introduced in semantic
      version 2.0 supercedes `semantic-token-start' which is now
      obsolete.
 
- -- Function: semantic-tag-end tag
+ -- 機能: semantic-tag-end tag
      Return the end location of TAG.
 
      *Compatibility*: `semantic-tag-end' introduced in semantic version
      2.0 supercedes `semantic-token-end' which is now obsolete.
 
- -- Function: semantic-tag-bounds tag
+ -- 機能: semantic-tag-bounds tag
      Return the location (START END) of data TAG describes.
 
      *Compatibility*: `semantic-tag-bounds' introduced in semantic
      version 2.0 supercedes `semantic-token-extent' which is now
      obsolete.
 
- -- Function: semantic-tag-in-buffer-p tag
+ -- 機能: semantic-tag-in-buffer-p tag
      Return the buffer TAG resides in IFF tag is already in a buffer.
      If a tag is not in a buffer, return `nil'.
 
- -- Function: semantic-tag-buffer tag
+ -- 機能: semantic-tag-buffer tag
      Return the buffer TAG resides in.  If TAG has an originating file,
      read that file into a (maybe new) buffer, and return it.  Return
      `nil' if there is no buffer for this tag.
@@ -496,13 +496,13 @@ the tag, and the overlay itself which spans the tags.
      version 2.0 supercedes `semantic-token-buffer' which is now
      obsolete.
 
- -- Function: semantic-tag-file-name tag
+ -- 機能: semantic-tag-file-name tag
      Return the name of the file from which TAG originated.  Return
      `nil' if that information can't be obtained.  If TAG is from a
      loaded buffer, then that buffer's filename is used.  If TAG is
      unlinked, but has a `:filename' property, then that is used.
 
- -- Function: semantic-tag-overlay tag
+ -- 機能: semantic-tag-overlay tag
      Return the OVERLAY part of TAG.  That is, an overlay or an
      unloaded buffer representation.  This function can also return an
      array of the form [ START END ].  This occurs for tags that are
@@ -512,14 +512,14 @@ the tag, and the overlay itself which spans the tags.
      version 2.0 supercedes `semantic-token-overlay' which is now
      obsolete.
 
- -- Function: semantic-tag-with-position-p tag
+ -- 機能: semantic-tag-with-position-p tag
      Return non-`nil' if TAG has positional information.
 
      *Compatibility*: `semantic-tag-with-position-p' introduced in
      semantic version 2.0 supercedes `semantic-token-with-position-p'
      which is now obsolete.
 
- -- Function: semantic-tag-components-with-overlays tag
+ -- 機能: semantic-tag-components-with-overlays tag
      Return the list of top level components belonging to TAG.
      Children are any sub-tags which contain overlays.
 
@@ -533,7 +533,7 @@ the tag, and the overlay itself which spans the tags.
           correctly.  This function can be overloaded (see
           "define-mode-local-override" for details).
 
- -- Function: semantic-tag-components-with-overlays-default tag
+ -- 機能: semantic-tag-components-with-overlays-default tag
      Return the list of top level components belonging to TAG.
      Children are any sub-tags which contain overlays.  The default
      action collects regular components of TAG, in addition to any
@@ -551,7 +551,7 @@ after a hook is added.
 
 You can manipulate tag hooks with these functions:
 
- -- Function: semantic-tag-add-hook tag hook function &optional append
+ -- 機能: semantic-tag-add-hook tag hook function &optional append
      Onto TAG, add to the value of HOOK the function FUNCTION.
      FUNCTION is added (if necessary) at the beginning of the hook list
      unless the optional argument APPEND is non-`nil', in which case
@@ -559,7 +559,7 @@ You can manipulate tag hooks with these functions:
      FUNCTION may be any valid function.  See also the function
      "add-hook".
 
- -- Function: semantic-tag-remove-hook tag hook function
+ -- 機能: semantic-tag-remove-hook tag hook function
      Onto TAG, remove from the value of HOOK the function FUNCTION.
      HOOK should be a symbol, and FUNCTION may be any valid function.
      If FUNCTION isn't the value of HOOK, or, if FUNCTION doesn't
@@ -570,7 +570,7 @@ For a developer, if you have an application for which you want to
 support a special kind of hook on a per tag basis, you can use this to
 run those hooks.
 
- -- Function: semantic-tag-run-hooks tag hook &rest args
+ -- 機能: semantic-tag-run-hooks tag hook &rest args
      Run for TAG all expressions saved on the property HOOK.  Each hook
      expression must take at least one argument, the TAG.  For any
      given situation, additional ARGS may be passed.
@@ -608,7 +608,7 @@ File: semantic-appdev.info,  Node: Misc Tag Functions,  Next: Tag Internals,  Pr
      version 2.0 supercedes `semantic-narrow-to-token' which is now
      obsolete.
 
- -- Function: semantic-with-buffer-narrowed-to-current-tag &rest body
+ -- 機能: semantic-with-buffer-narrowed-to-current-tag &rest body
      Execute BODY with the buffer narrowed to the current tag.
 
      *Compatibility*: `semantic-with-buffer-narrowed-to-current-tag'
@@ -616,7 +616,7 @@ File: semantic-appdev.info,  Node: Misc Tag Functions,  Next: Tag Internals,  Pr
      `semantic-with-buffer-narrowed-to-current-token' which is now
      obsolete.
 
- -- Function: semantic-with-buffer-narrowed-to-tag tag &rest body
+ -- 機能: semantic-with-buffer-narrowed-to-tag tag &rest body
      Narrow to TAG, and execute BODY.
 
      *Compatibility*: `semantic-with-buffer-narrowed-to-tag' introduced
@@ -644,7 +644,7 @@ File: semantic-appdev.info,  Node: Tag Attributes Internals,  Next: Tag Properti
 1.6.1 Tag Attributes Internals
 ------------------------------
 
- -- Function: semantic-tag-attributes tag
+ -- 機能: semantic-tag-attributes tag
      Return the list of public attributes of TAG.  That is a property
      list: (ATTRIBUTE-1 VALUE-1 ATTRIBUTE-2 VALUE-2...).
 
@@ -664,7 +664,7 @@ File: semantic-appdev.info,  Node: Tag Attributes Internals,  Next: Tag Properti
      version 2.0 supercedes `semantic-token-type-extra-specs' which is
      now obsolete.
 
- -- Function: semantic-tag-get-attribute tag attribute
+ -- 機能: semantic-tag-get-attribute tag attribute
      From TAG, return the value of ATTRIBUTE.  ATTRIBUTE is a symbol
      whose specification value to get.  Return the value found, or
      `nil' if ATTRIBUTE is not one of the attributes of TAG.
@@ -681,7 +681,7 @@ File: semantic-appdev.info,  Node: Tag Attributes Internals,  Next: Tag Properti
      semantic version 2.0 supercedes
      `semantic-token-variable-extra-spec' which is now obsolete.
 
- -- Function: semantic-tag-put-attribute tag attribute value
+ -- 機能: semantic-tag-put-attribute tag attribute value
      Change value in TAG of ATTRIBUTE to VALUE.  If ATTRIBUTE already
      exists, its value is set to VALUE, otherwise the new ATTRIBUTE
      VALUE pair is added.  Return TAG.  Use this function in a parser
@@ -691,7 +691,7 @@ File: semantic-appdev.info,  Node: Tag Attributes Internals,  Next: Tag Properti
      semantic version 2.0 supercedes `semantic-token-add-extra-spec'
      which is now obsolete.
 
- -- Function: semantic-tag-put-attribute-no-side-effect tag attribute
+ -- 機能: semantic-tag-put-attribute-no-side-effect tag attribute
           value
      Change value in TAG of ATTRIBUTE to VALUE without side effects.
      All cons cells in the attribute list are replicated so that there
@@ -705,7 +705,7 @@ File: semantic-appdev.info,  Node: Tag Properties Internals,  Next: Tag Overlay 
 1.6.2 Tag Properties Internals
 ------------------------------
 
- -- Function: semantic-tag-properties tag
+ -- 機能: semantic-tag-properties tag
      Return the list of private properties of TAG.  That is a property
      list: (PROPERTY-1 VALUE-1 PROPERTY-2 VALUE-2...).
 
@@ -713,7 +713,7 @@ File: semantic-appdev.info,  Node: Tag Properties Internals,  Next: Tag Overlay 
      version 2.0 supercedes `semantic-token-properties' which is now
      obsolete.
 
- -- Function: semantic-tag-put-property tag property value
+ -- 機能: semantic-tag-put-property tag property value
      Change value in TAG of PROPERTY to VALUE.  If PROPERTY already
      exists, its value is set to VALUE, otherwise the new PROPERTY
      VALUE pair is added.  Return TAG.  That function is for internal
@@ -723,7 +723,7 @@ File: semantic-appdev.info,  Node: Tag Properties Internals,  Next: Tag Overlay 
      semantic version 2.0 supercedes `semantic-token-put' which is now
      obsolete.
 
- -- Function: semantic-tag-get-property tag property
+ -- 機能: semantic-tag-get-property tag property
      From TAG, extract the value of PROPERTY.  Return the value found,
      or `nil' if PROPERTY is not one of the properties of TAG.  That
      function is for internal use only.
@@ -732,8 +732,7 @@ File: semantic-appdev.info,  Node: Tag Properties Internals,  Next: Tag Overlay 
      semantic version 2.0 supercedes `semantic-token-get' which is now
      obsolete.
 
- -- Function: semantic-tag-put-property-no-side-effect tag property
-          value
+ -- 機能: semantic-tag-put-property-no-side-effect tag property value
      Change value in TAG of PROPERTY to VALUE without side effects.
      All cons cells in the property list are replicated so that there
      are no side effects if TAG is in shared lists.  If PROPERTY
@@ -745,7 +744,7 @@ File: semantic-appdev.info,  Node: Tag Properties Internals,  Next: Tag Overlay 
      introduced in semantic version 2.0 supercedes
      `semantic-token-put-no-side-effect' which is now obsolete.
 
- -- Function: semantic-tag-make-plist args
+ -- 機能: semantic-tag-make-plist args
      Create a property list with ARGS.  Args is a property list of the
      form (KEY1 VALUE1 ... KEYN VALUEN).  Where KEY is a symbol, and
      VALUE is the value for that symbol.  The return value will be a
@@ -767,7 +766,7 @@ File: semantic-appdev.info,  Node: Tag Overlay Internals,  Next: Creating Tags, 
 Many of the overlay related functions were already documented in *Note
 Tag Overlay: Tag Overlay.
 
- -- Function: semantic-tag-set-bounds tag start end
+ -- 機能: semantic-tag-set-bounds tag start end
      In TAG, set the START and END location of data it describes.
 
 
@@ -776,7 +775,7 @@ File: semantic-appdev.info,  Node: Creating Tags,  Next: Copying Tags,  Prev: Ta
 1.6.4 Creating Tags
 -------------------
 
- -- Function: semantic-tag name class &rest attributes
+ -- 機能: semantic-tag name class &rest attributes
      Create a generic semantic tag.  NAME is a string representing the
      name of this tag.  CLASS is the symbol that represents the class
      of tag this is, such as `'variable', or `'function'.  ATTRIBUTES
@@ -785,7 +784,7 @@ File: semantic-appdev.info,  Node: Creating Tags,  Next: Copying Tags,  Prev: Ta
      *Compatibility*: `semantic-tag' introduced in semantic version 2.0
      supercedes `semantic-token' which is now obsolete.
 
- -- Function: semantic-tag-new-variable name type default-value &rest
+ -- 機能: semantic-tag-new-variable name type default-value &rest
           attributes
      Create a semantic tag of class `'variable'.  NAME is the name of
      this variable.  TYPE is a string or semantic tag representing the
@@ -797,7 +796,7 @@ File: semantic-appdev.info,  Node: Creating Tags,  Next: Copying Tags,  Prev: Ta
      semantic version 2.0 supercedes `semantic-token-new-variable'
      which is now obsolete.
 
- -- Function: semantic-tag-new-function name type arg-list &rest
+ -- 機能: semantic-tag-new-function name type arg-list &rest
           attributes
      Create a semantic tag of class `'function'.  NAME is the name of
      this function.  TYPE is a string or semantic tag representing the
@@ -809,7 +808,7 @@ File: semantic-appdev.info,  Node: Creating Tags,  Next: Copying Tags,  Prev: Ta
      semantic version 2.0 supercedes `semantic-token-new-function'
      which is now obsolete.
 
- -- Function: semantic-tag-new-type name type members parents &rest
+ -- 機能: semantic-tag-new-type name type members parents &rest
           attributes
      Create a semantic tag of class `'type'.  NAME is the name of this
      type.  TYPE is a string or semantic tag representing the type of
@@ -830,7 +829,7 @@ File: semantic-appdev.info,  Node: Creating Tags,  Next: Copying Tags,  Prev: Ta
      version 2.0 supercedes `semantic-token-new-type' which is now
      obsolete.
 
- -- Function: semantic-tag-new-include name system-flag &rest attributes
+ -- 機能: semantic-tag-new-include name system-flag &rest attributes
      Create a semantic tag of class `'include'.  NAME is the name of
      this include.  SYSTEM-FLAG represents that we were able to
      identify this include as belonging to the system, as opposed to
@@ -841,7 +840,7 @@ File: semantic-appdev.info,  Node: Creating Tags,  Next: Copying Tags,  Prev: Ta
      version 2.0 supercedes `semantic-token-new-include' which is now
      obsolete.
 
- -- Function: semantic-tag-new-package name detail &rest attributes
+ -- 機能: semantic-tag-new-package name detail &rest attributes
      Create a semantic tag of class `'package'.  NAME is the name of
      this package.  DETAIL is extra information about this package,
      such as a location where it can be found.  ATTRIBUTES is a list of
@@ -851,7 +850,7 @@ File: semantic-appdev.info,  Node: Creating Tags,  Next: Copying Tags,  Prev: Ta
      version 2.0 supercedes `semantic-token-new-package' which is now
      obsolete.
 
- -- Function: semantic-tag-new-code name detail &rest attributes
+ -- 機能: semantic-tag-new-code name detail &rest attributes
      Create a semantic tag of class `'code'.  NAME is a name for this
      code.  DETAIL is extra information about the code.  ATTRIBUTES is
      a list of additional attributes belonging to this tag.
@@ -870,14 +869,14 @@ The second type is `semantic-tag-deep-copy-one-tag', which replicates
 all the tags, and also allows filtering to mutate the tag.  In most
 cases, a clone or copy is sufficient.
 
- -- Function: semantic-tag-clone tag &optional name
+ -- 機能: semantic-tag-clone tag &optional name
      Clone TAG, creating a new TAG.  If optional argument NAME is not
      `nil' it specifies a new name for the cloned tag.
 
      *Compatibility*: `semantic-tag-clone' introduced in semantic
      version 2.0 supercedes `semantic-clone-tag' which is now obsolete.
 
- -- Function: semantic-tag-copy tag &optional name keep-file
+ -- 機能: semantic-tag-copy tag &optional name keep-file
      Return a copy of TAG unlinked from the originating buffer.  If
      optional argument NAME is non-`nil' it specifies a new name for the
      copied tag.  If optional argument KEEP-FILE is non-`nil', and TAG
@@ -885,7 +884,7 @@ cases, a clone or copy is sufficient.
      in the `:filename' property of the copied tag.  This runs the tag
      hook `unlink-copy-hook`.
 
- -- Function: semantic-tag-deep-copy-one-tag tag filter
+ -- 機能: semantic-tag-deep-copy-one-tag tag filter
      Make a deep copy of TAG, applying FILTER to each child-tag.  No
      properties are copied except for `:filename'.  Overlay will be a
      vector.  FILTER takes TAG as an argument, and should returns a
@@ -898,42 +897,42 @@ File: semantic-appdev.info,  Node: Misc Tag Internals,  Prev: Copying Tags,  Up:
 1.6.6 Misc Tag Internals
 ------------------------
 
- -- Function: semantic-tag-run-hooks tag hook &rest args
+ -- 機能: semantic-tag-run-hooks tag hook &rest args
      Run for TAG all expressions saved on the property HOOK.  Each hook
      expression must take at least one argument, the TAG.  For any
      given situation, additional ARGS may be passed.
 
- -- Function: semantic-tag-unlink-from-buffer tag
+ -- 機能: semantic-tag-unlink-from-buffer tag
      Convert TAG from using an overlay to using an overlay proxy.  This
      function is for internal use only.  This runs the tag hook
      `unlink-hook'.  *Note Tag Hooks::
 
- -- Function: semantic-tag-link-to-buffer tag
+ -- 機能: semantic-tag-link-to-buffer tag
      Convert TAG from using an overlay proxy to using an overlay.  This
      function is for internal use only.  This runs the tag hook
      `link-hook'.  *Note Tag Hooks::
 
- -- Function: semantic-tag-unlink-list-from-buffer tags
+ -- 機能: semantic-tag-unlink-list-from-buffer tags
      Convert TAGS from using an overlay to using an overlay proxy.
      This function is for internal use only.
 
- -- Function: semantic-tag-link-list-to-buffer tags
+ -- 機能: semantic-tag-link-list-to-buffer tags
      Convert TAGS from using an overlay proxy to using an overlay.
      This function is for internal use only.
 
- -- Function: semantic-tag-unlink-cache-from-buffer
+ -- 機能: semantic-tag-unlink-cache-from-buffer
      Convert all tags in the current cache to use overlay proxys.  This
      function is for internal use only.
 
- -- Function: semantic-tag-link-cache-to-buffer
+ -- 機能: semantic-tag-link-cache-to-buffer
      Convert all tags in the current cache to use overlays.  This
      function is for internal use only.
 
- -- Function: semantic-tag-expanded-p tag
+ -- 機能: semantic-tag-expanded-p tag
      Return non-`nil' if TAG is expanded.  This function is for
      internal use only.  See also the function `semantic--expand-tag'.
 
- -- Function: semantic-tag-expand tag
+ -- 機能: semantic-tag-expand tag
      Convert TAG from a raw state to a cooked state, and expand it.
      Returns a list of cooked tags.
 
@@ -984,16 +983,16 @@ Searching the breadth of a list of tags means that only one level of
 the tags will be searched.  If one of the tags is a datatype with
 additional members, those members are not searched.
 
- -- Function: semantic-find-first-tag-by-name name &optional table
+ -- 機能: semantic-find-first-tag-by-name name &optional table
      Find the first tag with NAME in TABLE.  NAME is a string.  TABLE
      is a semantic tags table.  See "semantic-something-to-tag-table".
      This routine uses "assoc" to quickly find the first matching entry.
 
- -- Function: semantic-find-tags-by-name name &optional table
+ -- 機能: semantic-find-tags-by-name name &optional table
      Find all tags with NAME in TABLE.  NAME is a string.  TABLE is a
      tag table.  See "semantic-something-to-tag-table".
 
- -- Function: semantic-find-tags-for-completion prefix &optional table
+ -- 機能: semantic-find-tags-for-completion prefix &optional table
      Find all tags whos name begins with PREFIX in TABLE.  PREFIX is a
      string.  TABLE is a tag table.  See
      "semantic-something-to-tag-table".  While it would be nice to use
@@ -1001,27 +1000,27 @@ additional members, those members are not searched.
      return the tags, only a string.  Uses "compare-strings" for fast
      comparison.
 
- -- Function: semantic-find-tags-by-name-regexp regexp &optional table
+ -- 機能: semantic-find-tags-by-name-regexp regexp &optional table
      Find all tags with name matching REGEXP in TABLE.  REGEXP is a
      string containing a regular expression, TABLE is a tag table.  See
      "semantic-something-to-tag-table".  Consider using
      "semantic-find-tags-for-completion" if you are attempting to do
      completions.
 
- -- Function: semantic-find-tags-by-class class &optional table
+ -- 機能: semantic-find-tags-by-class class &optional table
      Find all tags of class CLASS in TABLE.  CLASS is a symbol
      representing the class of the token, such as `'variable', of
      'function..  TABLE is a tag table.  See
      "semantic-something-to-tag-table".
 
- -- Function: semantic-find-tags-by-type type &optional table
+ -- 機能: semantic-find-tags-by-type type &optional table
      Find all tags of with a type TYPE in TABLE.  TYPE is a string or
      tag representing a data type as defined in the language the tags
      were parsed from, such as "int", or perhaps a tag whose name is
      that of a struct or class.  TABLE is a tag table.  See
      "semantic-something-to-tag-table".
 
- -- Function: semantic-find-tags-included &optional table
+ -- 機能: semantic-find-tags-included &optional table
      Find all tags in TABLE that are of the `'include' class.  TABLE is
      a tag table.  See "semantic-something-to-tag-table".
 
@@ -1031,7 +1030,7 @@ File: semantic-appdev.info,  Node: Deep Search,  Next: Specialty Search,  Prev: 
 2.2 Deep Search
 ===============
 
- -- Function: semantic-brute-find-first-tag-by-name name streamorbuffer
+ -- 機能: semantic-brute-find-first-tag-by-name name streamorbuffer
           &optional search-parts search-include
      Find a tag NAME within STREAMORBUFFER.  NAME is a string.  If
      SEARCH-PARTS is non-`nil', search children of tags.  If
@@ -1044,7 +1043,7 @@ File: semantic-appdev.info,  Node: Deep Search,  Next: Specialty Search,  Prev: 
      introduced in semantic version 2.0 supercedes
      `semantic-find-nonterminal-by-name' which is now obsolete.
 
- -- Function: semantic-brute-find-tag-by-property property value
+ -- 機能: semantic-brute-find-tag-by-property property value
           streamorbuffer &optional search-parts search-includes
      Find all tags with PROPERTY equal to VALUE in STREAMORBUFFER.
      Optional argument SEARCH-PARTS and SEARCH-INCLUDES are passed to
@@ -1055,7 +1054,7 @@ File: semantic-appdev.info,  Node: Deep Search,  Next: Specialty Search,  Prev: 
      in semantic version 2.0 supercedes
      `semantic-find-nonterminal-by-property' which is now obsolete.
 
- -- Function: semantic-brute-find-tag-by-attribute attr streamorbuffer
+ -- 機能: semantic-brute-find-tag-by-attribute attr streamorbuffer
           &optional search-parts search-includes
      Find all tags with a given ATTR in STREAMORBUFFER.  ATTR is a
      symbol key into the attributes list.  Optional argument
@@ -1067,7 +1066,7 @@ File: semantic-appdev.info,  Node: Deep Search,  Next: Specialty Search,  Prev: 
      in semantic version 2.0 supercedes
      `semantic-find-nonterminal-by-extra-spec' which is now obsolete.
 
- -- Function: semantic-brute-find-tag-by-attribute-value attr value
+ -- 機能: semantic-brute-find-tag-by-attribute-value attr value
           streamorbuffer &optional search-parts search-includes
      Find all tags with a given ATTR equal to VALUE in STREAMORBUFFER.
      ATTR is a symbol key into the attributes list.  VALUE is the value
@@ -1081,8 +1080,8 @@ File: semantic-appdev.info,  Node: Deep Search,  Next: Specialty Search,  Prev: 
      `semantic-find-nonterminal-by-extra-spec-value' which is now
      obsolete.
 
- -- Function: semantic-brute-find-tag-by-position position
-          streamorbuffer &optional nomedian
+ -- 機能: semantic-brute-find-tag-by-position position streamorbuffer
+          &optional nomedian
      Find a token covering POSITION within STREAMORBUFFER.  POSITION is
      a number, or marker.  If NOMEDIAN is non-`nil', don't do the
      median calculation, and return nil.
@@ -1092,7 +1091,7 @@ File: semantic-appdev.info,  Node: Deep Search,  Next: Specialty Search,  Prev: 
      in semantic version 2.0 supercedes
      `semantic-find-nonterminal-by-position' which is now obsolete.
 
- -- Function: semantic-brute-find-innermost-tag-by-position position
+ -- 機能: semantic-brute-find-innermost-tag-by-position position
           streamorbuffer &optional nomedian
      Find a list of tags covering POSITION within STREAMORBUFFER.
      POSITION is a number, or marker.  If NOMEDIAN is non-`nil', don't
@@ -1106,7 +1105,7 @@ File: semantic-appdev.info,  Node: Deep Search,  Next: Specialty Search,  Prev: 
      `semantic-find-innermost-nonterminal-by-position' which is now
      obsolete.
 
- -- Function: semantic-brute-find-tag-by-class class streamorbuffer
+ -- 機能: semantic-brute-find-tag-by-class class streamorbuffer
           &optional search-parts search-includes
      Find all tags with a class CLASS within STREAMORBUFFER.  CLASS is
      a symbol representing the class of the tags to find.  See
@@ -1121,7 +1120,7 @@ File: semantic-appdev.info,  Node: Deep Search,  Next: Specialty Search,  Prev: 
      semantic version 2.0 supercedes
      `semantic-find-nonterminal-by-token' which is now obsolete.
 
- -- Function: semantic-brute-find-tag-standard streamorbuffer &optional
+ -- 機能: semantic-brute-find-tag-standard streamorbuffer &optional
           search-parts search-includes
      Find all tags in STREAMORBUFFER which define simple class types.
      See "semantic-tag-class".  Optional argument SEARCH-PARTS and
@@ -1133,7 +1132,7 @@ File: semantic-appdev.info,  Node: Deep Search,  Next: Specialty Search,  Prev: 
      semantic version 2.0 supercedes
      `semantic-find-nonterminal-standard' which is now obsolete.
 
- -- Function: semantic-brute-find-tag-by-type type streamorbuffer
+ -- 機能: semantic-brute-find-tag-by-type type streamorbuffer
           &optional search-parts search-includes
      Find all tags with type TYPE within STREAMORBUFFER.  TYPE is a
      string which is the name of the type of the tags returned.  See
@@ -1146,8 +1145,8 @@ File: semantic-appdev.info,  Node: Deep Search,  Next: Specialty Search,  Prev: 
      semantic version 2.0 supercedes
      `semantic-find-nonterminal-by-type' which is now obsolete.
 
- -- Function: semantic-brute-find-tag-by-function function
-          streamorbuffer &optional search-parts search-includes
+ -- 機能: semantic-brute-find-tag-by-function function streamorbuffer
+          &optional search-parts search-includes
      Find all tags for which FUNCTION's value is non-`nil' within
      STREAMORBUFFER.  FUNCTION must return non-`nil' if an element of
      STREAM will be included in the new list.
@@ -1167,7 +1166,7 @@ File: semantic-appdev.info,  Node: Deep Search,  Next: Specialty Search,  Prev: 
      in semantic version 2.0 supercedes
      `semantic-find-nonterminal-by-function' which is now obsolete.
 
- -- Function: semantic-brute-find-first-tag-by-function function
+ -- 機能: semantic-brute-find-first-tag-by-function function
           streamorbuffer &optional search-parts search-includes
      Find the first tag which FUNCTION match within STREAMORBUFFER.
      FUNCTION must return non-`nil' if an element of STREAM will be
@@ -1196,12 +1195,12 @@ There are some specialty searches needed by some semantic tools that
 could prove useful.  These specialty searches often do not match
 against some single attribute as most breadth searches do.
 
- -- Function: semantic-find-tags-of-compound-type &optional table
+ -- 機能: semantic-find-tags-of-compound-type &optional table
      Find all tags which are a compound type in TABLE.  Compound types
      are structures, or other data type which is not of a primitive
      nature, such as int or double.  Used in completion.
 
- -- Function: semantic-find-tags-by-scope-protection scopeprotection
+ -- 機能: semantic-find-tags-by-scope-protection scopeprotection
           parent &optional table
      Find all tags accessible by SCOPEPROTECTION.  SCOPEPROTECTION is a
      symbol which can be returned by the method
@@ -1212,13 +1211,13 @@ against some single attribute as most breadth searches do.
      members of PARENT are used.  See "semantic-tag-protected-p" for
      details on which tags are returned.
 
- -- Function: semantic-find-tags-external-children-of-type type
-          &optional table
+ -- 機能: semantic-find-tags-external-children-of-type type &optional
+          table
      Find all tags in whose parent is TYPE in TABLE.  These tags are
      defined outside the scope of the original TYPE declaration.  TABLE
      is a tag table.  See "semantic-something-to-tag-table".
 
- -- Function: semantic-find-tags-subclasses-of-type type &optional table
+ -- 機能: semantic-find-tags-subclasses-of-type type &optional table
      Find all tags of class type in whose parent is TYPE in TABLE.
      These tags are defined outside the scope of the original TYPE
      declaration.  TABLE is a tag table.  See
@@ -1236,12 +1235,12 @@ version is needed if some sort of macro conflict arises.  The macro
 version is useful because it eliminates a level of function call, and
 is faster.
 
- -- Function: semantic-find-tags-by-function predicate &optional table
+ -- 機能: semantic-find-tags-by-function predicate &optional table
      Find tags for which PREDICATE is non-`nil' in TABLE.  PREDICATE is
      a lambda expression which accepts on TAG.  TABLE is a semantic
      tags table.  See "semantic-something-to-tag-table".
 
- -- Function: semantic-find-tags-by-macro form &optional table
+ -- 機能: semantic-find-tags-by-macro form &optional table
      Find tags for which FORM is non-`nil' in TABLE.  TABLE is a
      semantic tags table.  See "semantic-something-to-tag-table".
 
@@ -1259,7 +1258,7 @@ variable the cursor is currently in.
 
 These functions query the current buffer's overlay system for tags.
 
- -- Function: semantic-find-tag-by-overlay &optional positionormarker
+ -- 機能: semantic-find-tag-by-overlay &optional positionormarker
           buffer
      Find all tags covering POSITIONORMARKER by using overlays.  If
      POSITIONORMARKER is `nil', use the current point.  Optional BUFFER
@@ -1274,8 +1273,8 @@ These functions query the current buffer's overlay system for tags.
      semantic version 2.0 supercedes
      `semantic-find-nonterminal-by-overlay' which is now obsolete.
 
- -- Function: semantic-find-tag-by-overlay-in-region start end
-          &optional buffer
+ -- 機能: semantic-find-tag-by-overlay-in-region start end &optional
+          buffer
      Find all tags which exist in whole or in part between START and
      END.  Uses overlays to determine position.  Optional BUFFER
      argument specifies the buffer to use.
@@ -1286,15 +1285,15 @@ These functions query the current buffer's overlay system for tags.
      `semantic-find-nonterminal-by-overlay-in-region' which is now
      obsolete.
 
- -- Function: semantic-find-tag-by-overlay-next &optional start buffer
+ -- 機能: semantic-find-tag-by-overlay-next &optional start buffer
      Find the next tag after START in BUFFER.  If START is in an
      overlay, find the tag which starts next, not the current tag.
 
- -- Function: semantic-find-tag-by-overlay-prev &optional start buffer
+ -- 機能: semantic-find-tag-by-overlay-prev &optional start buffer
      Find the next tag before START in BUFFER.  If START is in an
      overlay, find the tag which starts next, not the current tag.
 
- -- Function: semantic-current-tag
+ -- 機能: semantic-current-tag
      Return the current tag in the current buffer.  If there are more
      than one in the same location, return the smallest tag.  Return
      `nil' if there is no tag here.
@@ -1304,7 +1303,7 @@ These functions query the current buffer's overlay system for tags.
      version 2.0 supercedes `semantic-current-nonterminal' which is now
      obsolete.
 
- -- Function: semantic-current-tag-parent
+ -- 機能: semantic-current-tag-parent
      Return the current tags parent in the current buffer.  A tag's
      parent would be a containing structure, such as a type containing
      a field.  Return `nil' if there is no parent.
@@ -1339,7 +1338,7 @@ File: semantic-appdev.info,  Node: Tag Highlighting,  Next: Tag Visible Properti
 4.1 Highlighting
 ================
 
- -- Function: semantic-highlight-tag tag &optional face
+ -- 機能: semantic-highlight-tag tag &optional face
      Specify that TAG should be highlighted.  Optional FACE specifies
      the face to use.
 
@@ -1347,14 +1346,14 @@ File: semantic-appdev.info,  Node: Tag Highlighting,  Next: Tag Visible Properti
      version 2.0 supercedes `semantic-highlight-token' which is now
      obsolete.
 
- -- Function: semantic-unhighlight-tag tag
+ -- 機能: semantic-unhighlight-tag tag
      Unhighlight TAG, restoring its previous face.
 
      *Compatibility*: `semantic-unhighlight-tag' introduced in semantic
      version 2.0 supercedes `semantic-unhighlight-token' which is now
      obsolete.
 
- -- Function: semantic-momentary-highlight-tag tag &optional face
+ -- 機能: semantic-momentary-highlight-tag tag &optional face
      Highlight TAG, removing highlighting when the user hits a key.
      Optional argument FACE is the face to use for highlighting.  If
      FACE is not specified, then `highlight' will be used.
@@ -1366,7 +1365,7 @@ File: semantic-appdev.info,  Node: Tag Highlighting,  Next: Tag Visible Properti
 The highlighting routines do their work by changing the face property
 of the tag overlay.  The raw routine is:
 
- -- Function: semantic-set-tag-face tag face
+ -- 機能: semantic-set-tag-face tag face
      Specify that TAG should use FACE for display.
 
      *Compatibility*: `semantic-set-tag-face' introduced in semantic
@@ -1383,7 +1382,7 @@ You can give a tag other properties as well, such as making it
 invisible or intangible.  You can control how code is edited
 programatically through these routines.
 
- -- Function: semantic-set-tag-invisible tag &optional visible
+ -- 機能: semantic-set-tag-invisible tag &optional visible
      Enable the text in TAG to be made invisible.  If VISIBLE is
      non-`nil', make the text visible.
 
@@ -1391,14 +1390,14 @@ programatically through these routines.
      semantic version 2.0 supercedes `semantic-set-token-invisible'
      which is now obsolete.
 
- -- Function: semantic-tag-invisible-p tag
+ -- 機能: semantic-tag-invisible-p tag
      Return non-`nil' if TAG is invisible.
 
      *Compatibility*: `semantic-tag-invisible-p' introduced in semantic
      version 2.0 supercedes `semantic-token-invisible-p' which is now
      obsolete.
 
- -- Function: semantic-set-tag-intangible tag &optional tangible
+ -- 機能: semantic-set-tag-intangible tag &optional tangible
      Enable the text in TAG to be made intangible.  If TANGIBLE is
      non-`nil', make the text visible.  This function does not have
      meaning in XEmacs because it seems that the extent 'intangible'
@@ -1408,7 +1407,7 @@ programatically through these routines.
      semantic version 2.0 supercedes `semantic-set-token-intangible'
      which is now obsolete.
 
- -- Function: semantic-tag-intangible-p tag
+ -- 機能: semantic-tag-intangible-p tag
      Return non-`nil' if TAG is intangible.  This function does not
      have meaning in XEmacs because it seems that the extent
      'intangible' property does not exist.
@@ -1417,7 +1416,7 @@ programatically through these routines.
      semantic version 2.0 supercedes `semantic-token-intangible-p'
      which is now obsolete.
 
- -- Function: semantic-set-tag-read-only tag &optional writable
+ -- 機能: semantic-set-tag-read-only tag &optional writable
      Enable the text in TAG to be made read-only.  Optional argument
      WRITABLE should be non-`nil' to make the text writable instead of
      read-only.
@@ -1426,7 +1425,7 @@ programatically through these routines.
      semantic version 2.0 supercedes `semantic-set-token-read-only'
      which is now obsolete.
 
- -- Function: semantic-tag-read-only-p tag
+ -- 機能: semantic-tag-read-only-p tag
      Return non-`nil' if the current TAG is marked read only.
 
      *Compatibility*: `semantic-tag-read-only-p' introduced in semantic
@@ -1452,7 +1451,7 @@ tag boundaries are drawn.
 4.3.1 Creation and Deletion
 ---------------------------
 
- -- Function: semantic-tag-create-secondary-overlay tag &optional
+ -- 機能: semantic-tag-create-secondary-overlay tag &optional
           link-hook
      Create a secondary overlay for TAG.  Returns an overlay.  The
      overlay is also saved in TAG.  LINK-HOOK is a function called
@@ -1460,7 +1459,7 @@ tag boundaries are drawn.
      and OVERLAY as arguments.  The LINK-HOOK should be used to
      position and set properties on the generated secondary overlay.
 
- -- Function: semantic-tag-delete-secondary-overlay tag
+ -- 機能: semantic-tag-delete-secondary-overlay tag
           overlay-or-property
      Delete from TAG the secondary overlay OVERLAY-OR-PROPERTY.  If
      OVERLAY-OR-PROPERTY is an overlay, delete that overlay.  If
@@ -1470,11 +1469,11 @@ tag boundaries are drawn.
 4.3.2 Queries
 -------------
 
- -- Function: semantic-tag-get-secondary-overlay tag property
+ -- 機能: semantic-tag-get-secondary-overlay tag property
      Return secondary overlays from TAG with PROPERTY.  PROPERTY is a
      symbol and all overlays with that symbol are returned..
 
- -- Function: semantic-tag-secondary-overlays tag
+ -- 機能: semantic-tag-secondary-overlays tag
      Return a list of secondary overlays active on TAG.
 
 4.3.3 Linking and Unlinking
@@ -1499,12 +1498,12 @@ File: semantic-appdev.info,  Node: Tag Folding,  Prev: Tag Secondary Overlays,  
 Using secondary overlays, a set of tag folding routines are made
 available.  These routines are similar to the tag visible properties.
 
- -- Function: semantic-set-tag-folded tag &optional folded
+ -- 機能: semantic-set-tag-folded tag &optional folded
      Fold TAG, such that only the first line of text is shown.
      Optional argument FOLDED should be non-`nil' to fold the tag.
      `nil' implies the tag should be fully shown.
 
- -- Function: semantic-tag-folded-p tag
+ -- 機能: semantic-tag-folded-p tag
      Non-`nil' if TAG is currently folded.
 
 
@@ -1520,16 +1519,16 @@ with side effects that could effect the tag cache.
 There are some existing utility functions which will reorganize the tag
 list for you.
 
- -- Function: semantic-unique-tag-table tags
+ -- 機能: semantic-unique-tag-table tags
      Scan a list of TAGS, removing duplicates.  This must first sort
      the tags by position ascending.  TAGS are removed only if they are
      equivalent, as can happen when multiple tag sources are scanned.
 
- -- Function: semantic-unique-tag-table-by-name tags
+ -- 機能: semantic-unique-tag-table-by-name tags
      Scan a list of TAGS, removing duplicate names.  This must first
      sort the tags by name alphabetically ascending.
 
- -- Function: semantic-bucketize tags &optional parent filter
+ -- 機能: semantic-bucketize tags &optional parent filter
      Sort TAGS into a group of buckets based on tag class.  Unknown
      classes are placed in a Misc bucket.  Type bucket names are
      defined by either `semantic-symbol->name-assoc-list'.  If PARENT
@@ -1540,7 +1539,7 @@ list for you.
      take one argument, which is a list of tokens, and may re-organize
      the list with side-effects.
 
- -- Variable: semantic-bucketize-tag-class
+ -- 変数: semantic-bucketize-tag-class
      Function used to get a symbol describing the class of a tag.  This
      function must take one argument of a semantic tag.  It should
      return a symbol found in `semantic-symbol->name-assoc-list' which
@@ -1549,7 +1548,7 @@ list for you.
      `semantic-symbol->name-assoc-list-for-type-parts' in addition to
      setting this variable (locally in your function).
 
- -- Function: semantic-adopt-external-members tags
+ -- 機能: semantic-adopt-external-members tags
      Rebuild TAGS so that externally defined members are regrouped.
      Some languages such as C++ and CLOS permit the declaration of
      member functions outside the definition of the class.  It is
@@ -1568,12 +1567,12 @@ list for you.
      type.  For example, changing the token type for generating extra
      buckets with the bucket function.
 
- -- Variable: semantic-orphaned-member-metaparent-type
+ -- 変数: semantic-orphaned-member-metaparent-type
      In "semantic-adopt-external-members", the type of `'type' for
      metaparents.  A metaparent is a made-up type semantic token used
      to hold the child list of orphaned members of a named type.
 
- -- Variable: semantic-mark-external-member-function
+ -- 変数: semantic-mark-external-member-function
      Function called when an externally defined orphan is found.  By
      default, the token is always marked with the `adopted' property.
      This function should be locally bound by a program that needs to
@@ -1621,7 +1620,7 @@ File: semantic-appdev.info,  Node: Tag Completion Convenience Functions,  Next: 
 There are some pre written completion functions that can be used in your
 programs.
 
- -- Function: semantic-complete-read-tag-buffer-deep prompt &optional
+ -- 機能: semantic-complete-read-tag-buffer-deep prompt &optional
           default-tag initial-input history
      Ask for a tag by name from the current buffer.  Available tags are
      from the current buffer, at any level.  Completion options are
@@ -1632,7 +1631,7 @@ programs.
      initially.  HISTORY is a symbol representing a variable to story
      the history in.
 
- -- Function: semantic-complete-read-tag-project prompt &optional
+ -- 機能: semantic-complete-read-tag-project prompt &optional
           default-tag initial-input history
      Ask for a tag by name from the current project.  Available tags
      are from the current project, at the top level.  Completion
@@ -1643,7 +1642,7 @@ programs.
      initially.  HISTORY is a symbol representing a variable to store
      the history in.
 
- -- Function: semantic-complete-read-tag-analyzer prompt &optional
+ -- 機能: semantic-complete-read-tag-analyzer prompt &optional
           context history
      Ask for a tag by name based on the current context.  The function
      "semantic-analyze-current-context" is used to calculate the
@@ -1656,7 +1655,7 @@ programs.
      available for completion prompts.  these are calculated from the
      CONTEXT variable passed in.
 
- -- Function: semantic-complete-inline-analyzer context
+ -- 機能: semantic-complete-inline-analyzer context
      Complete a symbol name by name based on the current context.  This
      is similar to `semantic-complete-read-tag-analyze', except that
      the completion interaction is in the buffer where the context was
@@ -1688,7 +1687,7 @@ Displaying possible completion values
 There is one typing and selecting routine that can be used to create
 your custom completion prompt.
 
- -- Function: semantic-complete-read-tag-engine collector displayor
+ -- 機能: semantic-complete-read-tag-engine collector displayor
           prompt default-tag initial-input history
      Read a semantic tag, and return a tag for the selection.  Argument
      COLLECTOR is an object which can be used to to calculate a list of
@@ -1833,8 +1832,7 @@ File: semantic-appdev.info,  Node: Old Tag Completion,  Prev: Custom Tag Complet
 
 These are older completion functions.  They may still be useful.
 
- -- Function: semantic-read-symbol prompt &optional default stream
-          filter
+ -- 機能: semantic-read-symbol prompt &optional default stream filter
      Read a symbol name from the user for the current buffer.  PROMPT
      is the prompt to use.  Optional arguments: DEFAULT is the default
      choice.  If no default is given, one is read from under point.
@@ -1842,19 +1840,19 @@ These are older completion functions.  They may still be useful.
      a filter on the types of things to complete.  FILTER must be a
      function to call on each element.
 
- -- Function: semantic-read-variable prompt &optional default stream
+ -- 機能: semantic-read-variable prompt &optional default stream
      Read a variable name from the user for the current buffer.  PROMPT
      is the prompt to use.  Optional arguments: DEFAULT is the default
      choice.  If no default is given, one is read from under point.
      STREAM is the list of tokens to complete from.
 
- -- Function: semantic-read-function prompt &optional default stream
+ -- 機能: semantic-read-function prompt &optional default stream
      Read a function name from the user for the current buffer.  PROMPT
      is the prompt to use.  Optional arguments: DEFAULT is the default
      choice.  If no default is given, one is read from under point.
      STREAM is the list of tags to complete from.
 
- -- Function: semantic-read-type prompt &optional default stream
+ -- 機能: semantic-read-type prompt &optional default stream
      Read a type name from the user for the current buffer.  PROMPT is
      the prompt to use.  Optional arguments: DEFAULT is the default
      choice.  If no default is given, one is read from under point.
@@ -1877,7 +1875,7 @@ If you plan to use one of these functions from a buffer that is not of
 the same major-mode as the original tag, you can use this form to make
 sure the correct action takes place:
 
- -- Function: semantic-with-mode-bindings mode &rest body
+ -- 機能: semantic-with-mode-bindings mode &rest body
      Evaluate BODY with the local bindings of MODE.  The current mode
      bindings are saved, BODY is evaluated, and the saved bindings are
      restored, even in case of an abnormal exit.  Value is what BODY
@@ -1908,7 +1906,7 @@ default converters from a Tag into text, but there is also some
 convenient variables that can be used with them.  Use these variables
 to allow options on output forms when displaying tags in your programs.
 
- -- Variable: semantic-format-tag-functions
+ -- 変数: semantic-format-tag-functions
      List of functions which convert a tag to text.  Each function must
      take the parameters TAG &optional PARENT COLOR.  TAG is the tag to
      convert.  PARENT is a parent tag or name which refers to the
@@ -1916,7 +1914,7 @@ to allow options on output forms when displaying tags in your programs.
      which a TAG would claim as a parent.  COLOR indicates that the
      generated text should be colored using `font-lock'.
 
- -- Variable: semantic-format-tag-custom-list
+ -- 変数: semantic-format-tag-custom-list
      A List used by customizable variables to choose a tag to text
      function.  Use this variable in the `:type' field of a
      customizable variable.
@@ -1930,7 +1928,7 @@ When creating, or using these strings, particularly with color, use
 "concat" to build up larger strings instead of "format".  This will
 preserve text properties.
 
- -- Function: semantic-format-tag-name tag &optional parent color
+ -- 機能: semantic-format-tag-name tag &optional parent color
      Return the name string describing TAG.  The name is the shortest
      possible representation.  Optional argument PARENT is the parent
      type if TAG is a detail.  Optional argument COLOR means highlight
@@ -1941,7 +1939,7 @@ preserve text properties.
      version 2.0 supercedes `semantic-name-nonterminal' which is now
      obsolete.
 
- -- Function: semantic-format-tag-abbreviate tag &optional parent color
+ -- 機能: semantic-format-tag-abbreviate tag &optional parent color
      Return an abbreviated string describing TAG.  The abbreviation is
      to be short, with possible symbols indicating the type of tag, or
      other information.  Optional argument PARENT is the parent type if
@@ -1953,7 +1951,7 @@ preserve text properties.
      semantic version 2.0 supercedes `semantic-abbreviate-nonterminal'
      which is now obsolete.
 
- -- Function: semantic-format-tag-summarize tag &optional parent color
+ -- 機能: semantic-format-tag-summarize tag &optional parent color
      Summarize TAG in a reasonable way.  Optional argument PARENT is
      the parent type if TAG is a detail.  Optional argument COLOR means
      highlight the prototype with font-lock colors.  This function can
@@ -1963,7 +1961,7 @@ preserve text properties.
      semantic version 2.0 supercedes `semantic-summerize-nonterminal'
      which is now obsolete.
 
- -- Function: semantic-format-tag-prototype tag &optional parent color
+ -- 機能: semantic-format-tag-prototype tag &optional parent color
      Return a prototype for TAG.  This function should be overloaded,
      though it need not be used.  This is because it can be used to
      create code by language independent tools.  Optional argument
@@ -1976,8 +1974,8 @@ preserve text properties.
      semantic version 2.0 supercedes `semantic-prototype-nonterminal'
      which is now obsolete.
 
- -- Function: semantic-format-tag-concise-prototype tag &optional
-          parent color
+ -- 機能: semantic-format-tag-concise-prototype tag &optional parent
+          color
      Return a concise prototype for TAG.  Optional argument PARENT is
      the parent type if TAG is a detail.  Optional argument COLOR means
      highlight the prototype with font-lock colors.  This function can
@@ -1987,7 +1985,7 @@ preserve text properties.
      introduced in semantic version 2.0 supercedes
      `semantic-concise-prototype-nonterminal' which is now obsolete.
 
- -- Function: semantic-format-tag-uml-abbreviate tag &optional parent
+ -- 機能: semantic-format-tag-uml-abbreviate tag &optional parent
           color
      Return a UML style abbreviation for TAG.  Optional argument PARENT
      is the parent type if TAG is a detail.  Optional argument COLOR
@@ -1999,8 +1997,7 @@ preserve text properties.
      in semantic version 2.0 supercedes
      `semantic-uml-abbreviate-nonterminal' which is now obsolete.
 
- -- Function: semantic-format-tag-uml-prototype tag &optional parent
-          color
+ -- 機能: semantic-format-tag-uml-prototype tag &optional parent color
      Return a UML style prototype for TAG.  Optional argument PARENT is
      the parent type if TAG is a detail.  Optional argument COLOR means
      highlight the prototype with font-lock colors.  This function can
@@ -2010,7 +2007,7 @@ preserve text properties.
      semantic version 2.0 supercedes
      `semantic-uml-prototype-nonterminal' which is now obsolete.
 
- -- Function: semantic-format-tag-uml-concise-prototype tag &optional
+ -- 機能: semantic-format-tag-uml-concise-prototype tag &optional
           parent color
      Return a UML style concise prototype for TAG.  Optional argument
      PARENT is the parent type if TAG is a detail.  Optional argument
@@ -2022,7 +2019,7 @@ preserve text properties.
      introduced in semantic version 2.0 supercedes
      `semantic-uml-concise-prototype-nonterminal' which is now obsolete.
 
- -- Function: semantic-format-tag-prin1 tag &optional parent color
+ -- 機能: semantic-format-tag-prin1 tag &optional parent color
      Convert TAG to a string that is the print name for TAG.  PARENT
      and COLOR are ignored.
 
@@ -2033,7 +2030,7 @@ preserve text properties.
 An additional utility will return a string for just the data type of a
 tag.  This function is used in the above routines as well.
 
- -- Function: semantic-format-tag-type tag color
+ -- 機能: semantic-format-tag-type tag color
      Convert the data type of TAG to a string usable in tag formatting.
      It is presumed that TYPE is a string or semantic tag.  This
      function can be overloaded (see "define-mode-local-override" for
@@ -2050,14 +2047,14 @@ top-level list may itself contain additional members.
 
 The following overridable functions can fetch those tags.
 
- -- Function: semantic-tag-components tag
+ -- 機能: semantic-tag-components tag
      Return a list of components for TAG.  A Component is a part of TAG
      which itself may be a TAG.  Examples include the elements of a
      structure in a tag of class `type, or the list of arguments to a
      tag of class `'function'.  This function can be overloaded (see
      "define-mode-local-override" for details).
 
- -- Function: semantic-tag-components-with-overlays tag
+ -- 機能: semantic-tag-components-with-overlays tag
      Return the list of top level components belonging to TAG.
      Children are any sub-tags which contain overlays.
 
@@ -2074,7 +2071,7 @@ Some languages can define parts of a tag outside the actual scope of
 the parent tag.  You can fetch information about them with these
 overload functions.
 
- -- Function: semantic-tag-external-member-p parent tag
+ -- 機能: semantic-tag-external-member-p parent tag
      Return non-`nil' if PARENT is the parent of TAG.  TAG is an
      external member of PARENT when it is somehow tagged as having
      PARENT as its parent.  PARENT and TAG must both be semantic tags.
@@ -2092,7 +2089,7 @@ overload functions.
      semantic version 2.0 supercedes
      `semantic-nonterminal-external-member-p' which is now obsolete.
 
- -- Function: semantic-tag-external-member-children tag &optional usedb
+ -- 機能: semantic-tag-external-member-children tag &optional usedb
      Return the list of children which are not *in* TAG.  If optional
      argument USEDB is non-`nil', then also search files in the
      Semantic Database.  If USEDB is a list of databases, search those
@@ -2127,7 +2124,7 @@ File: semantic-appdev.info,  Node: Tag Details,  Next: Tag File Reference,  Prev
 These functions help derive information about tags that may not be
 obvious for non-traditional languages with their own token types.
 
- -- Function: semantic-tag-protection tag &optional parent
+ -- 機能: semantic-tag-protection tag &optional parent
      Return protection information about TAG with optional PARENT.
      This function returns on of the following symbols:    `nil'
      - No special protection.  Language dependent.     `'public'    -
@@ -2147,7 +2144,7 @@ obvious for non-traditional languages with their own token types.
      version 2.0 supercedes `semantic-nonterminal-protection' which is
      now obsolete.
 
- -- Function: semantic-tag-protected-p tag protection &optional parent
+ -- 機能: semantic-tag-protected-p tag protection &optional parent
      Non-`nil' if TAG is is protected.  PROTECTION is a symbol which
      can be returned by the method "semantic-tag-protection".  PARENT
      is the parent data type which contains TAG.
@@ -2165,7 +2162,7 @@ obvious for non-traditional languages with their own token types.
     public
           True if private, protected, or `nil'.
 
- -- Function: semantic-tag-abstract-p tag &optional parent
+ -- 機能: semantic-tag-abstract-p tag &optional parent
      Return non `nil' if TAG is abstract.  Optional PARENT is the
      parent tag of TAG.  In UML, abstract methods and classes have
      special meaning and behavior in how methods are overridden.  In
@@ -2181,7 +2178,7 @@ obvious for non-traditional languages with their own token types.
      version 2.0 supercedes `semantic-nonterminal-abstract' which is
      now obsolete.
 
- -- Function: semantic-tag-leaf-p tag &optional parent
+ -- 機能: semantic-tag-leaf-p tag &optional parent
      Return non `nil' if TAG is leaf.  Optional PARENT is the parent
      tag of TAG.  In UML, leaf methods and classes have special meaning
      and behavior.
@@ -2194,7 +2191,7 @@ obvious for non-traditional languages with their own token types.
      *Compatibility*: `semantic-tag-leaf-p' introduced in semantic
      version 2.0 supercedes `semantic-tag-leaf' which is now obsolete.
 
- -- Function: semantic-tag-static-p tag &optional parent
+ -- 機能: semantic-tag-static-p tag &optional parent
      Return non `nil' if TAG is static.  Optional PARENT is the parent
      tag of TAG.  In UML, static methods and attributes mean that they
      are allocated in the parent class, and are not instance specific.
@@ -2215,7 +2212,7 @@ Some tags refer to some other file.
 
 For include files, these options help Semantic find those files:
 
- -- Variable: semantic-dependency-system-include-path
+ -- 変数: semantic-dependency-system-include-path
      Defines the system include path.  This should be set with either
      "defvar-mode-local", or with "semantic-add-system-include".
 
@@ -2224,7 +2221,7 @@ For include files, these options help Semantic find those files:
      `system'.  Some include tags are agnostic to this setting and will
      check both the project and system directories.
 
- -- Function: semantic-dependency-tag-file &optional tag
+ -- 機能: semantic-dependency-tag-file &optional tag
      Find the filename represented from TAG.  Depends on
      `semantic-dependency-include-path' for searching.  Always searches
      `.' first, then searches additional paths.  This function can be
@@ -2238,7 +2235,7 @@ For include files, these options help Semantic find those files:
 In languages with prototypes, such as C/C++, you can try to find a
 corresponding file where a prototype to some implementation lives.
 
- -- Function: semantic-prototype-file buffer
+ -- 機能: semantic-prototype-file buffer
      Return a file in which prototypes belonging to BUFFER should be
      placed.  Default behavior (if not overridden) looks for a token
      specifying the prototype file, or the existence of an EDE variable
@@ -2248,7 +2245,7 @@ corresponding file where a prototype to some implementation lives.
 The semantic support for Texinfo lets you find references to functions
 in doc you might be maintaining.
 
- -- Function: semantic-texi-find-documentation name &optional type
+ -- 機能: semantic-texi-find-documentation name &optional type
      Find the function or variable NAME of TYPE in the texinfo source.
      NAME is a string representing some functional symbol.  TYPE is a
      string, such as "variable" or "Command" used to find the correct
@@ -2265,7 +2262,7 @@ File: semantic-appdev.info,  Node: Jump to a Tag,  Next: Making New Methods,  Pr
 Each tag has a file from which it came.  If a tag has been managed
 properly, you can jump to it with this function:
 
- -- Function: semantic-go-to-tag tag &optional parent
+ -- 機能: semantic-go-to-tag tag &optional parent
      Go to the location of TAG.  TAG may be a stripped element, in
      which case PARENT specifies a parent tag that has position
      information.  Different behaviors are provided depending on the
@@ -2301,8 +2298,7 @@ applications.
 Once a function has been defined as mode-local, you should use
 "define-mode-local-override" to add a mode specific feature.
 
- -- Function: define-overloadable-function name args docstring &rest
-          body
+ -- 機能: define-overloadable-function name args docstring &rest body
      Define a new function, as with "defun" which can be overloaded.
      NAME is the name of the function to create.  ARGS are the
      arguments to the function.  DOCSTRING is a documentation string to
@@ -2326,7 +2322,7 @@ Once a function has been defined as mode-local, you should use
      of arguments passed to the override and `NAME-default' function,
      in place of those deduced from ARGS.
 
- -- Function: define-mode-local-override name mode args docstring &rest
+ -- 機能: define-mode-local-override name mode args docstring &rest
           body
      Define a mode specific override of the function overload NAME.
      Has meaning only if NAME has been created with "define-overload".
@@ -2341,11 +2337,11 @@ Once a function has been defined as mode-local, you should use
 
 You can also create variable values that are mode local.
 
- -- Function: defvar-mode-local mode sym val &optional docstring
+ -- 機能: defvar-mode-local mode sym val &optional docstring
      Define MODE local variable SYM with value VAL.  DOCSTRING is
      optional.
 
- -- Function: defconst-mode-local mode sym val &optional docstring
+ -- 機能: defconst-mode-local mode sym val &optional docstring
      Define MODE local constant SYM with value VAL.  DOCSTRING is
      optional.
 
@@ -2353,7 +2349,7 @@ Mode local variables are implemented as buffer local.  Special hooks
 enable mode-local to set these variables for the mode specified.  To
 set a value as in code, you can use a special setq form.
 
- -- Function: setq-mode-local mode &rest args
+ -- 機能: setq-mode-local mode &rest args
      Assign new values to variables local in MODE.  MODE must be a
      major mode symbol.  ARGS is a list (SYM VAL SYM VAL ...).  The
      symbols SYM are variables; they are literal (not evaluated).  The
@@ -2398,7 +2394,7 @@ File: semantic-appdev.info,  Node: Editing Buffers,  Next: Parser State,  Up: Pa
 One interesting way to interact with the parser is to let it know that
 changes you are going to make will not require re-parsing.
 
- -- Variable: semantic-edits-are-safe
+ -- 変数: semantic-edits-are-safe
      When non-`nil', modifications do not require a reparse.  This
      prevents tokens from being marked dirty, and it prevents top level
      edits from causing a cache check.  Use this when writing programs
@@ -2415,16 +2411,16 @@ It is sometimes useful to know what the current parsing state is.
 These function can let you know what level of re-parsing may be needed.
 Careful choices on when to reparse can make your program much faster.
 
- -- Function: semantic-parse-tree-needs-update-p
+ -- 機能: semantic-parse-tree-needs-update-p
      Return non-`nil' if the current parse tree needs to be updated.
 
- -- Function: semantic-parse-tree-needs-rebuild-p
+ -- 機能: semantic-parse-tree-needs-rebuild-p
      Return non-`nil' if the current parse tree needs to be rebuilt.
 
- -- Function: semantic-parse-tree-unparseable-p
+ -- 機能: semantic-parse-tree-unparseable-p
      Return non-`nil' if the current buffer has been marked unparseable.
 
- -- Function: semantic-parse-tree-up-to-date-p
+ -- 機能: semantic-parse-tree-up-to-date-p
      Return non-`nil' if the current parse tree is up to date.
 
 
@@ -2435,7 +2431,7 @@ File: semantic-appdev.info,  Node: Parser Hooks,  Next: Lexical Safety,  Prev: P
 
 If you just want to know when a buffer changes, use this hook.
 
- -- Variable: semantic-after-toplevel-cache-change-hook
+ -- 変数: semantic-after-toplevel-cache-change-hook
      Hooks run after the buffer tag list has changed.  This list will
      change when a buffer is reparsed, or when the tag list in a buffer
      is cleared.  It is *NOT* called if the current tag list is
@@ -2450,7 +2446,7 @@ If you just want to know when a buffer changes, use this hook.
 If you want tighter interaction with how the user is editing different
 tags, you can use this hook instead.
 
- -- Variable: semantic-after-partial-cache-change-hook
+ -- 変数: semantic-after-partial-cache-change-hook
      Hooks run after the buffer cache has been updated.
 
      This hook will run when the cache has been partially reparsed.
@@ -2466,7 +2462,7 @@ tags, you can use this hook instead.
 It is also useful to clean up any data your application is using when
 semantic flushes its tags table.
 
- -- Variable: semantic-before-toplevel-cache-flush-hook
+ -- 変数: semantic-before-toplevel-cache-flush-hook
      Hooks run before the toplevel tag cache is flushed.  For language
      specific hooks, make sure you define this as a local hook.  This
      hook is called before a corresponding
@@ -2486,7 +2482,7 @@ string, or argument list.
 
 You can protect your code from lexical problems with this macro:
 
- -- Function: semantic-lex-catch-errors symbol &rest forms
+ -- 機能: semantic-lex-catch-errors symbol &rest forms
      Using SYMBOL, execute FORMS catching lexical errors.  If FORMS
      results in a call to the parser that throws a lexical error, the
      error will be caught here without the buffer's cache being thrown
@@ -2539,7 +2535,7 @@ File: semantic-appdev.info,  Node: Semanticdb in Programs,  Next: Semanticdb Tag
 If you write a program using semanticdb, you will probably want to make
 sure it is active in your program.
 
- -- Function: semanticdb-minor-mode-p
+ -- 機能: semanticdb-minor-mode-p
      Return non-`nil' if `semanticdb-minor-mode' is active.
 
 Since semanticdb is optional, it is best if a program can gracefully
@@ -2550,14 +2546,14 @@ At the simplest level, you can ask if a given file is in the database,
 receiving a tag table.  Semanticdb will give you an accurate set of
 tags just by asking.
 
- -- Function: semanticdb-file-stream file
+ -- 機能: semanticdb-file-stream file
      Return a list of tags belonging to FILE.  If file has database
      tags available in the database, return them.  If file does not
      have tags available, then load the file, and create them.
 
 Alternately, you can get the table object for a file by asking for it.
 
- -- Function: semanticdb-file-table-object file &optional dontload
+ -- 機能: semanticdb-file-table-object file &optional dontload
      Return a semanticdb table belonging to FILE.  If file has database
      tags available in the database, return it.  If file does not have
      tags available, and DONTLOAD is `nil', then load the tags for
@@ -2623,7 +2619,7 @@ as there are several routines that can be used to access this list.
 
 To turn a semanticdb search result into a simple tag table, use:
 
- -- Function: semanticdb-strip-find-results results &optional
+ -- 機能: semanticdb-strip-find-results results &optional
           find-file-match
      Strip a semanticdb search RESULTS to exclude objects.  This makes
      it appear more like the results of a `semantic-find-' call.
@@ -2633,7 +2629,7 @@ To turn a semanticdb search result into a simple tag table, use:
      not going to be used again, and if FIND-FILE-MATCH is `nil', you
      can use "semanticdb-fast-strip-find-results" instead.
 
- -- Function: semanticdb-fast-strip-find-results results
+ -- 機能: semanticdb-fast-strip-find-results results
      Destructively strip a semanticdb search RESULTS to exclude objects.
      This makes it appear more like the results of a `semantic-find-'
      call.  This is like "semanticdb-strip-find-results", except the
@@ -2642,12 +2638,12 @@ To turn a semanticdb search result into a simple tag table, use:
 To write a function that accepts a tag table, or a semanticdb search
 result, use this to test if it is a semanticdb search result:
 
- -- Function: semanticdb-find-results-p resultp
+ -- 機能: semanticdb-find-results-p resultp
      Non-`nil' if RESULTP is in the form of a semanticdb search result.
      This query only really tests the first entry in the list that is
      RESULTP, but should be good enough for debugging assertions.
 
- -- Function: semanticdb-find-result-with-nil-p resultp
+ -- 機能: semanticdb-find-result-with-nil-p resultp
      Non-`nil' of RESULTP is in the form of a semanticdb search result.
      `nil' is a valid value where a TABLE usually is, but only if the
      TAG results include overlays.  This query only really tests the
@@ -2657,10 +2653,10 @@ result, use this to test if it is a semanticdb search result:
 To operate on the search results as though it were a simple tags table,
 or plain list, use these routines.
 
- -- Function: semanticdb-find-result-length result
+ -- 機能: semanticdb-find-result-length result
      Number of tags found in RESULT.
 
- -- Function: semanticdb-find-result-nth result n
+ -- 機能: semanticdb-find-result-nth result n
      In RESULT, return the Nth search result.  This is a 0 based search
      result, with the first match being element 0.
 
@@ -2668,14 +2664,14 @@ or plain list, use these routines.
      tag at the Nth position.  TABLE is the semanticdb table where the
      TAG was found.  Sometimes TABLE can be `nil'.
 
- -- Function: semanticdb-find-result-nth-in-buffer result n
+ -- 機能: semanticdb-find-result-nth-in-buffer result n
      In RESULT, return the Nth search result.  Like
      "semanticdb-find-result-nth", except that only the TAG is
      returned, and the buffer it is found it will be made current.  If
      the result tag has no position information, the originating buffer
      is still made current.
 
- -- Function: semanticdb-find-result-mapc fcn result
+ -- 機能: semanticdb-find-result-mapc fcn result
      Apply FCN to each element of find RESULT for side-effects only.
      FCN takes two arguments.  The first is a TAG, and the second is a
      DB from whence TAG originated.  Returns result.
@@ -2696,7 +2692,7 @@ Ideally, each language mode will have a mode-specific value for this
 throttle value.  A user can also specify their own values if the
 default is not good enough.
 
- -- Variable: semanticdb-find-default-throttle
+ -- 変数: semanticdb-find-default-throttle
      The default throttle for `semanticdb-find' routines.  The throttle
      controls how detailed the list of database tables is for a symbol
      lookup.  The value is a list with the following keys:
@@ -2737,7 +2733,7 @@ You can use the command `semanticdb-find-test-translate-path' to
 interactively test out how the path translator is working.  The path
 translation routines are:
 
- -- Function: semanticdb-find-translate-path path brutish
+ -- 機能: semanticdb-find-translate-path path brutish
      Translate PATH into a list of semantic tables.  Path translation
      involves identifying the PATH input argument in one of the
      following ways:   `nil' - Take the current buffer, and use its
@@ -2772,8 +2768,7 @@ translation routines are:
      function can be overloaded (see "define-mode-local-override" for
      details).
 
- -- Function: semanticdb-find-table-for-include includetag &optional
-          table
+ -- 機能: semanticdb-find-table-for-include includetag &optional table
      For a single INCLUDETAG found in TABLE, find a "semanticdb-table"
      object INCLUDETAG is a semantic TAG of class `'include'.  TABLE as
      defined by "semantic-something-to-tag-table" to identify where the
@@ -2788,9 +2783,9 @@ Each major mode should define their local include path with
 macro builds a customizable variable that is kept in sync with the
 mode-local variable, and any include decorations that are active.
 
- -- Function:
-defcustom-mode-local-semantic-dependency-system-include-path mode name
-          value &optional docstring
+ -- 機能:
+          defcustom-mode-local-semantic-dependency-system-include-path
+          mode name value &optional docstring
      Create a mode-local value of the system-dependency include path.
      MODE is the `major-mode' this name/value pairs is for.  NAME is
      the name of the customizable value users will use.  VALUE is the
@@ -2813,28 +2808,28 @@ including those in type declarations.
 
 Normal Searches:
 
- -- Function: semanticdb-find-tags-by-name name &optional path
+ -- 機能: semanticdb-find-tags-by-name name &optional path
           find-file-match
      Search for all tags matching NAME on PATH.  See
      "semanticdb-find-translate-path" for details on PATH.
      FIND-FILE-MATCH indicates that any time a match is found, the file
      associated with that tag should be loaded into a buffer.
 
- -- Function: semanticdb-find-tags-by-name-regexp regexp &optional path
+ -- 機能: semanticdb-find-tags-by-name-regexp regexp &optional path
           find-file-match
      Search for all tags matching REGEXP on PATH.  See
      "semanticdb-find-translate-path" for details on PATH.
      FIND-FILE-MATCH indicates that any time a match is found, the file
      associated with that tag should be loaded into a buffer.
 
- -- Function: semanticdb-find-tags-for-completion prefix &optional path
+ -- 機能: semanticdb-find-tags-for-completion prefix &optional path
           find-file-match
      Search for all tags matching PREFIX on PATH.  See
      "semanticdb-find-translate-path" for details on PATH.
      FIND-FILE-MATCH indicates that any time a match is found, the file
      associated with that tag should be loaded into a buffer.
 
- -- Function: semanticdb-find-tags-by-class class &optional path
+ -- 機能: semanticdb-find-tags-by-class class &optional path
           find-file-match
      Search for all tags of CLASS on PATH.  See
      "semanticdb-find-translate-path" for details on PATH.
@@ -2843,7 +2838,7 @@ Normal Searches:
 
 Deep Searches:
 
- -- Function: semanticdb-deep-find-tags-by-name name &optional path
+ -- 機能: semanticdb-deep-find-tags-by-name name &optional path
           find-file-match
      Search for all tags matching NAME on PATH.  Search also in all
      components of top level tags founds.  See
@@ -2851,7 +2846,7 @@ Deep Searches:
      FIND-FILE-MATCH indicates that any time a match is found, the file
      associated with that tag should be loaded into a buffer.
 
- -- Function: semanticdb-deep-find-tags-by-name-regexp regexp &optional
+ -- 機能: semanticdb-deep-find-tags-by-name-regexp regexp &optional
           path find-file-match
      Search for all tags matching REGEXP on PATH.  Search also in all
      components of top level tags founds.  See
@@ -2859,7 +2854,7 @@ Deep Searches:
      FIND-FILE-MATCH indicates that any time a match is found, the file
      associated with that tag should be loaded into a buffer.
 
- -- Function: semanticdb-deep-find-tags-for-completion prefix &optional
+ -- 機能: semanticdb-deep-find-tags-for-completion prefix &optional
           path find-file-match
      Search for all tags matching PREFIX on PATH.  Search also in all
      components of top level tags founds.  See
@@ -2882,18 +2877,18 @@ Since it takes a long time to make a typecache the first time, you can
 have your tool decide if it wants to do work based on the existence of
 a typecache.
 
- -- Function: semanticdb-have-typecache-p table
+ -- 機能: semanticdb-have-typecache-p table
      Return non-`nil' (the typecache) if TABLE has a pre-calculated
      typecache.
 
- -- Function: semanticdb-get-typecache table
+ -- 機能: semanticdb-get-typecache table
      Retrieve the typecache from the semanticdb TABLE.  If there is no
      table, create one, and fill it in.
 
 Searching doesn't require a typecache.  You can just pass in a database
 table, or path, much the way most semantic database searches work.
 
- -- Function: semanticdb-typecache-find type &optional path
+ -- 機能: semanticdb-typecache-find type &optional path
      Search the typecache for TYPE in PATH.  If type is a string, split
      the string, and search for the parts.  If type is a list, treat
      the type as a pre-split string.  PATH can be `nil' for the current
@@ -2914,8 +2909,8 @@ File: semantic-appdev.info,  Node: DB Basic Brute Search,  Next: DB Advanced Sea
 These searches allow searching on specific attributes of tags,  such as
 name, type, or other attribute.
 
- -- Function: semanticdb-brute-deep-find-tags-by-name name &optional
-          path find-file-match
+ -- 機能: semanticdb-brute-deep-find-tags-by-name name &optional path
+          find-file-match
      Search for all tags matching NAME on PATH.  See
      "semanticdb-find-translate-path" for details on PATH.  The
      argument BRUTISH will be set so that searching includes all tables
@@ -2938,15 +2933,15 @@ such as the Emacs obarray, or java `.class' files can  quickly answer
 these needed questions without dumping the entire  symbol list into
 Emacs for a regular semanticdb search.
 
- -- Function: semanticdb-find-tags-external-children-of-type type
+ -- 機能: semanticdb-find-tags-external-children-of-type type
           &optional path find-file-match
      Search for all tags defined outside of TYPE w/ TYPE as a parent.
      See "semanticdb-find-translate-path" for details on PATH.
      FIND-FILE-MATCH indicates that any time a match is found, the file
      associated with that tag should be loaded into a buffer.
 
- -- Function: semanticdb-find-tags-subclasses-of-type type &optional
-          path find-file-match
+ -- 機能: semanticdb-find-tags-subclasses-of-type type &optional path
+          find-file-match
      Search for all tags of class type defined that subclass TYPE.  See
      "semanticdb-find-translate-path" for details on PATH.
      FIND-FILE-MATCH indicates that any time a match is found, the file
@@ -2962,7 +2957,7 @@ If you would like to write your own search routine, you can the generic
 tag collector.  It will map your function across valid semantic
 databases.
 
- -- Function: semanticdb-find-tags-collector function &optional path
+ -- 機能: semanticdb-find-tags-collector function &optional path
           find-file-match brutish
      Collect all tags returned by FUNCTION over PATH.  The FUNCTION
      must take two arguments.  The first is TABLE, which is a
@@ -3031,13 +3026,13 @@ This routine will return a list of TAGS that refer to some database.
 Use the routine `semanticdb-find-table-for-include' to conver these
 include tags into tables.
 
- -- Function: semanticdb-includes-in-table dbt
+ -- 機能: semanticdb-includes-in-table dbt
      Return a list of direct includes in table DBT.
 
 To run a function against all semantic tables that refer to the current
 table, use this routine:
 
- -- Function: semanticdb-notify-references dbt method
+ -- 機能: semanticdb-notify-references dbt method
      Notify all references of the table DBT using method.  METHOD takes
      two arguments.    (METHOD TABLE-TO-NOTIFY DBT) TABLE-TO-NOTIFY is
      a semanticdb-table which is being notified.  DBT, the second
@@ -3045,7 +3040,7 @@ table, use this routine:
 
 The following routines will help keep things up-to-date:
 
- -- Function: semanticdb-check-references dbt
+ -- 機能: semanticdb-check-references dbt
      Check and cleanup references in the database DBT.  Any reference
      to a file that cannot be found, or whos file no longer refers to
      DBT will be removed.
@@ -3087,7 +3082,7 @@ syntax all over.
 You can create new minor modes that are automatically scheduled by the
 semantic idle scheduler.  Create the new minor mode with:
 
- -- Function: define-semantic-idle-service name doc &rest forms
+ -- 機能: define-semantic-idle-service name doc &rest forms
      Create a new idle services with NAME.  DOC will be a documentation
      string describing FORMS.  FORMS will be called during idle time
      after the current buffer's semantic tag information has been
@@ -3103,7 +3098,7 @@ long time to correctly exit upon user input.
 You can test for user input in your idle handler with the following
 routines:
 
- -- Function: semantic-throw-on-input from
+ -- 機能: semantic-throw-on-input from
      Exit with "throw" when in "semantic-exit-on-input" on user input.
      FROM is an indication of where this function is called from as a
      value to pass to "throw".  It is recommended to use the name of
@@ -3113,7 +3108,7 @@ If you need to carefully extract from your function, you can wrap just
 a section of your function to exit on user input by wrapping it with
 this macro:
 
- -- Function: semantic-exit-on-input symbol &rest forms
+ -- 機能: semantic-exit-on-input symbol &rest forms
      Using SYMBOL as an argument to "throw", execute FORMS.  If FORMS
      includes a call to `semantic-thow-on-input', then if a user
      presses any key during execution, this form macro will exit with
@@ -3165,7 +3160,7 @@ context, or lexical scope.  Semantic terms these lexical scopes as a
 Some of them are override functions.  Language authors can override a
 subset of them to make them work for their language.
 
- -- Function: semantic-up-context &optional point bounds-type
+ -- 機能: semantic-up-context &optional point bounds-type
      Move point up one context from POINT.  Return non-`nil' if there
      are no more context levels.  Overloaded functions using
      `up-context' take no parameters.  BOUNDS-TYPE is a symbol
@@ -3176,13 +3171,13 @@ subset of them to make them work for their language.
      function can be overloaded (see "define-mode-local-override" for
      details).
 
- -- Function: semantic-beginning-of-context &optional point
+ -- 機能: semantic-beginning-of-context &optional point
      Move POINT to the beginning of the current context.  Return
      non-`nil' if there is no upper context.  The default behavior uses
      "semantic-up-context".  This function can be overloaded (see
      "define-mode-local-override" for details).
 
- -- Function: semantic-end-of-context &optional point
+ -- 機能: semantic-end-of-context &optional point
      Move POINT to the end of the current context.  Return non-`nil' if
      there is no upper context.  Be default, this uses
      "semantic-up-context", and assumes parenthetical block delimiters.
@@ -3191,12 +3186,12 @@ subset of them to make them work for their language.
 
 These next set of functions can be used to navigate across commands.
 
- -- Function: semantic-end-of-command
+ -- 機能: semantic-end-of-command
      Move to the end of the current command.  Be default, uses
      `semantic-command-separation-character'.  This function can be
      overloaded (see "define-mode-local-override" for details).
 
- -- Function: semantic-beginning-of-command
+ -- 機能: semantic-beginning-of-command
      Move to the beginning of the current command.  Be default, uses
      `semantic-command-separation-character'.  This function can be
      overloaded (see "define-mode-local-override" for details).
@@ -3211,13 +3206,13 @@ Within a given context, or block of code, local variables are often
 defined.  These functions can be used to retrieve lists of locally
 scoped variables.
 
- -- Function: semantic-get-local-variables &optional point
+ -- 機能: semantic-get-local-variables &optional point
      Get the local variables based on POINT's context.  Local variables
      are returned in Semantic tag format.  This can be overriden with
      `get-local-variables'.  This function can be overloaded (see
      "define-mode-local-override" for details).
 
- -- Function: semantic-get-local-arguments &optional point
+ -- 機能: semantic-get-local-arguments &optional point
      Get arguments (variables) from the current context at POINT.
      Parameters are available if the point is in a function or method.
      Return a list of tags unlinked from the originating buffer.
@@ -3227,7 +3222,7 @@ scoped variables.
      be converted to tags.  This function can be overloaded (see
      "define-mode-local-override" for details).
 
- -- Function: semantic-get-all-local-variables &optional point
+ -- 機能: semantic-get-all-local-variables &optional point
      Get all local variables for this context, and parent contexts.
      Local variables are returned in Semantic tag format.  Be default,
      this gets local variables, and local arguments.  Optional argument
@@ -3248,38 +3243,38 @@ on, or the fact we are assigning into some other variable.
 These context deriving functions can be overridden to provide language
 specific behavior.  By default, it assumes a C like language.
 
- -- Function: semantic-ctxt-current-symbol &optional point
+ -- 機能: semantic-ctxt-current-symbol &optional point
      Return the current symbol the cursor is on at POINT in a list.
      This will include a list of type/field names when applicable.
      This function can be overloaded (see "define-mode-local-override"
      for details).
 
- -- Function: semantic-ctxt-current-assignment &optional point
+ -- 機能: semantic-ctxt-current-assignment &optional point
      Return the current assignment near the cursor at POINT.  Return a
      list as per "semantic-ctxt-current-symbol".  Return `nil' if there
      is nothing relevant.  This function can be overloaded (see
      "define-mode-local-override" for details).
 
- -- Function: semantic-ctxt-current-function &optional point
+ -- 機能: semantic-ctxt-current-function &optional point
      Return the current function call the cursor is in at POINT.  The
      function returned is the one accepting the arguments that the
      cursor is currently in.  It will not return function symbol if the
      cursor is on the text representing that function.  This function
      can be overloaded (see "define-mode-local-override" for details).
 
- -- Function: semantic-ctxt-current-argument &optional point
+ -- 機能: semantic-ctxt-current-argument &optional point
      Return the index of the argument position the cursor is on at
      POINT.  This function can be overloaded (see
      "define-mode-local-override" for details).
 
- -- Function: semantic-ctxt-current-thing
+ -- 機能: semantic-ctxt-current-thing
      Calculate a thing identified by the current cursor position.
      Calls previously defined `semantic-ctxt-current-...' calls until
      something gets a match.  See "semantic-ctxt-current-symbol",
      "semantic-ctxt-current-function", and
      "semantic-ctxt-current-assignment" for details on the return value.
 
- -- Function: semantic-ctxt-current-class-list &optional point
+ -- 機能: semantic-ctxt-current-class-list &optional point
      Return a list of tag classes that are allowed at POINT.  If POINT
      is `nil', the current buffer location is used.  For example, in
      Emacs Lisp, the symbol after a ( is most likely a function.  In a
@@ -3287,7 +3282,7 @@ specific behavior.  By default, it assumes a C like language.
      variables.  This function can be overloaded (see
      "define-mode-local-override" for details).
 
- -- Function: semantic-ctxt-scoped-types &optional point
+ -- 機能: semantic-ctxt-scoped-types &optional point
      Return a list of type names currently in scope at POINT.  The
      return value can be a mixed list of either strings (names of types
      that are in scope) or actual tags (type declared locally that may
@@ -3323,7 +3318,7 @@ Two high level functions which can be run interactively are:
      function can be overloaded (see "define-mode-local-override" for
      details).
 
- -- Function: semantic-analyze-possible-completions context flags
+ -- 機能: semantic-analyze-possible-completions context flags
      Return a list of semantic tags which are possible completions.
      CONTEXT is either a position (such as point), or a precalculated
      context.  Passing in a context is useful if the caller also needs
@@ -3492,7 +3487,7 @@ datastructure you need to analyze.
 
 The first function to call is:
 
- -- Function: data-debug-new-buffer name
+ -- 機能: data-debug-new-buffer name
      Create a new ddebug buffer with NAME.
 
 Next, you need to find the correct function for inserting your
@@ -3500,7 +3495,7 @@ datastructure.  All adebug insertion functions are of the form
 `data-debug-insert-THING', where THING is either the word `thing', or
 whatever your object is.  Use Emacs help to pick something out.
 
- -- Function: data-debug-insert-thing thing prefix prebuttontext
+ -- 機能: data-debug-insert-thing thing prefix prebuttontext
           &optional parent
      Insert THING with PREFIX.  PREBUTTONTEXT is some text to insert
      between prefix and the thing that is not included in the
@@ -3895,13 +3890,13 @@ Index
 * data-debug-insert-thing:               Data Debugger.       (line  90)
 * data-debug-mode:                       Data Debugger.       (line  50)
 * data-debug-new-buffer:                 Data Debugger.       (line  81)
-* defconst-mode-local:                   Making New Methods.  (line  62)
+* defconst-mode-local:                   Making New Methods.  (line  61)
 * defcustom-mode-local-semantic-dependency-system-include-path: DB Search Paths.
-                                                              (line 111)
-* define-mode-local-override:            Making New Methods.  (line  44)
-* define-overloadable-function:          Making New Methods.  (line  19)
+                                                              (line 110)
+* define-mode-local-override:            Making New Methods.  (line  43)
+* define-overloadable-function:          Making New Methods.  (line  18)
 * define-semantic-idle-service:          Idle Scheduling.     (line  31)
-* defvar-mode-local:                     Making New Methods.  (line  58)
+* defvar-mode-local:                     Making New Methods.  (line  57)
 * Misc Tag Functions:                    Misc Tag Functions.  (line   6)
 * semantic--find-tags-by-function:       Custom Search.       (line  13)
 * semantic--find-tags-by-macro:          Custom Search.       (line  18)
@@ -3915,7 +3910,7 @@ Index
 * semantic--tag-put-property:            Tag Properties Internals.
                                                               (line  15)
 * semantic--tag-put-property-no-side-effect: Tag Properties Internals.
-                                                              (line  35)
+                                                              (line  34)
 * semantic--tag-run-hooks <1>:           Misc Tag Internals.  (line   7)
 * semantic--tag-run-hooks:               Tag Hooks.           (line  32)
 * semantic--tag-unlink-cache-from-buffer: Misc Tag Internals. (line  30)
@@ -4006,13 +4001,13 @@ Index
 * semantic-format-tag-custom-list:       Format Tag.          (line  22)
 * semantic-format-tag-functions:         Format Tag.          (line  14)
 * semantic-format-tag-name:              Format Tag.          (line  36)
-* semantic-format-tag-prin1:             Format Tag.          (line 128)
+* semantic-format-tag-prin1:             Format Tag.          (line 127)
 * semantic-format-tag-prototype:         Format Tag.          (line  69)
 * semantic-format-tag-summarize:         Format Tag.          (line  59)
-* semantic-format-tag-type:              Format Tag.          (line 139)
+* semantic-format-tag-type:              Format Tag.          (line 138)
 * semantic-format-tag-uml-abbreviate:    Format Tag.          (line  94)
-* semantic-format-tag-uml-concise-prototype: Format Tag.      (line 117)
-* semantic-format-tag-uml-prototype:     Format Tag.          (line 106)
+* semantic-format-tag-uml-concise-prototype: Format Tag.      (line 116)
+* semantic-format-tag-uml-prototype:     Format Tag.          (line 105)
 * semantic-get-all-local-variables:      Local Variables.     (line  27)
 * semantic-get-local-arguments:          Local Variables.     (line  17)
 * semantic-get-local-variables:          Local Variables.     (line  11)
@@ -4028,10 +4023,10 @@ Index
 * semantic-parse-tree-unparseable-p:     Parser State.        (line  17)
 * semantic-parse-tree-up-to-date-p:      Parser State.        (line  20)
 * semantic-prototype-file:               Tag File Reference.  (line  34)
-* semantic-read-function:                Old Tag Completion.  (line  24)
-* semantic-read-symbol:                  Old Tag Completion.  (line  10)
-* semantic-read-type:                    Old Tag Completion.  (line  30)
-* semantic-read-variable:                Old Tag Completion.  (line  18)
+* semantic-read-function:                Old Tag Completion.  (line  23)
+* semantic-read-symbol:                  Old Tag Completion.  (line   9)
+* semantic-read-type:                    Old Tag Completion.  (line  29)
+* semantic-read-variable:                Old Tag Completion.  (line  17)
 * semantic-set-tag-face:                 Tag Highlighting.    (line  34)
 * semantic-set-tag-folded:               Tag Folding.         (line  10)
 * semantic-set-tag-intangible:           Tag Visible Properties.
@@ -4087,7 +4082,7 @@ Index
                                                               (line  19)
 * semantic-tag-leaf-p:                   Tag Details.         (line  64)
 * semantic-tag-make-plist:               Tag Properties Internals.
-                                                              (line  47)
+                                                              (line  46)
 * semantic-tag-modifiers:                Tag Query.           (line  97)
 * semantic-tag-name:                     Tag Basics.          (line  55)
 * semantic-tag-named-parent:             Tag Query.           (line 157)
@@ -4160,7 +4155,7 @@ Index
 * semanticdb-find-result-nth-in-buffer:  DB Results.          (line  62)
 * semanticdb-find-result-with-nil-p:     DB Results.          (line  41)
 * semanticdb-find-results-p:             DB Results.          (line  36)
-* semanticdb-find-table-for-include:     DB Search Paths.     (line  94)
+* semanticdb-find-table-for-include:     DB Search Paths.     (line  93)
 * semanticdb-find-tags-by-class:         DB Basic Name Search.
                                                               (line  36)
 * semanticdb-find-tags-by-name:          DB Basic Name Search.
@@ -4190,7 +4185,7 @@ Index
 * semanticdb-strip-find-results:         DB Results.          (line  18)
 * semanticdb-typecache-dump:             DB Data Type Search. (line  36)
 * semanticdb-typecache-find:             DB Data Type Search. (line  27)
-* setq-mode-local:                       Making New Methods.  (line  70)
+* setq-mode-local:                       Making New Methods.  (line  69)
 * Tag Basics:                            Tag Basics.          (line   6)
 * Tag Hooks:                             Tag Hooks.           (line   6)
 * Tag Internals:                         Tag Internals.       (line   6)
@@ -4200,296 +4195,296 @@ Index
 
 
 Tag Table:
-Node: Top1148
-Node: Semantic Tags2769
-Node: Tag Basics3352
-Ref: semantic-tag-name5725
-Ref: semantic-tag-class6182
-Node: Tag Query7644
-Ref: semantic-tag-p7937
-Ref: semantic-equivalent-tag-p8181
-Ref: semantic-tag-similar-p8693
-Ref: semantic-tag-of-class-p9005
-Ref: semantic-tag-faux-p9092
-Ref: semantic-tag-type-compound-p9450
-Ref: semantic-tag-docstring9715
-Ref: semantic-tag-variable-constant-p10368
-Ref: semantic-tag-function-destructor-p10721
-Ref: semantic-tag-function-throws11068
-Ref: semantic-tag-modifiers11397
-Ref: semantic-tag-function-arguments12030
-Ref: semantic-tag-variable-default12396
-Ref: semantic-tag-type12761
-Ref: semantic-tag-of-type-p13216
-Ref: semantic-tag-named-parent13691
-Ref: semantic-tag-function-parent13975
-Ref: semantic-tag-type-superclasses14432
-Ref: semantic-tag-type-interfaces14888
-Ref: semantic-tag-type-members15334
-Ref: semantic-tag-include-system-p15681
-Ref: semantic-tag-include-filename16030
-Ref: semantic-tag-code-detail16582
-Ref: semantic-tag-components16779
-Ref: semantic-tag-components-default17157
-Ref: semantic-tag-children-compatibility17350
-Node: Tag Overlay17766
-Ref: semantic-tag-start18148
-Ref: semantic-tag-end18369
-Ref: semantic-tag-bounds18582
-Ref: semantic-tag-in-buffer-p18834
-Ref: semantic-tag-buffer18991
-Ref: semantic-tag-file-name19370
-Ref: semantic-tag-overlay19680
-Ref: semantic-tag-with-position-p20123
-Ref: semantic-tag-components-with-overlays20403
-Ref: semantic-tag-components-with-overlays-default21077
-Node: Tag Hooks21323
-Ref: semantic-tag-add-hook21744
-Ref: semantic-tag-remove-hook22152
-Ref: semantic--tag-run-hooks22682
-Node: Misc Tag Functions23660
-Ref: semantic-narrow-to-tag23876
-Ref: semantic-with-buffer-narrowed-to-current-tag24192
-Ref: semantic-with-buffer-narrowed-to-tag24525
-Node: Tag Internals24746
-Node: Tag Attributes Internals25034
-Ref: semantic-tag-attributes25255
-Ref: semantic-tag-get-attribute26089
-Ref: semantic-tag-put-attribute26843
-Ref: semantic-tag-put-attribute-no-side-effect27358
-Node: Tag Properties Internals27680
-Ref: semantic-tag-properties27931
-Ref: semantic--tag-put-property28273
-Ref: semantic--tag-get-property28699
-Ref: semantic--tag-put-property-no-side-effect29116
-Ref: semantic-tag-make-plist29705
-Node: Tag Overlay Internals30264
-Ref: semantic-tag-set-bounds30606
-Node: Creating Tags30673
-Ref: semantic-tag30892
-Ref: semantic-tag-new-variable31387
-Ref: semantic-tag-new-function31959
-Ref: semantic-tag-new-type32551
-Ref: semantic-tag-new-include33675
-Ref: semantic-tag-new-package34216
-Ref: semantic-tag-new-code34699
-Node: Copying Tags34901
-Ref: semantic-tag-clone35482
-Ref: semantic-tag-copy35808
-Ref: semantic-tag-deep-copy-one-tag36248
-Node: Misc Tag Internals36544
-Node: Searching Tag Tables38804
-Node: Breadth Search39761
-Ref: semantic-find-first-tag-by-name40155
-Ref: semantic-find-tags-by-name40432
-Ref: semantic-find-tags-for-completion40630
-Ref: semantic-find-tags-by-name-regexp41039
-Ref: semantic-find-tags-by-class41387
-Ref: semantic-find-tags-by-type41664
-Ref: semantic-find-tags-included42032
-Node: Deep Search42163
-Node: Specialty Search49050
-Ref: semantic-find-tags-of-compound-type49477
-Ref: semantic-find-tags-by-scope-protection49776
-Ref: semantic-find-tags-external-children-of-type50370
-Ref: semantic-find-tags-subclasses-of-type50646
-Node: Custom Search50867
-Ref: semantic--find-tags-by-function51370
-Ref: semantic--find-tags-by-macro51631
-Node: Tags at Point51763
-Node: Tag Decoration54625
-Node: Tag Highlighting55235
-Ref: semantic-highlight-tag55433
-Ref: semantic-unhighlight-tag55723
-Ref: semantic-momentary-highlight-tag55999
-Ref: semantic-set-tag-face56527
-Node: Tag Visible Properties56731
-Ref: semantic-set-tag-invisible57178
-Ref: semantic-tag-invisible-p57488
-Ref: semantic-set-tag-intangible57755
-Ref: semantic-tag-intangible-p58198
-Ref: semantic-set-tag-read-only58595
-Ref: semantic-tag-read-only-p58957
-Node: Tag Secondary Overlays59178
-Ref: semantic-tag-create-secondary-overlay59957
-Ref: semantic-tag-delete-secondary-overlay60380
-Ref: semantic-tag-get-secondary-overlay60685
-Ref: semantic-tag-secondary-overlays60867
-Node: Tag Folding61441
-Ref: semantic-set-tag-folded61763
-Ref: semantic-tag-folded-p61984
-Node: Tag Sorting62028
-Ref: semantic-unique-tag-table62488
-Ref: semantic-unique-tag-table-by-name62753
-Ref: semantic-bucketize62938
-Ref: semantic-bucketize-tag-class63562
-Ref: semantic-adopt-external-members64090
-Ref: semantic-orphaned-member-metaparent-type65000
-Ref: semantic-mark-external-member-function65256
-Node: Tag Completion65813
-Node: Tag Completion Convenience Functions66839
-Ref: semantic-complete-read-tag-project67866
-Ref: semantic-complete-read-tag-analyzer68465
-Ref: semantic-complete-inline-analyzer69171
-Node: Custom Tag Completion Functions69553
-Ref: semantic-complete-read-tag-engine70520
-Node: Tag Collectors72240
-Ref: semantic-collector-abstract72787
-Ref: semantic-collector-buffer-abstract73030
-Ref: semantic-collector-project-abstract73191
-Ref: semantic-collector-buffer-deep73392
-Ref: semantic-collector-project73603
-Ref: semantic-collector-project-brutish73695
-Ref: semantic-collector-analyze-completions73791
-Node: Tag Displayors74035
-Ref: semantic-displayor-abstract74734
-Ref: semantic-displayor-focus-abstract74962
-Ref: semantic-displayor-traditional75212
-Ref: semantic-displayor-traditional-with-focus-highlight75467
-Ref: semantic-displayor-tooltip75779
-Node: Old Tag Completion75901
-Ref: semantic-read-symbol76240
-Ref: semantic-read-variable76698
-Ref: semantic-read-function77031
-Ref: semantic-read-type77358
-Node: Override Methods77616
-Ref: semantic-with-mode-bindings78367
-Node: Format Tag79056
-Ref: semantic-format-tag-functions79639
-Ref: semantic-format-tag-custom-list80088
-Ref: semantic-format-tag-name80750
-Ref: semantic-format-tag-abbreviate81319
-Ref: semantic-format-tag-summarize81965
-Ref: semantic-format-tag-prototype82483
-Ref: semantic-format-tag-concise-prototype83170
-Ref: semantic-format-tag-uml-abbreviate83720
-Ref: semantic-format-tag-uml-prototype84273
-Ref: semantic-format-tag-uml-concise-prototype84824
-Ref: semantic-format-tag-prin185378
-Ref: semantic-format-tag-type85815
-Node: Tag Members86038
-Ref: semantic-tag-external-member-p87583
-Ref: semantic-tag-external-member-children88426
-Node: Tag Details89564
-Ref: semantic-tag-protection89910
-Ref: semantic-tag-protected-p90980
-Ref: semantic-tag-abstract-p91466
-Ref: semantic-tag-leaf-p92219
-Ref: semantic-tag-static-p92851
-Node: Tag File Reference93363
-Ref: semantic-dependency-system-include-path93689
-Ref: semantic-dependency-tag-file94149
-Ref: semantic-prototype-file94818
-Ref: semantic-texi-find-documentation95336
-Node: Jump to a Tag95752
-Ref: semantic-go-to-tag96089
-Node: Making New Methods96983
-Ref: define-overload97689
-Ref: define-mode-local-override98926
-Ref: defvar-mode-local99641
-Ref: defconst-mode-local99790
-Ref: setq-mode-local100114
-Node: Parser Features100531
-Node: Editing Buffers101715
-Node: Parser State102362
-Ref: semantic-parse-tree-needs-update-p102773
-Ref: semantic-parse-tree-needs-rebuild-p102893
-Ref: semantic-parse-tree-unparseable-p103011
-Ref: semantic-parse-tree-up-to-date-p103132
-Node: Parser Hooks103196
-Ref: semantic-after-toplevel-cache-change-hook103468
-Ref: semantic-after-partial-cache-change-hook104056
-Ref: semantic-before-toplevel-cache-flush-hook104648
-Node: Lexical Safety104969
-Ref: semantic-lex-catch-errors105464
-Node: Semantic Database106220
-Node: Semanticdb in Programs107147
-Ref: semanticdb-minor-mode-p107468
-Ref: semanticdb-file-stream107924
-Ref: semanticdb-file-table-object108263
-Node: Semanticdb Tag Queries108592
-Node: DB Results110596
-Ref: semanticdb-strip-find-results111175
-Ref: semanticdb-fast-strip-find-results111697
-Ref: semanticdb-find-results-p112131
-Ref: semanticdb-find-result-with-nil-p112396
-Ref: semanticdb-find-result-length112870
-Ref: semanticdb-find-result-nth112958
-Ref: semanticdb-find-result-nth-in-buffer113336
-Ref: semanticdb-find-result-mapc113676
-Node: DB Search Paths113870
-Ref: semanticdb-find-default-throttle114574
-Ref: semanticdb-find-translate-path116156
-Ref: semanticdb-find-table-for-include117941
-Ref: defcustom-mode-local-semantic-dependency-system-include-path118781
-Node: DB Basic Name Search119217
-Ref: semanticdb-find-tags-by-name119764
-Ref: semanticdb-find-tags-by-name-regexp120109
-Ref: semanticdb-find-tags-for-completion120456
-Ref: semanticdb-find-tags-by-class120796
-Ref: semanticdb-deep-find-tags-by-name121148
-Ref: semanticdb-deep-find-tags-by-name-regexp121560
-Ref: semanticdb-deep-find-tags-for-completion121974
-Node: DB Data Type Search122285
-Ref: semanticdb-have-typecache-p122956
-Ref: semanticdb-get-typecache123086
-Ref: semanticdb-typecache-find123398
-Ref: semanticdb-typecache-dump123821
-Node: DB Basic Brute Search123870
-Ref: semanticdb-brute-deep-find-tags-by-name124276
-Node: DB Advanced Search124630
-Ref: semanticdb-find-tags-external-children-of-type125359
-Ref: semanticdb-find-tags-subclasses-of-type125727
-Node: DB Generic Search125993
-Ref: semanticdb-find-tags-collector126405
-Node: System Databases127300
-Ref: semanticdb-project-database-emacs-lisp127878
-Ref: semanticdb-project-database-ebrowse128010
-Ref: semanticdb-create-ebrowse-database128241
-Node: Semanticdb references128433
-Ref: semanticdb-includes-in-table129165
-Ref: semanticdb-notify-references129370
-Ref: semanticdb-check-references129706
-Ref: semanticdb-ref-test129954
-Node: Idle Scheduling130136
-Ref: define-semantic-idle-service131225
-Ref: semantic-throw-on-input131805
-Ref: semantic-exit-on-input132261
-Node: Example Programs132763
-Node: Current Context132973
-Node: Blocks133693
-Ref: semantic-up-context134235
-Ref: semantic-beginning-of-context134855
-Ref: semantic-end-of-context135161
-Ref: semantic-end-of-command135559
-Ref: semantic-beginning-of-command135799
-Node: Local Variables136001
-Ref: semantic-get-local-variables136390
-Ref: semantic-get-local-arguments136706
-Ref: semantic-get-all-local-variables137292
-Node: Derived Context137659
-Ref: semantic-ctxt-current-symbol138247
-Ref: semantic-ctxt-current-assignment138536
-Ref: semantic-ctxt-current-function138853
-Ref: semantic-ctxt-current-argument139265
-Ref: semantic-ctxt-current-thing139473
-Ref: semantic-ctxt-current-class-list139855
-Ref: semantic-ctxt-scoped-types140297
-Node: Context Analysis140624
-Ref: semantic-analyze-current-context141394
-Ref: semantic-analyze-possible-completions142051
-Node: Analysis Overview143319
-Node: Analysis Objects145098
-Node: Completion Overview145318
-Node: Data Debugger145518
-Ref: data-debug-edebug-expr146383
-Ref: semantic-adebug-bovinate146740
-Ref: semantic-adebug-searchdb146853
-Ref: semantic-adebug-analyze146995
-Ref: semantic-adebug-mode147293
-Ref: semantic-adebug-new-buffer147874
-Ref: data-debug-insert-thing148271
-Node: GNU Free Documentation License148523
-Node: Index168267
+Node: Top1185
+Node: Semantic Tags2806
+Node: Tag Basics3389
+Ref: semantic-tag-name5760
+Ref: semantic-tag-class6215
+Node: Tag Query7677
+Ref: semantic-tag-p7968
+Ref: semantic-equivalent-tag-p8210
+Ref: semantic-tag-similar-p8720
+Ref: semantic-tag-of-class-p9030
+Ref: semantic-tag-faux-p9115
+Ref: semantic-tag-type-compound-p9471
+Ref: semantic-tag-docstring9734
+Ref: semantic-tag-variable-constant-p10385
+Ref: semantic-tag-function-destructor-p10736
+Ref: semantic-tag-function-throws11081
+Ref: semantic-tag-modifiers11408
+Ref: semantic-tag-function-arguments12039
+Ref: semantic-tag-variable-default12403
+Ref: semantic-tag-type12766
+Ref: semantic-tag-of-type-p13219
+Ref: semantic-tag-named-parent13692
+Ref: semantic-tag-function-parent13974
+Ref: semantic-tag-type-superclasses14429
+Ref: semantic-tag-type-interfaces14883
+Ref: semantic-tag-type-members15327
+Ref: semantic-tag-include-system-p15672
+Ref: semantic-tag-include-filename16019
+Ref: semantic-tag-code-detail16569
+Ref: semantic-tag-components16764
+Ref: semantic-tag-components-default17140
+Ref: semantic-tag-children-compatibility17331
+Node: Tag Overlay17747
+Ref: semantic-tag-start18127
+Ref: semantic-tag-end18346
+Ref: semantic-tag-bounds18557
+Ref: semantic-tag-in-buffer-p18807
+Ref: semantic-tag-buffer18962
+Ref: semantic-tag-file-name19339
+Ref: semantic-tag-overlay19647
+Ref: semantic-tag-with-position-p20088
+Ref: semantic-tag-components-with-overlays20366
+Ref: semantic-tag-components-with-overlays-default21038
+Node: Tag Hooks21284
+Ref: semantic-tag-add-hook21703
+Ref: semantic-tag-remove-hook22109
+Ref: semantic--tag-run-hooks22637
+Node: Misc Tag Functions23615
+Ref: semantic-narrow-to-tag23831
+Ref: semantic-with-buffer-narrowed-to-current-tag24145
+Ref: semantic-with-buffer-narrowed-to-tag24476
+Node: Tag Internals24697
+Node: Tag Attributes Internals24985
+Ref: semantic-tag-attributes25204
+Ref: semantic-tag-get-attribute26036
+Ref: semantic-tag-put-attribute26788
+Ref: semantic-tag-put-attribute-no-side-effect27301
+Node: Tag Properties Internals27623
+Ref: semantic-tag-properties27872
+Ref: semantic--tag-put-property28212
+Ref: semantic--tag-get-property28636
+Ref: semantic--tag-put-property-no-side-effect29041
+Ref: semantic-tag-make-plist29628
+Node: Tag Overlay Internals30187
+Ref: semantic-tag-set-bounds30527
+Node: Creating Tags30594
+Ref: semantic-tag30811
+Ref: semantic-tag-new-variable31304
+Ref: semantic-tag-new-function31874
+Ref: semantic-tag-new-type32464
+Ref: semantic-tag-new-include33586
+Ref: semantic-tag-new-package34125
+Ref: semantic-tag-new-code34606
+Node: Copying Tags34808
+Ref: semantic-tag-clone35387
+Ref: semantic-tag-copy35711
+Ref: semantic-tag-deep-copy-one-tag36149
+Node: Misc Tag Internals36445
+Node: Searching Tag Tables38687
+Node: Breadth Search39644
+Ref: semantic-find-first-tag-by-name40036
+Ref: semantic-find-tags-by-name40311
+Ref: semantic-find-tags-for-completion40507
+Ref: semantic-find-tags-by-name-regexp40914
+Ref: semantic-find-tags-by-class41260
+Ref: semantic-find-tags-by-type41535
+Ref: semantic-find-tags-included41901
+Node: Deep Search42032
+Node: Specialty Search48897
+Ref: semantic-find-tags-of-compound-type49322
+Ref: semantic-find-tags-by-scope-protection49619
+Ref: semantic-find-tags-external-children-of-type50211
+Ref: semantic-find-tags-subclasses-of-type50485
+Node: Custom Search50706
+Ref: semantic--find-tags-by-function51207
+Ref: semantic--find-tags-by-macro51466
+Node: Tags at Point51598
+Node: Tag Decoration54448
+Node: Tag Highlighting55058
+Ref: semantic-highlight-tag55254
+Ref: semantic-unhighlight-tag55542
+Ref: semantic-momentary-highlight-tag55816
+Ref: semantic-set-tag-face56342
+Node: Tag Visible Properties56546
+Ref: semantic-set-tag-invisible56991
+Ref: semantic-tag-invisible-p57299
+Ref: semantic-set-tag-intangible57564
+Ref: semantic-tag-intangible-p58005
+Ref: semantic-set-tag-read-only58400
+Ref: semantic-tag-read-only-p58760
+Node: Tag Secondary Overlays58981
+Ref: semantic-tag-create-secondary-overlay59758
+Ref: semantic-tag-delete-secondary-overlay60179
+Ref: semantic-tag-get-secondary-overlay60482
+Ref: semantic-tag-secondary-overlays60662
+Node: Tag Folding61236
+Ref: semantic-set-tag-folded61556
+Ref: semantic-tag-folded-p61775
+Node: Tag Sorting61819
+Ref: semantic-unique-tag-table62277
+Ref: semantic-unique-tag-table-by-name62540
+Ref: semantic-bucketize62723
+Ref: semantic-bucketize-tag-class63345
+Ref: semantic-adopt-external-members63871
+Ref: semantic-orphaned-member-metaparent-type64779
+Ref: semantic-mark-external-member-function65033
+Node: Tag Completion65590
+Node: Tag Completion Convenience Functions66616
+Ref: semantic-complete-read-tag-project67639
+Ref: semantic-complete-read-tag-analyzer68236
+Ref: semantic-complete-inline-analyzer68940
+Node: Custom Tag Completion Functions69322
+Ref: semantic-complete-read-tag-engine70287
+Node: Tag Collectors72007
+Ref: semantic-collector-abstract72554
+Ref: semantic-collector-buffer-abstract72797
+Ref: semantic-collector-project-abstract72958
+Ref: semantic-collector-buffer-deep73159
+Ref: semantic-collector-project73370
+Ref: semantic-collector-project-brutish73462
+Ref: semantic-collector-analyze-completions73558
+Node: Tag Displayors73802
+Ref: semantic-displayor-abstract74501
+Ref: semantic-displayor-focus-abstract74729
+Ref: semantic-displayor-traditional74979
+Ref: semantic-displayor-traditional-with-focus-highlight75234
+Ref: semantic-displayor-tooltip75546
+Node: Old Tag Completion75668
+Ref: semantic-read-symbol75995
+Ref: semantic-read-variable76451
+Ref: semantic-read-function76782
+Ref: semantic-read-type77107
+Node: Override Methods77365
+Ref: semantic-with-mode-bindings78114
+Node: Format Tag78803
+Ref: semantic-format-tag-functions79384
+Ref: semantic-format-tag-custom-list79831
+Ref: semantic-format-tag-name80491
+Ref: semantic-format-tag-abbreviate81058
+Ref: semantic-format-tag-summarize81702
+Ref: semantic-format-tag-prototype82218
+Ref: semantic-format-tag-concise-prototype82903
+Ref: semantic-format-tag-uml-abbreviate83451
+Ref: semantic-format-tag-uml-prototype83992
+Ref: semantic-format-tag-uml-concise-prototype84541
+Ref: semantic-format-tag-prin185093
+Ref: semantic-format-tag-type85528
+Node: Tag Members85751
+Ref: semantic-tag-external-member-p87290
+Ref: semantic-tag-external-member-children88131
+Node: Tag Details89269
+Ref: semantic-tag-protection89613
+Ref: semantic-tag-protected-p90681
+Ref: semantic-tag-abstract-p91165
+Ref: semantic-tag-leaf-p91916
+Ref: semantic-tag-static-p92546
+Node: Tag File Reference93058
+Ref: semantic-dependency-system-include-path93382
+Ref: semantic-dependency-tag-file93840
+Ref: semantic-prototype-file94507
+Ref: semantic-texi-find-documentation95023
+Node: Jump to a Tag95439
+Ref: semantic-go-to-tag95774
+Node: Making New Methods96668
+Ref: define-overload97362
+Ref: define-mode-local-override98597
+Ref: defvar-mode-local99310
+Ref: defconst-mode-local99457
+Ref: setq-mode-local99779
+Node: Parser Features100196
+Node: Editing Buffers101380
+Node: Parser State102025
+Ref: semantic-parse-tree-needs-update-p102434
+Ref: semantic-parse-tree-needs-rebuild-p102552
+Ref: semantic-parse-tree-unparseable-p102668
+Ref: semantic-parse-tree-up-to-date-p102787
+Node: Parser Hooks102851
+Ref: semantic-after-toplevel-cache-change-hook103121
+Ref: semantic-after-partial-cache-change-hook103707
+Ref: semantic-before-toplevel-cache-flush-hook104297
+Node: Lexical Safety104618
+Ref: semantic-lex-catch-errors105111
+Node: Semantic Database105867
+Node: Semanticdb in Programs106794
+Ref: semanticdb-minor-mode-p107113
+Ref: semanticdb-file-stream107567
+Ref: semanticdb-file-table-object107904
+Node: Semanticdb Tag Queries108233
+Node: DB Results110237
+Ref: semanticdb-strip-find-results110814
+Ref: semanticdb-fast-strip-find-results111334
+Ref: semanticdb-find-results-p111766
+Ref: semanticdb-find-result-with-nil-p112029
+Ref: semanticdb-find-result-length112501
+Ref: semanticdb-find-result-nth112587
+Ref: semanticdb-find-result-nth-in-buffer112963
+Ref: semanticdb-find-result-mapc113301
+Node: DB Search Paths113495
+Ref: semanticdb-find-default-throttle114197
+Ref: semanticdb-find-translate-path115777
+Ref: semanticdb-find-table-for-include117550
+Ref: defcustom-mode-local-semantic-dependency-system-include-path118398
+Node: DB Basic Name Search118834
+Ref: semanticdb-find-tags-by-name119379
+Ref: semanticdb-find-tags-by-name-regexp119722
+Ref: semanticdb-find-tags-for-completion120067
+Ref: semanticdb-find-tags-by-class120405
+Ref: semanticdb-deep-find-tags-by-name120755
+Ref: semanticdb-deep-find-tags-by-name-regexp121165
+Ref: semanticdb-deep-find-tags-for-completion121577
+Node: DB Data Type Search121888
+Ref: semanticdb-have-typecache-p122557
+Ref: semanticdb-get-typecache122685
+Ref: semanticdb-typecache-find122995
+Ref: semanticdb-typecache-dump123418
+Node: DB Basic Brute Search123467
+Ref: semanticdb-brute-deep-find-tags-by-name123871
+Node: DB Advanced Search124225
+Ref: semanticdb-find-tags-external-children-of-type124952
+Ref: semanticdb-find-tags-subclasses-of-type125318
+Node: DB Generic Search125584
+Ref: semanticdb-find-tags-collector125994
+Node: System Databases126889
+Ref: semanticdb-project-database-emacs-lisp127467
+Ref: semanticdb-project-database-ebrowse127599
+Ref: semanticdb-create-ebrowse-database127830
+Node: Semanticdb references128022
+Ref: semanticdb-includes-in-table128752
+Ref: semanticdb-notify-references128955
+Ref: semanticdb-check-references129289
+Ref: semanticdb-ref-test129537
+Node: Idle Scheduling129719
+Ref: define-semantic-idle-service130806
+Ref: semantic-throw-on-input131384
+Ref: semantic-exit-on-input131838
+Node: Example Programs132340
+Node: Current Context132550
+Node: Blocks133270
+Ref: semantic-up-context133810
+Ref: semantic-beginning-of-context134428
+Ref: semantic-end-of-context134732
+Ref: semantic-end-of-command135128
+Ref: semantic-beginning-of-command135366
+Node: Local Variables135568
+Ref: semantic-get-local-variables135955
+Ref: semantic-get-local-arguments136269
+Ref: semantic-get-all-local-variables136853
+Node: Derived Context137220
+Ref: semantic-ctxt-current-symbol137806
+Ref: semantic-ctxt-current-assignment138093
+Ref: semantic-ctxt-current-function138408
+Ref: semantic-ctxt-current-argument138818
+Ref: semantic-ctxt-current-thing139024
+Ref: semantic-ctxt-current-class-list139404
+Ref: semantic-ctxt-scoped-types139844
+Node: Context Analysis140171
+Ref: semantic-analyze-current-context140941
+Ref: semantic-analyze-possible-completions141596
+Node: Analysis Overview142864
+Node: Analysis Objects144643
+Node: Completion Overview144863
+Node: Data Debugger145063
+Ref: data-debug-edebug-expr145928
+Ref: semantic-adebug-bovinate146285
+Ref: semantic-adebug-searchdb146398
+Ref: semantic-adebug-analyze146540
+Ref: semantic-adebug-mode146838
+Ref: semantic-adebug-new-buffer147417
+Ref: data-debug-insert-thing147812
+Node: GNU Free Documentation License148064
+Node: Index167808
 
 End Tag Table

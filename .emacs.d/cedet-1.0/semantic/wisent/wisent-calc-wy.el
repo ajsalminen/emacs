@@ -3,7 +3,7 @@
 ;; Copyright (C) 2002, 2003, 2009 David Ponce
 
 ;; Author: ãƒãƒ­ãƒ³ ã‚µãƒ ã‚¨ãƒ« <baron@richstyles-2.local>
-;; Created: 2010-09-28 12:19:38+0900
+;; Created: 2010-09-30 17:17:21+0900
 ;; Keywords: syntax
 ;; X-RCS: $Id$
 

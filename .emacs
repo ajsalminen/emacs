@@ -24,6 +24,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(ecb-options-version "2.40")
+ '(ecb-source-path (quote (("~/projects/ghub" "Projects"))))
  '(inhibit-startup-screen t))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
@@ -60,11 +61,11 @@
 (add-to-list 'load-path "~/.emacs.d/color-theme")
 (require 'color-theme)
 (require 'color-theme-inkpot)
-(require 'color-theme-arjen)
+(require 'color-theme-sunburst)
 (eval-after-load "color-theme"
   '(progn
      (color-theme-initialize)
-     (color-theme-arjen)))
+     (color-theme-inkpot)))
 
 (let ((path "~/.emacs.d/scala"))
   (setq load-path (cons path load-path))
@@ -88,25 +89,6 @@
 
   (elisp-cache nfsdir cachedir)
   )
-
-(defun set-frame-size-according-to-resolution ()
-  (interactive)
-  (if window-system
-      (progn
-        ;; use 120 char wide window for largeish displays
-        ;; and smaller 80 column windows for smaller displays
-        ;; pick whatever numbers make sense for you
-        (if (> (x-display-pixel-width) 1280)
-            (add-to-list 'default-frame-alist (cons 'width 120))
-          (add-to-list 'default-frame-alist (cons 'width 80)))
-        ;; for the height, subtract a couple hundred pixels
-        ;; from the screen height (for panels, menubars and
-        ;; whatnot), then divide by the height of a char to
-        ;; get the height we want
-        (add-to-list 'default-frame-alist
-                     (cons 'height (/ (- (x-display-pixel-height) 200) (frame-char-height)))))))
-
-(set-frame-size-according-to-resolution)
 
 (load-file "~/.emacs.d/cedet-1.0/common/cedet.el")
 (global-ede-mode 1)                      ; Enable the Project management system
@@ -219,7 +201,7 @@
 
 ;; offset for dock on left side
 (setq mf-offset-x 47)
-(add-hook 'window-setup-hook 'maximize-frame t)
+;;(add-hook 'window-setup-hook 'maximize-frame t)
 
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 
@@ -265,16 +247,84 @@
 (icy-mode 1)
 (global-set-key "\C-x\ \C-r" 'icicle-recent-file)
 
+(add-to-list 'load-path "~/.emacs.d/magit")
 (require 'magit)
 (require 'magit-svn) 
+(require 'gist)
 
-
+;; highlight current line
 (global-hl-line-mode 1)
- 
 ;; To customize the background color
-(set-face-background 'hl-line "Black")  ;; Emacs 22 Only
+(set-face-background 'hl-line "#000")  ;; Emacs 22 Only
+
+(require 'hl-line+)
+(toggle-hl-line-when-idle 1)
+
+
+;; Japanese input-related settings
+;; So I know if input method is active
+
+(require 'cursor-chg)
+
+(set-language-environment 'Japanese)
+(set-terminal-coding-system 'utf-8)
+     (defun setup-japanese-input ()
+       "Set up my Japanese input environment."
+       (if (equal current-language-environment "Japanese")
+           (setq default-input-method "japanese")))
+     (add-hook 'set-language-environment-hook 'setup-japanese-input)
 
 ;;(byte-recompile-directory "~/.emacs.d" 0 t)
+
+
+;; Frame fiddling
+(defun set-frame-size-according-to-resolution ()
+  (interactive)
+  (if window-system
+      (progn
+        ;; use 120 char wide window for largeish displays
+        ;; and smaller 80 column windows for smaller displays
+        ;; pick whatever numbers make sense for you
+        (if (> (x-display-pixel-width) 1280)
+            (add-to-list 'default-frame-alist (cons 'width 160))
+          (add-to-list 'default-frame-alist (cons 'width 80)))
+        ;; for the height, subtract a couple hundred pixels
+        ;; from the screen height (for panels, menubars and
+        ;; whatnot), then divide by the height of a char to
+        ;; get the height we want
+        (add-to-list 'default-frame-alist
+                     (cons 'height (/ (- (x-display-pixel-height) 200) (frame-char-height)))))))
+
+(set-frame-size-according-to-resolution)
+
+(defun arrange-frame (w h x y)
+  "Set the width, height, and x/y position of the current frame"
+  (let ((frame (selected-frame)))
+    (delete-other-windows)
+    (set-frame-position frame x y)
+    (set-frame-size frame w h)))
+
+
+;;(arrange-frame 160 50 2 22)
+
+
+;; Hard Code the window dimensions, that's how we roll
+(set-frame-position (selected-frame) 45 0)
+(add-to-list 'default-frame-alist (cons 'width 150))
+(add-to-list 'default-frame-alist (cons 'height 47))
+
+(setq truncate-lines nil)
+(setq truncate-partial-width-windows nil)
+
+;; toggle-max-window
+(when
+    (featurep 'carbon-emacs-package)
+(defun toggle-max-window ()
+(interactive)
+(if (frame-parameter nil 'fullscreen)
+(set-frame-parameter nil 'fullscreen nil)
+(set-frame-parameter nil 'fullscreen 'fullboth)))
+(global-set-key "\M-\r" 'toggle-max-window))
 
 ;; I always compile my .emacs, saves me about two seconds
 ;; startuptime. But that only helps if the .emacs.elc is newer
