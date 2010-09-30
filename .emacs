@@ -35,9 +35,9 @@
 
 (setq initial-scratch-message nil)
 
-    (let ((default-directory "~/.emacs.d/site-lisp/"))
-      (normal-top-level-add-to-load-path '("."))
-      (normal-top-level-add-subdirs-to-load-path))
+(let ((default-directory "~/.emacs.d/site-lisp/"))
+  (normal-top-level-add-to-load-path '("."))
+  (normal-top-level-add-subdirs-to-load-path))
 
 (setq backup-directory-alist
       `((".*" . ,temporary-file-directory)))
@@ -122,7 +122,7 @@
 ;;(arrange-frame 160 50 2 22)
 
 (setq auto-save-timeout 15)
-(defalias 'yes-or-no-p 'y-or-n-p) 
+(defalias 'yes-or-no-p 'y-or-n-p)
 
 
 
@@ -139,9 +139,9 @@
 
 
 (load-file "~/.emacs.d/cedet-1.0/common/cedet.el")
-(global-ede-mode 1)                      ; Enable the Project management system
-(semantic-load-enable-code-helpers)      ; Enable prototype help and smart completion
-(global-srecode-minor-mode 1)            ; Enable template insertion menu
+(global-ede-mode 1)             ; Enable the Project management system
+(semantic-load-enable-code-helpers) ; Enable prototype help and smart completion
+(global-srecode-minor-mode 1)       ; Enable template insertion menu
 
 (add-to-list 'load-path "~/.emacs.d/ecb-2.40")
 (require 'ecb)
@@ -182,14 +182,14 @@
 (setq TeX-PDF-mode t)
 (setq TeX-view-program-selection
       '(((output-dvi style-pstricks)
-	 "dvips and PDF Viewer")
-	(output-dvi "PDF Viewer")
-	(output-pdf "PDF Viewer")
-	(output-html "Safari")))
+         "dvips and PDF Viewer")
+        (output-dvi "PDF Viewer")
+        (output-pdf "PDF Viewer")
+        (output-html "Safari")))
 (setq TeX-view-program-list
       '(("dvips and PDF Viewer" "%(o?)dvips %d -o && open %f")
-	("PDF Viewer" "open %o")
-	("Safari" "open %o")))
+        ("PDF Viewer" "open %o")
+        ("Safari" "open %o")))
 
 
 (setq load-path (cons (expand-file-name "~/src/emacs/yatex1.74") load-path))
@@ -211,13 +211,14 @@
 ;;; platex と TeXShop
 ;;(setq tex-command "~/Library/TeXShop/bin/platex2pdf-euc"
 ;;      dvi2-command "open -a TeXShop")
-;;; pdflatex と TeXShop 
+;;; pdflatex と TeXShop
 ;;(setq tex-command "pdflatex"
 ;;      dvi2-command "open -a TeXShop")
 
 ;; Alias the two major modes for fast switching
 (defalias 'jlt 'yatex-mode)
 (defalias 'ltm 'japanese-latex-mode)
+(require 'ess-site)
 
 ;; Reload .emacs file by typing: Mx reload.
 (defun reload () "Reloads .emacs interactively."
@@ -284,7 +285,7 @@
    "fontset-hirakaku12"
    'katakana-jisx0201
    "-apple-hiragino_kaku_gothic_pro-medium-normal-normal-*-14-*-iso10646-1")
-)
+  )
 
 ;; recentf stuff
 (require 'recentf)
@@ -298,13 +299,13 @@
 
 (add-to-list 'load-path "~/.emacs.d/magit")
 (require 'magit)
-(require 'magit-svn) 
+(require 'magit-svn)
 (require 'gist)
 
 ;; highlight current line
 (global-hl-line-mode 1)
 ;; To customize the background color
-(set-face-background 'hl-line "#000")  ;; Emacs 22 Only
+(set-face-background 'hl-line "#000") ;; Emacs 22 Only
 
 (require 'hl-line+)
 (toggle-hl-line-when-idle 1)
@@ -317,18 +318,18 @@
 
 (set-language-environment 'Japanese)
 (set-terminal-coding-system 'utf-8)
-     (defun setup-japanese-input ()
-       "Set up my Japanese input environment."
-       (if (equal current-language-environment "Japanese")
-           (setq default-input-method "japanese")))
-     (add-hook 'set-language-environment-hook 'setup-japanese-input)
+(defun setup-japanese-input ()
+  "Set up my Japanese input environment."
+  (if (equal current-language-environment "Japanese")
+      (setq default-input-method "japanese")))
+(add-hook 'set-language-environment-hook 'setup-japanese-input)
 
 ;;(byte-recompile-directory "~/.emacs.d" 0 t)
 
 ;; Carbon Emacs keep Spotlight from triggering
 (when
     (featurep 'carbon-emacs-package)
-(mac-add-ignore-shortcut '(control)))
+  (mac-add-ignore-shortcut '(control)))
 
 ;; Remember the place
 (require 'saveplace)
@@ -339,29 +340,29 @@
 ;; toggle-max-window
 (when
     (featurep 'carbon-emacs-package)
-(defun toggle-max-window ()
-(interactive)
-(if (frame-parameter nil 'fullscreen)
-(set-frame-parameter nil 'fullscreen nil)
-(set-frame-parameter nil 'fullscreen 'fullboth)))
-(global-set-key "\M-\r" 'toggle-max-window))
+  (defun toggle-max-window ()
+    (interactive)
+    (if (frame-parameter nil 'fullscreen)
+        (set-frame-parameter nil 'fullscreen nil)
+      (set-frame-parameter nil 'fullscreen 'fullboth)))
+  (global-set-key "\M-\r" 'toggle-max-window))
 
 
 ;; I always compile my .emacs, saves me about two seconds
 ;; startuptime. But that only helps if the .emacs.elc is newer
 ;; than the .emacs. So compile .emacs if it's not.
 (when (and user-init-file
-	   (equal (file-name-extension user-init-file) "elc"))
+           (equal (file-name-extension user-init-file) "elc"))
   (let* ((source (file-name-sans-extension user-init-file))
-	 (alt (concat source ".el")))
+         (alt (concat source ".el")))
     (setq source (cond ((file-exists-p alt) alt)
-		       ((file-exists-p source) source)
-		       (t nil)))
+                       ((file-exists-p source) source)
+                       (t nil)))
     (when source
       (when (file-newer-than-file-p source user-init-file)
-	(byte-compile-file source)
-	(load-file source)
-	(eval-buffer nil nil)
+        (byte-compile-file source)
+        (load-file source)
+        (eval-buffer nil nil)
         (delete-other-windows) ))))
 
 ;;; Emacs Desktop – Saving sessions.
