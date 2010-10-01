@@ -396,6 +396,7 @@
 ;; Set to <your Dropbox root directory>/MobileOrg.
 (setq org-mobile-directory "~/Dropbox/MobileOrg")
 (setq org-mobile-files (quote ("~/org")))
+(setq org-agenda-skip-unavailable-files t)
 
 (defun org-mobile-pullpush nil nil (org-mobile-pull)
                                     (org-mobile-push))
