@@ -163,7 +163,7 @@
 (setq TeX-auto-save t)
 (setq TeX-parse-self t)
 (setq-default TeX-master nil)
-(add-hook 'LaTeX-mode-hook 'auto-fill-mode)
+;;(add-hook 'LaTeX-mode-hook 'auto-fill-mode)
 (add-hook 'LaTeX-mode-hook 'flyspell-mode)
 (add-hook 'LaTeX-mode-hook 'LaTeX-math-mode)
 (add-hook 'LaTeX-mode-hook 'turn-on-reftex)
@@ -498,6 +498,15 @@ If the link is in hidden text, expose it."
 (require 'ido)
 (ido-mode t)
 (setq ido-enable-flex-matching t) ;; enable fuzzy matching
+(ido-everywhere 1)
+(setq ido-enable-flex-matching t)
+(setq ido-confirm-unique-completion nil) ;; wait for RET, even for unique?
+(setq ido-show-dot-for-dired t)          ;; put . as the first item
+(setq ido-use-filename-at-point t) ;; prefer file names near point
+(add-hook 'ido-setup-hook
+          (lambda ()
+            (define-key ido-completion-map [tab] 'ido-complete)))
+
 
 ;;; Emacs Desktop – Saving sessions.
 ;;(setq desktop-save-mode t)
