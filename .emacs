@@ -169,8 +169,8 @@
 (add-hook 'LaTeX-mode-hook 'turn-on-reftex)
 (add-hook 'LaTeX-mode-hook 'TeX-source-correlate-mode)
 
-(add-hook 'LaTeX-mode-hook 'turn-on-reftex)   ; with AUCTeX LaTeX mode
-(add-hook 'latex-mode-hook 'turn-on-reftex)   ; with Emacs latex mode
+(add-hook 'LaTeX-mode-hook 'turn-on-reftex) ; with AUCTeX LaTeX mode
+(add-hook 'latex-mode-hook 'turn-on-reftex) ; with Emacs latex mode
 (setq reftex-plug-into-AUCTeX t)
 
 (setq TeX-default-mode 'japanese-latex-mode)
@@ -399,7 +399,7 @@
 (setq org-agenda-skip-unavailable-files t)
 
 (defun org-mobile-pullpush nil nil (org-mobile-pull)
-                                    (org-mobile-push))
+  (org-mobile-push))
 
 
 (run-at-time t 900 'org-mobile-pullpush)
@@ -460,8 +460,8 @@ If the link is in hidden text, expose it."
       (error "No further link found"))))
 
 (add-hook 'org-agenda-mode-hook
-            '(lambda () (define-key org-mode-map "\M-n" 'org-next-visible-link)
-(define-key org-mode-map "\M-p" 'org-previous-visible-link)))
+          '(lambda () (define-key org-mode-map "\M-n" 'org-next-visible-link)
+             (define-key org-mode-map "\M-p" 'org-previous-visible-link)))
 
 ;; ここまで
 
@@ -494,6 +494,10 @@ If the link is in hidden text, expose it."
              ,org-code-reading-file "Memo"))))
     (org-remember)))
 
+;; fuzzy buffer matches
+(require 'ido)
+(ido-mode t)
+(setq ido-enable-flex-matching t) ;; enable fuzzy matching
 
 ;;; Emacs Desktop – Saving sessions.
 ;;(setq desktop-save-mode t)
