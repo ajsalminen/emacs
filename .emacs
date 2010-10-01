@@ -365,6 +365,116 @@
         (eval-buffer nil nil)
         (delete-other-windows) ))))
 
+
+
+;; org-modeを利用するための設定
+(add-to-list 'load-path "~/.emacs.d/org-mode/lisp")
+(add-to-list 'load-path "~/.emacs.d/org-mode/contrib/lisp")
+(add-to-list 'load-path "~/.emacs.d/remember-2.0")
+(require 'org-install)
+(require 'remember)
+
+(setq system-time-locale "C")
+
+(add-to-list 'auto-mode-alist '("\\.org$" . org-mode))
+(global-set-key "\C-cl" 'org-store-link)
+(global-set-key "\C-ca" 'org-agenda)
+(global-set-key "\C-cb" 'org-iswitchb)
+(add-hook 'org-mode-hook 'turn-on-font-lock) ; Org buffers only
+
+(setq org-startup-truncated nil)
+(setq org-return-follows-link t)
+(setq org-directory "~/Dropbox/memo/")
+(setq org-default-notes-file (concat org-directory "memo.org"))
+(define-key global-map "\C-cc" 'org-capture)
+
+(setq org-capture-templates
+      '(("t" "Todo" entry (file+headline "~/Dropbox/memo/memo.org" "Inbox") "** TODO %? %i %a ")
+        ("b" "Bug" entry (file+headline "~/Dropbox/memo/memo.org" "Inbox") "** TODO %? :bug: %i %a %T")
+        ("i" "Idea" entry (file+headline "~/Dropbox/memo/memo.org" "New Ideas") "** %? %i %a %T")))
+
+;; 前後の可視であるリンクに飛ぶ。
+(defun org-next-visible-link ()
+  "Move forward to the next link.
+If the link is in hidden text, expose it."
+  (interactive)
+  (when (and org-link-search-failed (eq this-command last-command))
+    (goto-char (point-min))
+    (message "Link search wrapped back to beginning of buffer"))
+  (setq org-link-search-failed nil)
+  (let* ((pos (point))
+         (ct (org-context))
+         (a (assoc :link ct))
+         srch)
+    (if a (goto-char (nth 2 a)))
+    (while (and (setq srch (re-search-forward org-any-link-re nil t))
+                (goto-char (match-beginning 0))
+                (prog1 (not (eq (org-invisible-p) 'org-link))
+                  (goto-char (match-end 0)))))
+    (if srch
+        (goto-char (match-beginning 0))
+      (goto-char pos)
+      (setq org-link-search-failed t)
+      (error "No further link found"))))
+
+(defun org-previous-visible-link ()
+  "Move backward to the previous link.
+If the link is in hidden text, expose it."
+  (interactive)
+  (when (and org-link-search-failed (eq this-command last-command))
+    (goto-char (point-max))
+    (message "Link search wrapped back to end of buffer"))
+  (setq org-link-search-failed nil)
+  (let* ((pos (point))
+         (ct (org-context))
+         (a (assoc :link ct))
+         srch)
+    (if a (goto-char (nth 1 a)))
+    (while (and (setq srch (re-search-backward org-any-link-re nil t))
+                (goto-char (match-beginning 0))
+                (not (eq (org-invisible-p) 'org-link))))
+    (if srch
+        (goto-char (match-beginning 0))
+      (goto-char pos)
+      (setq org-link-search-failed t)
+      (error "No further link found"))))
+
+(add-hook 'org-agenda-mode-hook
+            '(lambda () (define-key org-mode-map "\M-n" 'org-next-visible-link)
+(define-key org-mode-map "\M-p" 'org-previous-visible-link)))
+
+;; ここまで
+
+;; 思いついたコードやメモコードを書いて保存できるようにするための設定
+;; (auto-install-from-emacswiki "open-junk-file.el")
+(require 'open-junk-file)
+(global-set-key "\C-c\C-j" 'open-junk-file)
+;; ここまで
+
+;; コードリーディングの時に役立つようなメモの方法
+
+(defvar org-code-reading-software-name nil)
+;; <メモの補完場所>/code-reading.org に記録する
+(defvar org-code-reading-file "code-reading.org")
+(defun org-code-reading-read-software-name ()
+  (set (make-local-variable 'org-code-reading-software-name)
+       (read-string "Code Reading Software: "
+                    (or org-code-reading-software-name
+                        (file-name-nondirectory
+                         (buffer-file-name))))))
+
+(defun org-code-reading-get-prefix (lang)
+  (concat "[" lang "]"
+          "[" (org-code-reading-read-software-name) "]"))
+(defun org-remember-code-reading ()
+  (interactive)
+  (let* ((prefix (org-code-reading-get-prefix (substring (symbol-name major-mode) 0 -5)))
+         (org-remember-templates
+          `(("CodeReading" ?r "** %(identity prefix)%?\n   \n   %a\n   %t"
+             ,org-code-reading-file "Memo"))))
+    (org-remember)))
+
+
 ;;; Emacs Desktop – Saving sessions.
 ;;(setq desktop-save-mode t)
 ;;(desktop-load-default)
