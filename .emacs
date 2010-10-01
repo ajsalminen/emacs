@@ -168,7 +168,10 @@
 (add-hook 'LaTeX-mode-hook 'LaTeX-math-mode)
 (add-hook 'LaTeX-mode-hook 'turn-on-reftex)
 (add-hook 'LaTeX-mode-hook 'TeX-source-correlate-mode)
-;;(setq reftex-plug-into-AUCTeX t)
+
+(add-hook 'LaTeX-mode-hook 'turn-on-reftex)   ; with AUCTeX LaTeX mode
+(add-hook 'latex-mode-hook 'turn-on-reftex)   ; with Emacs latex mode
+(setq reftex-plug-into-AUCTeX t)
 
 (setq TeX-default-mode 'japanese-latex-mode)
 (setq japanese-TeX-command-default "pTeX")
@@ -229,6 +232,7 @@
 
 (require 'smart-tab)
 (global-smart-tab-mode t)
+(global-set-key '[C-tab] 'dabbrev-expand)
 
 (require 'yasnippet) ;; not yasnippet-bundle
 
@@ -384,14 +388,29 @@
 
 (setq org-startup-truncated nil)
 (setq org-return-follows-link t)
-(setq org-directory "~/Dropbox/memo/")
+
+;; Set to the location of your Org files on your local system
+(setq org-directory "~/org")
+;; Set to the name of the file where new notes will be stored
+(setq org-mobile-inbox-for-pull "~/org/inbox.org")
+;; Set to <your Dropbox root directory>/MobileOrg.
+(setq org-mobile-directory "~/Dropbox/MobileOrg")
+(setq org-mobile-files (quote ("~/org")))
+
+(defun org-mobile-pullpush nil nil (org-mobile-pull)
+                                    (org-mobile-push))
+
+
+(run-at-time t 900 'org-mobile-pullpush)
+
+
 (setq org-default-notes-file (concat org-directory "memo.org"))
 (define-key global-map "\C-cc" 'org-capture)
 
 (setq org-capture-templates
-      '(("t" "Todo" entry (file+headline "~/Dropbox/memo/memo.org" "Inbox") "** TODO %? %i %a ")
-        ("b" "Bug" entry (file+headline "~/Dropbox/memo/memo.org" "Inbox") "** TODO %? :bug: %i %a %T")
-        ("i" "Idea" entry (file+headline "~/Dropbox/memo/memo.org" "New Ideas") "** %? %i %a %T")))
+      '(("t" "Todo" entry (file+headline "~/org/memo.org" "Inbox") "** TODO %? %i %a ")
+        ("b" "Bug" entry (file+headline "~/org/memo.org" "Inbox") "** TODO %? :bug: %i %a %T")
+        ("i" "Idea" entry (file+headline "~/org/memo.org" "New Ideas") "** %? %i %a %T")))
 
 ;; 前後の可視であるリンクに飛ぶ。
 (defun org-next-visible-link ()
