@@ -298,18 +298,40 @@
 ;;(global-set-key "\C-x\ \C-r" 'recentf-open-files)
 
 ; show line number the cursor is on, in status bar (the mode line)
-(line-number-mode 1)
+(require 'linum)
+;(line-number-mode 1)
 ; display line numbers in margin (fringe). Emacs 23 only.
-;;(global-linum-mode 1) ; always show line numbers
+;(global-linum-mode 1) ; always show line numbers
 (setq linum-format "%d ")
 
 (require 'icicles)
 (icy-mode 1)
 (global-set-key "\C-x\ \C-r" 'icicle-recent-file)
+(setq icicle-TAB-completion-methods (quote (fuzzy basic vanilla)))
+
+;; fuzzy buffer matches
+;(require 'ido)
+;(ido-mode t)
+;;(setq confirm-nonexistent-file-or-buffer nil)
+;(require 'ido)
+;(ido-mode 1)
+;(ido-everywhere 1)
+;(setq ido-enable-flex-matching t)
+;(setq ido-create-new-buffer 'always)
+;(setq ido-enable-tramp-completion nil)
+;(setq ido-enable-last-directory-history nil)
+;(setq ido-confirm-unique-completion nil) ;; wait for RET, even for unique?
+;(setq ido-show-dot-for-dired t) ;; put . as the first item
+;(setq ido-use-filename-at-point t) ;; prefer file names near point
+;(add-hook 'ido-setup-hook
+;          (lambda ()
+;            (define-key ido-completion-map [tab] 'ido-complete)))
+
 
 (add-to-list 'load-path "~/.emacs.d/magit")
 (require 'magit)
 (require 'magit-svn)
+(defalias 'magit-status 'mg)
 (require 'gist)
 
 ;; highlight current line
@@ -500,23 +522,6 @@ If the link is in hidden text, expose it."
              ,org-code-reading-file "Memo"))))
     (org-remember)))
 
-;; fuzzy buffer matches
-(require 'ido)
-(ido-mode t)
-;;(setq confirm-nonexistent-file-or-buffer nil)
-(require 'ido)
-(ido-mode 1)
-(ido-everywhere 1)
-(setq ido-enable-flex-matching t)
-(setq ido-create-new-buffer 'always)
-(setq ido-enable-tramp-completion nil)
-(setq ido-enable-last-directory-history nil)
-(setq ido-confirm-unique-completion nil) ;; wait for RET, even for unique?
-(setq ido-show-dot-for-dired t) ;; put . as the first item
-(setq ido-use-filename-at-point t) ;; prefer file names near point
-(add-hook 'ido-setup-hook
-          (lambda ()
-            (define-key ido-completion-map [tab] 'ido-complete)))
 
 
 ;;; Emacs Desktop – Saving sessions.
