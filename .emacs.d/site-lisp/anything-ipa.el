@@ -83,7 +83,7 @@
 (defun anything-ipa-candidates ()
   (save-excursion
     (set-buffer anything-current-buffer)
-    (loop for (overlay . text) in ipa-annotations-in-buffer
+    (loop for (overlay . text) in ipa-annotations-in-buffer 
           for pos = (overlay-start overlay)
           for line = (progn (goto-char pos)
                             (buffer-substring (point-at-bol) (point-at-eol)))
