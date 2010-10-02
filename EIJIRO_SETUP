@@ -1,0 +1,51 @@
+## more info on setup (Japanese)
+## http://blog.2310.net/archives/200
+
+### Use homebrew to get the dependencies sorted out
+## http://mxcl.github.com/homebrew/
+
+## the following was enough for me
+## brew install glib
+
+
+## this is to speed up your lookups
+cd ..
+wget http://sary.sourceforge.net/sary-1.2.0.tar.gz
+cd sary-*
+./configure
+make
+sudo make install
+
+
+
+### Make Eijiro dict
+### You're on your own as you need to buy it from http://eijiro.jp
+### It's like $20 or $30 depending on Yen fluctuations
+
+### Once you download a large WinRAR exe file (that can be unzipped with Unarchiver)
+### process the file into dictionary format
+### You'll find the script used for processing included
+
+### http://nox-insomniae.ddo.jp/insomnia/2009/01/eijiro-emacs.html
+
+wget http://github.com/baron/emacs/raw/master/pdic2sdic.rb
+cp pdic2sdic.rb ~/Downloads/EDP-124/EIJIRO/
+cd ~/Downloads/EDP-124/EIJIRO
+## EIJI-124.TXT    REIJI124.TXT    RYAKU124.TXT    WAEI-124.TXT
+
+cat EIJI-124.TXT RYAKU124.TXT | nkf -w8 | pdic2sdic.rb > eijirou.sdic
+
+nkf -w8 WAEI-124.TXT | ruby pdic2sdic.rb > waeijirou.sdic
+
+sudo cp *.sdic /usr/local/share/dict/
+
+## just for backup
+tar -czvf eijidict.tar *.sdic 
+
+## if you don't use utf8 you may need to adjust
+## http://blog.2310.net/archives/200
+## this one takes a whille without the -b option (need more RAM)
+## http://sary.sourceforge.net/FAQ.html#tooslow
+cd /usr/local/share/dict
+sudo mksary -b eijirou.sdic 
+sudo mksary -b waeijirou.sdic
