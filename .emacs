@@ -331,7 +331,7 @@
 (add-to-list 'load-path "~/.emacs.d/magit")
 (require 'magit)
 (require 'magit-svn)
-(defalias 'magit-status 'mg)
+(defalias 'mg 'magit-status)
 (require 'gist)
 
 ;; highlight current line
