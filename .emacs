@@ -334,6 +334,15 @@
 (defalias 'mg 'magit-status)
 (require 'gist)
 
+;; dictionary stuff
+(require 'auto-install)
+(setq auto-install-directory "~/.emacs.d/auto-install/")
+(add-to-list 'load-path "~/.emacs.d/auto-install")
+
+(require 'eijiro)
+(setq eijiro-directory "~/Downloads/EDP-124/EIJIRO") ; 英辞郎の辞書を置いているディレクトリ
+
+
 ;; highlight current line
 (global-hl-line-mode 1)
 ;; To customize the background color
