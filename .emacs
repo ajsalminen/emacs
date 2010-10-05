@@ -89,10 +89,12 @@
 (add-to-list 'load-path "~/.emacs.d/color-theme")
 (require 'color-theme)
 (require 'color-theme-inkpot)
+(require 'manoj-colors)
 (require 'color-theme-sunburst)
 (eval-after-load "color-theme"
   '(progn
      (color-theme-initialize)
+     (color-theme-manoj-gnus)
      (color-theme-inkpot)))
 
 (let ((path "~/.emacs.d/scala"))
@@ -615,7 +617,10 @@ If the link is in hidden text, expose it."
   (require 'w3m)
   (require 'w3m-extension)
 (add-hook 'w3m-mode-hook 'w3m-link-numbering-mode))
+(setq w3m-use-cookies t)
 (defalias 'www 'w3m)
+
+
 
 (require 'revbufs)
 
@@ -623,4 +628,5 @@ If the link is in hidden text, expose it."
 
 ;(add-hook 'after-init-hook 'org-agenda-list)
 ;(add-hook 'after-init-hook 'bookmark-bmenu-list)
+(load-file (expand-file-name "~/.emacs.d/site-lisp/w3mkeymap.el"))
 (bookmark-bmenu-list)
