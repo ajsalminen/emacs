@@ -630,3 +630,6 @@ If the link is in hidden text, expose it."
 ;(add-hook 'after-init-hook 'bookmark-bmenu-list)
 (load-file (expand-file-name "~/.emacs.d/site-lisp/w3mkeymap.el"))
 (bookmark-bmenu-list)
+
+(add-to-list 'load-path "~/.emacs.d/twittering")
+(require 'twittering-mode)
