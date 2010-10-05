@@ -1,5 +1,5 @@
 ;;; sdicf.el --- Search library for SDIC format dictionary
-;;; $Id: sdicf.el,v 1.4 1999/09/07 04:01:08 tsuchiya Exp $
+;;; $Id: sdicf.el,v 1.1.1.1 2001/11/28 18:32:43 kazuhiko Exp $
 
 ;; Copyright (C) 1999 TSUCHIYA Masatoshi <tsuchiya@pine.kuee.kyoto-u.ac.jp>
 

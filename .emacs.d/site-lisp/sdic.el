@@ -663,7 +663,7 @@ sdic-read-from-minibuffer 関数のヒストリ")
     (split-window-vertically (- (window-height w1) h))
     (setq other-window t)
 ;;TODO: clean up and make behavior better
-    (switch-to-buffer-other-window buf))
+    (switch-to-buffer-other-window buf)))
 
   (defun sdic-other-window () "\
 検索表示バッファから元のバッファに戻る関数"

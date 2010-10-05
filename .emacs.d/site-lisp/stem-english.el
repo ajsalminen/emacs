@@ -1,5 +1,5 @@
 ;;; stem.el ---- routines for stemming
-;;; $Id: stem-english.el,v 1.2 1999/07/27 13:06:49 tsuchiya Exp $
+;;; $Id: stem-english.el,v 1.1.1.1 2001/11/28 18:32:52 kazuhiko Exp $
 
 ;;; Author: Tsuchiya Masatoshi <tsuchiya@pine.kuee.kyoto-u.ac.jp>
 ;;; Keywords: stemming

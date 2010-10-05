@@ -12,6 +12,10 @@
   (package-initialize))
 
 
+;; All my custom settings that differ and/or can't be under version control
+(setq custom-file "~/custom.el")
+(load custom-file 'noerror)
+
 ;;; This was installed by package-install.el.
 ;;; This provides support for the package system and
 ;;; interfacing with ELPA, the package archive.
@@ -28,7 +32,8 @@
  ;; If there is more than one, they won't work right.
  '(ecb-options-version "2.40")
  '(ecb-source-path (quote (("~/projects/ghub" "Projects"))))
- '(inhibit-startup-screen t))
+ '(inhibit-startup-screen t)
+ '(inhibit-startup-message t))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -36,7 +41,27 @@
  ;; If there is more than one, they won't work right.
  )
 
-(setq initial-scratch-message nil)
+(load-file "~/.emacs.d/cedet-1.0/common/cedet.el")
+(global-ede-mode 1)             ; Enable the Project management system
+(semantic-load-enable-code-helpers) ; Enable prototype help and smart completion
+(global-srecode-minor-mode 1)       ; Enable template insertion menu
+
+(add-to-list 'load-path "~/.emacs.d/ecb-2.40")
+(require 'ecb)
+(semantic-load-enable-minimum-features)
+(setq ecb-layout-name "left8")
+(setq ecb-auto-activate t)
+(setq ecb-tip-of-the-day nil)
+(setq ecb-fix-window-size (quote width))
+(setq ecb-compile-window-width (quote edit-window))
+(ecb-activate)
+
+;;(setq ecb-maximize-ecb-window-after-selection t)
+
+
+
+
+;(setq initial-scratch-message nil)
 
 (let ((default-directory "~/.emacs.d/site-lisp/"))
   (normal-top-level-add-to-load-path '("."))
@@ -138,24 +163,6 @@
 
 (setq truncate-lines nil)
 (setq truncate-partial-width-windows nil)
-
-
-
-(load-file "~/.emacs.d/cedet-1.0/common/cedet.el")
-(global-ede-mode 1)             ; Enable the Project management system
-(semantic-load-enable-code-helpers) ; Enable prototype help and smart completion
-(global-srecode-minor-mode 1)       ; Enable template insertion menu
-
-(add-to-list 'load-path "~/.emacs.d/ecb-2.40")
-(require 'ecb)
-(semantic-load-enable-minimum-features)
-(setq ecb-layout-name "left8")
-(setq ecb-auto-activate t)
-(setq ecb-tip-of-the-day nil)
-(setq ecb-fix-window-size (quote width))
-(setq ecb-compile-window-width (quote edit-window))
-
-;;(setq ecb-maximize-ecb-window-after-selection t)
 
 (add-to-list 'load-path "~/.emacs.d/auctex-11.86")
 (load "auctex.el" nil t t)
@@ -300,35 +307,17 @@
 (setq recentf-max-menu-items 250)
 ;;(global-set-key "\C-x\ \C-r" 'recentf-open-files)
 
-; show line number the cursor is on, in status bar (the mode line)
+                                        ; show line number the cursor is on, in status bar (the mode line)
 (require 'linum)
-;(line-number-mode 1)
-; display line numbers in margin (fringe). Emacs 23 only.
-;(global-linum-mode 1) ; always show line numbers
+                                        ;(line-number-mode 1)
+                                        ; display line numbers in margin (fringe). Emacs 23 only.
+                                        ;(global-linum-mode 1) ; always show line numbers
 (setq linum-format "%d ")
 
-(require 'icicles)
-(icy-mode 1)
-(global-set-key "\C-x\ \C-r" 'icicle-recent-file)
-(setq icicle-TAB-completion-methods (quote (fuzzy basic vanilla)))
-
-;; fuzzy buffer matches
-;(require 'ido)
-;(ido-mode t)
-;;(setq confirm-nonexistent-file-or-buffer nil)
-;(require 'ido)
-;(ido-mode 1)
-;(ido-everywhere 1)
-;(setq ido-enable-flex-matching t)
-;(setq ido-create-new-buffer 'always)
-;(setq ido-enable-tramp-completion nil)
-;(setq ido-enable-last-directory-history nil)
-;(setq ido-confirm-unique-completion nil) ;; wait for RET, even for unique?
-;(setq ido-show-dot-for-dired t) ;; put . as the first item
-;(setq ido-use-filename-at-point t) ;; prefer file names near point
-;(add-hook 'ido-setup-hook
-;          (lambda ()
-;            (define-key ido-completion-map [tab] 'ido-complete)))
+;(require 'icicles)
+;(icy-mode 1)
+;(global-set-key "\C-x\ \C-r" 'icicle-recent-file)
+;(setq icicle-TAB-completion-methods (quote (fuzzy basic vanilla)))
 
 
 (add-to-list 'load-path "~/.emacs.d/magit")
@@ -342,15 +331,22 @@
 (require 'eijiro)
 (setq eijiro-directory "~/Downloads/EDP-124/EIJIRO/") ; 英辞郎の辞書を置いているディレクトリ
 
-(autoload 'sdic-describe-word "sdic" "search word" t nil)
+
 ;; ----- sdicが呼ばれたときの設定
+(autoload 'sdic-describe-word "sdic" "search word" t nil)
+;(setq sdicf-array-command "/usr/local/bin/sary")
+;     (setq sdic-eiwa-dictionary-list
+;           '((sdicf-client "/usr/local/share/dict/eijirou.sdic" (strategy array))))
+;    (setq sdic-waei-dictionary-list
+;          '((sdicf-client "/usr/local/share/dict/gene.sdic" (strategy array))))
+
 (eval-after-load "sdic"
   '(progn
      ;; saryのコマンドをセットする
      (setq sdicf-array-command "/usr/local/bin/sary")
      ;; sdicファイルのある位置を設定し、arrayコマンドを使用するよう設定(現在のところ英和のみ)
-     (setq sdic-eiwa-dictionary-list
-           '((sdicf-client "/usr/local/share/dict/eijirou.sdic" (strategy array))))
+;;;     (setq sdic-eiwa-dictionary-list
+;;;           '((sdicf-client "/usr/local/share/dict/eijirou.sdic" (strategy array))))
      ;; saryを直接使用できるように sdicf.el 内に定義されているarrayコマンド用関数を強制的に置換
      (fset 'sdicf-array-init 'sdicf-common-init)
      (fset 'sdicf-array-quit 'sdicf-common-quit)
@@ -379,11 +375,16 @@
      (defadvice sdic-backward-item (after sdic-backward-item-always-top activate)
        (recenter 0))))
 
+(autoload 'sdic-describe-word "sdic" "英単語の意味を調べる" t nil)
+(global-set-key "\C-cd" 'sdic-describe-word)
+(autoload 'sdic-describe-word-at-point "sdic" "カーソルの位置の英単語の意味を調べる" t nil)
+(global-set-key "\C-cD" 'sdic-describe-word-at-point)
+
 
 ;; highlight current line
 (global-hl-line-mode 1)
 ;; To customize the background color
-(set-face-background 'hl-line "#000") ;; Emacs 22 Only
+(set-face-background 'hl-line "#222") ;; Emacs 22 Only
 
 (require 'hl-line+)
 (toggle-hl-line-when-idle 1)
@@ -568,9 +569,58 @@ If the link is in hidden text, expose it."
              ,org-code-reading-file "Memo"))))
     (org-remember)))
 
+;; Common copying and pasting functions
+(defun copy-word (&optional arg)
+  "Copy words at point into kill-ring"
+  (interactive "P")
+  (let ((beg (progn (if (looking-back "[a-zA-Z0-9]" 1) (backward-word 1)) (point)))
+        (end (progn (forward-word arg) (point))))
+    (copy-region-as-kill beg end)))
 
+(global-set-key (kbd "C-c w") (quote copy-word))
 
-;;; Emacs Desktop – Saving sessions.
-;;(setq desktop-save-mode t)
-;;(desktop-load-default)
-;;(desktop-read)
+(defun copy-line (&optional arg)
+  "Save current line into Kill-Ring without mark the line "
+  (interactive "P")
+  (let ((beg (line-beginning-position))
+        (end (line-end-position arg)))
+    (copy-region-as-kill beg end)))
+
+(global-set-key (kbd "C-c k") (quote copy-line))
+
+(defun copy-paragraph (&optional arg)
+  "Copy paragraphes at point"
+  (interactive "P")
+  (let ((beg (progn (backward-paragraph 1) (point)))
+        (end (progn (forward-paragraph arg) (point))))
+    (copy-region-as-kill beg end)))
+
+(global-set-key (kbd "C-c p") (quote copy-paragraph))
+
+(defun copy-string (&optional arg)
+  "Copy a sequence of string into kill-ring"
+  (interactive)
+  (setq onPoint (point))
+  (let ((beg (progn (re-search-backward "[\t ]" (line-beginning-position) 3 1)
+                    (if (looking-at "[\t ]") (+ (point) 1) (point))))
+        (end (progn (goto-char onPoint) (re-search-forward "[\t ]" (line-end-position) 3 1)
+                    (if (looking-back "[\t ]") (- (point) 1) (point) ) )))
+    (copy-region-as-kill beg end)))
+
+(global-set-key (kbd "C-c s") (quote copy-string))
+
+(require 'basic-edit-toolkit)
+(if (= emacs-major-version 23)
+	(require 'w3m-ems)
+  (require 'w3m)
+  (require 'w3m-extension)
+(add-hook 'w3m-mode-hook 'w3m-link-numbering-mode))
+(defalias 'www 'w3m)
+
+(require 'revbufs)
+
+;(require 'bookmark+)
+
+;(add-hook 'after-init-hook 'org-agenda-list)
+;(add-hook 'after-init-hook 'bookmark-bmenu-list)
+(bookmark-bmenu-list)
