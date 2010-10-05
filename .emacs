@@ -314,10 +314,10 @@
                                         ;(global-linum-mode 1) ; always show line numbers
 (setq linum-format "%d ")
 
-;(require 'icicles)
-;(icy-mode 1)
-;(global-set-key "\C-x\ \C-r" 'icicle-recent-file)
-;(setq icicle-TAB-completion-methods (quote (fuzzy basic vanilla)))
+(require 'icicles)
+(icy-mode 1)
+(global-set-key "\C-x\ \C-r" 'icicle-recent-file)
+(setq icicle-TAB-completion-methods (quote (fuzzy basic vanilla)))
 
 
 (add-to-list 'load-path "~/.emacs.d/magit")
