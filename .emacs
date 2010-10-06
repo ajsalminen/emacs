@@ -506,6 +506,8 @@
                              "~/org/dev.org"
                              "~/org/diss.org"))
 
+(setq org-clock-persist 'history)
+(org-clock-persistence-insinuate)
 
 ;; ここまで
 
