@@ -503,7 +503,7 @@
         ("r" "Research" entry (file+headline "~/org/diss.org" "Research") "** %? %i %a %T")))
 
 (setq org-agenda-files (list "~/org/todo.org"
-                             "~/org/dev.org" 
+                             "~/org/dev.org"
                              "~/org/diss.org"))
 
 
@@ -596,3 +596,17 @@
 (global-set-key (kbd "C-x t m") 'pomodoro-work)
 (global-set-key (kbd "C-x t d") 'pomodoro-done)
 (global-set-key (kbd "C-x t l") 'pomodoro-later)
+
+(defface egoge-display-time
+  '((((type x w32 mac))
+     ;; #060525 is the background colour of my default face.
+     (:foreground "#060525" :inherit bold))
+    (((type tty))
+     (:foreground "blue")))
+  "Face used to display the time in the mode line.")
+;; This causes the current time in the mode line to be displayed in
+;; `egoge-display-time-face' to make it stand out visually.
+(setq display-time-string-forms
+      '((propertize (concat " " 24-hours ":" minutes " ")
+                    'face 'egoge-display-time)))
+(display-time-mode 1)
