@@ -16,6 +16,7 @@
 (setq custom-file "~/custom.el")
 (load custom-file 'noerror)
 
+
 ;;; This was installed by package-install.el.
 ;;; This provides support for the package system and
 ;;; interfacing with ELPA, the package archive.
@@ -86,6 +87,12 @@
   (indent-region (point-min) (point-max) nil)
   (untabify (point-min) (point-max)))
 
+(require 'auto-install)
+(require 'work-timer)
+
+(setq work-timer-working-time 30)
+(defalias 'work-timer-start 'p)
+
 (add-to-list 'load-path "~/.emacs.d/color-theme")
 (require 'color-theme)
 (require 'color-theme-inkpot)
@@ -96,6 +103,7 @@
      (color-theme-initialize)
      (color-theme-manoj-gnus)
      (color-theme-inkpot)))
+
 
 (let ((path "~/.emacs.d/scala"))
   (setq load-path (cons path load-path))
@@ -455,6 +463,11 @@
 (require 'org-install)
 (require 'remember)
 
+(require 'org-clock)
+(require 'org-timer)
+(setq org-timer-default-timer 25)
+
+
 (setq system-time-locale "C")
 
 (add-to-list 'auto-mode-alist '("\\.org$" . org-mode))
@@ -469,10 +482,9 @@
 ;; Set to the location of your Org files on your local system
 (setq org-directory "~/org")
 ;; Set to the name of the file where new notes will be stored
-(setq org-mobile-inbox-for-pull "~/org/inbox.org")
+(setq org-mobile-inbox-for-pull "~/org/flagged.org")
 ;; Set to <your Dropbox root directory>/MobileOrg.
 (setq org-mobile-directory "~/Dropbox/MobileOrg")
-(setq org-mobile-files (quote ("~/org")))
 (setq org-agenda-skip-unavailable-files t)
 
 (defun org-mobile-pullpush nil nil (org-mobile-pull)
@@ -486,59 +498,14 @@
 (define-key global-map "\C-cc" 'org-capture)
 
 (setq org-capture-templates
-      '(("t" "Todo" entry (file+headline "~/org/memo.org" "Inbox") "** TODO %? %i %a ")
-        ("b" "Bug" entry (file+headline "~/org/memo.org" "Inbox") "** TODO %? :bug: %i %a %T")
-        ("i" "Idea" entry (file+headline "~/org/memo.org" "New Ideas") "** %? %i %a %T")))
+      '(("t" "Todo" entry (file+headline "~/org/todo.org" "Inbox") "** TODO %? %i %a ")
+        ("d" "Dev" entry (file+headline "~/org/dev.org" "Dev") "** TODO %? :dev%i %a %T")
+        ("r" "Research" entry (file+headline "~/org/diss.org" "Research") "** %? %i %a %T")))
 
-;; 前後の可視であるリンクに飛ぶ。
-(defun org-next-visible-link ()
-  "Move forward to the next link.
-If the link is in hidden text, expose it."
-  (interactive)
-  (when (and org-link-search-failed (eq this-command last-command))
-    (goto-char (point-min))
-    (message "Link search wrapped back to beginning of buffer"))
-  (setq org-link-search-failed nil)
-  (let* ((pos (point))
-         (ct (org-context))
-         (a (assoc :link ct))
-         srch)
-    (if a (goto-char (nth 2 a)))
-    (while (and (setq srch (re-search-forward org-any-link-re nil t))
-                (goto-char (match-beginning 0))
-                (prog1 (not (eq (org-invisible-p) 'org-link))
-                  (goto-char (match-end 0)))))
-    (if srch
-        (goto-char (match-beginning 0))
-      (goto-char pos)
-      (setq org-link-search-failed t)
-      (error "No further link found"))))
+(setq org-agenda-files (list "~/org/todo.org"
+                             "~/org/dev.org" 
+                             "~/org/diss.org"))
 
-(defun org-previous-visible-link ()
-  "Move backward to the previous link.
-If the link is in hidden text, expose it."
-  (interactive)
-  (when (and org-link-search-failed (eq this-command last-command))
-    (goto-char (point-max))
-    (message "Link search wrapped back to end of buffer"))
-  (setq org-link-search-failed nil)
-  (let* ((pos (point))
-         (ct (org-context))
-         (a (assoc :link ct))
-         srch)
-    (if a (goto-char (nth 1 a)))
-    (while (and (setq srch (re-search-backward org-any-link-re nil t))
-                (goto-char (match-beginning 0))
-                (not (eq (org-invisible-p) 'org-link))))
-    (if srch
-        (goto-char (match-beginning 0))
-      (goto-char pos)
-      (setq org-link-search-failed t)
-      (error "No further link found"))))
-
-(add-hook 'org-agenda-mode-hook
-          '(lambda () (define-key org-mode-map "\M-n" 'org-next-visible-link)
-             (define-key org-mode-map "\M-p" 'org-previous-visible-link)))
 
 ;; ここまで
 
@@ -548,28 +515,6 @@ If the link is in hidden text, expose it."
 (global-set-key "\C-c\C-j" 'open-junk-file)
 ;; ここまで
 
-;; コードリーディングの時に役立つようなメモの方法
-
-(defvar org-code-reading-software-name nil)
-;; <メモの補完場所>/code-reading.org に記録する
-(defvar org-code-reading-file "code-reading.org")
-(defun org-code-reading-read-software-name ()
-  (set (make-local-variable 'org-code-reading-software-name)
-       (read-string "Code Reading Software: "
-                    (or org-code-reading-software-name
-                        (file-name-nondirectory
-                         (buffer-file-name))))))
-
-(defun org-code-reading-get-prefix (lang)
-  (concat "[" lang "]"
-          "[" (org-code-reading-read-software-name) "]"))
-(defun org-remember-code-reading ()
-  (interactive)
-  (let* ((prefix (org-code-reading-get-prefix (substring (symbol-name major-mode) 0 -5)))
-         (org-remember-templates
-          `(("CodeReading" ?r "** %(identity prefix)%?\n   \n   %a\n   %t"
-             ,org-code-reading-file "Memo"))))
-    (org-remember)))
 
 ;; Common copying and pasting functions
 (defun copy-word (&optional arg)
@@ -619,12 +564,13 @@ If the link is in hidden text, expose it."
 (add-hook 'w3m-mode-hook 'w3m-link-numbering-mode))
 (setq w3m-use-cookies t)
 (defalias 'www 'w3m)
+(defalias 'wws 'w3m-search)
 
-
+(defalias 'tt 'twittering-update-status-interactive)
 
 (require 'revbufs)
 
-;(require 'bookmark+)
+(require 'bookmark+)
 
 ;(add-hook 'after-init-hook 'org-agenda-list)
 ;(add-hook 'after-init-hook 'bookmark-bmenu-list)
@@ -633,3 +579,20 @@ If the link is in hidden text, expose it."
 
 (add-to-list 'load-path "~/.emacs.d/twittering")
 (require 'twittering-mode)
+
+
+
+;(require 'auto-install)
+;(require 'todochiku)
+;(load-file "~/.emacs.d/site-lisp/work-timer.el")
+
+;(setq work-timer-working-time 10)
+;(global-set-key (kbd "C-x t m") 'work-timer-start)
+
+
+;(require 'epom)
+;(global-set-key (kbd "C-x t m") 'epom-start-cycle)
+(require 'pomodoro)
+(global-set-key (kbd "C-x t m") 'pomodoro-work)
+(global-set-key (kbd "C-x t d") 'pomodoro-done)
+(global-set-key (kbd "C-x t l") 'pomodoro-later)
