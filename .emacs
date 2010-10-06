@@ -579,9 +579,10 @@
 (load-file (expand-file-name "~/.emacs.d/site-lisp/w3mkeymap.el"))
 (bookmark-bmenu-list)
 
+(require 'alpaca)
 (add-to-list 'load-path "~/.emacs.d/twittering")
 (require 'twittering-mode)
-
+(setq twittering-use-master-password t)
 
 
 ;(require 'auto-install)
