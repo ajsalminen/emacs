@@ -11,3 +11,4 @@ elispcache/*
 */CVS/*
 CVS
 .emacs.d/history
+.org-id-locations
