@@ -12,3 +12,4 @@ elispcache/*
 CVS
 .emacs.d/history
 .org-id-locations
+org-clock-save.el

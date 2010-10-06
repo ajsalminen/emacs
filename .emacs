@@ -498,12 +498,13 @@
 (define-key global-map "\C-cc" 'org-capture)
 
 (setq org-capture-templates
-      '(("t" "Todo" entry (file+headline "~/org/todo.org" "Inbox") "** TODO %? %i %a ")
-        ("d" "Dev" entry (file+headline "~/org/dev.org" "Dev") "** TODO %? :dev%i %a %T")
-        ("r" "Research" entry (file+headline "~/org/diss.org" "Research") "** %? %i %a %T")))
+      '(("t" "Todo" entry (file+headline "~/org/todo.org" "Inbox") "** TODO %? %i %a ") ("r" "Research" entry (file+headline "~/org/diss.org" "Research") "** %? %i %a %T")
+        ("w" "Writing" entry (file+headline "~/org/write.org" "Dev") "** TODO %? :write%a %T")
+        ("d" "Dev" entry (file+headline "~/org/dev.org" "Dev") "** TODO %? :dev%i %a %T")))
 
 (setq org-agenda-files (list "~/org/todo.org"
                              "~/org/dev.org"
+                             "~/org/write.org"
                              "~/org/diss.org"))
 
 (setq org-clock-persist 'history)
