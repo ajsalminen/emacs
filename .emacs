@@ -409,7 +409,7 @@
   (if (equal current-language-environment "Japanese")
       (when
           ((featurep 'carbon-emacs-package)
-           (setq default-input-method "MacOSX")
+           (setq default-input-method "japanese")
            (mac-set-input-method-parameter "com.google.inputmethod.Japanese.base" `title "漢"))
         (setq default-input-method "japanese"))))
 
