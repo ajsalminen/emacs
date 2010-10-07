@@ -498,7 +498,8 @@
 (define-key global-map "\C-cc" 'org-capture)
 
 (setq org-capture-templates
-      '(("t" "Todo" entry (file+headline "~/org/todo.org" "Inbox") "** TODO %? %i %a ") ("r" "Research" entry (file+headline "~/org/diss.org" "Research") "** %? %i %a %T")
+      '(("t" "Todo" entry (file+headline "~/org/todo.org" "Inbox") "** TODO %? %i %a ")
+        ("r" "Research" entry (file+headline "~/org/diss.org" "Research") "** %? %i %a %T")
         ("w" "Writing" entry (file+headline "~/org/write.org" "Dev") "** TODO %? :write%a %T")
         ("d" "Dev" entry (file+headline "~/org/dev.org" "Dev") "** TODO %? :dev%i %a %T")))
 
