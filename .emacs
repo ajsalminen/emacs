@@ -410,7 +410,12 @@
 (defun setup-japanese-input ()
   "Set up my Japanese input environment."
   (if (equal current-language-environment "Japanese")
-      (setq default-input-method "japanese")))
+      (when
+          ((featurep 'carbon-emacs-package)
+           (setq default-input-method "MacOSX")
+           (mac-set-input-method-parameter "com.google.inputmethod.Japanese.base" `title "漢"))
+        (setq default-input-method "japanese"))))
+
 (add-hook 'set-language-environment-hook 'setup-japanese-input)
 
 ;;(byte-recompile-directory "~/.emacs.d" 0 t)
