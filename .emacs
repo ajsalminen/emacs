@@ -62,16 +62,13 @@
 
 
 
-;(setq initial-scratch-message nil)
+;;(setq initial-scratch-message nil)
 
 (let ((default-directory "~/.emacs.d/site-lisp/"))
   (normal-top-level-add-to-load-path '("."))
   (normal-top-level-add-subdirs-to-load-path))
 
-(setq backup-directory-alist
-      `((".*" . ,temporary-file-directory)))
-(setq auto-save-file-name-transforms
-      `((".*" ,temporary-file-directory t)))
+
 
 (setq-default indent-tabs-mode nil)
 
@@ -317,11 +314,11 @@
 (setq recentf-max-menu-items 250)
 ;;(global-set-key "\C-x\ \C-r" 'recentf-open-files)
 
-                                        ; show line number the cursor is on, in status bar (the mode line)
+;; show line number the cursor is on, in status bar (the mode line)
 (require 'linum)
-                                        ;(line-number-mode 1)
-                                        ; display line numbers in margin (fringe). Emacs 23 only.
-                                        ;(global-linum-mode 1) ; always show line numbers
+;;(line-number-mode 1)
+;; display line numbers in margin (fringe). Emacs 23 only.
+;;(global-linum-mode 1) ; always show line numbers
 (setq linum-format "%d ")
 
 (require 'icicles)
@@ -344,11 +341,11 @@
 
 ;; ----- sdicが呼ばれたときの設定
 (autoload 'sdic-describe-word "sdic" "search word" t nil)
-;(setq sdicf-array-command "/usr/local/bin/sary")
-;     (setq sdic-eiwa-dictionary-list
-;           '((sdicf-client "/usr/local/share/dict/eijirou.sdic" (strategy array))))
-;    (setq sdic-waei-dictionary-list
-;          '((sdicf-client "/usr/local/share/dict/gene.sdic" (strategy array))))
+;;(setq sdicf-array-command "/usr/local/bin/sary")
+;;     (setq sdic-eiwa-dictionary-list
+;;           '((sdicf-client "/usr/local/share/dict/eijirou.sdic" (strategy array))))
+;;    (setq sdic-waei-dictionary-list
+;;          '((sdicf-client "/usr/local/share/dict/gene.sdic" (strategy array))))
 
 (eval-after-load "sdic"
   '(progn
@@ -567,10 +564,10 @@
 
 (require 'basic-edit-toolkit)
 (if (= emacs-major-version 23)
-	(require 'w3m-ems)
+    (require 'w3m-ems)
   (require 'w3m)
   (require 'w3m-extension)
-(add-hook 'w3m-mode-hook 'w3m-link-numbering-mode))
+  (add-hook 'w3m-mode-hook 'w3m-link-numbering-mode))
 (setq w3m-use-cookies t)
 (defalias 'www 'w3m)
 (defalias 'wws 'w3m-search)
@@ -581,8 +578,8 @@
 
 (require 'bookmark+)
 
-;(add-hook 'after-init-hook 'org-agenda-list)
-;(add-hook 'after-init-hook 'bookmark-bmenu-list)
+;;(add-hook 'after-init-hook 'org-agenda-list)
+;;(add-hook 'after-init-hook 'bookmark-bmenu-list)
 (load-file (expand-file-name "~/.emacs.d/site-lisp/w3mkeymap.el"))
 (bookmark-bmenu-list)
 
@@ -592,16 +589,16 @@
 (setq twittering-use-master-password t)
 
 
-;(require 'auto-install)
-;(require 'todochiku)
-;(load-file "~/.emacs.d/site-lisp/work-timer.el")
+;;(require 'auto-install)
+;;(require 'todochiku)
+;;(load-file "~/.emacs.d/site-lisp/work-timer.el")
 
-;(setq work-timer-working-time 10)
-;(global-set-key (kbd "C-x t m") 'work-timer-start)
+;;(setq work-timer-working-time 10)
+;;(global-set-key (kbd "C-x t m") 'work-timer-start)
 
+;;(require 'epom)
+;;(global-set-key (kbd "C-x t m") 'epom-start-cycle)
 
-;(require 'epom)
-;(global-set-key (kbd "C-x t m") 'epom-start-cycle)
 (require 'pomodoro)
 (global-set-key (kbd "C-x t m") 'pomodoro-work)
 (global-set-key (kbd "C-x t d") 'pomodoro-done)
@@ -620,3 +617,23 @@
       '((propertize (concat " " 24-hours ":" minutes " ")
                     'face 'egoge-display-time)))
 (display-time-mode 1)
+
+
+;; Backups
+
+(setq backup-by-copying t               ; don't clobber symlinks
+      backup-directory-alist '(("." . "~/.saves")) ; don't litter my fs tree
+      delete-old-versions t
+      kept-new-versions 20
+      kept-old-versions 2
+      version-control t)                ; use versioned backups
+
+(setq backup-directory-alist
+      `((".*" . ,"~/.saves")))
+(setq auto-save-file-name-transforms
+      `((".*" ,"~/.saves" t)))
+
+(defun force-backup-of-buffer ()
+  (setq buffer-backed-up nil))
+
+(add-hook 'before-save-hook  'force-backup-of-buffer)
