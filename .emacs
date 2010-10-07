@@ -637,3 +637,5 @@
   (setq buffer-backed-up nil))
 
 (add-hook 'before-save-hook  'force-backup-of-buffer)
+(require 'pabbrev)
+(global-pabbrev-mode t)
