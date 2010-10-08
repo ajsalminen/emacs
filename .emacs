@@ -176,16 +176,27 @@
 (add-to-list 'load-path "~/.emacs.d/auctex-11.86/preview")
 (load "preview-latex.el" nil t t)
 
+(require 'smart-tab)
 (require 'pabbrev)
-;;(global-pabbrev-mode t)
-(add-hook 'text-mode-hook 'pabbrev-mode)
+
+(setq dabbrev-case-fold-search t)
+(global-smart-tab-mode t)
+(global-pabbrev-mode t)
+
+(global-set-key (kbd "\t") 'pabbrev-expand-maybe)
+(global-set-key '[tab] 'pabbrev-expand-maybe)
+(global-set-key '[C-tab] 'smart-tab)
+
+(put 'org-mode 'pabbrev-global-mode-excluded-modes t)
+;;(add-to-list 'pabbrev-global-mode-excluded-modes 'org-mode)
+;;(add-hook 'text-mode-hook 'pabbrev-mode)
 
 (setq TeX-auto-save t)
 (setq TeX-parse-self t)
 (setq-default TeX-master nil)
 ;;(add-hook 'LaTeX-mode-hook 'auto-fill-mode)
 (add-hook 'LaTeX-mode-hook 'flyspell-mode)
-(add-hook 'LaTeX-mode-hook 'pabbrev-mode)
+;;(add-hook 'LaTeX-mode-hook 'pabbrev-mode)
 (add-hook 'LaTeX-mode-hook 'LaTeX-math-mode)
 (add-hook 'LaTeX-mode-hook 'turn-on-reftex)
 (add-hook 'LaTeX-mode-hook 'TeX-source-correlate-mode)
@@ -251,9 +262,7 @@
 
 (setq default-directory "~/projects/ghub")
 
-(require 'smart-tab)
-(global-smart-tab-mode t)
-(global-set-key '[C-tab] 'dabbrev-expand)
+
 
 (require 'yasnippet) ;; not yasnippet-bundle
 
@@ -328,7 +337,7 @@
 (require 'icicles)
 (icy-mode 1)
 (global-set-key "\C-x\ \C-r" 'icicle-recent-file)
-(setq icicle-TAB-completion-methods (quote (fuzzy basic vanilla)))
+;;(setq icicle-TAB-completion-methods (quote (fuzzy basic vanilla)))
 
 
 (add-to-list 'load-path "~/.emacs.d/magit")
@@ -484,7 +493,6 @@
 (global-set-key "\C-ca" 'org-agenda)
 (global-set-key "\C-cb" 'org-iswitchb)
 (add-hook 'org-mode-hook 'turn-on-font-lock) ; Org buffers only
-(add-hook 'org-mode-hook 'pabbrev-mode)      ; Org buffers only
 
 (setq org-startup-truncated nil)
 (setq org-return-follows-link t)
