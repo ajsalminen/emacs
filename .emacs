@@ -15,6 +15,8 @@
 ;; All my custom settings that differ and/or can't be under version control
 (setq custom-file "~/custom.el")
 (load custom-file 'noerror)
+(setq blog-file "~/blogs.el")
+(load blog-file 'noerror)
 
 
 ;;; This was installed by package-install.el.
@@ -74,21 +76,21 @@
 
 ;; PATH doesn't get inherited for OSX
 (when (equal system-type 'darwin)
-  (setenv "PATH" (concat "/usr/local/texlive/p2009/bin/x86_64-apple-darwin10.2.0/:/opt/local/bin:/usr/local/bin:" (getenv "PATH")))
-  (push "/opt/local/bin" exec-path))
+(setenv "PATH" (concat "/usr/local/texlive/p2009/bin/x86_64-apple-darwin10.2.0/:/opt/local/bin:/usr/local/bin:" (getenv "PATH")))
+(push "/opt/local/bin" exec-path))
 
 (defun ib ()
-  "indent whole buffer"
-  (interactive)
-  (delete-trailing-whitespace)
-  (indent-region (point-min) (point-max) nil)
-  (untabify (point-min) (point-max)))
+"indent whole buffer"
+(interactive)
+(delete-trailing-whitespace)
+(indent-region (point-min) (point-max) nil)
+(untabify (point-min) (point-max)))
 
 (require 'auto-install)
 (require 'work-timer)
 
 (setq work-timer-working-time 30)
-(defalias 'work-timer-start 'p)
+;;(defalias 'work-timer-start 'p)
 
 (add-to-list 'load-path "~/.emacs.d/color-theme")
 (require 'color-theme)
@@ -96,15 +98,15 @@
 (require 'manoj-colors)
 (require 'color-theme-sunburst)
 (eval-after-load "color-theme"
-  '(progn
-     (color-theme-initialize)
-     (color-theme-manoj-gnus)
-     (color-theme-inkpot)))
+'(progn
+   (color-theme-initialize)
+   (color-theme-manoj-gnus)
+   (color-theme-inkpot)))
 
 
 (let ((path "~/.emacs.d/scala"))
-  (setq load-path (cons path load-path))
-  (load "scala-mode-auto.el"))
+(setq load-path (cons path load-path))
+(load "scala-mode-auto.el"))
 (require 'scala-mode-auto)
 
 (setq mac-option-key-is-meta nil)
@@ -113,45 +115,45 @@
 (setq mac-option-modifier nil)
 
 (let ((path "~/.emacs.d"))
-  (setq load-path (cons path load-path))
-  (load "elisp-cache.el"))
+(setq load-path (cons path load-path))
+(load "elisp-cache.el"))
 
 (let ((nfsdir "~/.emacs.d/site-lisp")
       (cachedir "~/.elispcache"))
-  (setq load-path (append load-path (list cachedir nfsdir)))
-  (require 'elisp-cache)
-  (setq elisp-cache-byte-compile-files t)
+(setq load-path (append load-path (list cachedir nfsdir)))
+(require 'elisp-cache)
+(setq elisp-cache-byte-compile-files t)
 
-  (elisp-cache nfsdir cachedir)
-  )
+(elisp-cache nfsdir cachedir)
+)
 
 
 ;; Frame fiddling
 (defun set-frame-size-according-to-resolution ()
-  (interactive)
-  (if window-system
-      (progn
-        ;; use 120 char wide window for largeish displays
-        ;; and smaller 80 column windows for smaller displays
-        ;; pick whatever numbers make sense for you
-        (if (> (x-display-pixel-width) 1280)
-            (add-to-list 'default-frame-alist (cons 'width 160))
-          (add-to-list 'default-frame-alist (cons 'width 80)))
-        ;; for the height, subtract a couple hundred pixels
-        ;; from the screen height (for panels, menubars and
-        ;; whatnot), then divide by the height of a char to
-        ;; get the height we want
-        (add-to-list 'default-frame-alist
-                     (cons 'height (/ (- (x-display-pixel-height) 200) (frame-char-height)))))))
+(interactive)
+(if window-system
+    (progn
+      ;; use 120 char wide window for largeish displays
+      ;; and smaller 80 column windows for smaller displays
+      ;; pick whatever numbers make sense for you
+      (if (> (x-display-pixel-width) 1280)
+          (add-to-list 'default-frame-alist (cons 'width 160))
+        (add-to-list 'default-frame-alist (cons 'width 80)))
+      ;; for the height, subtract a couple hundred pixels
+      ;; from the screen height (for panels, menubars and
+      ;; whatnot), then divide by the height of a char to
+      ;; get the height we want
+      (add-to-list 'default-frame-alist
+                   (cons 'height (/ (- (x-display-pixel-height) 200) (frame-char-height)))))))
 
 (set-frame-size-according-to-resolution)
 
 (defun arrange-frame (w h x y)
-  "Set the width, height, and x/y position of the current frame"
-  (let ((frame (selected-frame)))
-    (delete-other-windows)
-    (set-frame-position frame x y)
-    (set-frame-size frame w h)))
+"Set the width, height, and x/y position of the current frame"
+(let ((frame (selected-frame)))
+  (delete-other-windows)
+  (set-frame-position frame x y)
+  (set-frame-size frame w h)))
 
 
 ;;(arrange-frame 160 50 2 22)
@@ -216,15 +218,15 @@
 ;; (http://skim-app.sourceforge.net) is a nice PDF viewer.
 (setq TeX-PDF-mode t)
 (setq TeX-view-program-selection
-      '(((output-dvi style-pstricks)
-         "dvips and PDF Viewer")
-        (output-dvi "PDF Viewer")
-        (output-pdf "PDF Viewer")
-        (output-html "Safari")))
+'(((output-dvi style-pstricks)
+   "dvips and PDF Viewer")
+  (output-dvi "PDF Viewer")
+  (output-pdf "PDF Viewer")
+  (output-html "Safari")))
 (setq TeX-view-program-list
-      '(("dvips and PDF Viewer" "%(o?)dvips %d -o && open %f")
-        ("PDF Viewer" "open %o")
-        ("Safari" "open %o")))
+'(("dvips and PDF Viewer" "%(o?)dvips %d -o && open %f")
+  ("PDF Viewer" "open %o")
+  ("Safari" "open %o")))
 
 
 (setq load-path (cons (expand-file-name "~/src/emacs/yatex1.74") load-path))
@@ -239,7 +241,7 @@
 
 ;;; platex と Skim
 (setq tex-command "~/Library/TeXShop/bin/platex2pdf-utf8"
-      dvi2-command "open -a Skim")
+dvi2-command "open -a Skim")
 ;;; pdflatex と Skim
 ;;(setq tex-command "pdflatex -synctex=1"
 ;;     dvi2-command "open -a Skim")
@@ -257,8 +259,8 @@
 
 ;; Reload .emacs file by typing: Mx reload.
 (defun reload () "Reloads .emacs interactively."
-  (interactive)
-  (load "~/.emacs"))
+(interactive)
+(load "~/.emacs"))
 
 (setq default-directory "~/projects/ghub")
 
@@ -273,12 +275,12 @@
 
 (eval-when-compile (require 'cl))
 (defun toggle-transparency ()
-  (interactive)
-  (if (/=
-       (cadr (frame-parameter nil 'alpha))
-       100)
-      (set-frame-parameter nil 'alpha '(100 100))
-    (set-frame-parameter nil 'alpha '(85 50))))
+(interactive)
+(if (/=
+     (cadr (frame-parameter nil 'alpha))
+     100)
+    (set-frame-parameter nil 'alpha '(100 100))
+  (set-frame-parameter nil 'alpha '(85 50))))
 (global-set-key (kbd "C-c t") 'toggle-transparency)
 
 (require 'maxframe)
@@ -294,32 +296,32 @@
 
 ;;Font settings for CJK fonts on Cocoa Emacs
 (when (= emacs-major-version 23)
-  (create-fontset-from-ascii-font
-   "-apple-monaco-medium-normal-normal-*-12-*" nil "hirakaku12")
+(create-fontset-from-ascii-font
+ "-apple-monaco-medium-normal-normal-*-12-*" nil "hirakaku12")
 
-  (set-default-font "fontset-hirakaku12")
-  (add-to-list 'default-frame-alist '(font . "fontset-hirakaku12"))
+(set-default-font "fontset-hirakaku12")
+(add-to-list 'default-frame-alist '(font . "fontset-hirakaku12"))
 
-  (set-fontset-font
-   "fontset-hirakaku12"
-   'japanese-jisx0208
-   "-apple-hiragino_kaku_gothic_pro-medium-normal-normal-*-14-*-iso10646-1")
+(set-fontset-font
+ "fontset-hirakaku12"
+ 'japanese-jisx0208
+ "-apple-hiragino_kaku_gothic_pro-medium-normal-normal-*-14-*-iso10646-1")
 
-  (set-fontset-font
-   "fontset-hirakaku12"
-   'jisx0201
-   "-apple-hiragino_kaku_gothic_pro-medium-normal-normal-*-14-*-iso10646-1")
+(set-fontset-font
+ "fontset-hirakaku12"
+ 'jisx0201
+ "-apple-hiragino_kaku_gothic_pro-medium-normal-normal-*-14-*-iso10646-1")
 
-  (set-fontset-font
-   "fontset-hirakaku12"
-   'japanese-jisx0212
-   "-apple-hiragino_kaku_gothic_pro-medium-normal-normal-*-14-*-iso10646-1")
+(set-fontset-font
+ "fontset-hirakaku12"
+ 'japanese-jisx0212
+ "-apple-hiragino_kaku_gothic_pro-medium-normal-normal-*-14-*-iso10646-1")
 
-  (set-fontset-font
-   "fontset-hirakaku12"
-   'katakana-jisx0201
-   "-apple-hiragino_kaku_gothic_pro-medium-normal-normal-*-14-*-iso10646-1")
-  )
+(set-fontset-font
+ "fontset-hirakaku12"
+ 'katakana-jisx0201
+ "-apple-hiragino_kaku_gothic_pro-medium-normal-normal-*-14-*-iso10646-1")
+)
 
 ;; recentf stuff
 (require 'recentf)
@@ -361,39 +363,39 @@
 ;;          '((sdicf-client "/usr/local/share/dict/gene.sdic" (strategy array))))
 
 (eval-after-load "sdic"
-  '(progn
-     ;; saryのコマンドをセットする
-     (setq sdicf-array-command "/usr/local/bin/sary")
-     ;; sdicファイルのある位置を設定し、arrayコマンドを使用するよう設定(現在のところ英和のみ)
+'(progn
+   ;; saryのコマンドをセットする
+   (setq sdicf-array-command "/usr/local/bin/sary")
+   ;; sdicファイルのある位置を設定し、arrayコマンドを使用するよう設定(現在のところ英和のみ)
 ;;;     (setq sdic-eiwa-dictionary-list
 ;;;           '((sdicf-client "/usr/local/share/dict/eijirou.sdic" (strategy array))))
-     ;; saryを直接使用できるように sdicf.el 内に定義されているarrayコマンド用関数を強制的に置換
-     (fset 'sdicf-array-init 'sdicf-common-init)
-     (fset 'sdicf-array-quit 'sdicf-common-quit)
-     (fset 'sdicf-array-search
-           (lambda (sdic pattern &optional case regexp)
-             (sdicf-array-init sdic)
-             (if regexp
-                 (signal 'sdicf-invalid-method '(regexp))
-               (save-excursion
-                 (set-buffer (sdicf-get-buffer sdic))
-                 (delete-region (point-min) (point-max))
-                 (apply 'sdicf-call-process
-                        sdicf-array-command
-                        (sdicf-get-coding-system sdic)
-                        nil t nil
-                        (if case
-                            (list "-i" pattern (sdicf-get-filename sdic))
-                          (list pattern (sdicf-get-filename sdic))))
-                 (goto-char (point-min))
-                 (let (entries)
-                   (while (not (eobp)) (sdicf-search-internal))
-                   (nreverse entries))))))
-     ;; おまけ--辞書バッファ内で移動した時、常にバッファの一行目になるようにする
-     (defadvice sdic-forward-item (after sdic-forward-item-always-top activate)
-       (recenter 0))
-     (defadvice sdic-backward-item (after sdic-backward-item-always-top activate)
-       (recenter 0))))
+   ;; saryを直接使用できるように sdicf.el 内に定義されているarrayコマンド用関数を強制的に置換
+   (fset 'sdicf-array-init 'sdicf-common-init)
+   (fset 'sdicf-array-quit 'sdicf-common-quit)
+   (fset 'sdicf-array-search
+         (lambda (sdic pattern &optional case regexp)
+           (sdicf-array-init sdic)
+           (if regexp
+               (signal 'sdicf-invalid-method '(regexp))
+             (save-excursion
+               (set-buffer (sdicf-get-buffer sdic))
+               (delete-region (point-min) (point-max))
+               (apply 'sdicf-call-process
+                      sdicf-array-command
+                      (sdicf-get-coding-system sdic)
+                      nil t nil
+                      (if case
+                          (list "-i" pattern (sdicf-get-filename sdic))
+                        (list pattern (sdicf-get-filename sdic))))
+               (goto-char (point-min))
+               (let (entries)
+                 (while (not (eobp)) (sdicf-search-internal))
+                 (nreverse entries))))))
+   ;; おまけ--辞書バッファ内で移動した時、常にバッファの一行目になるようにする
+   (defadvice sdic-forward-item (after sdic-forward-item-always-top activate)
+     (recenter 0))
+   (defadvice sdic-backward-item (after sdic-backward-item-always-top activate)
+     (recenter 0))))
 
 (autoload 'sdic-describe-word "sdic" "英単語の意味を調べる" t nil)
 (global-set-key "\C-cd" 'sdic-describe-word)
@@ -421,13 +423,13 @@
 (set-language-environment 'Japanese)
 (set-terminal-coding-system 'utf-8)
 (defun setup-japanese-input ()
-  "Set up my Japanese input environment."
-  (if (equal current-language-environment "Japanese")
-      (when
-          ((featurep 'carbon-emacs-package)
-           (setq default-input-method "japanese")
-           (mac-set-input-method-parameter "com.google.inputmethod.Japanese.base" `title "漢"))
-        (setq default-input-method "japanese"))))
+"Set up my Japanese input environment."
+(if (equal current-language-environment "Japanese")
+    (when
+        ((featurep 'carbon-emacs-package)
+         (setq default-input-method "japanese")
+         (mac-set-input-method-parameter "com.google.inputmethod.Japanese.base" `title "漢"))
+      (setq default-input-method "japanese"))))
 
 (add-hook 'set-language-environment-hook 'setup-japanese-input)
 
@@ -435,8 +437,8 @@
 
 ;; Carbon Emacs keep Spotlight from triggering
 (when
-    (featurep 'carbon-emacs-package)
-  (mac-add-ignore-shortcut '(control)))
+(featurep 'carbon-emacs-package)
+(mac-add-ignore-shortcut '(control)))
 
 ;; Remember the place
 (require 'saveplace)
@@ -446,13 +448,13 @@
 
 ;; toggle-max-window
 (when
-    (featurep 'carbon-emacs-package)
-  (defun toggle-max-window ()
-    (interactive)
-    (if (frame-parameter nil 'fullscreen)
-        (set-frame-parameter nil 'fullscreen nil)
-      (set-frame-parameter nil 'fullscreen 'fullboth)))
-  (global-set-key "\M-\r" 'toggle-max-window))
+(featurep 'carbon-emacs-package)
+(defun toggle-max-window ()
+  (interactive)
+  (if (frame-parameter nil 'fullscreen)
+      (set-frame-parameter nil 'fullscreen nil)
+    (set-frame-parameter nil 'fullscreen 'fullboth)))
+(global-set-key "\M-\r" 'toggle-max-window))
 
 
 ;; I always compile my .emacs, saves me about two seconds
@@ -460,17 +462,17 @@
 ;; than the .emacs. So compile .emacs if it's not.
 (when (and user-init-file
            (equal (file-name-extension user-init-file) "elc"))
-  (let* ((source (file-name-sans-extension user-init-file))
-         (alt (concat source ".el")))
-    (setq source (cond ((file-exists-p alt) alt)
-                       ((file-exists-p source) source)
-                       (t nil)))
-    (when source
-      (when (file-newer-than-file-p source user-init-file)
-        (byte-compile-file source)
-        (load-file source)
-        (eval-buffer nil nil)
-        (delete-other-windows) ))))
+(let* ((source (file-name-sans-extension user-init-file))
+       (alt (concat source ".el")))
+  (setq source (cond ((file-exists-p alt) alt)
+                     ((file-exists-p source) source)
+                     (t nil)))
+  (when source
+    (when (file-newer-than-file-p source user-init-file)
+      (byte-compile-file source)
+      (load-file source)
+      (eval-buffer nil nil)
+      (delete-other-windows) ))))
 
 
 
@@ -506,7 +508,7 @@
 (setq org-agenda-skip-unavailable-files t)
 
 (defun org-mobile-pullpush nil nil (org-mobile-pull)
-  (org-mobile-push))
+(org-mobile-push))
 
 
 (run-at-time t 900 'org-mobile-pullpush)
@@ -516,10 +518,10 @@
 (define-key global-map "\C-cc" 'org-capture)
 
 (setq org-capture-templates
-      '(("t" "Todo" entry (file+headline "~/org/todo.org" "Inbox") "** TODO %? %i %a ")
-        ("r" "Research" entry (file+headline "~/org/diss.org" "Research") "** %? %i %a %T")
-        ("w" "Writing" entry (file+headline "~/org/write.org" "Dev") "** TODO %? :write%a %T")
-        ("d" "Dev" entry (file+headline "~/org/dev.org" "Dev") "** TODO %? :dev%i %a %T")))
+'(("t" "Todo" entry (file+headline "~/org/todo.org" "Inbox") "** TODO %? %i %a ")
+  ("r" "Research" entry (file+headline "~/org/diss.org" "Research") "** %? %i %a %T")
+  ("w" "Writing" entry (file+headline "~/org/write.org" "Dev") "** TODO %? :write%a %T")
+  ("d" "Dev" entry (file+headline "~/org/dev.org" "Dev") "** TODO %? :dev%i %a %T")))
 
 (setq org-agenda-files (list "~/org/todo.org"
                              "~/org/dev.org"
@@ -540,51 +542,51 @@
 
 ;; Common copying and pasting functions
 (defun copy-word (&optional arg)
-  "Copy words at point into kill-ring"
-  (interactive "P")
-  (let ((beg (progn (if (looking-back "[a-zA-Z0-9]" 1) (backward-word 1)) (point)))
-        (end (progn (forward-word arg) (point))))
-    (copy-region-as-kill beg end)))
+"Copy words at point into kill-ring"
+(interactive "P")
+(let ((beg (progn (if (looking-back "[a-zA-Z0-9]" 1) (backward-word 1)) (point)))
+      (end (progn (forward-word arg) (point))))
+  (copy-region-as-kill beg end)))
 
 (global-set-key (kbd "C-c w") (quote copy-word))
 
 (defun copy-line (&optional arg)
-  "Save current line into Kill-Ring without mark the line "
-  (interactive "P")
-  (let ((beg (line-beginning-position))
-        (end (line-end-position arg)))
-    (copy-region-as-kill beg end)))
+"Save current line into Kill-Ring without mark the line "
+(interactive "P")
+(let ((beg (line-beginning-position))
+      (end (line-end-position arg)))
+  (copy-region-as-kill beg end)))
 
 (global-set-key (kbd "C-c k") (quote copy-line))
 
 (defun copy-paragraph (&optional arg)
-  "Copy paragraphes at point"
-  (interactive "P")
-  (let ((beg (progn (backward-paragraph 1) (point)))
-        (end (progn (forward-paragraph arg) (point))))
-    (copy-region-as-kill beg end)))
+"Copy paragraphes at point"
+(interactive "P")
+(let ((beg (progn (backward-paragraph 1) (point)))
+      (end (progn (forward-paragraph arg) (point))))
+  (copy-region-as-kill beg end)))
 
 (global-set-key (kbd "C-c p") (quote copy-paragraph))
 
 (defun copy-string (&optional arg)
-  "Copy a sequence of string into kill-ring"
-  (interactive)
-  (setq onPoint (point))
-  (let ((beg (progn (re-search-backward "[\t ]" (line-beginning-position) 3 1)
-                    (if (looking-at "[\t ]") (+ (point) 1) (point))))
-        (end (progn (goto-char onPoint) (re-search-forward "[\t ]" (line-end-position) 3 1)
-                    (if (looking-back "[\t ]") (- (point) 1) (point) ) )))
-    (copy-region-as-kill beg end)))
+"Copy a sequence of string into kill-ring"
+(interactive)
+(setq onPoint (point))
+(let ((beg (progn (re-search-backward "[\t ]" (line-beginning-position) 3 1)
+                  (if (looking-at "[\t ]") (+ (point) 1) (point))))
+      (end (progn (goto-char onPoint) (re-search-forward "[\t ]" (line-end-position) 3 1)
+                  (if (looking-back "[\t ]") (- (point) 1) (point) ) )))
+  (copy-region-as-kill beg end)))
 
 (global-set-key (kbd "C-c s") (quote copy-string))
 (global-set-key (kbd "C-c r") 'ispell-word)
 
 (require 'basic-edit-toolkit)
 (if (= emacs-major-version 23)
-    (require 'w3m-ems)
-  (require 'w3m)
-  (require 'w3m-extension)
-  (add-hook 'w3m-mode-hook 'w3m-link-numbering-mode))
+(require 'w3m-ems)
+(require 'w3m)
+(require 'w3m-extension)
+(add-hook 'w3m-mode-hook 'w3m-link-numbering-mode))
 (setq w3m-use-cookies t)
 (defalias 'www 'w3m)
 (defalias 'wws 'w3m-search)
@@ -622,35 +624,36 @@
 (global-set-key (kbd "C-x t l") 'pomodoro-later)
 
 (defface egoge-display-time
-  '((((type x w32 mac))
-     ;; #060525 is the background colour of my default face.
-     (:foreground "#060525" :inherit bold))
-    (((type tty))
-     (:foreground "blue")))
-  "Face used to display the time in the mode line.")
+'((((type x w32 mac))
+   ;; #060525 is the background colour of my default face.
+   (:foreground "#060525" :inherit bold))
+  (((type tty))
+   (:foreground "blue")))
+"Face used to display the time in the mode line.")
 ;; This causes the current time in the mode line to be displayed in
 ;; `egoge-display-time-face' to make it stand out visually.
 (setq display-time-string-forms
-      '((propertize (concat " " 24-hours ":" minutes " ")
-                    'face 'egoge-display-time)))
+'((propertize (concat " " 24-hours ":" minutes " ")
+              'face 'egoge-display-time)))
 (display-time-mode 1)
 
 
 ;; Backups
 
 (setq backup-by-copying t               ; don't clobber symlinks
-      backup-directory-alist '(("." . "~/.saves")) ; don't litter my fs tree
-      delete-old-versions t
-      kept-new-versions 20
-      kept-old-versions 2
-      version-control t)                ; use versioned backups
+backup-directory-alist '(("." . "~/.saves")) ; don't litter my fs tree
+delete-old-versions t
+kept-new-versions 20
+kept-old-versions 2
+version-control t)                      ; use versioned backups
 
 (setq backup-directory-alist
-      `((".*" . ,"~/.saves")))
+`((".*" . ,"~/.saves")))
 (setq auto-save-file-name-transforms
-      `((".*" ,"~/.saves" t)))
+`((".*" ,"~/.saves" t)))
 
 (defun force-backup-of-buffer ()
-  (setq buffer-backed-up nil))
+(setq buffer-backed-up nil))
 
 (add-hook 'before-save-hook  'force-backup-of-buffer)
+(defalias 'bl 'weblogger-start-entry)
