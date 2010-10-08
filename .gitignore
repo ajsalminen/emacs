@@ -8,6 +8,7 @@ syntax: glob
 /.recentf
 elispcache/*
 .emacs.d/eproject.lst
+.emacs.d/url
 */CVS/*
 CVS
 .emacs.d/history
