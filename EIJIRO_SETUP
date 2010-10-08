@@ -33,7 +33,7 @@ cp pdic2sdic.rb ~/Downloads/EDP-124/EIJIRO/
 cd ~/Downloads/EDP-124/EIJIRO
 ## EIJI-124.TXT    REIJI124.TXT    RYAKU124.TXT    WAEI-124.TXT
 
-cat EIJI-124.TXT RYAKU124.TXT | nkf -w8 | pdic2sdic.rb > eijirou.sdic
+cat EIJI-124.TXT RYAKU124.TXT | nkf -w8 | ruby pdic2sdic.rb > eijirou.sdic
 
 nkf -w8 WAEI-124.TXT | ruby pdic2sdic.rb > waeijirou.sdic
 

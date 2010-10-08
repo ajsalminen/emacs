@@ -8,6 +8,7 @@ def make_key(key)
   head = key.clone
   key.tr!('A-Z', 'a-z')
   key.sub!(/\s+/, ' ')
+  key.sub!(/^■/, '')
 #  key.sub!(/ \+\d+/, '')        # これなんの処理だろ？
   ret = "" 
   if head != key
