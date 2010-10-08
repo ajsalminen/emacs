@@ -577,6 +577,7 @@
     (copy-region-as-kill beg end)))
 
 (global-set-key (kbd "C-c s") (quote copy-string))
+(global-set-key (kbd "C-c r") 'ispell-word)
 
 (require 'basic-edit-toolkit)
 (if (= emacs-major-version 23)
