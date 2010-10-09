@@ -495,6 +495,7 @@ dvi2-command "open -a Skim")
 (global-set-key "\C-ca" 'org-agenda)
 (global-set-key "\C-cb" 'org-iswitchb)
 (add-hook 'org-mode-hook 'turn-on-font-lock) ; Org buffers only
+(add-hook 'org-mode-hook 'smart-tab-mode-off)
 
 (setq org-startup-truncated nil)
 (setq org-return-follows-link t)
@@ -523,10 +524,9 @@ dvi2-command "open -a Skim")
   ("w" "Writing" entry (file+headline "~/org/write.org" "Dev") "** TODO %? :write%a %T")
   ("d" "Dev" entry (file+headline "~/org/dev.org" "Dev") "** TODO %? :dev%i %a %T")))
 
-(setq org-agenda-files (list "~/org/todo.org"
-                             "~/org/dev.org"
-                             "~/org/write.org"
-                             "~/org/diss.org"))
+;;(setq org-refile-targets (quote ((org-agenda-files :regexp . "*"))))
+(setq org-refile-targets (quote ((org-agenda-files :level . 1))))
+(setq org-agenda-files (list "~/org"))
 
 (setq org-clock-persist 'history)
 (org-clock-persistence-insinuate)
