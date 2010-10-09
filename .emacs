@@ -185,9 +185,9 @@
 (global-smart-tab-mode t)
 (global-pabbrev-mode t)
 
-(global-set-key (kbd "\t") 'pabbrev-expand-maybe)
-(global-set-key '[tab] 'pabbrev-expand-maybe)
-(global-set-key '[C-tab] 'smart-tab)
+;;(global-set-key (kbd "\t") 'smart-tab)
+;;(global-set-key '[tab] 'smart-tab)
+(global-set-key '[C-tab] 'pabbrev-expand-maybe)
 
 (put 'org-mode 'pabbrev-global-mode-excluded-modes t)
 ;;(add-to-list 'pabbrev-global-mode-excluded-modes 'org-mode)
