@@ -1,0 +1,52 @@
+\initial {O}
+\entry {\code {\xeatspaces {org-backward-same-level}}}{7}
+\entry {\code {org-buffer-property-keys}}{182}
+\entry {\code {\xeatspaces {org-clone-subtree-with-time-shift}}}{9}
+\entry {\code {org-copy-subtree}}{8}
+\entry {\code {org-cut-subtree}}{8}
+\entry {\code {org-cycle}}{5, 8}
+\entry {\code {\xeatspaces {org-cycle}}}{11, 12}
+\entry {\code {org-demote}}{184}
+\entry {\code {org-demote-subtree}}{8}
+\entry {\code {org-do-demote}}{8}
+\entry {\code {org-do-promote}}{8}
+\entry {\code {org-entry-add-to-multivalued-property}}{182}
+\entry {\code {org-entry-delete}}{182}
+\entry {\code {org-entry-get}}{182}
+\entry {\code {org-entry-get-multivalued-property}}{182}
+\entry {\code {org-entry-member-in-multivalued-property}}{182}
+\entry {\code {org-entry-properties}}{181}
+\entry {\code {org-entry-put}}{182}
+\entry {\code {org-entry-put-multivalued-property}}{182}
+\entry {\code {org-entry-remove-from-multivalued-property}}{182}
+\entry {\code {\xeatspaces {org-forward-same-level}}}{7}
+\entry {\code {\xeatspaces {org-global-cycle}}}{6}
+\entry {\code {\xeatspaces {org-goto}}}{7}
+\entry {\code {\xeatspaces {org-insert-heading}}}{7, 11}
+\entry {\code {org-insert-property-drawer}}{182}
+\entry {\code {org-map-entries}}{183}
+\entry {\code {org-move-subtree-down}}{8}
+\entry {\code {org-move-subtree-up}}{8}
+\entry {\code {\xeatspaces {org-narrow-to-subtree}}}{9}
+\entry {\code {org-paste-subtree}}{8}
+\entry {\code {org-priority}}{184}
+\entry {\code {org-promote}}{184}
+\entry {\code {org-promote-subtree}}{8}
+\entry {\code {\xeatspaces {org-refile}}}{9}
+\entry {\code {\xeatspaces {org-reveal}}}{6}
+\entry {\code {\xeatspaces {org-set-startup-visibility}}}{6}
+\entry {\code {\xeatspaces {org-sort-entries-or-items}}}{9}
+\entry {\code {\xeatspaces {org-sparse-tree}}}{10}
+\entry {\code {org-todo}}{184}
+\entry {\code {\xeatspaces {org-toggle-heading}}}{9}
+\entry {\code {org-toggle-tag}}{184}
+\entry {\code {\xeatspaces {org-tree-to-indirect-buffer}}}{6}
+\entry {\code {org-yank}}{8}
+\entry {\code {\xeatspaces {outline-next-visible-heading}}}{7}
+\entry {\code {\xeatspaces {outline-previous-visible-heading}}}{7}
+\entry {\code {\xeatspaces {outline-up-heading}}}{7}
+\initial {S}
+\entry {\code {\xeatspaces {show-all}}}{6}
+\entry {\code {\xeatspaces {show-branches}}}{6}
+\initial {W}
+\entry {\code {\xeatspaces {widen}}}{9}

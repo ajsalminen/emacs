@@ -18,6 +18,8 @@
 (setq blog-file "~/blogs.el")
 (load blog-file 'noerror)
 
+(add-to-list 'Info-default-directory-list "/usr/local/share/info")
+
 (require 'zencoding-mode)
 (add-hook 'weblogger-entry-mode-hook 'turn-off-auto-fill)
 (add-hook 'weblogger-entry-mode-hook 'zencoding-mode)
@@ -490,8 +492,13 @@ dvi2-command "open -a Skim")
 
 (require 'org-clock)
 (require 'org-timer)
+(require 'org-habit)
+
 (setq org-timer-default-timer 25)
 
+(add-hook 'org-clock-in-hook '(lambda ()
+                                (if (not org-timer-current-timer)
+                                    (org-timer-set-timer '(16)))))
 
 (setq system-time-locale "C")
 
@@ -517,7 +524,7 @@ dvi2-command "open -a Skim")
 (org-mobile-push))
 
 
-(run-at-time t 900 'org-mobile-pullpush)
+(run-at-time t 3600 'org-mobile-pullpush)
 
 
 (setq org-default-notes-file (concat org-directory "memo.org"))
@@ -536,6 +543,7 @@ dvi2-command "open -a Skim")
 (setq org-clock-persist 'history)
 (org-clock-persistence-insinuate)
 
+(setq org-timer-timer-is-countdown t)
 ;; ここまで
 
 ;; 思いついたコードやメモコードを書いて保存できるようにするための設定
