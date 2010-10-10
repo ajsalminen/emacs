@@ -54,9 +54,12 @@
    (define-key map "^" 'w3m-view-parent-page)
    (define-key map "]" 'w3m-next-form)
    (define-key map "[" 'w3m-previous-form)
+   (define-key map "\M-n" 'w3m-next-buffer)
+   (define-key map "\M-p" 'w3m-previous-buffer)
    (define-key map "}" 'w3m-next-image)
    (define-key map "{" 'w3m-previous-image)
    (define-key map "\C-c\C-c" 'w3m-submit-form)
+   (define-key map "\C-RET" 'w3m-submit-form)
    (setq dka-w3m-map map))
 
  (add-hook 'w3m-mode-hook '(lambda () (use-local-map dka-w3m-map)))

@@ -18,6 +18,11 @@
 (setq blog-file "~/blogs.el")
 (load blog-file 'noerror)
 
+(require 'zencoding-mode)
+(add-hook 'weblogger-entry-mode-hook 'turn-off-auto-fill)
+(add-hook 'weblogger-entry-mode-hook 'zencoding-mode)
+(add-hook 'sgml-mode-hook 'zencoding-mode)
+(defalias 'a 'html-href-anchor)
 
 ;;; This was installed by package-install.el.
 ;;; This provides support for the package system and
@@ -589,7 +594,7 @@ dvi2-command "open -a Skim")
 (add-hook 'w3m-mode-hook 'w3m-link-numbering-mode))
 (setq w3m-use-cookies t)
 (defalias 'www 'w3m)
-(defalias 'wws 'w3m-search)
+(defalias 'wws 'w3m-search-google-web-en)
 
 (defalias 'tt 'twittering-update-status-interactive)
 
@@ -657,3 +662,13 @@ version-control t)                      ; use versioned backups
 
 (add-hook 'before-save-hook  'force-backup-of-buffer)
 (defalias 'bl 'weblogger-start-entry)
+
+(defun unfill-paragraph ()
+  (interactive)
+  (let ((fill-column (point-max)))
+    (fill-paragraph nil)))
+
+(defun unfill-region (start end)
+  (interactive "r")
+  (let ((fill-column (point-max)))
+    (fill-region start end nil)))
