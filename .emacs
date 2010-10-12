@@ -23,6 +23,8 @@
 (require 'zencoding-mode)
 (add-hook 'weblogger-entry-mode-hook 'turn-off-auto-fill)
 (add-hook 'weblogger-entry-mode-hook 'zencoding-mode)
+(add-hook 'weblogger-entry-mode-hook 'ispell-minor-mode)
+(add-hook 'weblogger-entry-mode-hook 'flyspell-mode)
 (add-hook 'sgml-mode-hook 'zencoding-mode)
 (defalias 'a 'html-href-anchor)
 
@@ -64,6 +66,9 @@
 (setq ecb-tip-of-the-day nil)
 (setq ecb-fix-window-size (quote width))
 (setq ecb-compile-window-width (quote edit-window))
+(setq ecb-major-modes-deactivate 'wl)
+(setq ecb-major-modes-activate '(text-mode LaTeX-mode latex-mode))
+(setq ecb-windows-width 25)
 (ecb-activate)
 
 ;;(setq ecb-maximize-ecb-window-after-selection t)
@@ -658,6 +663,7 @@ version-control t)                      ; use versioned backups
 
 (add-hook 'before-save-hook  'force-backup-of-buffer)
 (defalias 'bl 'weblogger-start-entry)
+(defalias 'bll 'weblogger-select-configuration)
 
 (defun unfill-paragraph ()
   (interactive)
@@ -674,3 +680,5 @@ version-control t)                      ; use versioned backups
 (autoload 'wl "wl" "Wanderlust" t)
 (autoload 'wl-other-frame "wl" "Wanderlust on new frame." t)
 (autoload 'wl-draft "wl-draft" "Write draft with Wanderlust." t)
+(add-hook 'wl-init-hook 'ecb-deactivate)
+(add-hook 'wl-exit-hook 'ecb-activate)
