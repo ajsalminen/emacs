@@ -682,3 +682,5 @@ version-control t)                      ; use versioned backups
 (autoload 'wl-draft "wl-draft" "Write draft with Wanderlust." t)
 (add-hook 'wl-init-hook 'ecb-deactivate)
 (add-hook 'wl-exit-hook 'ecb-activate)
+(require 'mime-w3m)
+(defalias 'wle 'wl-exit)
