@@ -427,18 +427,6 @@ dvi2-command "open -a Skim")
 
 (require 'cursor-chg)
 
-(set-language-environment 'Japanese)
-(set-terminal-coding-system 'utf-8)
-(defun setup-japanese-input ()
-"Set up my Japanese input environment."
-(if (equal current-language-environment "Japanese")
-    (when
-        ((featurep 'carbon-emacs-package)
-         (setq default-input-method "MacOSX")
-         (mac-set-input-method-parameter "com.google.inputmethod.Japanese.base" `title "漢"))
-      (setq default-input-method "japanese"))))
-
-(add-hook 'set-language-environment-hook 'setup-japanese-input)
 
 ;;(byte-recompile-directory "~/.emacs.d" 0 t)
 
