@@ -434,7 +434,7 @@ dvi2-command "open -a Skim")
 (if (equal current-language-environment "Japanese")
     (when
         ((featurep 'carbon-emacs-package)
-         (setq default-input-method "japanese")
+         (setq default-input-method "MacOSX")
          (mac-set-input-method-parameter "com.google.inputmethod.Japanese.base" `title "漢"))
       (setq default-input-method "japanese"))))
 
@@ -680,3 +680,9 @@ version-control t)                      ; use versioned backups
   (interactive "r")
   (let ((fill-column (point-max)))
     (fill-region start end nil)))
+
+
+;; wl
+(autoload 'wl "wl" "Wanderlust" t)
+(autoload 'wl-other-frame "wl" "Wanderlust on new frame." t)
+(autoload 'wl-draft "wl-draft" "Write draft with Wanderlust." t)
