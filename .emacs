@@ -604,10 +604,9 @@
   (require 'w3m-extension)
   (add-hook 'w3m-mode-hook 'w3m-link-numbering-mode))
 (setq w3m-use-cookies t)
+(autoload 'w3m-goto-url "w3m")
 (defalias 'www 'w3m)
 (defalias 'wws 'w3m-search-google-web-en)
-
-(defalias 'tt 'twittering-update-status-interactive)
 
 (require 'revbufs)
 
@@ -622,7 +621,15 @@
 (add-to-list 'load-path "~/.emacs.d/twittering")
 (require 'twittering-mode)
 (setq twittering-use-master-password t)
+(defalias 'tt 'twittering-update-status-interactive)
 
+(setq twittering-initial-timeline-spec-string
+      '(":home"
+        ":replies"
+        ":search/emacs/"
+        ":search/lift scala/"
+        ":search/twitter/"
+        "richstyles/foo"))
 
 ;;(require 'auto-install)
 ;;(require 'todochiku)
