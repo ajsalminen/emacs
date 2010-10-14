@@ -115,7 +115,7 @@
      (color-theme-manoj-gnus)
      (color-theme-inkpot)))
 
-
+;; Scala configs
 (let ((path "~/.emacs.d/scala"))
   (setq load-path (cons path load-path))
   (load "scala-mode-auto.el"))
@@ -276,8 +276,15 @@
 
 (setq default-directory "~/projects/ghub")
 
+;; yasnippet
+(add-to-list 'load-path
+                  "~/.emacs.d/yasnippet")
 (require 'yasnippet) ;; not yasnippet-bundle
+(yas/initialize)
+(yas/load-directory "~/.emacs.d/yasnippet/snippets")
 
+
+;; get text from pdf instead of viewer
 (add-to-list 'auto-mode-alist '("\\.pdf\\'" . no-pdf))
 
 (defun no-pdf ()
@@ -292,7 +299,7 @@
     (set-buffer-modified-p modified)))
 
 ;;(set-frame-parameter (selected-frame) 'alpha '(<active> [<inactive>]))
-(set-frame-parameter (selected-frame) 'alpha '(85 50))
+;;(set-frame-parameter (selected-frame) 'alpha '(85 50))
 (add-to-list 'default-frame-alist '(alpha 85 50))
 
 (eval-when-compile (require 'cl))
@@ -426,12 +433,30 @@
 
 
 ;; highlight current line
+(require 'highline)
 (global-hl-line-mode 1)
 ;; To customize the background color
 (set-face-background 'hl-line "#222") ;; Emacs 22 Only
 
 (require 'hl-line+)
 (toggle-hl-line-when-idle 1)
+
+;; Display line and column numbers
+(setq line-number-mode t)
+(setq column-number-mode t)
+
+(iswitchb-mode 1)
+
+(file-cache-add-directory "~/projects/ghub")
+
+;; File Name Cache
+;; http://www.emacswiki.org/emacs/FileNameCache
+(eval-after-load
+    "filecache"
+  '(progn
+     (message "Loading file cache...")
+;;     (file-cache-add-directory-using-find "~/projects")
+     (file-cache-add-directory-list load-path)))
 
 
 ;; Japanese input-related settings
@@ -556,6 +581,101 @@
 ;; ここまで
 
 
+;; iPhone stuff
+(add-to-list 'magic-mode-alist '("\\(.\\|\n\\)*\n@implementation" . objc-mode))
+(add-to-list 'magic-mode-alist '("\\(.\\|\n\\)*\n@interface" . objc-mode))
+(add-to-list 'magic-mode-alist '("\\(.\\|\n\\)*\n@protocol" . objc-mode))
+
+(ffap-bindings)
+;; 探すパスは ffap-c-path で設定する
+;; (setq ffap-c-path
+;;     '("/usr/include" "/usr/local/include"))
+;; 新規ファイルの場合には確認する
+(setq ffap-newfile-prompt t)
+;; ffap-kpathsea-expand-path で展開するパスの深さ
+(setq ffap-kpathsea-depth 5)
+
+(setq ff-other-file-alist
+     '(("\\.mm?$" (".h"))
+       ("\\.cc$"  (".hh" ".h"))
+       ("\\.hh$"  (".cc" ".C"))
+
+       ("\\.c$"   (".h"))
+       ("\\.h$"   (".c" ".cc" ".C" ".CC" ".cxx" ".cpp" ".m" ".mm"))
+
+       ("\\.C$"   (".H"  ".hh" ".h"))
+       ("\\.H$"   (".C"  ".CC"))
+
+       ("\\.CC$"  (".HH" ".H"  ".hh" ".h"))
+       ("\\.HH$"  (".CC"))
+
+       ("\\.cxx$" (".hh" ".h"))
+       ("\\.cpp$" (".hpp" ".hh" ".h"))
+
+       ("\\.hpp$" (".cpp" ".c"))))
+(add-hook 'objc-mode-hook
+         (lambda ()
+           (define-key c-mode-base-map (kbd "C-c o") 'ff-find-other-file)
+         ))
+
+;; load-path を通す
+(let ((default-directory (expand-file-name "~/.emacs.d/site-lisp/")))
+ (add-to-list 'load-path default-directory)
+ (if (fboundp 'normal-top-level-add-subdirs-to-load-path)
+     (normal-top-level-add-subdirs-to-load-path)))
+
+;; ロード
+(require 'auto-complete-config)
+(add-to-list 'ac-dictionary-directories "~/.emacs.d///ac-dict")
+(ac-config-default)
+(require 'ac-company)
+;; 対象の全てで補完を有効にする
+(global-auto-complete-mode t)
+;; ac-company で company-xcode を有効にする
+(ac-company-define-source ac-source-company-xcode company-xcode)
+;; objc-mode で補完候補を設定
+(setq ac-modes (append ac-modes '(objc-mode)))
+;; hook
+(add-hook 'objc-mode-hook
+         (lambda ()
+           (define-key objc-mode-map (kbd "\t") 'ac-complete)
+           ;; XCode を利用した補完を有効にする
+           (push 'ac-source-company-xcode ac-sources)
+           ;; C++ のキーワード補完をする Objective-C++ を利用する人だけ設定してください
+           (push 'ac-source-c++-keywords ac-sources)
+         ))
+;; 補完ウィンドウ内でのキー定義
+(define-key ac-completing-map (kbd "C-n") 'ac-next)
+(define-key ac-completing-map (kbd "C-p") 'ac-previous)
+(define-key ac-completing-map (kbd "M-/") 'ac-stop)
+;; 補完が自動で起動するのを停止
+(setq ac-auto-start nil)
+;; 起動キーの設定
+(ac-set-trigger-key "TAB")
+;; 候補の最大件数 デフォルトは 10件
+(setq ac-candidate-max 20)
+
+;; etags-table の機能を有効にする
+(require 'etags-table)
+(add-to-list  'etags-table-alist
+              '("\\.[mh]$" "~/.emacs.d/share/tags/objc.TAGS"))
+;; auto-complete に etags の内容を認識させるための変数
+;; 以下の例だと3文字以上打たないと補完候補にならないように設定してあります。requires の次の数字で指定します
+(defvar ac-source-etags
+  '((candidates . (lambda ()
+         (all-completions ac-target (tags-completion-table))))
+    (candidate-face . ac-candidate-face)
+    (selection-face . ac-selection-face)
+    (requires . 3))
+  "etags をソースにする")
+;; objc で etags からの補完を可能にする
+(add-hook 'objc-mode-hook
+          (lambda ()
+            (push 'ac-source-etags ac-sources)))
+
+
+;; end of iphone-related settings
+
 ;; Common copying and pasting functions
 (defun copy-word (&optional arg)
   "Copy words at point into kill-ring"
@@ -607,6 +727,7 @@
 (autoload 'w3m-goto-url "w3m")
 (defalias 'www 'w3m)
 (defalias 'wws 'w3m-search-google-web-en)
+(setq browse-url-browser-function 'w3m)
 
 (require 'revbufs)
 
@@ -621,6 +742,7 @@
 (add-to-list 'load-path "~/.emacs.d/twittering")
 (require 'twittering-mode)
 (setq twittering-use-master-password t)
+(twittering-icon-mode t)
 (defalias 'tt 'twittering-update-status-interactive)
 
 (setq twittering-initial-timeline-spec-string
