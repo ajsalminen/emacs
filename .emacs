@@ -20,13 +20,6 @@
 
 (add-to-list 'Info-default-directory-list "/usr/local/share/info")
 
-(require 'zencoding-mode)
-(add-hook 'weblogger-entry-mode-hook 'turn-off-auto-fill)
-(add-hook 'weblogger-entry-mode-hook 'zencoding-mode)
-(add-hook 'weblogger-entry-mode-hook 'ispell-minor-mode)
-(add-hook 'weblogger-entry-mode-hook 'flyspell-mode)
-(add-hook 'sgml-mode-hook 'zencoding-mode)
-(defalias 'a 'html-href-anchor)
 
 ;;; This was installed by package-install.el.
 ;;; This provides support for the package system and
@@ -814,6 +807,24 @@
   (let ((fill-column (point-max)))
     (fill-region start end nil)))
 
+
+(require 'weblogger)
+(require 'zencoding-mode)
+(add-hook 'weblogger-entry-mode-hook 'turn-off-auto-fill)
+(add-hook 'weblogger-entry-mode-hook 'ispell-minor-mode)
+(add-hook 'weblogger-entry-mode-hook 'flyspell-mode)
+
+(require 'textile-minor-mode)
+
+(add-hook 'weblogger-entry-mode-hook 'textile-minor-mode)
+
+(defun publish-post ()
+  (interactive)
+  (textile-to-html-buffer-respect-weblogger)
+  (weblogger-publish-entry)
+ )
+
+(define-key weblogger-entry-mode-map "\C-x\C-s" 'publish-post)
 
 ;; wl
 (autoload 'wl "wl" "Wanderlust" t)
