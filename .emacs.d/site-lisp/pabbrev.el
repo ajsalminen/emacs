@@ -615,8 +615,8 @@ it's ordering is part of the core data structures"
 ;; modes which define [tab] get used in preference to \t. So I define
 ;; both. Don't change these without also changing the definition of
 ;; pabbrev-expand-maybe. 
-(define-key pabbrev-mode-map "\t" 'pabbrev-expand-maybe)
-(define-key pabbrev-mode-map [tab] 'pabbrev-expand-maybe)
+;;(define-key pabbrev-mode-map "\t" 'pabbrev-expand-maybe)
+;;(define-key pabbrev-mode-map [tab] 'pabbrev-expand-maybe)
 
 
 ;; xemacs has synced to newest easy-mmode now

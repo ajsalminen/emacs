@@ -1,0 +1,6 @@
+#contributor : Bjorn Ramberg (bjorne (at) gah (dot) se)
+#name : enum
+# --
+\begin{enumerate}
+  \item $0
+\end{enumerate}

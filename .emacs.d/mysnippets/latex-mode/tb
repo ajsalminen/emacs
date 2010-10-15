@@ -1,0 +1,4 @@
+#contributor : Bjorn Ramberg (bjorne (at) gah (dot) se)
+#name : tb
+# --
+\textbf{${1:bold}}

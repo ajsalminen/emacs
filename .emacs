@@ -183,16 +183,20 @@
 (add-to-list 'load-path "~/.emacs.d/auctex-11.86/preview")
 (load "preview-latex.el" nil t t)
 
-(require 'smart-tab)
+;;(require 'smart-tab)
+(require 'tabkey2)
 (require 'pabbrev)
+(tabkey2-mode t)
 
 (setq dabbrev-case-fold-search t)
-(global-smart-tab-mode t)
+;;(global-smart-tab-mode t)
 (global-pabbrev-mode t)
+
 
 ;;(global-set-key (kbd "\t") 'smart-tab)
 ;;(global-set-key '[tab] 'smart-tab)
-(global-set-key '[C-tab] 'pabbrev-expand-maybe)
+;;(global-set-key '[C-tab] 'pabbrev-expand-maybe)
+(define-key pabbrev-mode-map [C-tab] 'pabbrev-expand-maybe)
 
 (put 'org-mode 'pabbrev-global-mode-excluded-modes t)
 ;;(add-to-list 'pabbrev-global-mode-excluded-modes 'org-mode)
@@ -271,10 +275,22 @@
 
 ;; yasnippet
 (add-to-list 'load-path
-                  "~/.emacs.d/yasnippet")
+             "~/.emacs.d/yasnippet")
 (require 'yasnippet) ;; not yasnippet-bundle
 (yas/initialize)
 (yas/load-directory "~/.emacs.d/yasnippet/snippets")
+;; Develop and keep personal snippets under ~/emacs.d/mysnippets
+(setq yas/root-directory "~/.emacs.d/mysnippets")
+
+;; Load the snippets
+(yas/load-directory yas/root-directory)
+
+(setq yas/trigger-key (kbd "C-TAB"))
+(setq yas/next-field-key (kbd "TAB"))
+
+(add-hook 'yas/minor-mode-on-hook
+          '(lambda ()
+             (define-key yas/minor-mode-map yas/trigger-key 'yas/expand)))
 
 
 ;; get text from pdf instead of viewer
@@ -293,7 +309,7 @@
 
 ;;(set-frame-parameter (selected-frame) 'alpha '(<active> [<inactive>]))
 ;;(set-frame-parameter (selected-frame) 'alpha '(85 50))
-(add-to-list 'default-frame-alist '(alpha 85 50))
+;;(add-to-list 'default-frame-alist '(alpha 85 50))
 
 (eval-when-compile (require 'cl))
 (defun toggle-transparency ()
@@ -301,11 +317,13 @@
   (if (/=
        (cadr (frame-parameter nil 'alpha))
        100)
-  (set-frame-parameter nil 'alpha '(100 100))
-  (set-frame-parameter nil 'alpha '(85 50))))
+      (set-frame-parameter nil 'alpha '(100 100))
+    (set-frame-parameter nil 'alpha '(85 50))))
 (global-set-key (kbd "C-c t") 'toggle-transparency)
 
 (require 'maxframe)
+
+(define-key global-map (kbd "RET") 'newline-and-indent)
 
 ;; offset for dock on left side
 (setq mf-offset-x 47)
@@ -448,7 +466,7 @@
     "filecache"
   '(progn
      (message "Loading file cache...")
-;;     (file-cache-add-directory-using-find "~/projects")
+     ;;     (file-cache-add-directory-using-find "~/projects")
      (file-cache-add-directory-list load-path)))
 
 
@@ -528,7 +546,7 @@
 (global-set-key "\C-ca" 'org-agenda)
 (global-set-key "\C-cb" 'org-iswitchb)
 (add-hook 'org-mode-hook 'turn-on-font-lock) ; Org buffers only
-(add-hook 'org-mode-hook 'smart-tab-mode-off)
+;;(add-hook 'org-mode-hook 'smart-tab-mode-off)
 
 (setq org-startup-truncated nil)
 (setq org-return-follows-link t)
@@ -589,33 +607,33 @@
 (setq ffap-kpathsea-depth 5)
 
 (setq ff-other-file-alist
-     '(("\\.mm?$" (".h"))
-       ("\\.cc$"  (".hh" ".h"))
-       ("\\.hh$"  (".cc" ".C"))
+      '(("\\.mm?$" (".h"))
+        ("\\.cc$"  (".hh" ".h"))
+        ("\\.hh$"  (".cc" ".C"))
 
-       ("\\.c$"   (".h"))
-       ("\\.h$"   (".c" ".cc" ".C" ".CC" ".cxx" ".cpp" ".m" ".mm"))
+        ("\\.c$"   (".h"))
+        ("\\.h$"   (".c" ".cc" ".C" ".CC" ".cxx" ".cpp" ".m" ".mm"))
 
-       ("\\.C$"   (".H"  ".hh" ".h"))
-       ("\\.H$"   (".C"  ".CC"))
+        ("\\.C$"   (".H"  ".hh" ".h"))
+        ("\\.H$"   (".C"  ".CC"))
 
-       ("\\.CC$"  (".HH" ".H"  ".hh" ".h"))
-       ("\\.HH$"  (".CC"))
+        ("\\.CC$"  (".HH" ".H"  ".hh" ".h"))
+        ("\\.HH$"  (".CC"))
 
-       ("\\.cxx$" (".hh" ".h"))
-       ("\\.cpp$" (".hpp" ".hh" ".h"))
+        ("\\.cxx$" (".hh" ".h"))
+        ("\\.cpp$" (".hpp" ".hh" ".h"))
 
-       ("\\.hpp$" (".cpp" ".c"))))
+        ("\\.hpp$" (".cpp" ".c"))))
 (add-hook 'objc-mode-hook
-         (lambda ()
-           (define-key c-mode-base-map (kbd "C-c o") 'ff-find-other-file)
-         ))
+          (lambda ()
+            (define-key c-mode-base-map (kbd "C-c o") 'ff-find-other-file)
+            ))
 
 ;; load-path を通す
 (let ((default-directory (expand-file-name "~/.emacs.d/site-lisp/")))
- (add-to-list 'load-path default-directory)
- (if (fboundp 'normal-top-level-add-subdirs-to-load-path)
-     (normal-top-level-add-subdirs-to-load-path)))
+  (add-to-list 'load-path default-directory)
+  (if (fboundp 'normal-top-level-add-subdirs-to-load-path)
+      (normal-top-level-add-subdirs-to-load-path)))
 
 ;; ロード
 (require 'auto-complete-config)
@@ -630,13 +648,13 @@
 (setq ac-modes (append ac-modes '(objc-mode)))
 ;; hook
 (add-hook 'objc-mode-hook
-         (lambda ()
-           (define-key objc-mode-map (kbd "\t") 'ac-complete)
-           ;; XCode を利用した補完を有効にする
-           (push 'ac-source-company-xcode ac-sources)
-           ;; C++ のキーワード補完をする Objective-C++ を利用する人だけ設定してください
-           (push 'ac-source-c++-keywords ac-sources)
-         ))
+          (lambda ()
+            (define-key objc-mode-map (kbd "\t") 'ac-complete)
+            ;; XCode を利用した補完を有効にする
+            (push 'ac-source-company-xcode ac-sources)
+            ;; C++ のキーワード補完をする Objective-C++ を利用する人だけ設定してください
+            (push 'ac-source-c++-keywords ac-sources)
+            ))
 ;; 補完ウィンドウ内でのキー定義
 (define-key ac-completing-map (kbd "C-n") 'ac-next)
 (define-key ac-completing-map (kbd "C-p") 'ac-previous)
@@ -656,7 +674,7 @@
 ;; 以下の例だと3文字以上打たないと補完候補にならないように設定してあります。requires の次の数字で指定します
 (defvar ac-source-etags
   '((candidates . (lambda ()
-         (all-completions ac-target (tags-completion-table))))
+                    (all-completions ac-target (tags-completion-table))))
     (candidate-face . ac-candidate-face)
     (selection-face . ac-selection-face)
     (requires . 3))
@@ -778,7 +796,7 @@
 
 ;; Backups
 
-(setq backup-by-copying t                    ; don't clobber symlinks
+(setq backup-by-copying t               ; don't clobber symlinks
       backup-directory-alist '(("." . "~/.saves")) ; don't litter my fs tree
       delete-old-versions t
       kept-new-versions 20
@@ -822,7 +840,7 @@
   (interactive)
   (textile-to-html-buffer-respect-weblogger)
   (weblogger-publish-entry)
- )
+  )
 
 (define-key weblogger-entry-mode-map "\C-x\C-s" 'publish-post)
 
