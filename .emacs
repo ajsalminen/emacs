@@ -1,5 +1,6 @@
 ;;; UNCOMMENT THIS TO DEBUG TROUBLE GETTING EMACS UP AND RUNNING.
-(setq debug-on-error t)
+(setq debug-on-error nil)
+(setq lang "en_US")
 
 ;;; This was installed by package-install.el.
 ;;; This provides support for the package system and
