@@ -197,7 +197,7 @@
 ;;(global-set-key (kbd "\t") 'smart-tab)
 ;;(global-set-key '[tab] 'smart-tab)
 ;;(global-set-key '[C-tab] 'pabbrev-expand-maybe)
-(define-key pabbrev-mode-map [C-tab] 'pabbrev-expand-maybe)
+(define-key pabbrev-mode-map (kbd "C-;") 'pabbrev-expand-maybe)
 
 (put 'org-mode 'pabbrev-global-mode-excluded-modes t)
 ;;(add-to-list 'pabbrev-global-mode-excluded-modes 'org-mode)
@@ -853,3 +853,10 @@
 (add-hook 'wl-exit-hook 'ecb-activate)
 (require 'mime-w3m)
 (defalias 'wle 'wl-exit)
+
+(require 'smex)
+(smex-initialize)
+(global-set-key (kbd "M-x") 'smex)
+(global-set-key (kbd "M-X") 'smex-major-mode-commands)
+  ;; This is your old M-x.
+(global-set-key (kbd "C-c C-c M-x") 'execute-extended-command)
