@@ -1,5 +1,5 @@
 ;;; UNCOMMENT THIS TO DEBUG TROUBLE GETTING EMACS UP AND RUNNING.
-(setq debug-on-error nil)
+(setq debug-on-error t)
 (setq lang "en_US")
 
 ;;; This was installed by package-install.el.
@@ -127,6 +127,7 @@
 (let ((nfsdir "~/.emacs.d/site-lisp")
       (cachedir "~/.elispcache"))
   (setq load-path (append load-path (list cachedir nfsdir)))
+
   (require 'elisp-cache)
   (setq elisp-cache-byte-compile-files t)
 
@@ -336,7 +337,7 @@
 (setq mac-allow-anti-aliasing t)
 
 ;;Font settings for CJK fonts on Cocoa Emacs
-(when (= emacs-major-version 23)
+(when (and (= emacs-major-version 23) (eq window-system 'mac))
   (create-fontset-from-ascii-font
    "-apple-monaco-medium-normal-normal-*-12-*" nil "hirakaku12")
 
@@ -367,15 +368,25 @@
 ;; recentf stuff
 (require 'recentf)
 (recentf-mode 1)
+(setq recentf-max-saved-items 777)
 (setq recentf-max-menu-items 250)
+(require 'recentf-ext)
 ;;(global-set-key "\C-x\ \C-r" 'recentf-open-files)
 
 ;; show line number the cursor is on, in status bar (the mode line)
 (require 'linum)
-;;(line-number-mode 1)
+(line-number-mode 1)
+(column-number-mode 1)
 ;; display line numbers in margin (fringe). Emacs 23 only.
-;;(global-linum-mode 1) ; always show line numbers
+(global-linum-mode 1)
 (setq linum-format "%d ")
+
+(transient-mark-mode 1)
+(setq gc-cons-threshold (* 10 gc-cons-threshold))
+(setq use-dialog-box nil)
+(defalias 'message-box 'message)
+(setq echo-keystrokes 0.1)
+(setq history-length 1000)
 
 (require 'icicles)
 (icy-mode 1)
@@ -474,7 +485,9 @@
 ;; Japanese input-related settings
 ;; So I know if input method is active
 (prefer-coding-system 'utf-8)
-(utf-translate-cjk-mode 1)
+(if (not (= emacs-major-version 23))
+    (utf-translate-cjk-mode 1)
+)
 
 
 (require 'cursor-chg)
@@ -730,11 +743,14 @@
 (global-set-key (kbd "C-c r") 'ispell-word)
 
 (require 'basic-edit-toolkit)
+
 (if (= emacs-major-version 23)
-    (require 'w3m-ems)
-  (require 'w3m)
-  (require 'w3m-extension)
-  (add-hook 'w3m-mode-hook 'w3m-link-numbering-mode))
+	(require 'w3m-ems)
+  (require 'w3m))
+
+
+(require 'w3m-extension)
+(add-hook 'w3m-mode-hook 'w3m-link-numbering-mode)
 (setq w3m-use-cookies t)
 (autoload 'w3m-goto-url "w3m")
 (defalias 'www 'w3m)
@@ -860,3 +876,18 @@
 (global-set-key (kbd "M-X") 'smex-major-mode-commands)
   ;; This is your old M-x.
 (global-set-key (kbd "C-c C-c M-x") 'execute-extended-command)
+
+(require 'auto-install)
+(setq auto-install-directory "~/.emacs.d/site-lisp/")
+(auto-install-update-emacswiki-package-name t)
+(auto-install-compatibility-setup)
+
+(require 'auto-async-byte-compile)
+(add-hook 'emacs-lisp-mode-hook 'enable-auto-async-byte-compile-mode)
+
+(require 'uniquify)
+(setq uniquify-buffer-name-style 'post-forward-angle-brackets)
+(setq uniquify-ignore-bufferes-re "*[^*]+*")
+
+(require 'screen-lines)
+(add-hook 'text-mode-hook 'turn-on-screen-lines-mode)
