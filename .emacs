@@ -744,18 +744,18 @@
 
 (require 'basic-edit-toolkit)
 
-(if (= emacs-major-version 23)
-	(require 'w3m-ems)
-  (require 'w3m))
-
-
+(require 'w3m-load)
 (require 'w3m-extension)
-(add-hook 'w3m-mode-hook 'w3m-link-numbering-mode)
+(setq w3m-key-binding 'lynx)
+(w3m-link-numbering-mode 1)
+;;(add-hook 'w3m-mode-hook 'w3m-link-numbering-mode)
 (setq w3m-use-cookies t)
 (autoload 'w3m-goto-url "w3m")
 (defalias 'www 'w3m)
 (defalias 'wws 'w3m-search-google-web-en)
 (setq browse-url-browser-function 'w3m)
+;;(load-file (expand-file-name "~/.emacs.d/site-lisp/w3mkeymap.el"))
+;;(add-hook 'w3m-mode-hook '(lambda () (use-local-map dka-w3m-map)))
 
 (require 'revbufs)
 
@@ -763,7 +763,7 @@
 
 ;;(add-hook 'after-init-hook 'org-agenda-list)
 ;;(add-hook 'after-init-hook 'bookmark-bmenu-list)
-(load-file (expand-file-name "~/.emacs.d/site-lisp/w3mkeymap.el"))
+
 (bookmark-bmenu-list)
 
 (require 'alpaca)
