@@ -115,6 +115,11 @@
   (load "scala-mode-auto.el"))
 (require 'scala-mode-auto)
 
+(add-to-list 'load-path "~/.emacs.d/ensime_2.8.1.RC2-0.3.5/elisp/")
+(require 'ensime)
+(add-hook 'scala-mode-hook 'ensime-scala-mode-hook)
+
+
 (setq mac-option-key-is-meta nil)
 (setq mac-command-key-is-meta t)
 (setq mac-command-modifier 'meta)
@@ -883,6 +888,7 @@
 (auto-install-compatibility-setup)
 
 (require 'auto-async-byte-compile)
+(setq auto-async-byte-compile-exclude-files-regexp "/org/")
 (add-hook 'emacs-lisp-mode-hook 'enable-auto-async-byte-compile-mode)
 
 (require 'uniquify)
