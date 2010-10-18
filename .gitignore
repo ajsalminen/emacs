@@ -12,6 +12,7 @@ elispcache/*
 */CVS/*
 CVS
 .emacs.d/history
+.emacs.d/thumbs
 .org-id-locations
 org-clock-save.el
 ac-comphist.dat
