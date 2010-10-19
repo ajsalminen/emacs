@@ -19,8 +19,8 @@
 (setq blog-file "~/blogs.el")
 (load blog-file 'noerror)
 
-(add-to-list 'Info-default-directory-list "/usr/local/share/info")
-
+(setq Info-directory-list
+                     '("/usr/local/share/info" "~/info" "/usr/share/info" "/usr/local/info"))
 
 ;;; This was installed by package-install.el.
 ;;; This provides support for the package system and
