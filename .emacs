@@ -190,22 +190,24 @@
 (add-to-list 'load-path "~/.emacs.d/auctex-11.86/preview")
 (load "preview-latex.el" nil t t)
 
-;;(require 'smart-tab)
+;; (require 'smart-tab)
 (require 'tabkey2)
-(require 'pabbrev)
+;; (require 'pabbrev)
 (tabkey2-mode t)
 
-(setq dabbrev-case-fold-search t)
-;;(global-smart-tab-mode t)
-(global-pabbrev-mode t)
+;; (setq dabbrev-case-fold-search t)
+;; (global-smart-tab-mode t)
+;; (global-pabbrev-mode t)
 
 
-;;(global-set-key (kbd "\t") 'smart-tab)
-;;(global-set-key '[tab] 'smart-tab)
+;; (global-set-key (kbd "\t") 'smart-tab)
+;; (global-set-key '[tab] 'smart-tab)
 ;;(global-set-key '[C-tab] 'pabbrev-expand-maybe)
-(define-key pabbrev-mode-map (kbd "C-;") 'pabbrev-expand-maybe)
+;;(define-key pabbrev-mode-map (kbd "C-;") 'pabbrev-expand-maybe)
 
-(put 'org-mode 'pabbrev-global-mode-excluded-modes t)
+
+
+;;(put 'org-mode 'pabbrev-global-mode-excluded-modes t)
 ;;(add-to-list 'pabbrev-global-mode-excluded-modes 'org-mode)
 ;;(add-hook 'text-mode-hook 'pabbrev-mode)
 
@@ -299,6 +301,19 @@
           '(lambda ()
              (define-key yas/minor-mode-map yas/trigger-key 'yas/expand)))
 
+(require 'hippie-exp)
+(setq hippie-expand-try-functions-list
+      '(yas/hippie-try-expand
+        try-expand-dabbrev
+        try-expand-dabbrev-all-buffers
+        try-expand-dabbrev-from-kill
+        try-complete-file-name-partially
+        try-complete-file-name
+        try-expand-all-abbrevs
+        try-expand-list
+        try-expand-line
+        try-complete-lisp-symbol-partially
+        try-complete-lisp-symbol))
 
 ;; get text from pdf instead of viewer
 (add-to-list 'auto-mode-alist '("\\.pdf\\'" . no-pdf))
@@ -901,3 +916,5 @@
 
 (require 'screen-lines)
 (add-hook 'text-mode-hook 'turn-on-screen-lines-mode)
+
+(require 'summarye)
