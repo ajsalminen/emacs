@@ -330,6 +330,10 @@
 
 (require 'maxframe)
 
+;; just the frame thanks
+(tool-bar-mode -1)
+(scroll-bar-mode -1)
+
 (define-key global-map (kbd "RET") 'newline-and-indent)
 
 ;; offset for dock on left side
