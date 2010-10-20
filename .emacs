@@ -774,6 +774,10 @@
 (w3m-link-numbering-mode 1)
 ;;(add-hook 'w3m-mode-hook 'w3m-link-numbering-mode)
 (setq w3m-use-cookies t)
+(setq w3m-verbose t)
+(setq w3m-message-silent nil)
+(setq url-show-status nil) ;;don't need to know how you're doing url-http
+;;(defun w3m-message (&rest args)) ;;w3m status messages are annoying and useless
 (autoload 'w3m-goto-url "w3m")
 (defalias 'www 'w3m)
 (defalias 'wws 'w3m-search-google-web-en)
@@ -801,6 +805,7 @@
 (add-to-list 'load-path "~/.emacs.d/twittering")
 (require 'twittering-mode)
 (setq twittering-use-master-password t)
+(setq twittering-url-show-status nil)
 (twittering-icon-mode t)
 (defalias 'tt 'twittering-update-status-interactive)
 
@@ -938,3 +943,9 @@
 
 (global-set-key (kbd "C-x x") 'point-to-top)
 (global-set-key (kbd "C-x c") 'point-to-bottom)
+
+(require 'hideshow)
+(require 'fold-dwim)
+(defalias 'to 'fold-dwim-toggle)
+(defalias 'sh 'fold-dwim-show-all)
+(defalias 'hi 'fold-dwim-hide-all)
