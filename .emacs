@@ -777,9 +777,16 @@
 (autoload 'w3m-goto-url "w3m")
 (defalias 'www 'w3m)
 (defalias 'wws 'w3m-search-google-web-en)
+(defalias 'wwe 'w3m-search-emacswiki)
+(defalias 'wwo 'w3m-search-stack-overflow)
 (setq browse-url-browser-function 'w3m)
 ;;(load-file (expand-file-name "~/.emacs.d/site-lisp/w3mkeymap.el"))
 ;;(add-hook 'w3m-mode-hook '(lambda () (use-local-map dka-w3m-map)))
+
+(defun w3m-search-stack-overflow ()
+  "search stack overflow"
+  (interactive)
+  (w3m-search-advance "http://stackoverflow.com/search?q=" "Stack Overflow" 'utf-8))
 
 (require 'revbufs)
 
@@ -918,3 +925,16 @@
 (add-hook 'text-mode-hook 'turn-on-screen-lines-mode)
 
 (require 'summarye)
+
+(defun point-to-top ()
+  "Put cursor on top line of window, like Vi's H."
+  (interactive)
+  (move-to-window-line 0))
+
+(defun point-to-bottom ()
+  "Put cursor at bottom of last visible line, like Vi's L."
+  (interactive)
+  (move-to-window-line -1))
+
+(global-set-key (kbd "C-x x") 'point-to-top)
+(global-set-key (kbd "C-x c") 'point-to-bottom)
