@@ -949,3 +949,9 @@
 (defalias 'to 'fold-dwim-toggle)
 (defalias 'sh 'fold-dwim-show-all)
 (defalias 'hi 'fold-dwim-hide-all)
+
+(defun my-ido-keys ()
+  "Add my keybindings for ido."
+  (define-key ido-completion-map "\C-k"    'ido-next-match))
+
+(add-hook 'ido-setup-hook 'my-ido-keys)
