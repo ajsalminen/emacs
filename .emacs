@@ -63,20 +63,16 @@
 (setq ecb-major-modes-deactivate 'wl)
 (setq ecb-major-modes-activate '(text-mode LaTeX-mode latex-mode))
 (setq ecb-windows-width 25)
-(ecb-activate)
+
 
 ;;(setq ecb-maximize-ecb-window-after-selection t)
+;;(ecb-activate)
 
-
-
-
-;;(setq initial-scratch-message nil)
+(setq initial-scratch-message nil)
 
 (let ((default-directory "~/.emacs.d/site-lisp/"))
   (normal-top-level-add-to-load-path '("."))
   (normal-top-level-add-subdirs-to-load-path))
-
-
 
 (setq-default indent-tabs-mode nil)
 
@@ -94,6 +90,50 @@
 
 (require 'auto-install)
 (require 'work-timer)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 (setq work-timer-working-time 30)
 ;;(defalias 'work-timer-start 'p)
@@ -955,3 +995,6 @@
   (define-key ido-completion-map "\C-k"    'ido-next-match))
 
 (add-hook 'ido-setup-hook 'my-ido-keys)
+(defalias 'qrr 'query-replace-regexp)
+(global-set-key "\C-s" 'isearch-forward-regexp)
+(global-set-key "\C-r" 'isearch-backward-regexp)
