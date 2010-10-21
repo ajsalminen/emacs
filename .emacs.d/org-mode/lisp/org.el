@@ -1076,9 +1076,13 @@ for the duration of the command."
 					(plain-list-item . auto))
   "Should `org-insert-heading' leave a blank line before new heading/item?
 The value is an alist, with `heading' and `plain-list-item' as car,
-and a boolean flag as cdr.  For plain lists, if the variable
-`org-empty-line-terminates-plain-lists' is set, the setting here
-is ignored and no empty line is inserted, to keep the list in tact."
+and a boolean flag as cdr. The cdr may lso be the symbol `auto', and then
+Org will look at the surrounding headings/items and try to make an
+intelligent decision wether to insert a blank line or not.
+
+For plain lists, if the variable `org-empty-line-terminates-plain-lists' is
+set, the setting here is ignored and no empty line is inserted, to avoid
+breaking the list structure."
   :group 'org-edit-structure
   :type '(list
 	  (cons (const heading)
@@ -1270,7 +1274,7 @@ type.  In principle, it does not hurt to turn on most link types - there may
 be a small gain when turning off unused link types.  The types are:
 
 bracket   The recommended [[link][description]] or [[link]] links with hiding.
-angular   Links in angular brackets that may contain whitespace like
+angle     Links in angular brackets that may contain whitespace like
           <bbdb:Carsten Dominik>.
 plain     Plain links in normal text, no whitespace, like http://google.com.
 radio     Text that is matched by a radio target, see manual for details.
@@ -1281,8 +1285,8 @@ footnote  Footnote labels.
 Changing this variable requires a restart of Emacs to become effective."
   :group 'org-link
   :type '(set :greedy t
-	      (const :tag "Double bracket links (new style)" bracket)
-	      (const :tag "Angular bracket links (old style)" angular)
+	      (const :tag "Double bracket links" bracket)
+	      (const :tag "Angular bracket links" angle)
 	      (const :tag "Plain text links" plain)
 	      (const :tag "Radio target matches" radio)
 	      (const :tag "Tags" tag)
@@ -3534,6 +3538,7 @@ Normal means no org-mode-specific context."
 (declare-function org-agenda-check-for-timestamp-as-reason-to-ignore-todo-item
 		  "org-agenda" (&optional end))
 (declare-function org-inlinetask-remove-END-maybe "org-inlinetask" ())
+(declare-function org-inlinetask-in-task-p "org-inlinetask" ())
 (declare-function org-indent-mode "org-indent" (&optional arg))
 (declare-function parse-time-string "parse-time" (string))
 (declare-function org-attach-reveal "org-attach" (&optional if-exists))
@@ -3724,7 +3729,6 @@ If TABLE-TYPE is non-nil, also check for table.el-type tables."
                   org-capture-import-remember-templates)))
 
 ;; Autoload org-clock.el
-
 
 (declare-function org-clock-save-markers-for-cut-and-paste "org-clock"
 		  (beg end))
@@ -6677,24 +6681,40 @@ frame is not changed."
   "Insert a new heading or item with same depth at point.
 If point is in a plain list and FORCE-HEADING is nil, create a new list item.
 If point is at the beginning of a headline, insert a sibling before the
-current headline.  If point is not at the beginning, do not split the line,
-but create the new headline after the current line.
+current headline.  If point is not at the beginning, split the line,
+create the new headline with the text in the current line after point
+\(but see also the variable `org-M-RET-may-split-line').
+
 When INVISIBLE-OK is set, stop at invisible headlines when going back.
 This is important for non-interactive uses of the command."
   (interactive "P")
   (if (or (= (buffer-size) 0)
-	  (and (not (save-excursion (and (ignore-errors (org-back-to-heading invisible-ok))
-					 (org-on-heading-p))))
+	  (and (not (save-excursion
+		      (and (ignore-errors (org-back-to-heading invisible-ok))
+			   (org-on-heading-p))))
 	       (not (org-in-item-p))))
       (progn
 	(insert "\n* ")
 	(run-hooks 'org-insert-heading-hook))
     (when (or force-heading (not (org-insert-item)))
       (let* ((empty-line-p nil)
+	     (level nil)
+	     (on-heading (org-on-heading-p))
 	     (head (save-excursion
 		     (condition-case nil
 			 (progn
 			   (org-back-to-heading invisible-ok)
+			   (when (and (not on-heading)
+				      (featurep 'org-inlinetask)
+				      (integerp org-inlinetask-min-level)
+				      (>= (length (match-string 0))
+					  org-inlinetask-min-level))
+			     ;; Find a heading level before the inline task
+			     (while (and (setq level (org-up-heading-safe))
+					 (>= level org-inlinetask-min-level)))
+			     (if (org-on-heading-p)
+				 (org-back-to-heading invisible-ok)
+			       (error "This should not happen")))
 			   (setq empty-line-p (org-previous-line-empty-p))
 			   (match-string 0))
 		       (error "*"))))
@@ -6732,6 +6752,12 @@ This is important for non-interactive uses of the command."
 	    (cond
 	     (org-insert-heading-respect-content
 	      (org-end-of-subtree nil t)
+	      (when (featurep 'org-inlinetask)
+		(while (and (not (eobp))
+			    (looking-at "\\(\\*+\\)[ \t]+")
+			    (>= (length (match-string 1))
+				org-inlinetask-min-level))
+		  (org-end-of-subtree nil t)))
 	      (or (bolp) (newline))
 	      (or (org-previous-line-empty-p)
 		  (and blank (newline)))
@@ -12769,8 +12795,10 @@ With prefix ARG, realign all tags in headings in the current buffer."
 	(save-excursion
 	  (setq table (append org-tag-persistent-alist
 			      (or org-tag-alist (org-get-buffer-tags))
-			      (and org-complete-tags-always-offer-all-agenda-tags
-				   (org-global-tags-completion-table (org-agenda-files))))
+			      (and
+			       org-complete-tags-always-offer-all-agenda-tags
+			       (org-global-tags-completion-table
+				(org-agenda-files))))
 		org-last-tags-completion-table table
 		current-tags (org-split-string current ":")
 		inherited-tags (nreverse
@@ -12782,19 +12810,24 @@ With prefix ARG, realign all tags in headings in the current buffer."
 			     (delq nil (mapcar 'cdr table))))
 		    (org-fast-tag-selection
 		     current-tags inherited-tags table
-		     (if org-fast-tag-selection-include-todo org-todo-key-alist))
+		     (if org-fast-tag-selection-include-todo
+			 org-todo-key-alist))
 		  (let ((org-add-colon-after-tag-completion t))
 		    (org-trim
 		     (org-without-partial-completion
-		      (org-icompleting-read "Tags: " 'org-tags-completion-function
+		      (org-icompleting-read "Tags: "
+					    'org-tags-completion-function
 				       nil nil current 'org-tags-history)))))))
 	(while (string-match "[-+&]+" tags)
 	  ;; No boolean logic, just a list
 	  (setq tags (replace-match ":" t t tags))))
 
+      (setq tags (replace-regexp-in-string "[ ,]" ":" tags))
+
       (if org-tags-sort-function
       	  (setq tags (mapconcat 'identity
-      				(sort (org-split-string tags (org-re "[^[:alnum:]_@#%]+"))
+      				(sort (org-split-string
+				       tags (org-re "[^[:alnum:]_@#%]+"))
       				      org-tags-sort-function) ":")))
 
       (if (string-match "\\`[\t ]*\\'" tags)
@@ -12874,7 +12907,7 @@ This works in the agenda, and also in an org-mode buffer."
 (defun org-tags-completion-function (string predicate &optional flag)
   (let (s1 s2 rtn (ctable org-last-tags-completion-table)
 	   (confirm (lambda (x) (stringp (car x)))))
-    (if (string-match "^\\(.*[-+:&|]\\)\\([^-+:&|]*\\)$" string)
+    (if (string-match "^\\(.*[-+:&,|]\\)\\([^-+:&,|]*\\)$" string)
         (setq s1 (match-string 1 string)
               s2 (match-string 2 string))
       (setq s1 "" s2 string))
@@ -15949,7 +15982,7 @@ Some of the options can be changed using the variable
 	     ((eq processing-type 'mathjax)
 	      ;; Prepare for MathJax processing
 	      (setq string (match-string n))
-	      (if (equal m "$")
+	      (if (member m '("$" "$1"))
 		  (save-excursion
 		    (delete-region (match-beginning n) (match-end n))
 		    (goto-char (match-beginning n))
@@ -18590,6 +18623,8 @@ which make use of the date at the cursor."
 	 (itemp (org-at-item-p))
 	 (case-fold-search t)
 	 (org-drawer-regexp (or org-drawer-regexp "\000"))
+	 (inline-task-p (and (featurep 'org-inlinetask)
+			     (org-inlinetask-in-task-p)))
 	 column bpos bcol tpos tcol bullet btype bullet-type)
     ;; Find the previous relevant line
     (beginning-of-line 1)
@@ -18645,7 +18680,14 @@ which make use of the date at the cursor."
      ;; what to do.
      (t
       (beginning-of-line 0)
-      (while (and (not (bobp)) (looking-at "[ \t]*[\n:#|]")
+      (while (and (not (bobp))
+		  ;; skip comments, verbatim, empty lines, tables,
+		  ;; inline tasks
+		  (or (looking-at "[ \t]*[\n:#|]")
+		      (and (org-in-item-p) (goto-char (org-list-top-point)))
+		      (and (not inline-task-p)
+			   (featurep 'org-inlinetask)
+			   (org-inlinetask-in-task-p)))
       		  (not (looking-at "[ \t]*:END:"))
       		  (not (looking-at org-drawer-regexp)))
       	(beginning-of-line 0))
@@ -18664,16 +18706,6 @@ which make use of the date at the cursor."
        ((looking-at "\\([ \t]*\\):END:")
 	(goto-char (match-end 1))
 	(setq column (current-column)))
-       ;; There was a list that since ended: indent relatively to
-       ;; current heading.
-       ((org-in-item-p)
-	(outline-previous-heading)
-	(if (and org-adapt-indentation
-		 (looking-at "\\*+[ \t]+"))
-	    (progn
-	      (goto-char (match-end 0))
-	      (setq column (current-column)))
-	  (setq column 0)))
        ;; Else, nothing noticeable found: get indentation and go on.
        (t (setq column (org-get-indentation))))))
     (goto-char pos)

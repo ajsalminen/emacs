@@ -3794,7 +3794,10 @@ The habit is a TODO, with a TODO keyword representing an open state.
 @item
 The property @code{STYLE} is set to the value @code{habit}.
 @item
-The TODO has a scheduled date, with a @code{.+} style repeat interval.
+The TODO has a scheduled date, usually with a @code{.+} style repeat
+interval.  A @code{++} style may be appropriate for habits with time
+constraints, e.g., must be done on weekends, or a @code{+} style for an
+unusual habit that can have a backlog, e.g., weekly reports.
 @item
 The TODO may also have minimum and maximum ranges specified by using the
 syntax @samp{.+2d/3d}, which says that you want to do the task at least every
@@ -7263,6 +7266,7 @@ associated with the item.
 @subsection Categories
 
 @cindex category
+@cindex #+CATEGORY
 The category is a broad label assigned to each agenda item.  By default,
 the category is simply derived from the file name, but you can also
 specify it with a special line in the buffer, like this@footnote{For
@@ -8653,13 +8657,24 @@ Here is an example
 @cindex formatting source code, markup rules
 If the example is source code from a programming language, or any other text
 that can be marked up by font-lock in Emacs, you can ask for the example to
-look like the fontified Emacs buffer@footnote{Currently this works for the
-HTML backend, and requires the @file{htmlize.el} package version 1.34 or
-later.  It also works for LaTeX with the listings package, if you turn on the
-option @code{org-export-latex-listings} and make sure that the listings
-package is included by the LaTeX header.}.  This is done with the @samp{src}
-block, where you also need to specify the name of the major mode that should
-be used to fontify the example:
+look like the fontified Emacs buffer@footnote{This works automatically for
+the HTML backend (it requires version 1.34 of the @file{htmlize.el} package,
+which is distributed with Org.)  Fontified code chunks in LaTeX can be
+achieved using either the listings or the
+@url{http://code.google.com/p/minted, minted,} package. To use listings, turn
+on the variable @code{org-export-latex-listings} and ensure that the listings
+package is included by the LaTeX header (e.g. by configuring
+@code{org-export-latex-packages-alist}). See the listings documentation for
+configuration options, including obtaining colored output.  For minted it is
+necessary to install the program @url{http://pygments.org, pygments}, in
+addition to setting @code{org-export-latex-minted}, ensuring that the minted
+package is included by the LaTeX header, and ensuring that the
+@code{-shell-escape} option is passed to @file{pdflatex} (see
+@code{org-latex-to-pdf-process}). See the documentation of the variables
+@code{org-export-latex-listings} and @code{org-export-latex-minted} for
+further details.}.  This is done with the @samp{src} block, where you also
+need to specify the name of the major mode that should be used to fontify the
+example:
 @cindex #+BEGIN_SRC
 
 @example
@@ -10543,7 +10558,8 @@ variable, called @code{org-publish-project-alist}.  Each element of the list
 configures one project, and may be in one of the two following forms:
 
 @lisp
-   ("project-name" :property value :property value ...)
+   ("project-name" :property value :property value ...) 
+     @r{i.e. a well-formed property list with alternating keys and values}
 @r{or}
    ("project-name" :components ("project-name" "project-name" ...))
 
@@ -10619,20 +10635,20 @@ possibly transformed in the process.  The default transformation is to export
 Org files as HTML files, and this is done by the function
 @code{org-publish-org-to-html} which calls the HTML exporter (@pxref{HTML
 export}).  But you also can publish your content as PDF files using
-@code{org-publish-org-to-pdf}.  If you want to publish the Org file itself,
-but with @i{archived}, @i{commented}, and @i{tag-excluded} trees removed, use
-@code{org-publish-org-to-org} and set the parameters @code{:plain-source}
-and/or @code{:htmlized-source}.  This will produce @file{file.org} and
-@file{file.org.html} in the publishing
+@code{org-publish-org-to-pdf}, or as @code{ascii}, @code{latin1} or
+@code{utf8} encoded files using the corresponding functions.  If you want to
+publish the Org file itself, but with @i{archived}, @i{commented}, and
+@i{tag-excluded} trees removed, use @code{org-publish-org-to-org} and set the
+parameters @code{:plain-source} and/or @code{:htmlized-source}.  This will
+produce @file{file.org} and @file{file.org.html} in the publishing
 directory@footnote{@file{file-source.org} and @file{file-source.org.html} if
 source and publishing directories are equal.  Note that with this kind of
 setup, you need to add @code{:exclude "-source\\.org"} to the project
 definition in @code{org-publish-project-alist} to avoid that the published
 source files will be considered as new org files the next time the project is
-published.}.  Other files like images only
-need to be copied to the publishing destination, for this you may use
-@code{org-publish-attachment}.  For non-Org files, you always need to
-specify the publishing function:
+published.}.  Other files like images only need to be copied to the
+publishing destination, for this you may use @code{org-publish-attachment}.
+For non-Org files, you always need to specify the publishing function:
 
 @multitable @columnfractions 0.3 0.7
 @item @code{:publishing-function}
@@ -11281,7 +11297,7 @@ for information on the syntax of remote code block evaluation).
 @kindex C-c C-v l
 Code blocks located in any Org-mode file can be loaded into the ``Library of
 Babel'' with the @code{org-babel-lob-ingest} function, bound to @kbd{C-c C-v
-l}.
+i}.
 
 @node Languages, Header arguments, Library of Babel, Working With Source Code
 @section Languages
@@ -11966,16 +11982,20 @@ interpreted language.
 
 The @code{:noweb} header argument controls expansion of ``noweb'' style (see
 @ref{Noweb reference syntax}) references in a code block.  This header
-argument can have one of two values: @code{yes} or @code{no}.
+argument can have one of three values: @code{yes} @code{no} or @code{tangle}.
 
 @itemize @bullet
+@item @code{yes}
+All ``noweb'' syntax references in the body of the code block will be
+expanded before the block is evaluated, tangled or exported.
 @item @code{no}
 The default.  No ``noweb'' syntax specific action is taken on evaluating
 code blocks, However, noweb references will still be expanded during
 tangling.
 @item @code{yes}
 All ``noweb'' syntax references in the body of the code block will be
-expanded before the block is evaluated.
+expanded before the block is tangled, however ``noweb'' references will not
+be expanded when the block is evaluated or exported.
 @end itemize
 
 @subsubheading Noweb prefix lines
@@ -12361,17 +12381,18 @@ Be sure to adjust the paths to fit your system.
 #!/bin/sh
 # -*- mode: shell-script -*-
 #
-# tangle a file with org-mode
+# tangle files with org-mode
 #
 DIR=`pwd`
 FILES=""
+ORGINSTALL="~/src/org/lisp/org-install.el"
 
 # wrap each argument in the code required to call tangle on it
 for i in $@@; do
-FILES="$FILES \"$i\""
+    FILES="$FILES \"$i\""
 done
 
-emacsclient \
+emacs -Q --batch -l $ORGINSTALL \
 --eval "(progn
 (add-to-list 'load-path (expand-file-name \"~/src/org/lisp/\"))
 (add-to-list 'load-path (expand-file-name \"~/src/org/contrib/lisp/\"))
@@ -12379,7 +12400,7 @@ emacsclient \
 (mapc (lambda (file)
        (find-file (expand-file-name file \"$DIR\"))
        (org-babel-tangle)
-       (kill-buffer)) '($FILES)))"
+       (kill-buffer)) '($FILES)))" 2>&1 |grep tangled
 @end example
 
 @node Miscellaneous, Hacking, Working With Source Code, Top
@@ -14249,15 +14270,20 @@ in-buffer settings, but it will understand the logistics of TODO state
 @node Setting up the staging area, Pushing to MobileOrg, MobileOrg, MobileOrg
 @section Setting up the staging area
 
-MobileOrg needs to interact with Emacs through directory on a
-server@footnote{If you are using a public server, you might prefer to encrypt
-the files on the server.  This can be done with Org-mode 6.35 and, hopefully,
-with MobileOrg 1.5 (please check before trying to use this).  On the Emacs
-side, configure the variable @code{org-mobile-use-encryption}.  If you can
-safely store the password in your Emacs setup, you might also want to
-configure @code{org-mobile-encryption-password}.  Please read the docstring
-of that variable.}.  The easiest way to create that directory is to use a
-free @uref{http://dropbox.com,Dropbox.com} account@footnote{If you cannot use
+MobileOrg needs to interact with Emacs through directory on a server.  If you
+are using a public server, you should consider to encrypt the files that are
+uploaded to the server.  This can be done with Org-mode 7.02 and with
+@i{MobileOrg 1.5} (iPhone version), and you need an @file{openssl}
+installation on your system.  To turn on encryption, set a password in
+@i{MobileOrg} and, on the Emacs side, configure the variable
+@code{org-mobile-use-encryption}@footnote{If you can safely store the
+password in your Emacs setup, you might also want to configure
+@code{org-mobile-encryption-password}.  Please read the docstring of that
+variable.  Note that encryption will apply only to the contents of the
+@file{.org} files.  The file names themselves will remain visible.}.
+
+The easiest way to create that directory is to use a free
+@uref{http://dropbox.com,Dropbox.com} account@footnote{If you cannot use
 Dropbox, or if your version of MobileOrg does not support it, you can use a
 webdav server.  For more information, check out the the documentation of
 MobileOrg and also this
@@ -14341,12 +14367,12 @@ this flagged entry is finished.
 
 @kindex C-c a ?
 If you are not able to process all flagged entries directly, you can always
-return to this agenda view using @kbd{C-c a ?}.  Note, however, that there is
-a subtle difference.  The view created automatically by @kbd{M-x
-org-mobile-pull @key{RET}} is guaranteed to search all files that have been
-addressed by the last pull.  This might include a file that is not currently
-in your list of agenda files.  If you later use @kbd{C-c a ?} to regenerate
-the view, only the current agenda files will be searched.
+return to this agenda view@footnote{Note, however, that there is a subtle
+difference.  The view created automatically by @kbd{M-x org-mobile-pull
+@key{RET}} is guaranteed to search all files that have been addressed by the
+last pull.  This might include a file that is not currently in your list of
+agenda files.  If you later use @kbd{C-c a ?} to regenerate the view, only
+the current agenda files will be searched.} using @kbd{C-c a ?}.
 
 @node History and Acknowledgments, Main Index, MobileOrg, Top
 @appendix History and acknowledgments

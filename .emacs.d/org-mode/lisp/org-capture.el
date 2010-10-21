@@ -712,7 +712,8 @@ already gone."
       (setq level 1)
       (if reversed
 	  (progn (goto-char (point-min))
-		 (outline-next-heading))
+		 (or (org-at-heading-p)
+		     (outline-next-heading)))
 	(goto-char (point-max))
 	(or (bolp) (insert "\n"))))
      (t
@@ -735,6 +736,7 @@ already gone."
     (setq end (point))
     (org-capture-mark-kill-region beg (1- end))
     (org-capture-narrow beg (1- end))
+    (goto-char beg)
     (if (re-search-forward "%\\?" end t) (replace-match ""))))
 
 (defun org-capture-place-item ()

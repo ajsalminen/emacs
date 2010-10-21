@@ -56,7 +56,7 @@ This will be passed to  `shell-command-on-region'")
       (format "%s=%s"
               (car pair)
               (org-babel-sh-var-to-sh (cdr pair) sep)))
-    vars "\n") "\n" body "\n\n")))
+    vars "\n") (if vars "\n" "") body "\n\n")))
 
 (defun org-babel-execute:sh (body params)
   "Execute a block of Shell commands with Babel.
@@ -152,12 +152,13 @@ If RESULT-TYPE equals 'output then return a list of the outputs
 of the statements in BODY, if RESULT-TYPE equals 'value then
 return the value of the last statement in BODY."
   ((lambda (results)
-     (if (or (member "scalar" result-params)
-	     (member "output" result-params))
-	 results
-       (let ((tmp-file (org-babel-temp-file "sh-")))
-	 (with-temp-file tmp-file (insert results))
-	 (org-babel-import-elisp-from-file tmp-file))))
+     (when results
+       (if (or (member "scalar" result-params)
+	       (member "output" result-params))
+	   results
+	 (let ((tmp-file (org-babel-temp-file "sh-")))
+	   (with-temp-file tmp-file (insert results))
+	   (org-babel-import-elisp-from-file tmp-file)))))
    (if (not session)
        (org-babel-eval org-babel-sh-command (org-babel-trim body))
      (mapconcat

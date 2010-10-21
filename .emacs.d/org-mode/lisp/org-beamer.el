@@ -373,7 +373,7 @@ The need to be after the begin statement of the environment."
     (let (dovl)
       (goto-char (point-min))
       (while (re-search-forward
-	      "^[ \t]*\\\\begin{\\(itemize\\|enumerate\\|desctiption\\)}[ \t\n]*\\\\item\\>\\( ?\\(<[^<>\n]*>\\|\\[[^][\n*]\\]\\)\\)?[ \t]*\\S-" nil t)
+	      "^[ \t]*\\\\begin{\\(itemize\\|enumerate\\|description\\)}[ \t\n]*\\\\item\\>\\( ?\\(<[^<>\n]*>\\|\\[[^][\n*]\\]\\)\\)?[ \t]*\\S-" nil t)
 	(if (setq dovl (cdr (assoc "BEAMER_dovl"
 				   (get-text-property (match-end 0)
 						      'org-props))))
@@ -382,7 +382,7 @@ The need to be after the begin statement of the environment."
 	      (insert dovl)))))))
 
 (defun org-beamer-amend-header ()
-  "Add `org-beamer-header-extra' to the LaTeX herder.
+  "Add `org-beamer-header-extra' to the LaTeX header.
 If the file contains the string BEAMER-HEADER-EXTRA-HERE on a line
 by itself, it will be replaced with `org-beamer-header-extra'.  If not,
 the value will be inserted right after the documentclass statement."

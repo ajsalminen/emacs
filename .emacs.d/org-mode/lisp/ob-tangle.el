@@ -276,11 +276,12 @@ code blocks by language."
       (let* ((start-line (save-restriction (widen)
 					   (+ 1 (line-number-at-pos (point)))))
 	     (file (buffer-file-name))
-	     (link (progn (call-interactively 'org-store-link)
-                          (org-babel-clean-text-properties
-			   (car (pop org-stored-links)))))
              (info (org-babel-get-src-block-info))
 	     (params (nth 2 info))
+	     (link (unless (string= (cdr (assoc :tangle params)) "no")
+		     (progn (call-interactively 'org-store-link)
+			    (org-babel-clean-text-properties
+			     (car (pop org-stored-links))))))
              (source-name (intern (or (nth 4 info)
                                       (format "%s:%d"
 					      current-heading block-counter))))
@@ -294,7 +295,10 @@ code blocks by language."
 				   'org-babel-expand-body:generic)
 				 body params)))
 		    (if (and (cdr (assoc :noweb params))
-			     (string= "yes" (cdr (assoc :noweb params))))
+			     (let ((nowebs (split-string
+					    (cdr (assoc :noweb params)))))
+			       (or (member "yes" nowebs)
+				   (member "tangle" nowebs))))
 			(org-babel-expand-noweb-references info)
 		      (nth 1 info))))
 	     (comment (when (or (string= "both" (cdr (assoc :comments params)))
@@ -362,8 +366,12 @@ form
 	(insert-comment
 	 (org-fill-template org-babel-tangle-comment-format-beg link-data)))
       (when org-babel-tangle-pad-newline (insert "\n"))
-      (insert (format "%s\n" (replace-regexp-in-string
-			      "^," "" (org-babel-trim body))))
+      (insert
+       (format
+	"%s\n"
+	(replace-regexp-in-string
+	 "^," ""
+	 (org-babel-trim body (if org-src-preserve-indentation "[\f\n\r\v]")))))
       (when link-p
 	(insert-comment
 	 (org-fill-template org-babel-tangle-comment-format-end link-data))))))

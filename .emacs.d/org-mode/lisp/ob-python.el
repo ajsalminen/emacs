@@ -47,6 +47,7 @@
 (defvar org-babel-python-mode (if (featurep 'xemacs) 'python-mode 'python)
   "Preferred python mode for use in running python interactively.")
 
+(defvar org-src-preserve-indentation)
 (defun org-babel-expand-body:python (body params &optional processed-params)
   "Expand BODY according to PARAMS, return the expanded body."
   (concat
@@ -56,7 +57,9 @@
               (car pair)
               (org-babel-python-var-to-python (cdr pair))))
     (nth 1 (or processed-params (org-babel-process-params params))) "\n")
-   "\n" (org-babel-trim body) "\n"))
+   "\n"
+   (org-babel-trim body (if org-src-preserve-indentation "[\f\n\r\v]"))
+   "\n"))
 
 (defun org-babel-execute:python (body params)
   "Execute a block of Python code with Babel.

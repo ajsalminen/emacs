@@ -164,6 +164,19 @@ CARDFILES   = doc/orgcard.tex doc/orgcard.pdf doc/orgcard_letter.pdf
 TEXIFILES   = doc/org.texi
 INFOFILES   = doc/org
 
+# Package Manager (ELPA)
+PKG_TAG = $(shell date +%Y%m%d)
+PKG_DOC = "Outline-based notes management and organizer"
+PKG_REQ = "nil"
+
+PKG_FILES = $(LISPFILES0)		\
+            doc/dir doc/org		\
+            doc/pdflayout.sty		\
+            doc/org.pdf			\
+            doc/orgguide.pdf		\
+            doc/orgcard.tex		\
+            doc/orgcard.pdf		\
+            doc/orgcard_letter.pdf
 
 .SUFFIXES: .el .elc .texi
 SHELL = /bin/sh
@@ -248,7 +261,7 @@ doc/orgcard_letter.pdf: doc/orgcard_letter.tex
 # Below here are special targets for maintenance only
 
 updateweb:
-	ssh cdominik@orgmode.org 'pull-worg-org.sh && publish-worg-org.sh'
+	ssh cdominik@orgmode.org 'pull-worg-orgweb.sh && publish-worg-orgweb.sh'
 
 html: doc/org.html
 
@@ -282,7 +295,41 @@ testrelease:
 	git checkout master
 	git branch -D testrelease
 
+# The following target makes a full release fro the stuff that is
+# currently on master.  Do it like this:
+#
+#   make release TAG=7.01
+
 release:
+	git checkout maint
+	git merge -s recursive -X theirs master
+	UTILITIES/set-version.pl $(TAG)
+	git commit -a -m "Release $(TAG)"
+	make relup TAG=$(TAG)
+	make cleanrel
+	rm -rf org-$(TAG)
+	rm org-$(TAG)*.zip
+	rm org-$(TAG)*.tar.gz
+	make pushreleasetag TAG=$(TAG)
+	git push origin maint
+	git checkout master
+	git merge -s ours maint
+	UTILITIES/set-version.pl -o $(TAG)
+	git commit -a -m "Update website to show $(TAG) as current release"
+	git push
+	make updateweb
+
+# The following target makes a release, but from the studd that is on
+# maint, not from the stuff that is on master.  The idea is that it pushes
+# out a minor fix into a minor update, while development on master
+# already went full steam ahead.  To make a micro-relesse, cherry-pick
+# the necessary changes into maint, then run (with proper version number)
+# This is just like release, but we skip  the step which merges master
+# into maint.
+#
+#   make fixrelease TAG=7.01.02
+
+fixrelease:
 	git checkout maint
 	git merge -s recursive -X theirs master
 	UTILITIES/set-version.pl $(TAG)
@@ -324,6 +371,17 @@ distfile:
 	cp -r ORGWEBPAGE/Changes.org org-$(TAG)/
 	zip -r org-$(TAG).zip org-$(TAG)
 	gtar zcvf org-$(TAG).tar.gz org-$(TAG)
+
+pkg:
+	@if [ "X$(PKG_TAG)" = "X" ]; then echo "*** No tag ***"; exit 1; fi
+	touch doc/org.texi doc/orgcard.tex # force update
+	${MAKE} info
+	${MAKE} doc
+	rm -rf org-$(PKG_TAG) org-$(PKG_TAG).tar
+	$(MKDIR) org-$(PKG_TAG)
+	cp -r $(PKG_FILES) org-$(PKG_TAG)
+	echo "(define-package \"org\" \"$(PKG_TAG)\" \"$(PKG_DOC)\" $(PKG_REQ))" > org-$(PKG_TAG)/org-pkg.el
+	tar cf org-$(PKG_TAG).tar org-$(PKG_TAG) --remove-files
 
 makerelease:
 	@if [ "X$(TAG)" = "X" ]; then echo "*** No tag ***"; exit 1; fi

@@ -437,14 +437,6 @@
 (require 'recentf-ext)
 ;;(global-set-key "\C-x\ \C-r" 'recentf-open-files)
 
-;; show line number the cursor is on, in status bar (the mode line)
-(require 'linum)
-(line-number-mode 1)
-(column-number-mode 1)
-;; display line numbers in margin (fringe). Emacs 23 only.
-(global-linum-mode 1)
-(setq linum-format "%d ")
-
 (transient-mark-mode 1)
 (setq gc-cons-threshold (* 10 gc-cons-threshold))
 (setq use-dialog-box nil)
@@ -648,7 +640,7 @@
 (define-key global-map "\C-cc" 'org-capture)
 
 (setq org-capture-templates
-      '(("t" "Todo" entry (file+headline "~/org/todo.org" "Inbox") "** TODO %? %i %a ")
+      '(("t" "Todo" entry (file+headline "~/org/todo.org" "Inbox") "** TODO %? %i %a %T")
         ("r" "Research" entry (file+headline "~/org/diss.org" "Research") "** %? %i %a %T")
         ("w" "Writing" entry (file+headline "~/org/write.org" "Dev") "** TODO %? :write%a %T")
         ("d" "Dev" entry (file+headline "~/org/dev.org" "Dev") "** TODO %? :dev%i %a %T")))

@@ -1,0 +1,61 @@
+#+Title: a collection of examples for Babel tests
+
+* =:noweb= header argument expansion
+  :PROPERTIES:
+  :ID:       eb1f6498-5bd9-45e0-9c56-50717053e7b7
+  :END:
+
+#+source: noweb-example
+#+begin_src emacs-lisp
+  (message "expanded")
+#+end_src
+
+#+begin_src emacs-lisp :noweb yes
+  ;; noweb-yes-start
+  <<noweb-example>>
+  ;; noweb-yes-end
+#+end_src
+
+#+begin_src emacs-lisp :noweb no
+  ;; noweb-no-start
+  <<noweb-example>>
+  ;; noweb-no-end
+#+end_src
+
+#+begin_src emacs-lisp :noweb tangle
+  ;; noweb-tangle-start
+  <<noweb-example>>
+  ;; noweb-tangle-end
+#+end_src
+
+* elisp forms in header arguments
+  :PROPERTIES:
+  :ID:       22d67284-bf14-4cdc-8319-f4bd876829d7
+  :var:      prop=(+ 2 2)
+  :END:
+
+#+begin_src emacs-lisp
+  prop
+#+end_src
+
+#+results:
+: 4
+
+
+* excessive id links on tangling
+  :PROPERTIES:
+  :ID:       ef06fd7f-012b-4fde-87a2-2ae91504ea7e
+  :END:
+
+** no, don't give me an ID
+#+begin_src emacs-lisp :tangle no
+  (message "not to be tangled")
+#+end_src
+
+** yes, I'd love an ID
+   :PROPERTIES:
+   :ID:       ae7b55ca-9ef2-4d30-bd48-da30e35fd0f3
+   :END:
+#+begin_src emacs-lisp :tangle no
+  (message "for tangling")
+#+end_src
