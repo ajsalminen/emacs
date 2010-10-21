@@ -993,3 +993,7 @@
 
 (global-set-key (kbd "C-z") 'anything)
 (require 'anything-config)
+(defalias 'hb 'hide-body)
+(defalias 'sb 'show-body)
+(defalias 'he 'hide-entry)
+(defalias 'se 'show-entry)
