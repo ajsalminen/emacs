@@ -1005,6 +1005,7 @@
 
 (require 'enclose)
 (add-hook 'LaTeX-mode-hook 'enclose-mode)
+(add-hook 'weblogger-entry-mode 'enclose-mode)
 
 (require 'paredit)
 
