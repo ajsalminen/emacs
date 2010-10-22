@@ -1,5 +1,5 @@
 ;;; UNCOMMENT THIS TO DEBUG TROUBLE GETTING EMACS UP AND RUNNING.
-(setq debug-on-error t)
+(setq debug-on-error nil)
 (setq lang "en_US")
 
 ;;; This was installed by package-install.el.
@@ -52,6 +52,7 @@
 (semantic-load-enable-code-helpers) ; Enable prototype help and smart completion
 (global-srecode-minor-mode 1)       ; Enable template insertion menu
 
+(add-to-list 'load-path "~/.emacs.d/site-lisp")
 (add-to-list 'load-path "~/.emacs.d/ecb-2.40")
 (require 'ecb)
 (semantic-load-enable-minimum-features)
@@ -73,6 +74,16 @@
 (let ((default-directory "~/.emacs.d/site-lisp/"))
   (normal-top-level-add-to-load-path '("."))
   (normal-top-level-add-subdirs-to-load-path))
+
+
+(let ((nfsdir "~/.emacs.d/site-lisp")
+      (cachedir "~/.elispcache"))
+  (setq load-path (append load-path (list cachedir nfsdir)))
+  (require 'elisp-cache)
+  (setq elisp-cache-byte-compile-files t)
+  (setq elisp-cache-freshness-delay 0)
+  (elisp-cache nfsdir cachedir))
+
 
 (setq-default indent-tabs-mode nil)
 
@@ -165,19 +176,6 @@
 (setq mac-command-modifier 'meta)
 (setq mac-option-modifier nil)
 
-(let ((path "~/.emacs.d"))
-  (setq load-path (cons path load-path))
-  (load "elisp-cache.el"))
-
-(let ((nfsdir "~/.emacs.d/site-lisp")
-      (cachedir "~/.elispcache"))
-  (setq load-path (append load-path (list cachedir nfsdir)))
-
-  (require 'elisp-cache)
-  (setq elisp-cache-byte-compile-files t)
-
-  (elisp-cache nfsdir cachedir)
-  )
 
 
 ;; Frame fiddling
@@ -313,7 +311,9 @@
 ;; Alias the two major modes for fast switching
 (defalias 'jlt 'yatex-mode)
 (defalias 'ltm 'japanese-latex-mode)
+
 (require 'ess-site)
+(require 'ess-eldoc)
 
 ;; Reload .emacs file by typing: Mx reload.
 (defun reload () "Reloads .emacs interactively."
@@ -844,6 +844,8 @@
 (setq twittering-initial-timeline-spec-string
       '(":home"
         ":replies"
+        ":favorites"
+        ":direct_messages"
         ":search/emacs/"
         ":search/lift scala/"
         ":search/twitter/"
@@ -914,12 +916,12 @@
 (require 'weblogger)
 (require 'zencoding-mode)
 (add-hook 'weblogger-entry-mode-hook 'turn-off-auto-fill)
-(add-hook 'weblogger-entry-mode-hook 'ispell-minor-mode)
+;;(add-hook 'weblogger-entry-mode-hook 'ispell-minor-mode)
 (add-hook 'weblogger-entry-mode-hook 'flyspell-mode)
 
 (require 'textile-minor-mode)
 
-(add-hook 'weblogger-entry-mode-hook 'textile-minor-mode)
+;;(add-hook 'weblogger-entry-mode-hook 'textile-minor-mode)
 
 (defun publish-post ()
   (interactive)
@@ -997,3 +999,13 @@
 (defalias 'sb 'show-body)
 (defalias 'he 'hide-entry)
 (defalias 'se 'show-entry)
+
+(require 'enclose)
+(add-hook 'LaTeX-mode-hook 'enclose-mode)
+
+(require 'paredit)
+
+(require 'eldoc-extension)
+(add-hook 'emacs-lisp-mode-hook 'turn-on-eldoc-mode)
+(add-hook 'lisp-interaction-mode-hook 'turn-on-eldoc-mode)
+(add-hook 'ielm-mode-hook 'turn-on-eldoc-mode)

@@ -439,6 +439,7 @@ StatusNet Service.")
 	      (mentions . "statuses/mentions")
 	      (public . "statuses/public_timeline")
 	      (replies . "statuses/replies")
+	      (favorites . "favorites")
 	      (retweeted_by_me . "statuses/retweeted_by_me")
 	      (retweeted_to_me . "statuses/retweeted_to_me")
 	      (retweets_of_me . "statuses/retweets_of_me")))
@@ -2041,6 +2042,7 @@ as a list of a string on Emacs21."
 ;;;     mentions (status containing @username) for the authenticating user.
 ;;; - (public): public timeline.
 ;;; - (replies): replies.
+;;; - (favorites): favorites.
 ;;; - (retweeted_by_me): retweets posted by the authenticating user.
 ;;; - (retweeted_to_me): retweets posted by the authenticating user's friends.
 ;;; - (retweets_of_me):
@@ -2055,7 +2057,7 @@ as a list of a string on Emacs21."
 ;;;
 ;;; SPEC ::= PRIMARY | COMPOSITE
 ;;; PRIMARY ::= USER | LIST | DIRECT_MESSSAGES | DIRECT_MESSSAGES_SENT
-;;;             | FRIENDS | HOME | MENTIONS | PUBLIC | REPLIES
+;;;             | FRIENDS | HOME | MENTIONS | PUBLIC | REPLIES | FAVORITES
 ;;;             | RETWEETED_BY_ME | RETWEETED_TO_ME | RETWEETS_OF_ME
 ;;;             | SEARCH
 ;;; COMPOSITE ::= MERGE | FILTER
@@ -2070,6 +2072,7 @@ as a list of a string on Emacs21."
 ;;; MENTIONS ::= ":mentions"
 ;;; PUBLIC ::= ":public"
 ;;; REPLIES ::= ":replies" | "@"
+;;; FAVORITES ::= ":favorites"
 ;;; RETWEETED_BY_ME ::= ":retweeted_by_me"
 ;;; RETWEETED_TO_ME ::= ":retweeted_to_me"
 ;;; RETWEETS_OF_ME ::= ":retweets_of_me"
@@ -2099,6 +2102,7 @@ If SHORTEN is non-nil, the abbreviated expression will be used."
      ((eq type 'mentions) ":mentions")
      ((eq type 'public) ":public")
      ((eq type 'replies) (if shorten "@" ":replies"))
+     ((eq type 'favorites) ":favorites")
      ((eq type 'retweeted_by_me) ":retweeted_by_me")
      ((eq type 'retweeted_to_me) ":retweeted_to_me")
      ((eq type 'retweets_of_me) ":retweets_of_me")
@@ -2142,6 +2146,8 @@ Return cons of the spec and the rest string."
     `((home) . ,(substring str (match-end 0))))
    ((string-match (concat "^" twittering-regexp-atmark) str)
     `((replies) . ,(substring str (match-end 0))))
+   ((string-match (concat "^" twittering-regexp-atmark) str)
+    `((favorites) . ,(substring str (match-end 0))))
    ((string-match (concat "^" twittering-regexp-hash "\\([a-zA-Z0-9_-]+\\)")
 		  str)
     (let* ((tag (match-string 1 str))
@@ -2158,6 +2164,7 @@ Return cons of the spec and the rest string."
 		   ("mentions" . mentions)
 		   ("public" . public)
 		   ("replies" . replies)
+		   ("favorites" . favorites)
 		   ("retweeted_by_me" . retweeted_by_me)
 		   ("retweeted_to_me" . retweeted_to_me)
 		   ("retweets_of_me" . retweets_of_me))))
@@ -2262,7 +2269,7 @@ Return nil if SPEC-STR is invalid as a timeline spec."
 	 '(user list
 		direct_messages direct_messages_sent
 		friends home mentions public replies
-		search
+		favorites search
 		retweeted_by_me retweeted_to_me retweets_of_me))
 	(type (car spec)))
     (memq type primary-spec-types)))
@@ -3326,6 +3333,7 @@ authorized -- The account has been authorized.")
     (let ((km twittering-mode-map))
       (define-key km (kbd "C-c C-f") 'twittering-friends-timeline)
       (define-key km (kbd "C-c C-r") 'twittering-replies-timeline)
+      (define-key km (kbd "C-c C-a") 'twittering-favorites-timeline)
       (define-key km (kbd "C-c C-u") 'twittering-user-timeline)
       (define-key km (kbd "C-c C-d") 'twittering-direct-messages-timeline)
       (define-key km (kbd "C-c C-s") 'twittering-update-status-interactive)
@@ -3392,6 +3400,7 @@ authorized -- The account has been authorized.")
   (let ((important-commands
 	 '(("Timeline" . twittering-friends-timeline)
 	   ("Replies" . twittering-replies-timeline)
+	   ("Favorites" . twittering-favorites-timeline)
 	   ("Update status" . twittering-update-status-interactive)
 	   ("Next" . twittering-goto-next-status)
 	   ("Prev" . twittering-goto-previous-status))))
@@ -6061,6 +6070,10 @@ variable `twittering-status-format'."
   (interactive)
   (twittering-visit-timeline '(replies)))
 
+(defun twittering-favorites-timeline ()
+  (interactive)
+  (twittering-visit-timeline '(favorites)))
+
 (defun twittering-public-timeline ()
   (interactive)
   (twittering-visit-timeline '(public)))
@@ -6479,7 +6492,7 @@ managed by `twittering-mode'."
 	  (append twittering-timeline-history
 		  (twittering-get-usernames-from-timeline)
 		  '(":direct_messages" ":direct_messages_sent" ":friends"
-		    ":home" ":mentions" ":public" ":replies"
+		    ":home" ":mentions" ":public" ":replies" ":favorites"
 		    ":retweeted_by_me" ":retweeted_to_me" ":retweets_of_me")))
 	 (spec-string (twittering-completing-read prompt dummy-hist
 						  nil nil initial 'dummy-hist))
