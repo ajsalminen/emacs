@@ -919,7 +919,7 @@
 (require 'weblogger)
 (require 'zencoding-mode)
 (add-hook 'weblogger-entry-mode-hook 'turn-off-auto-fill)
-;;(add-hook 'weblogger-entry-mode-hook 'ispell-minor-mode)
+(add-hook 'weblogger-entry-mode-hook 'ispell-minor-mode)
 (add-hook 'weblogger-entry-mode-hook 'flyspell-mode)
 
 (require 'textile-minor-mode)
