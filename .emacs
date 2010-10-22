@@ -851,6 +851,9 @@
         ":search/twitter/"
         "richstyles/foo"))
 
+(setq frame-title-format '("" invocation-name "@" system-name " "
+      global-mode-string "%b %+%+ %f" ))
+
 ;;(require 'auto-install)
 ;;(require 'todochiku)
 ;;(load-file "~/.emacs.d/site-lisp/work-timer.el")
