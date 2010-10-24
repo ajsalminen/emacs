@@ -1057,3 +1057,5 @@
 (global-set-key [(meta down)] 'bc-local-next) ;; M-down-arrow for local next
 (global-set-key [(control c)(n)] 'bc-goto-current) ;; C-c j for jump to current bookmark
 (global-set-key [(control c)(m)] 'bc-list) ;; C-x M-j for the bookmark menu list
+
+(setq version-control t)
