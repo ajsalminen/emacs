@@ -334,6 +334,7 @@
 ;; Load the snippets
 (yas/load-directory yas/root-directory)
 
+(setq yas/wrap-around-region t)
 (setq yas/trigger-key (kbd "C-TAB"))
 (setq yas/next-field-key (kbd "TAB"))
 
@@ -1004,6 +1005,7 @@
 (defalias 'se 'show-entry)
 
 (require 'enclose)
+(enclose-remove-encloser "'")
 (add-hook 'LaTeX-mode-hook 'enclose-mode)
 (add-hook 'weblogger-entry-mode 'enclose-mode)
 
@@ -1013,3 +1015,36 @@
 (add-hook 'emacs-lisp-mode-hook 'turn-on-eldoc-mode)
 (add-hook 'lisp-interaction-mode-hook 'turn-on-eldoc-mode)
 (add-hook 'ielm-mode-hook 'turn-on-eldoc-mode)
+
+(setq path-to-ctags "/usr/local/bin/ctags")
+
+(defun create-tags (dir-name)
+  "Create tags file."
+  (interactive "DDirectory: ")
+  (shell-command
+   (format "%s -f %s/TAGS -e -R %s" path-to-ctags dir-name (directory-file-name dir-name))))
+
+(setq tags-revert-without-query t)
+
+(require 'etags-table)
+(require 'etags-select)
+(global-set-key "\M-?" 'etags-select-find-tag-at-point)
+(global-set-key "\M-." 'etags-select-find-tag)
+
+(define-key dired-mode-map "r" 'wdired-change-to-wdired-mode)
+(require 'dired-sort-map)
+
+(add-to-list 'load-path "~/.emacs.d/rhtml")
+(require 'rhtml-mode)
+(require 'ruby-electric)
+
+(setq yas/prompt-functions '(yas/ido-prompt yas/dropdown-prompt yas/x-prompt))
+(require 'sense-region)
+(sense-region-on)
+
+(defun ido-my-keys ()
+    (define-key ido-mode-map "\C-p" 'ido-prev-match)
+    (define-key ido-mode-map "\C-n" 'ido-next-match))
+(add-hook 'ido-define-mode-map-hook 'ido-my-keys)
+
+(require 'dired-sort-map)
