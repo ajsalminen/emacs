@@ -331,6 +331,12 @@
 ;; Develop and keep personal snippets under ~/emacs.d/mysnippets
 (setq yas/root-directory "~/.emacs.d/mysnippets")
 
+(defun yas/ido-prompt-fix (prompt choices &optional display-fn)
+  (when (featurep 'ido)
+    (yas/completing-prompt prompt choices display-fn #'ido-completing-read)))
+
+(setq yas/prompt-functions '(yas/ido-prompt-fix yas/dropdown-prompt yas/x-prompt))
+
 ;; Load the snippets
 (yas/load-directory yas/root-directory)
 
@@ -1038,13 +1044,16 @@
 (require 'rhtml-mode)
 (require 'ruby-electric)
 
-(setq yas/prompt-functions '(yas/ido-prompt yas/dropdown-prompt yas/x-prompt))
 (require 'sense-region)
 (sense-region-on)
 
-(defun ido-my-keys ()
-    (define-key ido-mode-map "\C-p" 'ido-prev-match)
-    (define-key ido-mode-map "\C-n" 'ido-next-match))
-(add-hook 'ido-define-mode-map-hook 'ido-my-keys)
-
 (require 'dired-sort-map)
+
+(require 'breadcrumb)
+(global-set-key [(control tab)] 'bc-set) ;; Shift-SPACE for set bookmark
+(global-set-key [(control c)(u)] 'bc-previous)       ;; M-j for jump to previous
+(global-set-key [(control c)(i)] 'bc-next) ;; Shift-M-j for jump to next
+(global-set-key [(meta up)] 'bc-local-previous) ;; M-up-arrow for local previous
+(global-set-key [(meta down)] 'bc-local-next) ;; M-down-arrow for local next
+(global-set-key [(control c)(n)] 'bc-goto-current) ;; C-c j for jump to current bookmark
+(global-set-key [(control c)(m)] 'bc-list) ;; C-x M-j for the bookmark menu list
