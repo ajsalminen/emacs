@@ -639,8 +639,12 @@
 (defun org-mobile-pullpush nil nil (org-mobile-pull)
   (org-mobile-push))
 
+(require 'deferred)
 
-(run-at-time t 3600 'org-mobile-pullpush)
+(defun async-org-mobile-pullpussh
+  (deferred:call(org-mobile-pullpush)))
+
+(run-at-time t 3600 'async-org-mobile-pullpush)
 
 
 (setq org-default-notes-file (concat org-directory "memo.org"))
@@ -1059,3 +1063,15 @@
 (global-set-key [(control c)(m)] 'bc-list) ;; C-x M-j for the bookmark menu list
 
 (setq version-control t)
+
+(require 'redo+)
+(global-set-key (kbd "C-M-/") 'redo)
+(setq undo-no-redo t)
+(setq undo-limit 600000)
+(setq undo-strong-limit 900000)
+
+(require 'goto-chg)
+(global-set-key [(control ?.)] 'goto-last-change)
+(global-set-key [(control ?,)] 'goto-last-change-reverse)
+
+(require 'midnight)
