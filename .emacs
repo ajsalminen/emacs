@@ -1010,7 +1010,7 @@
 (global-set-key (kbd "C-z") 'anything)
 (require 'anything-config)
 (defalias 'hb 'hide-body)
-(defalias 'sb 'show-body)
+(defalias 'sb 'show-all)
 (defalias 'he 'hide-entry)
 (defalias 'se 'show-entry)
 
@@ -1075,3 +1075,6 @@
 (global-set-key [(control ?,)] 'goto-last-change-reverse)
 
 (require 'midnight)
+
+(global-set-key (kbd "C-x 9") 'windmove-right)
+(global-set-key (kbd "C-x 7") 'windmove-left)
