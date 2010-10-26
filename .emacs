@@ -850,6 +850,9 @@
 (setq twittering-use-master-password t)
 (setq twittering-url-show-status nil)
 (twittering-icon-mode t)
+
+(define-key twittering-mode-map (kbd "<S-tab>") 'twittering-goto-previous-thing)
+
 (defalias 'tt 'twittering-update-status-interactive)
 
 (setq twittering-initial-timeline-spec-string
