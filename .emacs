@@ -166,7 +166,7 @@
   (load "scala-mode-auto.el"))
 (require 'scala-mode-auto)
 
-(add-to-list 'load-path "~/.emacs.d/ensime_2.8.1.RC2-0.3.5/elisp/")
+(add-to-list 'load-path "~/.emacs.d/ensime_2.8.1.RC3-0.3.7/elisp/")
 (require 'ensime)
 (add-hook 'scala-mode-hook 'ensime-scala-mode-hook)
 
@@ -1081,3 +1081,8 @@
 
 (global-set-key (kbd "C-x 9") 'windmove-right)
 (global-set-key (kbd "C-x 7") 'windmove-left)
+
+
+(load "~/.emacs.d/haskell-mode-2.8.0/haskell-site-file.el")
+(add-hook 'haskell-mode-hook 'turn-on-haskell-doc-mode)
+(add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
