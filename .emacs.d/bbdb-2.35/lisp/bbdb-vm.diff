@@ -1,0 +1,41 @@
+Index: bbdb-vm.el
+===================================================================
+RCS file: /cvsroot/bbdb/bbdb/lisp/bbdb-vm.el,v
+retrieving revision 1.98
+diff -w -u -h -r1.98 bbdb-vm.el
+--- bbdb-vm.el	7 Mar 2003 22:13:25 -0000	1.98
++++ bbdb-vm.el	31 Jan 2006 21:16:12 -0000
+@@ -348,7 +348,7 @@
+ `bbdb/vm-auto-add-label' uses to check for labels to apply to messages.
+ Defaults to `bbdb-define-all-aliases-field' which is typically `mail-alias'."
+   :group 'bbdb-mua-specific-vm
+-  :type '(choice symbol list))
++  :type 'sexp)
+ 
+ (defun bbdb/vm-auto-add-label (record)
+   "Automatically add labels to messages based on the mail-alias field.
+@@ -410,6 +410,24 @@
+       (vm-select-folder-buffer)
+       (bbdb/vm-pop-up-bbdb-buffer))))
+ 
++(defcustom bbdb/vm-pop-up-bbdb-buffer-on-vm-system-state t
++  "Pop up the BBDB buffer only for this state.
++The variable content will be evaluated and should be non-nil in order to
++pop-up the BBDB buffer."
++  :group 'bbdb-mua-specific-vm
++  :type '(choice (const :tag "Always"
++                        t)
++                 (const :tag "Not previewing"
++                        (not (eq vm-system-state 'previewing)))
++                 (const :tag "Showing"
++                        (eq vm-system-state 'showing))
++                 ))
++
++(defun bbdb/vm-pop-up-bbdb-buffer-hook ()
++  (vm-select-folder-buffer)
++  (message "%S %s" vm-system-state bbdb/vm-pop-up-bbdb-buffer-on-vm-system-state)
++  (if (eval bbdb/vm-pop-up-bbdb-buffer-on-vm-system-state)
++      (bbdb/vm-pop-up-bbdb-buffer)))
+ 
+ ;;;###autoload
+ (defun bbdb-insinuate-vm ()

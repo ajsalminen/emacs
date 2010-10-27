@@ -1,0 +1,72 @@
+@numchapentry{BBDB}{1}{Top}{1}
+@numsecentry{Installation}{1.1}{Installation}{1}
+@numsubsecentry{General Prerequisites}{1.1.1}{General Prerequisites}{1}
+@numsubsecentry{Normal User Installation}{1.1.2}{Normal User}{2}
+@numsubsecentry{XEmacs Package Installation}{1.1.3}{XEmacs Package}{4}
+@numsubsecentry{Initial Configuration}{1.1.4}{Initial Configuration}{5}
+@numsubsubsecentry{Initializing @b {BBDB} support for Gnus}{1.1.4.1}{Gnus Prep}{7}
+@numsubsubsecentry{Initializing @b {BBDB} support for MH-E}{1.1.4.2}{MH-E Prep}{7}
+@numsubsubsecentry{Initializing @b {BBDB} support for RMAIL}{1.1.4.3}{RMAIL Prep}{7}
+@numsubsubsecentry{Initializing @b {BBDB} support for Sendmail}{1.1.4.4}{Sendmail Prep}{7}
+@numsubsubsecentry{Initializing @b {BBDB} support for VM}{1.1.4.5}{VM Prep}{8}
+@numsubsubsecentry{Initializing @b {BBDB} support for Message mode}{1.1.4.6}{Message Prep}{8}
+@numsubsubsecentry{Initializing @b {BBDB} support for Reportmail}{1.1.4.7}{Reportmail Prep}{8}
+@numsubsubsecentry{Initializing @b {BBDB} support for Supercite}{1.1.4.8}{Supercite Prep}{8}
+@numsubsubsecentry{Initializing @b {BBDB} support for Web Browsers}{1.1.4.9}{Web Browser Prep}{9}
+@numsecentry{The @b {BBDB}}{1.2}{The BBDB}{9}
+@numsubsecentry{Database Fields}{1.2.1}{Database Fields}{9}
+@numsubsecentry{Basic searching commands}{1.2.2}{Basic Searching}{12}
+@numsubsecentry{Advanced searching commands}{1.2.3}{Advanced Searching}{12}
+@numsubsecentry{Manual record addition}{1.2.4}{Manual Record Addition}{12}
+@numsecentry{BBDB Mode}{1.3}{BBDB Mode}{13}
+@numsubsecentry{Functions bound to keys in @b {BBDB} Mode}{1.3.1}{}{13}
+@numsubsecentry{Other database manipulation functions}{1.3.2}{}{17}
+@numsecentry{Interfaces}{1.4}{Interfaces}{17}
+@numsubsecentry{Mail Reading Interfaces}{1.4.1}{Mail Reading Interfaces}{17}
+@numsubsecentry{News Reading Interfaces}{1.4.2}{News Reading Interfaces}{18}
+@numsubsecentry{Mail Sending Interfaces}{1.4.3}{Mail Sending Interfaces}{18}
+@unnsubsecentry{Mailing Lists and Mail Aliases}{10000.4.4}{}{19}
+@numsecentry{Reader-specific Features}{1.5}{Reader-specific Features}{19}
+@numsubsecentry{Gnus-specific Features}{1.5.1}{Gnus Features}{19}
+@numsubsubsecentry{Scoring}{1.5.1.1}{Gnus Scoring}{19}
+@numsubsubsecentry{Gnus Summary Buffer Enhancements}{1.5.1.2}{Gnus Summary Buffer}{20}
+@numsubsubsecentry{GNUS Summary Buffer Enhancements}{1.5.1.3}{GNUS Subject List}{22}
+@numsubsecentry{VM-specific features}{1.5.2}{VM Features}{22}
+@numsubsubsecentry{VM Message Summary Enhancements}{1.5.2.1}{VM Message Summary}{22}
+@numsubsubsecentry{VM configuration of what records the @b {BBDB} buffer shows}{1.5.2.2}{VM what records are displayed}{22}
+@numsubsubsecentry{VM automatic setup of @code {vm-set-auto-folder-alist}}{1.5.2.3}{VM automatic setup of vm-set-auto-folder-alist}{22}
+@numsubsubsecentry{VM automatic adding of labels}{1.5.2.4}{VM automatic adding of labels}{23}
+@numsecentry{Using the @b {BBDB} with other packages}{1.6}{Other Packages}{23}
+@numsubsecentry{Using the @b {BBDB} with Message Mode}{1.6.1}{Using Message Mode}{23}
+@numsubsecentry{Using the @b {BBDB} with Reportmail}{1.6.2}{Using Reportmail}{23}
+@numsubsecentry{Using the @b {BBDB} with Supercite}{1.6.3}{Using Supercite}{24}
+@numsubsecentry{Using the @b {BBDB} with Web Browsers}{1.6.4}{Using Web Browsers}{24}
+@numsecentry{Options}{1.7}{Options}{24}
+@numsubsecentry{Customization Parameters}{1.7.1}{Customization Parameters}{24}
+@numsubsecentry{Customization Hooks}{1.7.2}{Customization Hooks}{28}
+@numsubsecentry{Predefined Hooks}{1.7.3}{Predefined Hooks}{30}
+@numsecentry{Utilities}{1.8}{Utilities}{33}
+@numsubsecentry{@code {bbdb-ftp}}{1.8.1}{bbdb-ftp}{33}
+@numsubsecentry{@code {bbdb-print}}{1.8.2}{bbdb-print}{33}
+@numsubsecentry{@code {bbdb-snarf}}{1.8.3}{bbdb-snarf}{37}
+@numsubsecentry{@code {bbdb-srv}}{1.8.4}{bbdb-srv}{37}
+@numsecentry{Internals}{1.9}{Internals}{39}
+@numsubsecentry{BBDB data file format}{1.9.1}{}{39}
+@numsubsubsecentry{Record Vectors}{1.9.1.1}{}{39}
+@numsubsubsecentry{Phone Vectors}{1.9.1.2}{}{40}
+@numsubsubsecentry{Address Vectors}{1.9.1.3}{}{40}
+@numsubsubsecentry{Cache Vector}{1.9.1.4}{}{41}
+@numsubsubsecentry{Notes String or Alist}{1.9.1.5}{}{42}
+@numsubsubsecentry{Example BBDB record}{1.9.1.6}{}{42}
+@numsecentry{Mailing Lists}{1.10}{Mailing Lists}{42}
+@numsecentry{Changes in this Version}{1.11}{Changes}{42}
+@numsubsecentry{Major Changes}{1.11.1}{Major Changes}{42}
+@numsubsecentry{Other Changes}{1.11.2}{Other Changes}{43}
+@numsecentry{The Latest Version}{1.12}{The Latest Version}{43}
+@numsecentry{The Future}{1.13}{The Future}{43}
+@numsubsecentry{Known Bugs}{1.13.1}{Known Bugs}{43}
+@numsubsecentry{TODO List}{1.13.2}{TODO List}{44}
+@numsubsecentry{End of Life (EOL) Statements}{1.13.3}{EOL Statements}{46}
+@numsecentry{Thanks}{1.14}{Thanks}{46}
+@unnchapentry{Concept Index}{10001}{Concept Index}{47}
+@unnchapentry{Variable Index}{10002}{Variable Index}{49}

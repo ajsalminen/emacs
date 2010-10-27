@@ -1,0 +1,59 @@
+\initial {B}
+\entry {\code {bbdb}}{12, 16}
+\entry {\code {bbdb-add-or-remove-mail-alias}}{19}
+\entry {\code {bbdb-append-records}}{16}
+\entry {\code {bbdb-bury-buffer}}{16}
+\entry {\code {bbdb-changed}}{16}
+\entry {\code {bbdb-company}}{12, 16}
+\entry {\code {bbdb-complete-name}}{18}
+\entry {\code {bbdb-create}}{16}
+\entry {\code {bbdb-creation-date-hook}}{30}
+\entry {\code {bbdb-creation-newer}}{12}
+\entry {\code {bbdb-creation-no-change}}{12}
+\entry {\code {bbdb-creation-older}}{12}
+\entry {\code {bbdb-define-all-aliases}}{19}
+\entry {\code {bbdb-delete-current-field-or-record}}{13}
+\entry {\code {bbdb-delete-redundant-nets}}{30}
+\entry {\code {bbdb-dial}}{14}
+\entry {\code {bbdb-display-record-completely}}{14}
+\entry {\code {bbdb-edit-current-field}}{13}
+\entry {\code {bbdb-edit-notes}}{13}
+\entry {\code {bbdb-finger}}{15}
+\entry {\code {bbdb-ftp}}{33}
+\entry {\code {bbdb-help}}{16}
+\entry {\code {bbdb-ignore-most-messages-hook}}{30}
+\entry {\code {bbdb-ignore-some-messages-hook}}{31}
+\entry {\code {bbdb-info}}{16}
+\entry {\code {bbdb-initialize}}{5, 29}
+\entry {\code {bbdb-insert-new-field}}{13}
+\entry {\code {bbdb-kill-older}}{17}
+\entry {\code {bbdb-name}}{12, 16}
+\entry {\code {bbdb-net}}{12, 16}
+\entry {\code {bbdb-next-record}}{14}
+\entry {\code {bbdb-notes}}{12, 16}
+\entry {\code {bbdb-omit-record}}{14}
+\entry {\code {bbdb-prev-record}}{14}
+\entry {\code {bbdb-print}}{11, 16, 33}
+\entry {\code {bbdb-refile-record}}{14}
+\entry {\code {bbdb-save-db}}{14}
+\entry {\code {bbdb-send-mail}}{14}
+\entry {\code {bbdb-timestamp-hook}}{30}
+\entry {\code {bbdb-timestamp-newer}}{12}
+\entry {\code {bbdb-timestamp-older}}{12}
+\entry {\code {bbdb-toggle-records-display-layout}}{14}
+\entry {\code {bbdb-transpose-fields}}{13}
+\entry {\code {bbdb-www}}{16}
+\entry {\code {bbdb-yank-addresses}}{18}
+\entry {\code {bbdb/gnus-annotate-sender}}{17}
+\entry {\code {bbdb/gnus-show-sender}}{17}
+\entry {\code {bbdb/mh-annotate-sender}}{17}
+\entry {\code {bbdb/mh-show-sender}}{17}
+\entry {\code {bbdb/rmail-annotate-sender}}{17}
+\entry {\code {bbdb/rmail-show-sender}}{17}
+\entry {\code {bbdb/vm-annotate-sender}}{17}
+\entry {\code {bbdb/vm-auto-add-label}}{23}
+\entry {\code {bbdb/vm-show-sender}}{17}
+\initial {D}
+\entry {\code {define-mail-alias}}{19}
+\initial {V}
+\entry {\code {vm-summary-function-B}}{22}

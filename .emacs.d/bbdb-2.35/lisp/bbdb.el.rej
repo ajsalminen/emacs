@@ -1,0 +1,46 @@
+***************
+*** 876,888 ****
+    cache
+    )
+  
+- ;; HACKHACK
+- (defmacro bbdb-record-set-net (vector value)
+-   "We redefine the set-binding for 'net to detect changes"
+-   (list 'progn
+-         (list 'aset vector 6 value)
+-         (list 'setq 'bbdb-define-all-aliases-needs-rebuilt t)))
+- 
+  (put 'company 'field-separator "; ")
+  (put 'notes 'field-separator "\n")
+  
+--- 876,881 ----
+    cache
+    )
+  
+  (put 'company 'field-separator "; ")
+  (put 'notes 'field-separator "\n")
+  
+***************
+*** 3698,3710 ****
+    (define-key bbdb-mode-map [(=)]          'delete-other-windows)
+    (define-key bbdb-mode-map [(c)]          'bbdb-create)
+    (define-key bbdb-mode-map [(C)]          'bbdb-changed)
+-   (define-key bbdb-mode-map [(b)]          'bbdb)
+- 
+-   (define-key bbdb-mode-map [delete]       'scroll-down-command)
+-   (define-key bbdb-mode-map [SPC]        'scroll-up-command)
+-   )
+  
+-  
+  ;;; Support for the various Emacsen.  This is for features that the
+  ;;; BBDB adds to itself for different Emacsen.  For definitions of
+  ;;; functions that aren't present in various Emacsen (for example,
+--- 3691,3698 ----
+    (define-key bbdb-mode-map [(=)]          'delete-other-windows)
+    (define-key bbdb-mode-map [(c)]          'bbdb-create)
+    (define-key bbdb-mode-map [(C)]          'bbdb-changed)
++   (define-key bbdb-mode-map [(b)]          'bbdb))
+  
+  ;;; Support for the various Emacsen.  This is for features that the
+  ;;; BBDB adds to itself for different Emacsen.  For definitions of
+  ;;; functions that aren't present in various Emacsen (for example,
