@@ -2,6 +2,11 @@
 (setq debug-on-error nil)
 (setq lang "en_US")
 
+(add-to-list 'load-path "~/.emacs.d/site-lisp")
+(setq font-lock-verbose nil)
+(setq byte-compile-verbose nil)
+(setq bcc-cache-directory "~/.elispcache")
+
 ;;; This was installed by package-install.el.
 ;;; This provides support for the package system and
 ;;; interfacing with ELPA, the package archive.
@@ -52,7 +57,6 @@
 (semantic-load-enable-code-helpers) ; Enable prototype help and smart completion
 (global-srecode-minor-mode 1)       ; Enable template insertion menu
 
-(add-to-list 'load-path "~/.emacs.d/site-lisp")
 (add-to-list 'load-path "~/.emacs.d/ecb-2.40")
 (require 'ecb)
 (semantic-load-enable-minimum-features)
@@ -70,6 +74,8 @@
 ;;(ecb-activate)
 
 (setq initial-scratch-message nil)
+
+(require 'byte-code-cache)
 
 (let ((default-directory "~/.emacs.d/site-lisp/"))
   (normal-top-level-add-to-load-path '("."))
@@ -916,8 +922,6 @@
   (setq buffer-backed-up nil))
 
 (add-hook 'before-save-hook  'force-backup-of-buffer)
-(defalias 'bl 'weblogger-start-entry)
-(defalias 'bll 'weblogger-select-configuration)
 
 (defun unfill-paragraph ()
   (interactive)
@@ -932,6 +936,10 @@
 
 (require 'weblogger)
 (require 'zencoding-mode)
+
+(defalias 'bl 'weblogger-start-entry)
+(defalias 'bll 'weblogger-select-configuration)
+
 (add-hook 'weblogger-entry-mode-hook 'turn-off-auto-fill)
 (add-hook 'weblogger-entry-mode-hook 'ispell-minor-mode)
 (add-hook 'weblogger-entry-mode-hook 'flyspell-mode)
