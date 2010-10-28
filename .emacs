@@ -1,8 +1,17 @@
 ;;; UNCOMMENT THIS TO DEBUG TROUBLE GETTING EMACS UP AND RUNNING.
-(setq debug-on-error nil)
+(setq debug-on-error t)
+(setq eval-expression-debug-on-error t)
 (setq lang "en_US")
 
 (add-to-list 'load-path "~/.emacs.d/site-lisp")
+(defun kill-ci-buffer ()
+       (interactive)
+       (switch-to-buffer " *Compiler Input*")
+       (set-buffer-modified-p nil)
+       (kill-buffer " *Compiler Input*"))
+
+(kill-ci-buffer)
+
 (setq font-lock-verbose nil)
 (setq byte-compile-verbose nil)
 (setq bcc-cache-directory "~/.elispcache")
@@ -75,7 +84,7 @@
 
 (setq initial-scratch-message nil)
 
-(require 'byte-code-cache)
+;;(require 'byte-code-cache)
 
 (let ((default-directory "~/.emacs.d/site-lisp/"))
   (normal-top-level-add-to-load-path '("."))
@@ -93,10 +102,9 @@
 
 (setq-default indent-tabs-mode nil)
 
-;; PATH doesn't get inherited for OSX
-(when (equal system-type 'darwin)
-  (setenv "PATH" (concat "/usr/local/texlive/p2009/bin/x86_64-apple-darwin10.2.0/:/opt/local/bin:/usr/local/bin:" (getenv "PATH")))
-  (push "/opt/local/bin" exec-path))
+;; On Mac OS X, Emacs launched from a bundle
+;; needs paths to be set explicitly
+(add-to-list 'exec-path (getenv "PATH"))
 
 (defun ib ()
   "indent whole buffer"
@@ -107,49 +115,6 @@
 
 (require 'auto-install)
 (require 'work-timer)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 (setq work-timer-working-time 30)
@@ -290,8 +255,7 @@
         ("PDF Viewer" "open %o")
         ("Safari" "open %o")))
 
-
-(setq load-path (cons (expand-file-name "~/src/emacs/yatex1.74") load-path))
+(add-to-list 'load-path "~/.emacs.d/yatex1.74")
 
 ;; Just need this to generate Japanese PDFs
 ;;(setq auto-mode-alist
@@ -317,6 +281,11 @@
 ;; Alias the two major modes for fast switching
 (defalias 'jlt 'yatex-mode)
 (defalias 'ltm 'japanese-latex-mode)
+
+;;(load "~/.emacs.d/ess-5.11/lisp/ess-site.el")
+(add-to-list 'load-path "~/.emacs.d/ess-5.11/lisp")
+(setq ess-etc-directory "~/.emacs.d/ess-5.11/etc")
+
 
 (require 'ess-site)
 (require 'ess-eldoc)
@@ -553,11 +522,17 @@
 
 ;; Japanese input-related settings
 ;; So I know if input method is active
-(prefer-coding-system 'utf-8)
-(if (not (= emacs-major-version 23))
+ (prefer-coding-system 'utf-8)
+(if (or (< emacs-major-version 23) (featurep 'carbon-emacs-package))
     (utf-translate-cjk-mode 1)
-)
-
+  (setq utf-translate-cjk-mode nil) ; disable CJK coding/encoding (Chinese/Japanese/Korean characters)
+  (set-language-environment 'Japanese)
+  (set-keyboard-coding-system 'utf-8-mac) ; For old Carbon emacs on OS X only
+  (setq locale-coding-system 'utf-8)
+  (set-default-coding-systems 'utf-8)
+  (set-terminal-coding-system 'utf-8)
+  (set-selection-coding-system 'utf-8)
+  (set-language-environment 'Japanese))
 
 (require 'cursor-chg)
 
@@ -1103,6 +1078,7 @@
 (add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
 
 (add-to-list 'load-path "~/.emacs.d/bbdb-2.35")
+(add-to-list 'load-path "~/.emacs.d/bbdb-2.35/lisp")
 (require 'bbdb)
 (bbdb-initialize)
 
@@ -1136,3 +1112,5 @@
 (add-hook 'wl-draft-mode-hook
           (lambda ()
             (define-key wl-draft-mode-map (kbd "<C-tab>") 'bbdb-complete-name)))
+
+(message "successfully initialized")
