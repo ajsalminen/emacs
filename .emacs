@@ -220,6 +220,9 @@
 ;;(add-to-list 'pabbrev-global-mode-excluded-modes 'org-mode)
 ;;(add-hook 'text-mode-hook 'pabbrev-mode)
 
+(add-to-list 'load-path "~/.emacs.d/reftex-4.34a/lisp/")
+(require 'reftex)
+
 (setq TeX-auto-save t)
 (setq TeX-parse-self t)
 (setq-default TeX-master nil)
@@ -227,7 +230,6 @@
 (add-hook 'LaTeX-mode-hook 'flyspell-mode)
 ;;(add-hook 'LaTeX-mode-hook 'pabbrev-mode)
 (add-hook 'LaTeX-mode-hook 'LaTeX-math-mode)
-(add-hook 'LaTeX-mode-hook 'turn-on-reftex)
 (add-hook 'LaTeX-mode-hook 'TeX-source-correlate-mode)
 
 (add-hook 'LaTeX-mode-hook 'turn-on-reftex) ; with AUCTeX LaTeX mode
@@ -1112,5 +1114,16 @@
 (add-hook 'wl-draft-mode-hook
           (lambda ()
             (define-key wl-draft-mode-map (kbd "<C-tab>") 'bbdb-complete-name)))
+
+(require 'igrep)
+(setq igrep-options "-ir")
+(igrep-define lgrep (igrep-use-zgrep nil) (igrep-regex-option "-n -0u8"))
+(igrep-find-define lgrep (igrep-use-zgrep nil) (igrep-regex-option "-n -0u8"))
+
+(require 'grep-a-lot)
+(grep-a-lot-setup-keys)
+(grep-a-lot-advise igrep)
+
+(require 'grep-edit)
 
 (message "successfully initialized")
