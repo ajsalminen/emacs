@@ -1141,7 +1141,7 @@
 
 (set-face-attribute 'default nil
                     :family "monaco"
-                    :height 120)
+                    :height 130)
 
 (set-fontset-font "fontset-default"
                  'katakana-jisx0201
