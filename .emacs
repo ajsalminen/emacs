@@ -114,6 +114,7 @@
   (untabify (point-min) (point-max)))
 
 (require 'auto-install)
+
 (require 'work-timer)
 
 
@@ -283,6 +284,18 @@
 ;; Alias the two major modes for fast switching
 (defalias 'jlt 'yatex-mode)
 (defalias 'ltm 'japanese-latex-mode)
+
+(setq japanese-LaTeX-command-default "~/Library/TeXShop/bin/platex2pdf-utf8")
+(add-hook 'TeX-mode-hook
+          (function (lambda () (setq TeX-command-default "pTeX"))))
+
+(add-hook 'LaTeX-mode-hook (lambda ()
+  (push
+    '("make" "latebxmk -pv -pdf %s" TeX-run-TeX nil t
+      :help "Run Latexmk on file")
+    TeX-command-list)))
+
+(setq TeX-command-default "make")
 
 ;;(load "~/.emacs.d/ess-5.11/lisp/ess-site.el")
 (add-to-list 'load-path "~/.emacs.d/ess-5.11/lisp")
@@ -1125,5 +1138,18 @@
 (grep-a-lot-advise igrep)
 
 (require 'grep-edit)
+
+(set-face-attribute 'default nil
+                    :family "monaco"
+                    :height 120)
+
+(set-fontset-font "fontset-default"
+                 'katakana-jisx0201
+                 '("ヒラギノ丸ゴ pro w4*" . "jisx0201.*"))
+
+(set-fontset-font "fontset-default"
+                 'japanese-jisx0208
+                 '("ヒラギノ丸ゴ pro w4*" . "jisx0208.*"))
+
 
 (message "successfully initialized")
