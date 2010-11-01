@@ -563,8 +563,11 @@
 
 (require 'cursor-chg)
 
+(defun recompile-emacsd ()
+  (interactive)
+  (byte-recompile-directory "~/.emacs.d" 0 t))
 
-;;(byte-recompile-directory "~/.emacs.d" 0 t)
+(defalias 'brd 'recompile-emacsd)
 
 ;; Carbon Emacs keep Spotlight from triggering
 (when
@@ -1167,4 +1170,4 @@
 
 (load-file "~/.emacs.d/site-lisp/mvn.el")
 
-(message "successfully initialized")
+(message "********** successfully initialized **********")
