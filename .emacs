@@ -561,6 +561,10 @@
   (set-selection-coding-system 'utf-8)
   (set-language-environment 'Japanese))
 
+(when
+    (featurep 'carbon-emacs-package)
+  (setq default-input-method "MacOSX"))
+
 (require 'cursor-chg)
 
 (defun recompile-emacsd ()
@@ -1033,7 +1037,7 @@
 
 (require 'enclose)
 (enclose-remove-encloser "'")
-(add-hook 'LaTeX-mode-hook 'enclose-mode)
+;; (add-hook 'LaTeX-mode-hook 'enclose-mode)
 (add-hook 'weblogger-entry-mode 'enclose-mode)
 
 (require 'paredit)
