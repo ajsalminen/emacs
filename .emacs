@@ -258,6 +258,18 @@
         ("PDF Viewer" "open %o")
         ("Safari" "open %o")))
 
+
+(require 'hideshow)
+(require 'fold-dwim)
+(defalias 'to 'fold-dwim-toggle)
+(defalias 'sh 'fold-dwim-show-all)
+(defalias 'hi 'fold-dwim-hide-all)
+
+(add-hook 'LaTeX-mode-hook (lambda ()
+                             (TeX-fold-mode 1)))
+
+
+
 (add-to-list 'load-path "~/.emacs.d/yatex1.74")
 
 ;; Just need this to generate Japanese PDFs
@@ -999,12 +1011,6 @@
 
 (global-set-key (kbd "C-x x") 'point-to-top)
 (global-set-key (kbd "C-x c") 'point-to-bottom)
-
-(require 'hideshow)
-(require 'fold-dwim)
-(defalias 'to 'fold-dwim-toggle)
-(defalias 'sh 'fold-dwim-show-all)
-(defalias 'hi 'fold-dwim-hide-all)
 
 (defun my-ido-keys ()
   "Add my keybindings for ido."
