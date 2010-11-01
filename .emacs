@@ -1,3 +1,4 @@
+
 ;;; UNCOMMENT THIS TO DEBUG TROUBLE GETTING EMACS UP AND RUNNING.
 (setq debug-on-error t)
 (setq eval-expression-debug-on-error t)
@@ -77,7 +78,6 @@
 (setq ecb-major-modes-deactivate 'wl)
 (setq ecb-major-modes-activate '(text-mode LaTeX-mode latex-mode))
 (setq ecb-windows-width 25)
-
 
 ;;(setq ecb-maximize-ecb-window-after-selection t)
 ;;(ecb-activate)
@@ -1157,5 +1157,14 @@
                  'japanese-jisx0208
                  '("ヒラギノ丸ゴ pro w4*" . "jisx0208.*"))
 
+
+(add-to-list 'load-path "~/.emacs.d/elib-1.0")
+(add-to-list 'load-path "~/.emacs.d/jdee-2.4.0.1/lisp")
+
+(require 'jde)
+(autoload 'jde-mode "jde" "JDE mode." t)
+(add-to-list 'auto-mode-alist '("\\java\\'" . jde-mode))
+
+(load-file "~/.emacs.d/site-lisp/mvn.el")
 
 (message "successfully initialized")
