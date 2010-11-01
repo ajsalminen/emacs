@@ -1170,4 +1170,7 @@
 
 (load-file "~/.emacs.d/site-lisp/mvn.el")
 
+(require 'undo-tree)
+(global-undo-tree-mode)
+
 (message "********** successfully initialized **********")
