@@ -1109,6 +1109,8 @@
 (add-to-list 'load-path "~/.emacs.d/bbdb-2.35/lisp")
 (require 'bbdb)
 (bbdb-initialize)
+(bbdb-insinuate-message)
+(add-hook 'mail-setup-hook 'bbdb-insinuate-sendmail)
 
 (setq
     bbdb-offer-save 1                        ;; 1 means save-without-asking
