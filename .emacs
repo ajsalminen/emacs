@@ -1,4 +1,3 @@
-
 ;;; UNCOMMENT THIS TO DEBUG TROUBLE GETTING EMACS UP AND RUNNING.
 (setq debug-on-error t)
 (setq eval-expression-debug-on-error t)
@@ -452,6 +451,59 @@
 (defalias 'message-box 'message)
 (setq echo-keystrokes 0.1)
 (setq history-length 1000)
+
+;; wl
+(add-to-list 'load-path "~/.emacs.d/apel")
+(add-to-list 'load-path "~/.emacs.d/flim")
+(add-to-list 'load-path "~/.emacs.d/semi")
+(add-to-list 'load-path "~/.emacs.d/wanderlust/elmo")
+(add-to-list 'load-path "~/.emacs.d/wanderlust/utils")
+(add-to-list 'load-path "~/.emacs.d/wanderlust/wl")
+
+(autoload 'wl "wl" "Wanderlust" t)
+(autoload 'wl-other-frame "wl" "Wanderlust on new frame." t)
+(autoload 'wl-draft "wl-draft" "Write draft with Wanderlust." t)
+(add-hook 'wl-init-hook 'ecb-deactivate)
+(add-hook 'wl-exit-hook 'ecb-activate)
+(require 'mime-w3m)
+(defalias 'wle 'wl-exit)
+
+(add-to-list 'load-path "~/.emacs.d/bbdb-2.35")
+(add-to-list 'load-path "~/.emacs.d/bbdb-2.35/lisp")
+(require 'bbdb)
+(bbdb-initialize)
+
+(setq
+    bbdb-offer-save 1                        ;; 1 means save-without-asking
+    bbdb-use-pop-up t                        ;; allow popups for addresses
+    bbdb-electric-p t                        ;; be disposable with SPC
+    bbdb-popup-target-lines  1               ;; very small
+    bbdb-dwim-net-address-allow-redundancy t ;; always use full name
+    bbdb-quiet-about-name-mismatches 2       ;; show name-mismatches 2 secs
+    bbdb-always-add-address t                ;; add new addresses to existing...
+                                             ;; ...contacts automatically
+    bbdb-canonicalize-redundant-nets-p t     ;; x@foo.bar.cx => x@bar.cx
+    bbdb-completion-type nil                 ;; complete on anything
+    bbdb-complete-name-allow-cycling t       ;; cycle through matches
+                                             ;; this only works partially
+    bbbd-message-caching-enabled t           ;; be fast
+    bbdb-use-alternate-names t               ;; use AKA
+    bbdb-elided-display t                    ;; single-line addresses
+    ;; auto-create addresses from mail
+    bbdb/mail-auto-create-p 'bbdb-ignore-some-messages-hook
+    bbdb-ignore-some-messages-alist ;; don't ask about fake addresses
+    ;; NOTE: there can be only one entry per header (such as To, From)
+    ;; http://flex.ee.uec.ac.jp/texi/bbdb/bbdb_11.html
+    '(( "From" . "no.?reply\\|DAEMON\\|daemon\\|facebookmail\\|twitter")))
+
+
+(require 'bbdb-wl)
+(bbdb-wl-setup)
+
+(require 'wl-draft)
+(add-hook 'wl-draft-mode-hook
+          (lambda ()
+            (define-key wl-draft-mode-map (kbd "<tab>") 'bbdb-complete-name)))
 
 (require 'icicles)
 (icy-mode 1)
@@ -965,22 +1017,6 @@
 
 (define-key weblogger-entry-mode-map "\C-x\C-s" 'publish-post)
 
-;; wl
-(add-to-list 'load-path "~/.emacs.d/apel")
-(add-to-list 'load-path "~/.emacs.d/flim")
-(add-to-list 'load-path "~/.emacs.d/semi")
-(add-to-list 'load-path "~/.emacs.d/wanderlust/elmo")
-(add-to-list 'load-path "~/.emacs.d/wanderlust/utils")
-(add-to-list 'load-path "~/.emacs.d/wanderlust/wl")
-
-(autoload 'wl "wl" "Wanderlust" t)
-(autoload 'wl-other-frame "wl" "Wanderlust on new frame." t)
-(autoload 'wl-draft "wl-draft" "Write draft with Wanderlust." t)
-(add-hook 'wl-init-hook 'ecb-deactivate)
-(add-hook 'wl-exit-hook 'ecb-activate)
-(require 'mime-w3m)
-(defalias 'wle 'wl-exit)
-
 (require 'smex)
 (smex-initialize)
 (global-set-key (kbd "M-x") 'smex)
@@ -1105,43 +1141,6 @@
 (add-hook 'haskell-mode-hook 'turn-on-haskell-doc-mode)
 (add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
 
-(add-to-list 'load-path "~/.emacs.d/bbdb-2.35")
-(add-to-list 'load-path "~/.emacs.d/bbdb-2.35/lisp")
-(require 'bbdb)
-(bbdb-initialize)
-(bbdb-insinuate-message)
-(add-hook 'mail-setup-hook 'bbdb-insinuate-sendmail)
-
-(setq
-    bbdb-offer-save 1                        ;; 1 means save-without-asking
-    bbdb-use-pop-up t                        ;; allow popups for addresses
-    bbdb-electric-p t                        ;; be disposable with SPC
-    bbdb-popup-target-lines  1               ;; very small
-    bbdb-dwim-net-address-allow-redundancy t ;; always use full name
-    bbdb-quiet-about-name-mismatches 2       ;; show name-mismatches 2 secs
-    bbdb-always-add-address t                ;; add new addresses to existing...
-                                             ;; ...contacts automatically
-    bbdb-canonicalize-redundant-nets-p t     ;; x@foo.bar.cx => x@bar.cx
-    bbdb-completion-type nil                 ;; complete on anything
-    bbdb-complete-name-allow-cycling t       ;; cycle through matches
-                                             ;; this only works partially
-    bbbd-message-caching-enabled t           ;; be fast
-    bbdb-use-alternate-names t               ;; use AKA
-    bbdb-elided-display t                    ;; single-line addresses
-    ;; auto-create addresses from mail
-    bbdb/mail-auto-create-p 'bbdb-ignore-some-messages-hook
-    bbdb-ignore-some-messages-alist ;; don't ask about fake addresses
-    ;; NOTE: there can be only one entry per header (such as To, From)
-    ;; http://flex.ee.uec.ac.jp/texi/bbdb/bbdb_11.html
-    '(( "From" . "no.?reply\\|DAEMON\\|daemon\\|facebookmail\\|twitter")))
-
-(require 'bbdb-wl)
-(bbdb-wl-setup)
-
-(require 'wl-draft)
-(add-hook 'wl-draft-mode-hook
-          (lambda ()
-            (define-key wl-draft-mode-map (kbd "<C-tab>") 'bbdb-complete-name)))
 
 (require 'igrep)
 (setq igrep-options "-ir")
@@ -1178,5 +1177,8 @@
 
 (require 'undo-tree)
 (global-undo-tree-mode)
+
+(bbdb-insinuate-message)
+(add-hook 'mail-setup-hook 'bbdb-insinuate-sendmail)
 
 (message "********** successfully initialized **********")
