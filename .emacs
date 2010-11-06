@@ -237,8 +237,6 @@
 (setq reftex-plug-into-AUCTeX t)
 
 (setq TeX-default-mode 'japanese-latex-mode)
-(setq japanese-TeX-command-default "pTeX")
-(setq japanese-LaTeX-command-default "pLaTeX")
 
 ;; Minimal OS X-friendly configuration of AUCTeX. Since there is no
 ;; DVI viewer for the platform, use pdftex/pdflatex by default for
@@ -280,8 +278,8 @@
 
 
 ;;; platex と Skim
-(setq tex-command "~/Library/TeXShop/bin/platex2pdf-utf8"
-      dvi2-command "open -a Skim")
+;; (setq tex-command "~/Library/TeXShop/bin/platex2pdf-utf8"
+;;       dvi2-command "open -a Skim")
 ;;; pdflatex と Skim
 ;;(setq tex-command "pdflatex -synctex=1"
 ;;     dvi2-command "open -a Skim")
@@ -296,17 +294,12 @@
 (defalias 'jlt 'yatex-mode)
 (defalias 'ltm 'japanese-latex-mode)
 
-(setq japanese-LaTeX-command-default "~/Library/TeXShop/bin/platex2pdf-utf8")
-(add-hook 'TeX-mode-hook
-          (function (lambda () (setq TeX-command-default "pTeX"))))
-
-(add-hook 'LaTeX-mode-hook (lambda ()
-  (push
-    '("make" "latebxmk -pv -pdf %s" TeX-run-TeX nil t
-      :help "Run Latexmk on file")
-    TeX-command-list)))
-
-(setq TeX-command-default "make")
+(add-hook 'TeX-mode-hook (lambda()
+                             (add-to-list 'TeX-command-list '("m" "latexmk -pv -pdf %s" TeX-run-TeX nil t))
+                             (setq TeX-save-query nil)
+                             (setq TeX-command-default "m")
+                             (setq japanese-TeX-command-default "m")
+                             (setq TeX-show-compilation t)))
 
 ;;(load "~/.emacs.d/ess-5.11/lisp/ess-site.el")
 (add-to-list 'load-path "~/.emacs.d/ess-5.11/lisp")
@@ -1180,5 +1173,9 @@
 
 (bbdb-insinuate-message)
 (add-hook 'mail-setup-hook 'bbdb-insinuate-sendmail)
+
+(defun insert-time ()
+  (interactive)
+  (insert (format-time-string "%Y-%m-%d-%R")))
 
 (message "********** successfully initialized **********")
