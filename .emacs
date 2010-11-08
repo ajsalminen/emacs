@@ -1178,4 +1178,6 @@
   (interactive)
   (insert (format-time-string "%Y-%m-%d-%R")))
 
+(find-function-setup-keys)
+
 (message "********** successfully initialized **********")
