@@ -1195,4 +1195,6 @@
 
 (define-key isearch-mode-map "\M-e" 'isearch-yank-symbol)
 
+(require 'switch-window)
+
 (message "********** successfully initialized **********")
