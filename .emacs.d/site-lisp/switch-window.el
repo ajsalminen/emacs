@@ -95,12 +95,14 @@ from-current-window is not nil"
 	     (lines-before (/ increased-lines 2))
 	     (margin-left (/ w h) ))
 	;; increase to maximum switch-window-increase
-        (when (> emacs-major-version 22)
-          (text-scale-increase scale))
+	(when (fboundp 'text-scale-increase)
+	  (text-scale-increase scale))
 	;; make it so that the huge number appears centered
 	(dotimes (i lines-before) (insert "\n"))
 	(dotimes (i margin-left)  (insert " "))
-	(insert label)))
+        (if (fboundp 'text-scale-increase)
+                  (insert label)
+                  (insert (propertize label 'face (list :height (* h 100)))))))
 
     (set-window-buffer win buf)
     buf))
