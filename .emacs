@@ -1197,4 +1197,6 @@
 
 (require 'switch-window)
 
+(add-hook 'ange-ftp-process-startup-hook 'ecb-deactivate)
+
 (message "********** successfully initialized **********")
