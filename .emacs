@@ -1196,6 +1196,8 @@
 (define-key isearch-mode-map "\M-e" 'isearch-yank-symbol)
 
 (require 'switch-window)
+(setq switch-window-increase 50)
+(setq switch-window-timeout 3)
 
 (add-hook 'ange-ftp-process-startup-hook 'ecb-deactivate)
 
