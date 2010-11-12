@@ -433,8 +433,8 @@
 ;; recentf stuff
 (require 'recentf)
 (recentf-mode 1)
-(setq recentf-max-saved-items 777)
-(setq recentf-max-menu-items 250)
+(setq recentf-max-saved-items 10000)
+(setq recentf-max-menu-items 10000)
 (require 'recentf-ext)
 ;;(global-set-key "\C-x\ \C-r" 'recentf-open-files)
 
@@ -1208,5 +1208,8 @@
 (setq-default line-spacing 2)
 
 (require 'cssh)
+
+(require 'list-processes+)
+(defalias 'lp 'list-processes+)
 
 (message "********** successfully initialized **********")
