@@ -70,12 +70,12 @@
 (require 'ecb)
 (semantic-load-enable-minimum-features)
 (setq ecb-layout-name "left8")
-(setq ecb-auto-activate t)
+;;(setq ecb-auto-activate t)
 (setq ecb-tip-of-the-day nil)
 (setq ecb-fix-window-size (quote width))
 (setq ecb-compile-window-width (quote edit-window))
-(setq ecb-major-modes-deactivate 'wl)
-(setq ecb-major-modes-activate '(text-mode LaTeX-mode latex-mode))
+(setq ecb-major-modes-deactivate '(wl-mode tramp-mode))
+;;(setq ecb-major-modes-activate '(text-mode LaTeX-mode latex-mode))
 (setq ecb-windows-width 25)
 
 ;;(setq ecb-maximize-ecb-window-after-selection t)
@@ -457,7 +457,7 @@
 (autoload 'wl-other-frame "wl" "Wanderlust on new frame." t)
 (autoload 'wl-draft "wl-draft" "Write draft with Wanderlust." t)
 (add-hook 'wl-init-hook 'ecb-deactivate)
-(add-hook 'wl-exit-hook 'ecb-activate)
+;;(add-hook 'wl-exit-hook 'ecb-activate)
 (require 'mime-w3m)
 (defalias 'wle 'wl-exit)
 
@@ -1199,6 +1199,10 @@
 (setq switch-window-increase 50)
 (setq switch-window-timeout 3)
 
-(add-hook 'ange-ftp-process-startup-hook 'ecb-deactivate)
+(require 'sr-speedbar)
+
+(require 'ange-ftp)
+;;(add-hook 'ange-ftp-process-startup-hook 'ecb-deactivate)
+(require 'tramp)
 
 (message "********** successfully initialized **********")
