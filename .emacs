@@ -1205,4 +1205,8 @@
 ;;(add-hook 'ange-ftp-process-startup-hook 'ecb-deactivate)
 (require 'tramp)
 
+(setq-default line-spacing 2)
+
+(require 'cssh)
+
 (message "********** successfully initialized **********")
