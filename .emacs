@@ -1213,4 +1213,8 @@
 (require 'list-processes+)
 (defalias 'lp 'list-processes+)
 
+(require 'yaoddmuse)
+(setq yaoddmuse-username "baron")
+(yaoddmuse-update-pagename t)
+
 (message "********** successfully initialized **********")
