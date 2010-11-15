@@ -356,6 +356,8 @@
         try-complete-lisp-symbol-partially
         try-complete-lisp-symbol))
 
+(global-set-key "\M-/" 'hippie-expand)
+
 ;; get text from pdf instead of viewer
 (add-to-list 'auto-mode-alist '("\\.pdf\\'" . no-pdf))
 
