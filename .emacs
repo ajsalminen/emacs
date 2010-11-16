@@ -259,7 +259,7 @@
 (require 'hideshow)
 (require 'fold-dwim)
 (defalias 'to 'fold-dwim-toggle)
-(defalias 'sh 'fold-dwim-show-all)
+(defalias 'sho 'fold-dwim-show-all)
 (defalias 'hi 'fold-dwim-hide-all)
 
 (add-hook 'LaTeX-mode-hook (lambda ()
@@ -1224,5 +1224,7 @@
   t)
 (autoload 'shell-toggle-cd "shell-toggle"
   "Pops up a shell-buffer and insert a \"cd <file-dir>\" command." t)
+
+(defalias 'sh 'shell-toggle-cd)
 
 (message "********** successfully initialized **********")
