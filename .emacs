@@ -1219,4 +1219,10 @@
 (setq yaoddmuse-username "baron")
 (yaoddmuse-update-pagename t)
 
+(autoload 'shell-toggle "shell-toggle"
+  "Toggles between the *shell* buffer and whatever buffer you are editing."
+  t)
+(autoload 'shell-toggle-cd "shell-toggle"
+  "Pops up a shell-buffer and insert a \"cd <file-dir>\" command." t)
+
 (message "********** successfully initialized **********")
