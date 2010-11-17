@@ -500,6 +500,8 @@
           (lambda ()
             (define-key wl-draft-mode-map (kbd "<tab>") 'bbdb-complete-name)))
 
+(require 'dired+)
+
 (require 'icicles)
 (icy-mode 1)
 (global-set-key "\C-x\ \C-r" 'icicle-recent-file)
