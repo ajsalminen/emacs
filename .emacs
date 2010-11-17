@@ -275,7 +275,7 @@
 ;;(autoload 'yatex-mode "yatex" "Yet Another LaTeX mode" t)
 
 (require 'yatex)
-
+(setq YaTeX-fill-column nil)
 
 ;;; platex と Skim
 ;; (setq tex-command "~/Library/TeXShop/bin/platex2pdf-utf8"
@@ -292,7 +292,7 @@
 
 ;; Alias the two major modes for fast switching
 (defalias 'jlt 'yatex-mode)
-(defalias 'ltm 'japanese-latex-mode)
+(defalias 'elt 'japanese-latex-mode)
 
 (add-hook 'TeX-mode-hook (lambda()
                              (add-to-list 'TeX-command-list '("m" "latexmk -pv -pdf %s" TeX-run-TeX nil t))
