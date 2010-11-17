@@ -501,6 +501,7 @@
             (define-key wl-draft-mode-map (kbd "<tab>") 'bbdb-complete-name)))
 
 (require 'dired+)
+(define-key dired-mode-map "W" 'diredp-mark-region-files)
 
 (require 'icicles)
 (icy-mode 1)
