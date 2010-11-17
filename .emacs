@@ -741,6 +741,8 @@
 (add-to-list 'magic-mode-alist '("\\(.\\|\n\\)*\n@protocol" . objc-mode))
 
 (ffap-bindings)
+(autoload 'ffap-href-enable "ffap-href" nil t)
+
 ;; 探すパスは ffap-c-path で設定する
 ;; (setq ffap-c-path
 ;;     '("/usr/include" "/usr/local/include"))
