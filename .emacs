@@ -1231,5 +1231,6 @@
   "Pops up a shell-buffer and insert a \"cd <file-dir>\" command." t)
 
 (defalias 'sh 'shell-toggle-cd)
-(global-set-key (kbd "C-;") 'smex)
+(global-set-key (kbd "C-'") 'smex)
+(require 'lispxmp)
 (message "********** successfully initialized **********")
