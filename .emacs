@@ -1233,4 +1233,10 @@
 (defalias 'sh 'shell-toggle-cd)
 (global-set-key (kbd "C-'") 'smex)
 (require 'lispxmp)
+
+;; needed since OSX 's "ls" command is different from unix
+(when (eq system-type 'darwin)
+  (require 'ls-lisp)
+  (setq ls-lisp-use-insert-directory-program nil))
+
 (message "********** successfully initialized **********")
