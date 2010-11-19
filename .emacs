@@ -1239,4 +1239,6 @@
   (require 'ls-lisp)
   (setq ls-lisp-use-insert-directory-program nil))
 
+(defalias 'qrr 'query-replace-regexp)
+
 (message "********** successfully initialized **********")
