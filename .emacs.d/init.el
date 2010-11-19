@@ -1060,8 +1060,15 @@
    (move-to-window-line -1)
    (re-search-backward "\\S " (point-min) t 5))
 
+(defun point-to-middle ()
+  "Put cursor on middle line of window"
+  (interactive)
+  (move-to-window-line (/ (window-body-height (get-buffer-window (current-buffer) 0)) 2)))
+
+
 (global-set-key (kbd "C-x x") 'point-to-top)
 (global-set-key (kbd "C-x c") 'point-to-bottom)
+(global-set-key (kbd "C-x g") 'point-to-middle)
 
 (defun my-ido-keys ()
   "Add my keybindings for ido."
