@@ -1063,7 +1063,7 @@
 (defun point-to-middle ()
   "Put cursor on middle line of window"
   (interactive)
-  (move-to-window-line (/ (window-body-height (get-buffer-window (current-buffer) 0)) 2)))
+  (move-to-window-line (/ (count-screen-lines) 2)))
 
 
 (global-set-key (kbd "C-x x") 'point-to-top)
@@ -1257,5 +1257,24 @@
 
 (require 'header2)
 (add-hook 'emacs-lisp-mode-hook 'auto-make-header)
+
+(require 're-builder+)
+
+(defun reb-query-replace (to-string)
+      "Replace current RE from point with `query-replace-regexp'."
+      (interactive
+       (progn (barf-if-buffer-read-only)
+              (list (query-replace-read-to (reb-target-binding reb-regexp)
+                                           "Query replace"  t))))
+      (with-current-buffer reb-target-buffer
+        (query-replace-regexp (reb-target-binding reb-regexp) to-string)))
+
+(define-key reb-mode-map "\C-g" 'reb-quit)
+(define-key reb-mode-map "\C-w" 'reb-copy)
+(define-key reb-mode-map "\C-s" 'reb-next-match)
+(define-key reb-mode-map "\C-r" 'reb-prev-match)
+(define-key reb-mode-map "\M-%" 'reb-query-replace)
+
+(defalias 'reb 're-builder)
 
 (message "********** successfully initialized **********")
