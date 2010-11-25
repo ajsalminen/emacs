@@ -1275,6 +1275,8 @@
 (define-key reb-mode-map "\C-r" 'reb-prev-match)
 (define-key reb-mode-map "\M-%" 'reb-query-replace)
 
+(define-key twittering-edit-mode-map "\M-s" 'twittering-edit-replace-at-point)
+
 (defalias 'reb 're-builder)
 
 (message "********** successfully initialized **********")
