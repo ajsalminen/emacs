@@ -940,6 +940,9 @@
         ":search/twitter/"
         "richstyles/foo"))
 
+(define-key twittering-edit-mode-map "\M-s" 'twittering-edit-replace-at-point)
+(define-key twittering-edit-mode-map "\M-q" 'twittering-edit-cancel-status)
+
 (setq frame-title-format '("" invocation-name "@" system-name " "
       global-mode-string "%b %+%+ %f" ))
 
@@ -1282,8 +1285,6 @@
 (define-key reb-mode-map "\C-s" 'reb-next-match)
 (define-key reb-mode-map "\C-r" 'reb-prev-match)
 (define-key reb-mode-map "\M-%" 'reb-query-replace)
-
-(define-key twittering-edit-mode-map "\M-s" 'twittering-edit-replace-at-point)
 
 (defalias 'reb 're-builder)
 
