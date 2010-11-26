@@ -919,13 +919,13 @@
 (setq twittering-url-show-status nil)
 (twittering-icon-mode t)
 
-(defvar jmp-api-url (format "http://api.j.mp/shorten?version=2.0.1&login=%s&apiKey=%s&format=text&longUrl=" jmp-user-name jmp-api-key))
-
-(add-to-list 'twittering-tinyurl-services-map
-	     `(jmp . ,jmp-api-url))
-
-;; api key and other information in custom.el
-(setq twittering-tinyurl-service 'jmp)
+(if (and (boundp 'jmp-api-key) (boundp 'jmp-user-name))
+    (progn (defvar jmp-api-url
+             (format "http://api.j.mp/shorten?version=2.0.1&login=%s&apiKey=%s&format=text&longUrl=" jmp-user-name jmp-api-key))
+           (add-to-list 'twittering-tinyurl-services-map
+                        `(jmp . ,jmp-api-url))
+           ;; api key and other information in custom.el
+           (setq twittering-tinyurl-service 'jmp)))
 
 (define-key twittering-mode-map (kbd "<S-tab>") 'twittering-goto-previous-thing)
 
