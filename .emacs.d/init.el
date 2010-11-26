@@ -514,6 +514,7 @@
 (require 'magit-svn)
 (defalias 'mg 'magit-status)
 (require 'gist)
+(setq gist-use-curl t)
 
 ;; dictionary stuff
 (require 'anything-config)
@@ -927,6 +928,8 @@
 (setq twittering-tinyurl-service 'jmp)
 
 (define-key twittering-mode-map (kbd "<S-tab>") 'twittering-goto-previous-thing)
+
+(add-hook 'twittering-edit-mode-hook (lambda () (ispell-minor-mode) (flyspell-mode)))
 
 (defalias 'tt 'twittering-update-status-interactive)
 
