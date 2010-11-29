@@ -532,13 +532,10 @@
       '(anything-c-source-recentf
         anything-c-source-info-pages
         anything-c-source-info-elisp
-        anything-c-source-man-pages
         anything-c-source-buffers
         anything-c-source-file-name-history
         anything-c-source-locate
         anything-c-source-occur))
-
-
 
 
 ;; ----- sdicが呼ばれたときの設定
