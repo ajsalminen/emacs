@@ -517,13 +517,19 @@
 (setq gist-use-curl t)
 
 ;; dictionary stuff
-(require 'anything-config)
+;; (require 'anything-config)
+(require 'anything-startup)
+(global-set-key (kbd "C-z") 'anything)
+(setq anything-idle-delay 0.3)
+(setq anything-input-idle-delay 0.2)
+(setq anything-candidate-number-limit 100)
+
+;; (require 'anything-match-plugin)
 (require 'eijiro)
 (setq eijiro-directory "~/Downloads/EDP-124/EIJIRO/") ; 英辞郎の辞書を置いているディレクトリ
 
 (setq anything-sources
       '(anything-c-source-recentf
-        anything-c-source-emacs-commands
         anything-c-source-info-pages
         anything-c-source-info-elisp
         anything-c-source-man-pages
@@ -531,6 +537,9 @@
         anything-c-source-file-name-history
         anything-c-source-locate
         anything-c-source-occur))
+
+
+
 
 ;; ----- sdicが呼ばれたときの設定
 (autoload 'sdic-describe-word "sdic" "search word" t nil)
@@ -1104,8 +1113,6 @@
 (global-set-key "\C-s" 'isearch-forward-regexp)
 (global-set-key "\C-r" 'isearch-backward-regexp)
 
-(global-set-key (kbd "C-z") 'anything)
-(require 'anything-config)
 (defalias 'hb 'hide-body)
 (defalias 'sb 'show-all)
 (defalias 'he 'hide-entry)
