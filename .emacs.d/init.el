@@ -308,6 +308,14 @@
 
 (require 'ess-site)
 (require 'ess-eldoc)
+(setq ess-source-directory (expand-file-name "~/ESS_Rdump/"))
+
+(require 'ess-tracebug)
+(add-hook 'ess-post-run-hook 'ess-debug t)
+(add-hook 'ess-post-run-hook 'ess-traceback t)
+(require 'ess-R-object-tooltip)
+
+(add-to-list 'same-window-buffer-names "*Buffer List*")
 
 ;; Reload .emacs file by typing: Mx reload.
 (defun reload () "Reloads .emacs interactively."
@@ -517,14 +525,14 @@
 (setq gist-use-curl t)
 
 ;; dictionary stuff
-;; (require 'anything-config)
-(require 'anything-startup)
+(require 'anything-config)
+;; (require 'anything-startup)
 (global-set-key (kbd "C-z") 'anything)
 (setq anything-idle-delay 0.3)
 (setq anything-input-idle-delay 0.2)
 (setq anything-candidate-number-limit 100)
 
-;; (require 'anything-match-plugin)
+(require 'anything-match-plugin)
 (require 'eijiro)
 (setq eijiro-directory "~/Downloads/EDP-124/EIJIRO/") ; 英辞郎の辞書を置いているディレクトリ
 
