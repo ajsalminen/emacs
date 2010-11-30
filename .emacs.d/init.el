@@ -751,6 +751,7 @@
 ;; 思いついたコードやメモコードを書いて保存できるようにするための設定
 ;; (auto-install-from-emacswiki "open-junk-file.el")
 (require 'open-junk-file)
+(setq open-junk-file-format "~/junk/%Y%m%d_%H%M%s_junk.")
 (global-set-key "\C-c\C-j" 'open-junk-file)
 ;; ここまで
 
