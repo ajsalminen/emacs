@@ -924,6 +924,7 @@
 
 (define-key w3m-mode-map (kbd "p") 'w3m-previous-buffer)
 (define-key w3m-mode-map (kbd "n") 'w3m-next-buffer)
+(define-key w3m-mode-map (kbd "y") 'w3m-delete-buffer)
 
 ;; (defalias 'wws 'w3m-search-google-web-en)
 (defalias 'wwe 'w3m-search-emacswiki)
