@@ -3,6 +3,8 @@
 (setq eval-expression-debug-on-error t)
 (setq lang "en_US")
 
+(server-start)
+
 (add-to-list 'load-path "~/.emacs.d/site-lisp")
 (defun kill-ci-buffer ()
        (interactive)
@@ -541,6 +543,7 @@
         anything-c-source-info-pages
         anything-c-source-info-elisp
         anything-c-source-buffers
+        anything-c-source-find-files
         anything-c-source-file-name-history
         anything-c-source-locate
         anything-c-source-occur))
