@@ -913,7 +913,7 @@
 (setq w3m-verbose t)
 (setq w3m-message-silent nil)
 (setq url-show-status nil) ;;don't need to know how you're doing url-http
-;;(defun w3m-message (&rest args)) ;;w3m status messages are annoying and useless
+
 (autoload 'w3m-goto-url "w3m")
 (defalias 'www 'w3m)
 
@@ -921,6 +921,9 @@
   "Use Google (English) to search for WHAT."
   (interactive)
   (w3m-search-advance "http://www.google.com/search?hl=en&safe=off&ie=UTF-8&oe=UTF-8&q=" "Google Web EN" 'utf-8))
+
+(define-key w3m-mode-map (kbd "p") 'w3m-previous-buffer)
+(define-key w3m-mode-map (kbd "n") 'w3m-next-buffer)
 
 ;; (defalias 'wws 'w3m-search-google-web-en)
 (defalias 'wwe 'w3m-search-emacswiki)
