@@ -916,7 +916,13 @@
 ;;(defun w3m-message (&rest args)) ;;w3m status messages are annoying and useless
 (autoload 'w3m-goto-url "w3m")
 (defalias 'www 'w3m)
-(defalias 'wws 'w3m-search-google-web-en)
+
+(defun wws ()
+  "Use Google (English) to search for WHAT."
+  (interactive)
+  (w3m-search-advance "http://www.google.com/search?hl=en&safe=off&ie=UTF-8&oe=UTF-8&q=" "Google Web EN" 'utf-8))
+
+;; (defalias 'wws 'w3m-search-google-web-en)
 (defalias 'wwe 'w3m-search-emacswiki)
 (defalias 'wwso 'w3m-search-stack-overflow)
 (defalias 'wwo 'w3m-view-url-with-external-browser)
