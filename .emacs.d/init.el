@@ -976,6 +976,7 @@
 
 (add-hook 'twittering-edit-mode-hook (lambda () (ispell-minor-mode) (flyspell-mode)))
 
+(defalias 'tw 'twittering-mode)
 (defalias 'tt 'twittering-update-status-interactive)
 
 (setq twittering-initial-timeline-spec-string
@@ -990,6 +991,19 @@
 
 (define-key twittering-edit-mode-map "\M-s" 'twittering-edit-replace-at-point)
 (define-key twittering-edit-mode-map "\M-q" 'twittering-edit-cancel-status)
+
+(defun twittering-mode-exit ()
+  "twittering-mode を終了する。"
+  (interactive)
+  (when (y-or-n-p "Really exit twittering-mode? ")
+    (if twittering-timer
+        (twittering-stop))
+    (dolist (buf (twittering-get-active-buffer-list))
+      (if (get-buffer buf)
+          (kill-buffer buf))))
+  (garbage-collect))
+
+(defalias 'twe 'twittering-mode-exit)
 
 (setq frame-title-format '("" invocation-name "@" system-name " "
       global-mode-string "%b %+%+ %f" ))
