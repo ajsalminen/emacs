@@ -924,6 +924,14 @@
   (interactive)
   (w3m-search-advance "http://www.google.com/search?hl=en&safe=off&ie=UTF-8&oe=UTF-8&q=" "Google Web EN" 'utf-8))
 
+(defun w3m-browse-clipboard ()
+  "uses the clipboard if it's an url, otherwise calls w3m-browse-url"
+  (interactive)
+  (let ((cliptext (current-kill 0 t)))
+    (if (string-match "https?://.*$" cliptext)
+        (w3m-browse-url (match-string 0 cliptext))
+      (w3m))))
+
 (define-key w3m-mode-map (kbd "p") 'w3m-previous-buffer)
 (define-key w3m-mode-map (kbd "n") 'w3m-next-buffer)
 (define-key w3m-mode-map (kbd "y") 'w3m-delete-buffer)
@@ -932,7 +940,7 @@
 (defalias 'wwe 'w3m-search-emacswiki)
 (defalias 'wwso 'w3m-search-stack-overflow)
 (defalias 'wwo 'w3m-view-url-with-external-browser)
-(defalias 'wwb 'w3m-browse-url)
+(defalias 'ww 'w3m-browse-clipboard)
 (setq browse-url-browser-function 'w3m)
 ;;(load-file (expand-file-name "~/.emacs.d/site-lisp/w3mkeymap.el"))
 ;;(add-hook 'w3m-mode-hook '(lambda () (use-local-map dka-w3m-map)))
