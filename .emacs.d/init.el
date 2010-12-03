@@ -3,8 +3,6 @@
 (setq eval-expression-debug-on-error t)
 (setq lang "en_US")
 
-(server-start)
-
 (add-to-list 'load-path "~/.emacs.d/site-lisp")
 (defun kill-ci-buffer ()
        (interactive)
@@ -1335,5 +1333,7 @@
 (define-key reb-mode-map "\M-%" 'reb-query-replace)
 
 (defalias 'reb 're-builder)
+
+(server-start)
 
 (message "********** successfully initialized **********")
