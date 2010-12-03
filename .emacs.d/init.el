@@ -543,7 +543,6 @@
         anything-c-source-info-pages
         anything-c-source-info-elisp
         anything-c-source-buffers
-        anything-c-source-find-files
         anything-c-source-file-name-history
         anything-c-source-locate
         anything-c-source-occur))
@@ -933,6 +932,7 @@
 (defalias 'wwe 'w3m-search-emacswiki)
 (defalias 'wwso 'w3m-search-stack-overflow)
 (defalias 'wwo 'w3m-view-url-with-external-browser)
+(defalias 'wwb 'w3m-browse-url)
 (setq browse-url-browser-function 'w3m)
 ;;(load-file (expand-file-name "~/.emacs.d/site-lisp/w3mkeymap.el"))
 ;;(add-hook 'w3m-mode-hook '(lambda () (use-local-map dka-w3m-map)))
