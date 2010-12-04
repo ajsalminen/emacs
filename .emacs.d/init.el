@@ -545,6 +545,8 @@
         anything-c-source-locate
         anything-c-source-occur))
 
+(require 'descbinds-anything)
+(descbinds-anything-install)
 
 ;; ----- sdicが呼ばれたときの設定
 (autoload 'sdic-describe-word "sdic" "search word" t nil)
