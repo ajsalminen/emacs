@@ -1144,6 +1144,7 @@
 (global-set-key (kbd "C-x x") 'point-to-top)
 (global-set-key (kbd "C-x c") 'point-to-bottom)
 (global-set-key (kbd "C-x g") 'point-to-middle)
+(global-set-key (kbd "C-x r e") 'string-insert-rectangle)
 
 (defun my-ido-keys ()
   "Add my keybindings for ido."
