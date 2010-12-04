@@ -1358,6 +1358,9 @@
 
 (defalias 'reb 're-builder)
 
+(require 'text-translator)
+(global-set-key "\C-x\M-t" 'text-translator)
+
 (server-start)
 
 (message "********** successfully initialized **********")
