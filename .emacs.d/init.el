@@ -1361,6 +1361,13 @@
 (require 'text-translator)
 (global-set-key "\C-x\M-t" 'text-translator)
 
+;; quick and dirty buffer menu sorting
+(define-key Buffer-menu-mode-map (kbd "M-s s") '(lambda() (interactive) (Buffer-menu-sort 2)))
+(define-key Buffer-menu-mode-map (kbd "M-s d") '(lambda() (interactive) (Buffer-menu-sort 3)))
+(define-key Buffer-menu-mode-map (kbd "M-s f") '(lambda() (interactive) (Buffer-menu-sort 4)))
+(define-key Buffer-menu-mode-map (kbd "M-s g") '(lambda() (interactive) (Buffer-menu-sort 5)))
+
+
 (server-start)
 
 (message "********** successfully initialized **********")
