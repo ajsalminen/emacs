@@ -1367,6 +1367,15 @@
 (define-key Buffer-menu-mode-map (kbd "M-s f") '(lambda() (interactive) (Buffer-menu-sort 4)))
 (define-key Buffer-menu-mode-map (kbd "M-s g") '(lambda() (interactive) (Buffer-menu-sort 5)))
 
+(autoload 'espresso-mode "espresso" "Javascript mode" t)
+(autoload 'js2-mode "js2-mode" nil t)
+(add-to-list 'auto-mode-alist '("\\.js$" . js2-mode))
+
+(autoload 'moz-minor-mode "moz" "Mozilla Minor and Inferior Mozilla Modes" t)
+
+(add-hook 'js2-mode-hook 'js2-custom-setup)
+(defun js2-custom-setup ()
+  (moz-minor-mode 1))
 
 (server-start)
 
