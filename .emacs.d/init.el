@@ -1373,13 +1373,14 @@
 
 (autoload 'espresso-mode "espresso" "Javascript mode" t)
 (autoload 'js2-mode "js2-mode" nil t)
-(add-to-list 'auto-mode-alist '("\\.js$" . js2-mode))
+(add-to-list 'auto-mode-alist '("\\.js$" . espresso-mode))
 
 (autoload 'moz-minor-mode "moz" "Mozilla Minor and Inferior Mozilla Modes" t)
 
-(add-hook 'js2-mode-hook 'js2-custom-setup)
-(defun js2-custom-setup ()
+(defun espresso-custom-setup ()
   (moz-minor-mode 1))
+
+(add-hook 'espresso-mode-hook 'espresso-custom-setup)
 
 (server-start)
 
