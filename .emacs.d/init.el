@@ -131,6 +131,8 @@
      (color-theme-manoj-gnus)
      (color-theme-inkpot)))
 
+(set-face-foreground 'default "white")
+
 ;; Scala configs
 (let ((path "~/.emacs.d/scala"))
   (setq load-path (cons path load-path))
@@ -993,9 +995,11 @@
         ":replies"
         ":favorites"
         ":direct_messages"
-        ":search/emacs/"
         ":search/lift scala/"
         ":search/twitter/"
+        ":search/keysnail/"
+        ":search/vimperator/"
+        ":search/emacs/"
         "richstyles/foo"))
 
 (define-key twittering-edit-mode-map "\M-s" 'twittering-edit-replace-at-point)
@@ -1007,7 +1011,7 @@
   (when (y-or-n-p "Really exit twittering-mode? ")
     (if twittering-timer
         (twittering-stop))
-    (dolist (buf (twittering-get-active-buffer-list))
+    (dolist (buf (twittering-get-buffer-list))
       (if (get-buffer buf)
           (kill-buffer buf))))
   (garbage-collect))
