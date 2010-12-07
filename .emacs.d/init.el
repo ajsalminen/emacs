@@ -933,6 +933,14 @@
   (interactive)
   (w3m-search-advance "http://www.google.com/search?hl=en&safe=off&ie=UTF-8&oe=UTF-8&q=" "Google Web EN" 'utf-8))
 
+(defun wwo (&optional url)
+  (interactive)
+  (let ((url-at-point (thing-at-point 'url)))
+    (message url-at-point)
+    (if (string-match "https?://[a-zA-Z]+[.]+[a-zA-Z]+" url-at-point)
+        (w3m-view-url-with-external-browser url-at-point)
+      (w3m-view-url-with-external-browser))))
+
 (defun w3m-browse-clipboard ()
   "uses the clipboard if it's an url, otherwise calls w3m-browse-url"
   (interactive)
@@ -948,7 +956,7 @@
 ;; (defalias 'wws 'w3m-search-google-web-en)
 (defalias 'wwe 'w3m-search-emacswiki)
 (defalias 'wwso 'w3m-search-stack-overflow)
-(defalias 'wwo 'w3m-view-url-with-external-browser)
+;; (defalias 'wwo 'w3m-view-url-with-external-browser)
 (defalias 'ww 'w3m-browse-clipboard)
 (setq browse-url-browser-function 'w3m)
 ;;(load-file (expand-file-name "~/.emacs.d/site-lisp/w3mkeymap.el"))
