@@ -876,9 +876,10 @@
 (defun copy-word (&optional arg)
   "Copy words at point into kill-ring"
   (interactive "P")
-  (let ((beg (progn (if (looking-back "[a-zA-Z0-9]" 1) (backward-word 1)) (point)))
-        (end (progn (forward-word arg) (point))))
-    (copy-region-as-kill beg end)))
+  (save-excursion
+    (let ((beg (progn (if (looking-back "[a-zA-Z0-9]" 1) (backward-word 1)) (point)))
+          (end (progn (forward-word arg) (point))))
+      (copy-region-as-kill beg end))))
 
 (global-set-key (kbd "C-c w") (quote copy-word))
 
@@ -894,9 +895,10 @@
 (defun copy-paragraph (&optional arg)
   "Copy paragraphes at point"
   (interactive "P")
+  (save-excursion
   (let ((beg (progn (backward-paragraph 1) (point)))
         (end (progn (forward-paragraph arg) (point))))
-    (copy-region-as-kill beg end)))
+    (copy-region-as-kill beg end))))
 
 (global-set-key (kbd "C-c p") (quote copy-paragraph))
 
@@ -908,7 +910,9 @@
                     (if (looking-at "[\t ]") (+ (point) 1) (point))))
         (end (progn (goto-char onPoint) (re-search-forward "[\t ]" (line-end-position) 3 1)
                     (if (looking-back "[\t ]") (- (point) 1) (point) ) )))
-    (copy-region-as-kill beg end)))
+    (copy-region-as-kill beg end))
+  (goto-char onPoint))
+
 
 (global-set-key (kbd "C-c s") (quote copy-string))
 (global-set-key (kbd "C-c r") 'ispell-word)
