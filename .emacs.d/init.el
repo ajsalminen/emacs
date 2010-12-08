@@ -61,7 +61,8 @@
  ;; If there is more than one, they won't work right.
  )
 
-(load-file "~/.emacs.d/cedet-1.0/common/cedet.el")
+(add-to-list 'load-path "~/.emacs.d/cedet-1.0/common")
+(require 'cedet)
 (global-ede-mode 1)             ; Enable the Project management system
 (semantic-load-enable-code-helpers) ; Enable prototype help and smart completion
 (global-srecode-minor-mode 1)       ; Enable template insertion menu
@@ -320,9 +321,10 @@
 (add-to-list 'same-window-buffer-names "*Buffer List*")
 
 ;; Reload .emacs file by typing: Mx reload.
-(defun reload () "Reloads .emacs interactively."
+(defun reload-init ()
+  "Reloads .emacs interactively."
   (interactive)
-  (load "~/.emacs"))
+  (load "~/.emacs.d/init.el"))
 
 (setq default-directory "~/projects/ghub")
 
@@ -986,6 +988,7 @@
 (setq twittering-use-master-password t)
 (setq twittering-url-show-status nil)
 (twittering-icon-mode t)
+(setq twittering-timer-interval 900)
 
 (if (and (boundp 'jmp-api-key) (boundp 'jmp-user-name))
     (progn (defvar jmp-api-url
