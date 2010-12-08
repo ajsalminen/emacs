@@ -943,7 +943,7 @@
   (interactive)
   (let ((url-at-point (thing-at-point 'url)))
     (message url-at-point)
-    (if (string-match "https?://[a-zA-Z]+[.]+[a-zA-Z]+" url-at-point)
+    (if (and (not (eq url-at-point nil)) (string-match "https?://[a-zA-Z]+[.]+[a-zA-Z]+" url-at-point))
         (w3m-view-url-with-external-browser url-at-point)
       (w3m-view-url-with-external-browser))))
 
@@ -1396,6 +1396,25 @@
   (moz-minor-mode 1))
 
 (add-hook 'espresso-mode-hook 'espresso-custom-setup)
+
+;; quick thumbs mode navigation
+(define-key thumbs-mode-map (kbd "j") 'next-line)
+(define-key thumbs-mode-map (kbd "k") 'previous-line)
+(define-key thumbs-mode-map (kbd "n") 'next-line)
+(define-key thumbs-mode-map (kbd "p") 'previous-line)
+(define-key thumbs-mode-map (kbd "l") 'forward-char)
+(define-key thumbs-mode-map (kbd "h") 'backward-char)
+(define-key thumbs-mode-map (kbd "f") 'forward-char)
+(define-key thumbs-mode-map (kbd "b") 'backward-char)
+
+;; image view mode
+(define-key thumbs-view-image-mode-map (kbd "j") 'thumbs-next-image)
+(define-key thumbs-view-image-mode-map (kbd "k") 'thumbs-previous-image)
+(define-key thumbs-view-image-mode-map (kbd "n") 'thumbs-next-image)
+(define-key thumbs-view-image-mode-map (kbd "p") 'thumbs-previous-image)
+(define-key thumbs-view-image-mode-map (kbd "f") 'thumbs-next-image)
+(define-key thumbs-view-image-mode-map (kbd "b") 'thumbs-previous-image)
+(define-key thumbs-view-image-mode-map (kbd "Q") '(lambda() (interactive) (thumbs-display-thumbs-buffer) (thumbs-kill-buffer)))
 
 (server-start)
 
