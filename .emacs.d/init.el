@@ -1421,6 +1421,8 @@
                                                                                              (thumbs-display-thumbs-buffer)
                                                                                              (thumbs-kill-buffer)))))
 
+(mouse-avoidance-mode 'cat-and-mouse)
+
 (server-start)
 
 (message "********** successfully initialized **********")
