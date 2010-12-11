@@ -317,6 +317,7 @@
 (add-hook 'ess-post-run-hook 'ess-debug t)
 (add-hook 'ess-post-run-hook 'ess-traceback t)
 (require 'ess-R-object-tooltip)
+(require 'r-utils)
 
 (add-to-list 'same-window-buffer-names "*Buffer List*")
 
@@ -474,6 +475,10 @@
 ;;(add-hook 'wl-exit-hook 'ecb-activate)
 (require 'mime-w3m)
 (defalias 'wle 'wl-exit)
+
+(add-hook 'mime-view-mode-hook
+	  (lambda ()
+	    (local-set-key "s" 'w3m-view-this-url-new-session)))
 
 (add-to-list 'load-path "~/.emacs.d/bbdb-2.35")
 (add-to-list 'load-path "~/.emacs.d/bbdb-2.35/lisp")
@@ -933,6 +938,7 @@
 
 (autoload 'w3m-goto-url "w3m")
 (defalias 'www 'w3m)
+(defalias 'w3m-safe-view-this-url 'w3m-view-this-url)
 
 (defun wws ()
   "Use Google (English) to search for WHAT."
