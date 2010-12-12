@@ -1429,6 +1429,8 @@
 
 (mouse-avoidance-mode 'exile)
 
+(add-hook 'c-mode-hook 'c-turn-on-eldoc-mode)
+
 (server-start)
 
 (message "********** successfully initialized **********")
