@@ -1431,6 +1431,8 @@
 
 (add-hook 'c-mode-hook 'c-turn-on-eldoc-mode)
 
+(require 'goto-chg)
+
 (server-start)
 
 (message "********** successfully initialized **********")
