@@ -1433,6 +1433,8 @@
 
 (require 'goto-chg)
 
+(require 'slack-rtm)
+
 (server-start)
 
 (message "********** successfully initialized **********")
