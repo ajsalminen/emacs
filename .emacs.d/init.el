@@ -1368,6 +1368,21 @@
 (require 'text-translator)
 (global-set-key "\C-x\M-t" 'text-translator)
 
+(defun insert-translation-buffer ()
+  (interactive)
+  (newline)
+  (insert-buffer "*translated*")
+  (newline))
+
+(defun insert-translation ()
+  (interactive)
+  (progn
+    (text-translator nil)
+    (sleep-for 1))
+  (insert-translation-buffer))
+
+(global-set-key "\C-x\M-r" 'insert-translation)
+
 ;; quick and dirty buffer menu sorting
 (define-key Buffer-menu-mode-map (kbd "M-s s") '(lambda() (interactive) (Buffer-menu-sort 2)))
 (define-key Buffer-menu-mode-map (kbd "M-s d") '(lambda() (interactive) (Buffer-menu-sort 3)))
