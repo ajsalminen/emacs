@@ -268,41 +268,23 @@
 (add-hook 'LaTeX-mode-hook (lambda ()
                              (TeX-fold-mode 1)))
 
-
-
 (add-to-list 'load-path "~/.emacs.d/yatex1.74")
-
-;; Just need this to generate Japanese PDFs
-;;(setq auto-mode-alist
-;;      (cons (cons "\\.tex$" 'yatex-mode) auto-mode-alist))
-;;(autoload 'yatex-mode "yatex" "Yet Another LaTeX mode" t)
 
 (require 'yatex)
 (setq YaTeX-fill-column nil)
-
-;;; platex と Skim
-;; (setq tex-command "~/Library/TeXShop/bin/platex2pdf-utf8"
-;;       dvi2-command "open -a Skim")
-;;; pdflatex と Skim
-;;(setq tex-command "pdflatex -synctex=1"
-;;     dvi2-command "open -a Skim")
-;;; platex と TeXShop
-;;(setq tex-command "~/Library/TeXShop/bin/platex2pdf-euc"
-;;      dvi2-command "open -a TeXShop")
-;;; pdflatex と TeXShop
-;;(setq tex-command "pdflatex"
-;;      dvi2-command "open -a TeXShop")
 
 ;; Alias the two major modes for fast switching
 (defalias 'jl 'yatex-mode)
 (defalias 'el 'japanese-latex-mode)
 
-(add-hook 'TeX-mode-hook (lambda()
-                             (add-to-list 'TeX-command-list '("m" "latexmk -pvc -pdf %s" TeX-run-command nil t))
-                             (setq TeX-save-query nil)
-                             (setq TeX-command-default "m")
-                             (setq japanese-TeX-command-default "m")
-                             (setq TeX-show-compilation t)))
+(require 'tex)
+(add-to-list 'TeX-clean-default-intermediate-suffixes "\\.fdb_latexmk")
+
+(add-hook 'TeX-mode-hook (lambda ()
+                           (push
+                            '("m" "latexmk -pv -pdf %t" TeX-run-TeX nil t
+                              :help "Run Latexmk on file")
+                            TeX-command-list)))
 
 ;;(load "~/.emacs.d/ess-5.11/lisp/ess-site.el")
 (add-to-list 'load-path "~/.emacs.d/ess-5.11/lisp")
