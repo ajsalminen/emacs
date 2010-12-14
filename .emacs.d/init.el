@@ -140,7 +140,7 @@
   (load "scala-mode-auto.el"))
 (require 'scala-mode-auto)
 
-(add-to-list 'load-path "~/.emacs.d/ensime_2.8.1.RC3-0.3.7/elisp/")
+(add-to-list 'load-path "~/.emacs.d/ensime_2.8.1-0.3.8/elisp")
 (require 'ensime)
 (add-hook 'scala-mode-hook 'ensime-scala-mode-hook)
 
@@ -298,7 +298,7 @@
 (defalias 'el 'japanese-latex-mode)
 
 (add-hook 'TeX-mode-hook (lambda()
-                             (add-to-list 'TeX-command-list '("m" "latexmk -pv -pdf %s" TeX-run-TeX nil t))
+                             (add-to-list 'TeX-command-list '("m" "latexmk -pvc -pdf %s" TeX-run-command nil t))
                              (setq TeX-save-query nil)
                              (setq TeX-command-default "m")
                              (setq japanese-TeX-command-default "m")
