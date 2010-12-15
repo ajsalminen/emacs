@@ -986,7 +986,8 @@
            ;; api key and other information in custom.el
            (setq twittering-tinyurl-service 'jmp)))
 
-(define-key twittering-mode-map (kbd "<S-tab>") 'twittering-goto-previous-thing)
+(define-key twittering-mode-map (kbd "S-<tab>") 'twittering-goto-previous-thing)
+(define-key twittering-mode-map (kbd "S-<return>") 'wwo)
 
 (add-hook 'twittering-edit-mode-hook (lambda () (ispell-minor-mode) (flyspell-mode)))
 
