@@ -1236,9 +1236,14 @@
 
 (require 'midnight)
 
-(global-set-key (kbd "C-x 9") 'windmove-right)
-(global-set-key (kbd "C-x 7") 'windmove-left)
+(windmove-default-keybindings 'meta)
 
+(define-prefix-command 'numwin-bindings-keymap)
+(define-key numwin-bindings-keymap (vector ?7) 'windmove-left)
+(define-key numwin-bindings-keymap (vector ?8) 'windmove-right)
+(define-key numwin-bindings-keymap (vector ?9) 'windmove-up)
+(define-key numwin-bindings-keymap (vector ?0) 'windmove-down)
+(global-set-key (kbd "C-x 7") 'numwin-bindings-keymap)
 
 (load "~/.emacs.d/haskell-mode-2.8.0/haskell-site-file.el")
 (add-hook 'haskell-mode-hook 'turn-on-haskell-doc-mode)
