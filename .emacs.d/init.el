@@ -622,9 +622,17 @@
      (file-cache-add-directory-list load-path)))
 
 
-;; Japanese input-related settings
-;; So I know if input method is active
- (prefer-coding-system 'utf-8)
+;; utf-8 all the way
+(setq current-language-environment "UTF-8")
+(prefer-coding-system 'utf-8)
+(set-default-coding-systems 'utf-8)
+(set-keyboard-coding-system 'utf-8)
+(set-selection-coding-system 'utf-8)
+(set-terminal-coding-system 'utf-8)
+(setq default-buffer-file-coding-system 'utf-8)
+(setq locale-coding-system 'utf-8)
+
+
 (if (or (< emacs-major-version 23) (featurep 'carbon-emacs-package))
     (utf-translate-cjk-mode 1)
   (setq utf-translate-cjk-mode nil) ; disable CJK coding/encoding (Chinese/Japanese/Korean characters)
