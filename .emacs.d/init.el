@@ -315,6 +315,8 @@
 (add-to-list 'load-path
              "~/.emacs.d/yasnippet")
 (require 'yasnippet) ;; not yasnippet-bundle
+
+
 (yas/initialize)
 (yas/load-directory "~/.emacs.d/yasnippet/snippets")
 ;; Develop and keep personal snippets under ~/emacs.d/mysnippets
@@ -336,6 +338,9 @@
 (add-hook 'yas/minor-mode-on-hook
           '(lambda ()
              (define-key yas/minor-mode-map yas/trigger-key 'yas/expand)))
+
+(require 'anything-c-yasnippet)
+(global-set-key (kbd "C-c y") 'anything-c-yas-complete)
 
 (require 'hippie-exp)
 (setq hippie-expand-try-functions-list
