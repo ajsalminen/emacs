@@ -943,8 +943,8 @@
 (defun wwo (&optional url)
   (interactive)
   (let ((url-at-point (thing-at-point 'url)))
-    (message url-at-point)
-    (if (and (not (eq url-at-point nil)) (string-match "https?://[a-zA-Z]+[.]+[a-zA-Z]+" url-at-point))
+    (message (format "browse url: %s" url-at-point))
+    (if (and (not (eq url-at-point nil)) (string-match "https?://[a-zA-Z0-9\-]+[.]+[a-zA-Z0-9\-]+" url-at-point))
         (w3m-view-url-with-external-browser url-at-point)
       (w3m-view-url-with-external-browser))))
 
@@ -1166,8 +1166,10 @@
 (defun point-to-middle ()
   "Put cursor on middle line of window"
   (interactive)
-  (move-to-window-line (/ (count-screen-lines) 2)))
-
+  (let ((win-height (if (> (count-screen-lines) (window-height))
+                        (window-height)
+                      (count-screen-lines))))
+    (move-to-window-line (/ win-height 2))))
 
 (global-set-key (kbd "C-x x") 'point-to-top)
 (global-set-key (kbd "C-x c") 'point-to-bottom)
