@@ -927,6 +927,14 @@
 (w3m-link-numbering-mode 1)
 ;;(add-hook 'w3m-mode-hook 'w3m-link-numbering-mode)
 (setq w3m-use-cookies t)
+
+(defun sane-w3m-rename-buffer (url)
+  (rename-buffer (format "*w3m %s (%s)*"
+                         (or w3m-current-title "")
+                         (or w3m-current-url "")) t))
+
+(add-hook 'w3m-display-hook 'sane-w3m-rename-buffer)
+
 (setq w3m-verbose t)
 (setq w3m-message-silent nil)
 (setq url-show-status nil) ;;don't need to know how you're doing url-http
@@ -1144,8 +1152,8 @@
 (add-hook 'emacs-lisp-mode-hook 'enable-auto-async-byte-compile-mode)
 
 (require 'uniquify)
-(setq uniquify-buffer-name-style 'post-forward-angle-brackets)
-(setq uniquify-ignore-bufferes-re "*[^*]+*")
+(setq uniquify-buffer-name-style 'post-forward)
+(setq uniquify-separator ":")
 
 (require 'screen-lines)
 (add-hook 'text-mode-hook 'turn-on-screen-lines-mode)
