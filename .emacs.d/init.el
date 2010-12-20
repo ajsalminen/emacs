@@ -1160,8 +1160,8 @@
 (defun point-to-bottom ()
   "Put cursor at bottom of last visible line, like Vi's L."
   (interactive)
-   (move-to-window-line -1)
-   (re-search-backward "\\S " (point-min) t 5))
+  (move-to-window-line -1)
+  (re-search-backward "\\S " (point-min) t 5))
 
 (defun point-to-middle ()
   "Put cursor on middle line of window"
