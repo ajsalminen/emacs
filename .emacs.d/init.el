@@ -1470,6 +1470,8 @@
 
 (require 'htmlutils)
 
+(load-file "~/.emacs.d/site-lisp/anything-git-project.el")
+
 (server-start)
 
 (message "********** successfully initialized **********")
