@@ -1475,6 +1475,8 @@
 (require 'auto-highlight-symbol-config)
 (add-to-list 'ahs-modes 'scala-mode)
 
+(setq disabled-command-function nil)
+
 (server-start)
 
 (message "********** successfully initialized **********")
