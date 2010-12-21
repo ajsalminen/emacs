@@ -1272,10 +1272,11 @@
 (define-key numwin-bindings-keymap (vector ?0) 'windmove-down)
 (global-set-key (kbd "C-x 7") 'numwin-bindings-keymap)
 
-(load "~/.emacs.d/haskell-mode-2.8.0/haskell-site-file.el")
+(load "~/.emacs.d/haskell-mode/haskell-site-file.el")
 (add-hook 'haskell-mode-hook 'turn-on-haskell-doc-mode)
 (add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
-
+(setq haskell-font-lock-symbols t)
+;; (setq haskell-hoogle-command "~/.cabal/bin/hoogle")
 
 (require 'igrep)
 (setq igrep-options "-ir")
