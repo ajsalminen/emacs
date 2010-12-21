@@ -141,6 +141,7 @@
                 n (1+ n)))
         encoded))
 
+(provide 'htmlutils)
 ;; unit tests
 
 ; This is a little homebrew testing harness. By default, tests are not
