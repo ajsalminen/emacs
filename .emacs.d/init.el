@@ -1468,6 +1468,8 @@
 (autoload 'csv-mode "csv-mode"
   "Major mode for editing comma-separated value files." t)
 
+(require 'htmlutils)
+
 (server-start)
 
 (message "********** successfully initialized **********")
