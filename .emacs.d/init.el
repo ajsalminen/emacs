@@ -1472,6 +1472,9 @@
 
 (load-file "~/.emacs.d/site-lisp/anything-git-project.el")
 
+(require 'auto-highlight-symbol-config)
+(add-to-list 'ahs-modes 'scala-mode)
+
 (server-start)
 
 (message "********** successfully initialized **********")
