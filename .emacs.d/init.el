@@ -996,8 +996,19 @@
         (query (format "%s" string)))
     (progn
       (w3m-browse-url search-string)
-      (re-search-forward query nil t 4)
       (switch-to-buffer oldbuf))))
+
+(defun alc-w3m-displayed (&optional url)
+  (interactive)
+  (if (string-match "eow\\.alc\\.co\\.jp" url)
+      (let ((buffer-read-only nil)
+            (beg (point)))
+            (forward-line 35)
+            (delete-region (point) beg)
+            (delete-trailing-whitespace)
+            (delete-blank-lines))))
+
+(add-hook 'w3m-display-hook 'alc-w3m-displayed)
 
 (defalias 'wwa 'w3m-search-alc)
 
