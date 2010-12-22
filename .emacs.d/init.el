@@ -988,15 +988,23 @@
   (interactive)
   (w3m-search-advance "http://stackoverflow.com/search?q=" "Stack Overflow" 'utf-8))
 
-(defun w3m-search-alc (string)
+(defun w3m-search-alc (&optional string)
   "search alc"
   (interactive "sSearch ALC: ")
-  (let ((search-string (format "http://eow.alc.co.jp/%s/UTF-8/" string))
+  (let ((search-string (format "http://eow.alc.co.jp/%s/UTF-8/" (w3m-url-encode-string string 'utf-8)))
         (oldbuf (current-buffer))
         (query (format "%s" string)))
     (progn
       (w3m-browse-url search-string)
       (switch-to-buffer oldbuf))))
+
+(defun w3m-search-alc-at-point ()
+  (interactive)
+  (let ((text (if mark-active
+                  (buffer-substring (point) (mark))
+                  (thing-at-point 'word))))
+    (set-text-properties 0 (length text) nil text)
+    (w3m-search-alc text)))
 
 (defun alc-w3m-displayed (&optional url)
   (interactive)
@@ -1011,6 +1019,8 @@
 (add-hook 'w3m-display-hook 'alc-w3m-displayed)
 
 (defalias 'wwa 'w3m-search-alc)
+(defalias 'wwr 'w3m-search-alc-at-point)
+
 
 (require 'revbufs)
 
