@@ -144,6 +144,12 @@
 (require 'ensime)
 (add-hook 'scala-mode-hook 'ensime-scala-mode-hook)
 
+(defun make-lift-doc-url (type &optional member)
+  (ensime-make-java-doc-url-helper
+   "http://main.scala-tools.org/mvnsites-snapshots/liftweb/scaladocs/" type member))
+
+(add-to-list 'ensime-doc-lookup-map '("net\\.liftweb\\." . make-lift-doc-url))
+
 
 (setq mac-option-key-is-meta nil)
 (setq mac-command-key-is-meta t)
@@ -981,6 +987,19 @@
   "search stack overflow"
   (interactive)
   (w3m-search-advance "http://stackoverflow.com/search?q=" "Stack Overflow" 'utf-8))
+
+(defun w3m-search-alc (string)
+  "search alc"
+  (interactive "sSearch ALC: ")
+  (let ((search-string (format "http://eow.alc.co.jp/%s/UTF-8/" string))
+        (oldbuf (current-buffer))
+        (query (format "%s" string)))
+    (progn
+      (w3m-browse-url search-string)
+      (re-search-forward query nil t 4)
+      (switch-to-buffer oldbuf))))
+
+(defalias 'wwa 'w3m-search-alc)
 
 (require 'revbufs)
 
