@@ -1531,6 +1531,9 @@
 
 (setq disabled-command-function nil)
 
+(require 'window-numbering)
+(window-numbering-mode 1)
+
 (server-start)
 
 (message "********** successfully initialized **********")
