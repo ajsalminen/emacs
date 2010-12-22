@@ -929,6 +929,8 @@
 
 (require 'w3m-load)
 (require 'w3m-extension)
+(autoload 'w3m-filter "w3m-filter")
+(setq w3m-use-filter t)
 (setq w3m-key-binding 'lynx)
 (w3m-link-numbering-mode 1)
 ;;(add-hook 'w3m-mode-hook 'w3m-link-numbering-mode)
@@ -1010,11 +1012,14 @@
   (interactive)
   (if (string-match "eow\\.alc\\.co\\.jp" url)
       (let ((buffer-read-only nil)
-            (beg (point)))
-            (forward-line 35)
-            (delete-region (point) beg)
-            (delete-trailing-whitespace)
-            (delete-blank-lines))))
+            (beg (point-min)))
+        (save-excursion
+          (re-search-forward "検索文字")
+          (delete-region (point) (point-min))
+          (while (re-search-forward "列[ \t]+" nil t)
+            (replace-match"検索文字列: "))
+          (delete-trailing-whitespace)
+          (delete-blank-lines)))))
 
 (add-hook 'w3m-display-hook 'alc-w3m-displayed)
 
