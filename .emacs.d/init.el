@@ -391,7 +391,9 @@
        100)
       (set-frame-parameter nil 'alpha '(100 100))
     (set-frame-parameter nil 'alpha '(85 50))))
-(global-set-key (kbd "C-c t") 'toggle-transparency)
+
+;; (global-set-key (kbd "C-c t") 'toggle-transparency)
+(global-set-key (kbd "C-c t") '(lambda() (interactive) (recenter 1)))
 
 (require 'maxframe)
 
