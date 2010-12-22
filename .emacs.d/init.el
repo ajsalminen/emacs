@@ -348,6 +348,7 @@
 (require 'anything-c-yasnippet)
 (global-set-key (kbd "C-c y") 'anything-c-yas-complete)
 
+
 (require 'hippie-exp)
 (setq hippie-expand-try-functions-list
       '(yas/hippie-try-expand
@@ -1025,6 +1026,7 @@
 
 (defalias 'wwa 'w3m-search-alc)
 (defalias 'wwr 'w3m-search-alc-at-point)
+(global-set-key (kbd "C-c j") 'w3m-search-alc-at-point)
 
 
 (require 'revbufs)
