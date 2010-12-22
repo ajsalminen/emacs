@@ -991,7 +991,7 @@
   (interactive)
   (w3m-search-advance "http://stackoverflow.com/search?q=" "Stack Overflow" 'utf-8))
 
-(defun w3m-search-alc (&optional string)
+(defun w3m-search-alc (string)
   "search alc"
   (interactive "sSearch ALC: ")
   (let ((search-string (format "http://eow.alc.co.jp/%s/UTF-8/" (w3m-url-encode-string string 'utf-8)))
@@ -1007,7 +1007,9 @@
                   (buffer-substring (point) (mark))
                   (thing-at-point 'word))))
     (set-text-properties 0 (length text) nil text)
-    (w3m-search-alc text)))
+    (if (eq text nil)
+        (call-interactively 'w3m-search-alc)
+      (w3m-search-alc text))))
 
 (defun alc-w3m-displayed (&optional url)
   (interactive)
