@@ -967,6 +967,8 @@
         (w3m-view-url-with-external-browser url-at-point)
       (w3m-view-url-with-external-browser))))
 
+;; (setq w3m-new-session-in-background nil)
+
 (defun w3m-browse-clipboard ()
   "uses the clipboard if it's an url, otherwise calls w3m-browse-url"
   (interactive)
@@ -1019,8 +1021,8 @@
       (let ((buffer-read-only nil)
             (beg (point-min)))
         (save-excursion
-          (re-search-forward "検索文字")
-          (delete-region (point) (point-min))
+          (if (re-search-forward "検索文字[^列]" nil t)
+              (delete-region (point) (point-min)))
           (while (re-search-forward "列[ \t]+" nil t)
             (replace-match"検索文字列: "))
           (delete-trailing-whitespace)
