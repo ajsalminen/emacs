@@ -187,12 +187,7 @@
 
 
 ;;(arrange-frame 160 50 2 22)
-
-(setq auto-save-timeout 15)
 (defalias 'yes-or-no-p 'y-or-n-p)
-
-
-
 
 ;; Hard Code the window dimensions, that's how we roll
 (set-frame-position (selected-frame) 45 0)
@@ -817,7 +812,7 @@ directory, select directory. Lastly the file is opened."
 ;; 思いついたコードやメモコードを書いて保存できるようにするための設定
 ;; (auto-install-from-emacswiki "open-junk-file.el")
 (require 'open-junk-file)
-(setq open-junk-file-format "~/junk/%Y%m%d_%H%M%s_junk.")
+(setq open-junk-file-format "~/junk/%Y%m%d_%H%M%s_junk.utf")
 (global-set-key "\C-c\C-j" 'open-junk-file)
 ;; ここまで
 
@@ -1168,28 +1163,50 @@ directory, select directory. Lastly the file is opened."
 ;; Backups
 (require 'backup-dir)
 
+(make-directory "~/.saves/" t)
+(defvar temp-directory "~/.saves")
+
 ;; localize it for safety.
 (make-variable-buffer-local 'backup-inhibited)
 
 (setq bkup-backup-directory-info
       '((t "~/.saves" ok-create full-path prepend-name)))
 
-(setq backup-by-copying t               ; don't clobber symlinks
+(setq backup-by-copying t
+      backup-by-copying-when-linked t
+      backup-by-copying-when-mismatch t
       backup-directory-alist '(("." . "~/.saves")) ; don't litter my fs tree
       delete-old-versions t
       kept-new-versions 20
       kept-old-versions 2
-      version-control t)                ; use versioned backups
+      make-backup-files t
+      version-control t)
+
+(setq-default delete-old-versions t)
 
 (setq backup-directory-alist
-      `((".*" . ,"~/.saves")))
+      `((".*" . ,temp-directory)))
 (setq auto-save-file-name-transforms
-      `((".*" ,"~/.saves" t)))
+      `((".*" ,temp-directory t)))
+(setq backup-directory-alist
+      `((".*" . ,temp-directory)))
 
 (defun force-backup-of-buffer ()
   (setq buffer-backed-up nil))
 
 (add-hook 'before-save-hook  'force-backup-of-buffer)
+
+; One of the main issues for me is that my home directory is
+; NFS mounted.  By setting all the autosave directories in /tmp,
+; things run much quicker
+(setq auto-save-directory (concat temp-directory "/autosave")
+      auto-save-hash-directory (concat temp-directory "/autosave-hash")
+      auto-save-directory-fallback "/var/tmp/"
+      auto-save-list-file-prefix (concat temp-directory "/autosave-")
+      auto-save-hash-p nil
+      auto-save-timeout 15
+      auto-save-interval 20)
+(make-directory auto-save-directory t)
 
 (defun unfill-paragraph ()
   (interactive)
@@ -1237,7 +1254,7 @@ directory, select directory. Lastly the file is opened."
 (auto-install-compatibility-setup)
 
 (require 'auto-async-byte-compile)
-(setq auto-async-byte-compile-exclude-files-regexp "org\\|junk\\|\\.revive\\.el")
+(setq auto-async-byte-compile-exclude-files-regexp "org\\|junk\\|\\.revive\\.el\\|init\\.el")
 
 (add-hook 'emacs-lisp-mode-hook 'enable-auto-async-byte-compile-mode)
 
@@ -1338,8 +1355,6 @@ directory, select directory. Lastly the file is opened."
 (global-set-key [(meta down)] 'bc-local-next) ;; M-down-arrow for local next
 (global-set-key [(control c)(n)] 'bc-goto-current) ;; C-c j for jump to current bookmark
 (global-set-key [(control c)(m)] 'bc-list) ;; C-x M-j for the bookmark menu list
-
-(setq version-control t)
 
 (require 'redo+)
 (global-set-key (kbd "C-M-/") 'redo)
@@ -1578,6 +1593,16 @@ directory, select directory. Lastly the file is opened."
 (setq revive:major-mode-command-alist-private
       '((w3m-mode . w3m)
         ("*w3m*" . w3m)))
+
+(defun show-file-name ()
+  "Show the full path file name in the minibuffer."
+  (interactive)
+  (message (buffer-file-name)))
+
+(add-hook 'before-save-hook
+          '(lambda ()
+             (or (file-exists-p (file-name-directory buffer-file-name))
+                 (make-directory (file-name-directory buffer-file-name) t))))
 
 (server-start)
 
