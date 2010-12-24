@@ -1581,6 +1581,9 @@ directory, select directory. Lastly the file is opened."
 (require 'auto-highlight-symbol-config)
 (add-to-list 'ahs-modes 'scala-mode)
 
+(set-face-attribute 'ahs-face nil :foreground "Black" :background "LightBlue2")
+(set-face-attribute 'ahs-plugin-defalt-face nil :foreground "Black" :background "Orange1")
+
 (setq disabled-command-function nil)
 
 (require 'window-numbering)
