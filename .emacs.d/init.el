@@ -1618,10 +1618,7 @@ directory, select directory. Lastly the file is opened."
 (add-hook 'emacs-lisp-mode-hook (lambda () (highlight-parentheses-mode t) (paredit-mode t)))
 (add-hook 'slime-repl-mode-hook (lambda () (highlight-parentheses-mode t) (paredit-mode t)))
 
-(setq auto-mode-alist
-    (cons '("\\.xml" . nxml-mode) auto-mode-alist))
-(setq auto-mode-alist
-    (cons '("\\.html" . nxml-mode) auto-mode-alist))
+(load "~/.emacs.d/nxhtml/autostart.el")
 
 (server-start)
 
