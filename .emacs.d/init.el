@@ -1597,6 +1597,8 @@ directory, select directory. Lastly the file is opened."
       '((w3m-mode . w3m)
         ("*w3m*" . w3m)))
 
+(defalias 'resume-save 'save-current-configuration)
+
 (defun show-file-name ()
   "Show the full path file name in the minibuffer."
   (interactive)
