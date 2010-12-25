@@ -1284,7 +1284,7 @@ directory, select directory. Lastly the file is opened."
   (let ((win-height (if (> (count-screen-lines) (window-height))
                         (window-height)
                       (count-screen-lines))))
-    (move-to-window-line (/ win-height 2))))
+    (move-to-window-line (floor (* win-height 0.4)))))
 
 (global-set-key (kbd "C-x x") 'point-to-top)
 (global-set-key (kbd "C-x c") 'point-to-bottom)
