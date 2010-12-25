@@ -134,6 +134,30 @@
 
 (set-face-foreground 'default "white")
 
+(defun short-file-name ()
+  "Display the file path and name in the modeline"
+  (interactive "*")
+  (setq-default mode-line-buffer-identification '("%12b")))
+
+(defun long-file-name ()
+  "Display the full file path and name in the modeline"
+  (interactive "*")
+  (setq-default mode-line-buffer-identification
+    '("%S:" (buffer-file-name "%f"))))
+
+(long-file-name)
+
+(set-face-background 'modeline-inactive "chocolate3")
+(set-face-foreground 'modeline-inactive "White")
+(set-face-background 'modeline "SteelBlue")
+(set-face-foreground 'modeline "Black")
+(set-face-background 'modeline-highlight "White")
+(set-face-background 'modeline-buffer-id "RoyalBlue")
+(set-face-foreground 'modeline-buffer-id "OldLace")
+
+
+
+
 ;; Scala configs
 (let ((path "~/.emacs.d/scala"))
   (setq load-path (cons path load-path))
