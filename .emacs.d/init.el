@@ -145,8 +145,6 @@
   (setq-default mode-line-buffer-identification
     '("%S:" (buffer-file-name "%f"))))
 
-(long-file-name)
-
 (set-face-background 'modeline-inactive "chocolate3")
 (set-face-foreground 'modeline-inactive "White")
 (set-face-background 'modeline "SteelBlue")
@@ -155,8 +153,20 @@
 (set-face-background 'modeline-buffer-id "RoyalBlue")
 (set-face-foreground 'modeline-buffer-id "OldLace")
 
+(defface egoge-display-time
+  '((((type x w32 mac))
+     ;; #060525 is the background colour of my default face.
+     (:foreground "#060525" :inherit bold))
+    (((type tty))
+     (:foreground "blue")))
+  "Face used to display the time in the mode line.")
 
-
+;; This causes the current time in the mode line to be displayed in
+;; `egoge-display-time-face' to make it stand out visually.
+(setq display-time-string-forms
+      '((propertize (concat " " 24-hours ":" minutes " ")
+                    'face 'egoge-display-time)))
+(display-time-mode 1)
 
 ;; Scala configs
 (let ((path "~/.emacs.d/scala"))
@@ -1168,21 +1178,6 @@ directory, select directory. Lastly the file is opened."
 (global-set-key (kbd "C-x t m") 'pomodoro-work)
 (global-set-key (kbd "C-x t d") 'pomodoro-done)
 (global-set-key (kbd "C-x t l") 'pomodoro-later)
-
-(defface egoge-display-time
-  '((((type x w32 mac))
-     ;; #060525 is the background colour of my default face.
-     (:foreground "#060525" :inherit bold))
-    (((type tty))
-     (:foreground "blue")))
-  "Face used to display the time in the mode line.")
-;; This causes the current time in the mode line to be displayed in
-;; `egoge-display-time-face' to make it stand out visually.
-(setq display-time-string-forms
-      '((propertize (concat " " 24-hours ":" minutes " ")
-                    'face 'egoge-display-time)))
-(display-time-mode 1)
-
 
 ;; Backups
 (require 'backup-dir)
