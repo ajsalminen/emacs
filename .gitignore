@@ -12,6 +12,7 @@ elispcache/*
 .emacs.d/url
 */CVS/*
 CVS
+.svn
 .emacs.d/history
 .emacs.d/thumbs
 .org-id-locations

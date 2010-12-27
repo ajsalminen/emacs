@@ -5,10 +5,10 @@
 
 (add-to-list 'load-path "~/.emacs.d/site-lisp")
 (defun kill-ci-buffer ()
-       (interactive)
-       (switch-to-buffer " *Compiler Input*")
-       (set-buffer-modified-p nil)
-       (kill-buffer " *Compiler Input*"))
+  (interactive)
+  (switch-to-buffer " *Compiler Input*")
+  (set-buffer-modified-p nil)
+  (kill-buffer " *Compiler Input*"))
 
 (kill-ci-buffer)
 
@@ -34,7 +34,7 @@
 (load blog-file 'noerror)
 
 (setq Info-directory-list
-                     '("/usr/local/share/info" "~/info" "/usr/share/info" "/usr/local/info"))
+      '("/usr/local/share/info" "~/info" "/usr/share/info" "/usr/local/info"))
 
 ;;; This was installed by package-install.el.
 ;;; This provides support for the package system and
@@ -143,7 +143,7 @@
   "Display the full file path and name in the modeline"
   (interactive "*")
   (setq-default mode-line-buffer-identification
-    '("%S:" (buffer-file-name "%f"))))
+                '("%S:" (buffer-file-name "%f"))))
 
 (set-face-background 'modeline-inactive "chocolate3")
 (set-face-foreground 'modeline-inactive "White")
@@ -502,8 +502,8 @@
 (defalias 'wle 'wl-exit)
 
 (add-hook 'mime-view-mode-hook
-	  (lambda ()
-	    (local-set-key "s" 'w3m-view-this-url-new-session)))
+          (lambda ()
+            (local-set-key "s" 'w3m-view-this-url-new-session)))
 
 (add-to-list 'load-path "~/.emacs.d/bbdb-2.35")
 (add-to-list 'load-path "~/.emacs.d/bbdb-2.35/lisp")
@@ -511,27 +511,27 @@
 (bbdb-initialize)
 
 (setq
-    bbdb-offer-save 1                        ;; 1 means save-without-asking
-    bbdb-use-pop-up t                        ;; allow popups for addresses
-    bbdb-electric-p t                        ;; be disposable with SPC
-    bbdb-popup-target-lines  1               ;; very small
-    bbdb-dwim-net-address-allow-redundancy t ;; always use full name
-    bbdb-quiet-about-name-mismatches 2       ;; show name-mismatches 2 secs
-    bbdb-always-add-address t                ;; add new addresses to existing...
-                                             ;; ...contacts automatically
-    bbdb-canonicalize-redundant-nets-p t     ;; x@foo.bar.cx => x@bar.cx
-    bbdb-completion-type nil                 ;; complete on anything
-    bbdb-complete-name-allow-cycling t       ;; cycle through matches
-                                             ;; this only works partially
-    bbbd-message-caching-enabled t           ;; be fast
-    bbdb-use-alternate-names t               ;; use AKA
-    bbdb-elided-display t                    ;; single-line addresses
-    ;; auto-create addresses from mail
-    bbdb/mail-auto-create-p 'bbdb-ignore-some-messages-hook
-    bbdb-ignore-some-messages-alist ;; don't ask about fake addresses
-    ;; NOTE: there can be only one entry per header (such as To, From)
-    ;; http://flex.ee.uec.ac.jp/texi/bbdb/bbdb_11.html
-    '(( "From" . "no.?reply\\|DAEMON\\|daemon\\|facebookmail\\|twitter")))
+ bbdb-offer-save 1             ;; 1 means save-without-asking
+ bbdb-use-pop-up t             ;; allow popups for addresses
+ bbdb-electric-p t             ;; be disposable with SPC
+ bbdb-popup-target-lines  1    ;; very small
+ bbdb-dwim-net-address-allow-redundancy t ;; always use full name
+ bbdb-quiet-about-name-mismatches 2 ;; show name-mismatches 2 secs
+ bbdb-always-add-address t ;; add new addresses to existing...
+ ;; ...contacts automatically
+ bbdb-canonicalize-redundant-nets-p t  ;; x@foo.bar.cx => x@bar.cx
+ bbdb-completion-type nil              ;; complete on anything
+ bbdb-complete-name-allow-cycling t    ;; cycle through matches
+ ;; this only works partially
+ bbbd-message-caching-enabled t ;; be fast
+ bbdb-use-alternate-names t     ;; use AKA
+ bbdb-elided-display t          ;; single-line addresses
+ ;; auto-create addresses from mail
+ bbdb/mail-auto-create-p 'bbdb-ignore-some-messages-hook
+ bbdb-ignore-some-messages-alist ;; don't ask about fake addresses
+ ;; NOTE: there can be only one entry per header (such as To, From)
+ ;; http://flex.ee.uec.ac.jp/texi/bbdb/bbdb_11.html
+ '(( "From" . "no.?reply\\|DAEMON\\|daemon\\|facebookmail\\|twitter")))
 
 
 (require 'bbdb-wl)
@@ -626,7 +626,7 @@
        (recenter 0))))
 
 (autoload 'sdic-describe-word "sdic" "英単語の意味を調べる" t nil)
-(global-set-key "\C-cd" 'sdic-describe-word)
+;; (global-set-key "\C-cd" 'sdic-describe-word)
 (autoload 'sdic-describe-word-at-point "sdic" "カーソルの位置の英単語の意味を調べる" t nil)
 (global-set-key "\C-cD" 'sdic-describe-word-at-point)
 
@@ -669,19 +669,19 @@ directory, select directory. Lastly the file is opened."
 
 (defun file-cache-iswitchb-read (prompt choices)
   (let ((iswitchb-make-buflist-hook
-	 (lambda ()
-	   (setq iswitchb-temp-buflist choices))))
+         (lambda ()
+           (setq iswitchb-temp-buflist choices))))
     (iswitchb-read-buffer prompt)))
 
 (global-set-key "\C-cf" 'file-cache-iswitchb-file)
 
 
 (add-hook 'iswitchb-define-mode-map-hook
-      (lambda ()
-        (define-key iswitchb-mode-map "\C-n" 'iswitchb-next-match)
-        (define-key iswitchb-mode-map "\C-p" 'iswitchb-prev-match)
-        (define-key iswitchb-mode-map "\C-f" 'iswitchb-next-match)
-        (define-key iswitchb-mode-map "\C-b" 'iswitchb-prev-match)))
+          (lambda ()
+            (define-key iswitchb-mode-map "\C-n" 'iswitchb-next-match)
+            (define-key iswitchb-mode-map "\C-p" 'iswitchb-prev-match)
+            (define-key iswitchb-mode-map "\C-f" 'iswitchb-next-match)
+            (define-key iswitchb-mode-map "\C-b" 'iswitchb-prev-match)))
 
 (file-cache-add-directory "~/projects/ghub")
 
@@ -930,7 +930,7 @@ directory, select directory. Lastly the file is opened."
 ;; etags-table の機能を有効にする
 (require 'etags-table)
 (add-to-list  'etags-table-alist
-              '("\\.[mh]$" "~/.emacs.d/share/tags/objc.TAGS"))
+              '("\\.[mh]$" "~/tags/objc.TAGS"))
 ;; auto-complete に etags の内容を認識させるための変数
 ;; 以下の例だと3文字以上打たないと補完候補にならないように設定してあります。requires の次の数字で指定します
 (defvar ac-source-etags
@@ -944,6 +944,129 @@ directory, select directory. Lastly the file is opened."
 (add-hook 'objc-mode-hook
           (lambda ()
             (push 'ac-source-etags ac-sources)))
+
+
+(add-hook 'c-mode-common-hook
+          '(lambda()
+             (make-variable-buffer-local 'skeleton-pair)
+             (make-variable-buffer-local 'skeleton-pair-on-word)
+             (setq skeleton-pair-on-word t)
+             (setq skeleton-pair t)
+             (make-variable-buffer-local 'skeleton-pair-alist)
+             (local-set-key (kbd "(") 'skeleton-pair-insert-maybe)
+             (local-set-key (kbd "[") 'skeleton-pair-insert-maybe)
+             (local-set-key (kbd "{") 'skeleton-pair-insert-maybe)
+             (local-set-key (kbd "`") 'skeleton-pair-insert-maybe)
+             (local-set-key (kbd "\"") 'skeleton-pair-insert-maybe)))
+
+(setq cua-enable-cua-keys nil)
+(cua-mode t)
+
+(require 'smartchr)
+
+(defun smartchr-custom-keybindings ()
+  (local-set-key (kbd "=") (smartchr '(" = " " == "  "=")))
+  ;; !! がカーソルの位置
+  (local-set-key (kbd "(") (smartchr '("(`!!')" "(")))
+  (local-set-key (kbd "[") (smartchr '("[`!!']" "[ [`!!'] ]" "[")))
+  (local-set-key (kbd "{") (smartchr '("{\n`!!'\n}" "{`!!'}" "{")))
+  (local-set-key (kbd "`") (smartchr '("\``!!''" "\`")))
+  (local-set-key (kbd "\"") (smartchr '("\"`!!'\"" "\"")))
+  (local-set-key (kbd ">") (smartchr '(">" " => " " => '`!!''" " => \"`!!'\""))))
+
+(defun smartchr-custom-keybindings-objc ()
+  (local-set-key (kbd "@") (smartchr '("@\"`!!'\"" "@"))))
+
+(add-hook 'c-mode-common-hook 'smartchr-custom-keybindings)
+(add-hook 'objc-mode-hook 'smartchr-custom-keybindings-objc)
+
+
+(require 'flymake)
+(defvar xcode:gccver "4.2.1")
+(defvar xcode:sdkver "3.2.5")
+(defvar xcode:sdkpath "/Developer/Platforms/iPhoneSimulator.platform/Developer")
+(defvar xcode:sdk (concat xcode:sdkpath "/SDKs/iPhoneSimulator" xcode:sdkver ".sdk"))
+(defvar flymake-objc-compiler (concat xcode:sdkpath "/usr/bin/gcc-" xcode:gccver))
+(defvar flymake-objc-compile-default-options (list "-Wall" "-Wextra" "-fsyntax-only" "-ObjC" "-std=c99" "-isysroot" xcode:sdk))
+(defvar flymake-last-position nil)
+(defvar flymake-objc-compile-options '("-I."))
+(defun flymake-objc-init ()
+  (let* ((temp-file (flymake-init-create-temp-buffer-copy
+                     'flymake-create-temp-inplace))
+         (local-file (file-relative-name
+                      temp-file
+                      (file-name-directory buffer-file-name))))
+    (list flymake-objc-compiler (append flymake-objc-compile-default-options flymake-objc-compile-options (list local-file)))))
+
+(add-hook 'objc-mode-hook
+          (lambda ()
+
+            (push '("\\.m$" flymake-objc-init) flymake-allowed-file-name-masks)
+            (push '("\\.h$" flymake-objc-init) flymake-allowed-file-name-masks)
+
+            (if (and (not (null buffer-file-name)) (file-writable-p buffer-file-name))
+                (flymake-mode t))))
+
+(defun flymake-display-err-minibuffer ()
+  "現在行の error や warinig minibuffer に表示する"
+  (interactive)
+  (let* ((line-no (flymake-current-line-no))
+         (line-err-info-list (nth 0 (flymake-find-err-info flymake-err-info line-no)))
+         (count (length line-err-info-list)))
+    (while (> count 0)
+      (when line-err-info-list
+        (let* ((file (flymake-ler-file (nth (1- count) line-err-info-list)))
+               (full-file (flymake-ler-full-file (nth (1- count) line-err-info-list)))
+               (text (flymake-ler-text (nth (1- count) line-err-info-list)))
+               (line (flymake-ler-line (nth (1- count) line-err-info-list))))
+          (message "[%s] %s" line text)))
+      (setq count (1- count)))))
+
+(defadvice flymake-goto-next-error (after display-message activate compile)
+  "次のエラーへ進む"
+  (flymake-display-err-minibuffer))
+
+(defadvice flymake-goto-prev-error (after display-message activate compile)
+  "前のエラーへ戻る"
+  (flymake-display-err-minibuffer))
+
+(defadvice flymake-mode (before post-command-stuff activate compile)
+  "エラー行にカーソルが当ったら自動的にエラーが minibuffer に表示されるように
+post command hook に機能追加"
+  (set (make-local-variable 'post-command-hook)
+       (add-hook 'post-command-hook 'flymake-display-err-minibuffer)))
+
+;; 自動的な表示に不都合がある場合は以下を設定してください
+;; post-command-hook は anything.el の動作に影響する場合があります
+(define-key global-map (kbd "C-c d") 'flymake-display-err-minibuffer)
+
+(set-face-background 'flymake-errline "red")
+(set-face-background 'flymake-warnline "yellow")
+
+(defun xcode:buildandrun ()
+  (interactive)
+  (do-applescript
+   (format
+    (concat
+     "tell application \"Xcode\" to activate \r"
+     "tell application \"System Events\" \r"
+     "     tell process \"Xcode\" \r"
+     "          key code 36 using {command down} \r"
+     "    end tell \r"
+     "end tell \r" ))))
+
+
+(add-hook 'objc-mode-hook
+          (lambda ()
+            (define-key objc-mode-map (kbd "C-c C-r") 'xcode:buildandrun)))
+
+(require 'xcode-document-viewer)
+(setq xcdoc:document-path "/Developer/Platforms/iPhoneOS.platform/Developer/Documentation/DocSets/com.apple.adc.documentation.AppleiOS4_2.iOSLibrary.docset")
+(setq xcdoc:open-w3m-other-buffer t)
+;; hook の設定
+(add-hook 'objc-mode-hook
+          (lambda ()
+            (define-key objc-mode-map (kbd "C-c w") 'xcdoc:ask-search)))
 
 
 ;; end of iphone-related settings
@@ -972,9 +1095,9 @@ directory, select directory. Lastly the file is opened."
   "Copy paragraphes at point"
   (interactive "P")
   (save-excursion
-  (let ((beg (progn (backward-paragraph 1) (point)))
-        (end (progn (forward-paragraph arg) (point))))
-    (copy-region-as-kill beg end))))
+    (let ((beg (progn (backward-paragraph 1) (point)))
+          (end (progn (forward-paragraph arg) (point))))
+      (copy-region-as-kill beg end))))
 
 (global-set-key (kbd "C-c p") (quote copy-paragraph))
 
@@ -1074,7 +1197,7 @@ directory, select directory. Lastly the file is opened."
   (interactive)
   (let ((text (if mark-active
                   (buffer-substring (point) (mark))
-                  (thing-at-point 'word))))
+                (thing-at-point 'word))))
     (set-text-properties 0 (length text) nil text)
     (if (eq text nil)
         (call-interactively 'w3m-search-alc)
@@ -1162,7 +1285,7 @@ directory, select directory. Lastly the file is opened."
 (defalias 'twe 'twittering-mode-exit)
 
 (setq frame-title-format '("" invocation-name "@" system-name " "
-      global-mode-string "%b %+%+ %f" ))
+                           global-mode-string "%b %+%+ %f" ))
 
 ;;(require 'auto-install)
 ;;(require 'todochiku)
@@ -1215,9 +1338,9 @@ directory, select directory. Lastly the file is opened."
 
 (add-hook 'before-save-hook  'force-backup-of-buffer)
 
-; One of the main issues for me is that my home directory is
-; NFS mounted.  By setting all the autosave directories in /tmp,
-; things run much quicker
+                                        ; One of the main issues for me is that my home directory is
+                                        ; NFS mounted.  By setting all the autosave directories in /tmp,
+                                        ; things run much quicker
 (setq auto-save-directory (concat temp-directory "/autosave")
       auto-save-hash-directory (concat temp-directory "/autosave-hash")
       auto-save-directory-fallback "/var/tmp/"
@@ -1264,7 +1387,7 @@ directory, select directory. Lastly the file is opened."
 (smex-initialize)
 (global-set-key (kbd "M-x") 'smex)
 (global-set-key (kbd "M-X") 'smex-major-mode-commands)
-  ;; This is your old M-x.
+;; This is your old M-x.
 (global-set-key (kbd "C-c C-c M-x") 'execute-extended-command)
 
 (require 'auto-install)
@@ -1368,7 +1491,7 @@ directory, select directory. Lastly the file is opened."
 
 (require 'breadcrumb)
 (global-set-key [(control tab)] 'bc-set) ;; Shift-SPACE for set bookmark
-(global-set-key [(control c)(u)] 'bc-previous)       ;; M-j for jump to previous
+(global-set-key [(control c)(u)] 'bc-previous) ;; M-j for jump to previous
 (global-set-key [(control c)(i)] 'bc-next) ;; Shift-M-j for jump to next
 (global-set-key [(meta up)] 'bc-local-previous) ;; M-up-arrow for local previous
 (global-set-key [(meta down)] 'bc-local-next) ;; M-down-arrow for local next
@@ -1418,12 +1541,12 @@ directory, select directory. Lastly the file is opened."
                     :height 130)
 
 (set-fontset-font "fontset-default"
-                 'katakana-jisx0201
-                 '("ヒラギノ丸ゴ pro w4*" . "jisx0201.*"))
+                  'katakana-jisx0201
+                  '("ヒラギノ丸ゴ pro w4*" . "jisx0201.*"))
 
 (set-fontset-font "fontset-default"
-                 'japanese-jisx0208
-                 '("ヒラギノ丸ゴ pro w4*" . "jisx0208.*"))
+                  'japanese-jisx0208
+                  '("ヒラギノ丸ゴ pro w4*" . "jisx0208.*"))
 
 
 (add-to-list 'load-path "~/.emacs.d/elib-1.0")
@@ -1506,13 +1629,13 @@ directory, select directory. Lastly the file is opened."
 (require 're-builder+)
 
 (defun reb-query-replace (to-string)
-      "Replace current RE from point with `query-replace-regexp'."
-      (interactive
-       (progn (barf-if-buffer-read-only)
-              (list (query-replace-read-to (reb-target-binding reb-regexp)
-                                           "Query replace"  t))))
-      (with-current-buffer reb-target-buffer
-        (query-replace-regexp (reb-target-binding reb-regexp) to-string)))
+  "Replace current RE from point with `query-replace-regexp'."
+  (interactive
+   (progn (barf-if-buffer-read-only)
+          (list (query-replace-read-to (reb-target-binding reb-regexp)
+                                       "Query replace"  t))))
+  (with-current-buffer reb-target-buffer
+    (query-replace-regexp (reb-target-binding reb-regexp) to-string)))
 
 (define-key reb-mode-map "\C-g" 'reb-quit)
 (define-key reb-mode-map "\C-w" 'reb-copy)
@@ -1583,6 +1706,8 @@ directory, select directory. Lastly the file is opened."
 
 (mouse-avoidance-mode 'exile)
 
+(require 'cache)
+(require 'c-eldoc)
 (add-hook 'c-mode-hook 'c-turn-on-eldoc-mode)
 
 (require 'goto-chg)
