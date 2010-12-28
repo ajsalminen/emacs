@@ -550,6 +550,7 @@
 (global-set-key "\C-x\ \C-r" 'icicle-recent-file)
 ;;(setq icicle-TAB-completion-methods (quote (fuzzy basic vanilla)))
 
+(setenv (concat "/usr/local/libexec/git-core" ";" (getenv "GIT_EXEC_PATH")))
 
 (add-to-list 'load-path "~/.emacs.d/magit")
 (require 'magit)
