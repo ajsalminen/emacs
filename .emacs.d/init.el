@@ -1767,6 +1767,9 @@ post command hook に機能追加"
 
 (load "~/.emacs.d/nxhtml/autostart.el")
 
+(require 'gse-number-rect)
+(global-set-key "\C-hj" 'gse-number-rectangle)
+
 (server-start)
 
 (message "********** successfully initialized **********")
