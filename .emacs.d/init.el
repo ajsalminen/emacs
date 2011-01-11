@@ -174,7 +174,7 @@
   (load "scala-mode-auto.el"))
 (require 'scala-mode-auto)
 
-(add-to-list 'load-path "~/.emacs.d/ensime_2.8.1-0.3.8/elisp")
+(add-to-list 'load-path "~/.emacs.d/ensime_2.8.1-0.4.1/elisp/")
 (require 'ensime)
 (add-hook 'scala-mode-hook 'ensime-scala-mode-hook)
 

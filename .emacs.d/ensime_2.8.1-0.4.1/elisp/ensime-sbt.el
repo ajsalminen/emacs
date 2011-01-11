@@ -74,7 +74,7 @@
 (defun ensime-sbt ()
   "Setup and launch sbt."
   (interactive)
-  (let ((root-path (ensime-sbt-find-path-to-parent-project)))
+  (let ((root-path (ensime-sbt-find-path-to-project)))
 
     (switch-to-buffer-other-window
      (get-buffer-create (ensime-sbt-build-buffer-name)))
@@ -115,8 +115,9 @@
 
     (compilation-shell-minor-mode t)
     (cd root-path)
+    (ensime-assert-executable-on-path ensime-sbt-program-name)
     (comint-exec (current-buffer)
-		 "sbt"
+		 ensime-sbt-program-name
 		 ensime-sbt-program-name
 		 nil nil)
 
