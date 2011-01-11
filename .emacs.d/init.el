@@ -1770,6 +1770,11 @@ post command hook に機能追加"
 (require 'gse-number-rect)
 (global-set-key "\C-hj" 'gse-number-rectangle)
 
+(defun byte-compile-all-my-files ()
+  "byte compile everything"
+  (interactive)
+  (byte-recompile-directory "~/.emacs.d" 0 t))
+
 (server-start)
 
 (message "********** successfully initialized **********")
