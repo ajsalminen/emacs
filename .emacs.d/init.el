@@ -1777,6 +1777,8 @@ post command hook に機能追加"
 
 (require 'nazna)
 
+(require 'dired-copy-paste)
+
 (server-start)
 
 (message "********** successfully initialized **********")
