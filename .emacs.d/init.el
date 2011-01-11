@@ -1775,6 +1775,8 @@ post command hook に機能追加"
   (interactive)
   (byte-recompile-directory "~/.emacs.d" 0 t))
 
+(require 'nazna)
+
 (server-start)
 
 (message "********** successfully initialized **********")
