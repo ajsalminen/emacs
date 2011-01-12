@@ -321,6 +321,17 @@
                               :help "Run Latexmk on file")
                             TeX-command-list)))
 
+;; for some reason hitting backspace in latex mode with CJK IME on
+;; makes the input act funny
+(defun backspace-cjk-hack ()
+  (interactive)
+  (progn
+    (delete-backward-char 1)
+      (keyboard-quit)))
+
+(add-hook 'LaTeX-mode-hook (lambda ()
+                             (define-key LaTeX-mode-map (kbd "<backspace>") 'backspace-cjk-hack)))
+
 ;;(load "~/.emacs.d/ess-5.11/lisp/ess-site.el")
 (add-to-list 'load-path "~/.emacs.d/ess-5.11/lisp")
 (setq ess-etc-directory "~/.emacs.d/ess-5.11/etc")
