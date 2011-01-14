@@ -1790,6 +1790,8 @@ post command hook に機能追加"
 
 (require 'dired-copy-paste)
 
+(require 'rainbow-mode)
+
 (server-start)
 
 (message "********** successfully initialized **********")
