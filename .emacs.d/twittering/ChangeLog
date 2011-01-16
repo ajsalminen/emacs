@@ -1,3 +1,93 @@
+2011-01-16  Tadashi MATSUO  <tad@mymail.twin.jp>
+
+	* twittering-mode.el: Ensure that the pointed tweet is visible on
+	editing a tweet.
+	(twittering-ensure-whole-of-status-is-visible): new function.
+
+	* twittering-mode.el: Isolate addition of text properties from a
+	function parsing XML.
+	(twittering-http-get-default-sentinel): call
+	`twittering-make-clickable-status-datum' here.
+	(twittering-atom-xmltree-to-status): do not add text properties to
+	statuses.
+	(twittering-status-to-status-datum): likewise.
+
+	* twittering-mode.el: Render statuses in order of field property
+	instead of id property.
+	(twittering-make-common-properties): add field property as a
+	common property.
+	(twittering-get-common-properties): likewise.
+	(twittering-field-id<): new function.
+	(twittering-field-id=): new function.
+	(twittering-make-field-id): new function.
+	(twittering-make-field-properties): new function.
+	(twittering-render-timeline): render statuses in order of their
+	field properties.
+	(twittering-show-replied-statuses): add special field property to
+	replied statuses.
+
+	* twittering-mode.el: Move point by using field property instead
+	of id property.
+	(twittering-get-current-status-head): redefined with field
+	property instead of id property.
+	(twittering-get-first-status-head): likewise.
+	(twittering-get-next-status-head): likewise.
+	(twittering-get-previous-status-head): likewise.
+
+	* twittering-mode.el: Use rendered-as property for rendering
+	replied statuses instead of a trick with id and original-id
+	properties.
+	(twittering-get-common-properties): add rendered-as property as a
+	common property.
+	(twittering-make-field-properties): add rendered-as property if
+	necessary.
+	(twittering-make-field-properties-of-popped-ancestors): new
+	function.
+	(twittering-rendered-as-ancestor-status-p): new function.
+	(twittering-get-base-id-of-ancestor-at): new function.
+	(twittering-replied-statuses-visible-p): use the new function
+	`twittering-get-base-id-of-ancestor-at' instead of directly
+	referring id and original-id properties.
+	(twittering-hide-replied-statuses): likewise.
+	(twittering-show-replied-statuses): use
+	`twittering-make-field-properties-of-popped-ancestors'.
+
+	* twittering-mode.el: Remove a trick using id and original-id
+	properties for rendering replied statuses.
+	(twittering-get-common-properties): remove original-id from common
+	properties.
+	(twittering-show-replied-statuses): do not overwrite id and
+	original-id properties.
+	(twittering-enter): do not refer original-id property.
+
+	* twittering-mode.el: Support favorites timeline.
+	(twittering-timeline-spec-to-string): support favorites timeline
+	spec.
+	(twittering-extract-timeline-spec): likewise.
+	(twittering-timeline-spec-primary-p): add favorites timeline spec
+	is a primary timeline spec.
+	(twittering-call-api): support favorites timeline spec.
+	(twittering-read-timeline-spec-with-completion): add ":favorites"
+	as a candidate of completion. In addition, one can input a
+	username with completion for ":favorites/".
+	(twittering-goto-next-status): display an error message on the
+	oldest tweet on favorites timeline.
+	(twittering-goto-previous-status): likewise.
+	* test/test-twittering-mode.el: Add tests for favorites timeline
+	spec.
+
+2011-01-09  Tadashi MATSUO  <tad@mymail.twin.jp>
+
+	* twittering-mode.el: Ensure that encrypted strings are written
+	with no conversion. Thanks to Sakuma.
+	(twittering-write-and-encrypt): ensure that encrypted strings are
+	written with no conversion.
+
+2010-12-17  Yuto HAYAMIZU  <y.hayamizu@gmail.com>
+
+	* twittering-mode.el (twittering-organic-retweet): prohibit
+	retweeting protected tweets.
+
 2010-11-30  Tadashi MATSUO  <tad@mymail.twin.jp>
 
 	* twittering-mode.el: Ensure that the methods using url library
