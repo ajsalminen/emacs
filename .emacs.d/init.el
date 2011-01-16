@@ -1784,7 +1784,9 @@ post command hook に機能追加"
 (defun byte-compile-all-my-files ()
   "byte compile everything"
   (interactive)
-  (byte-recompile-directory "~/.emacs.d" 0 t))
+  (byte-recompile-directory "~/.emacs.d" 0 t)
+  (byte-recompile-directory "~/.emacs.d/wanderlust" 0 t)
+  (byte-recompile-directory "~/.emacs.d/twittering" 0 t))
 
 (require 'nazna)
 
