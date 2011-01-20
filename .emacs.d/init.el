@@ -105,6 +105,7 @@
 ;; On Mac OS X, Emacs launched from a bundle
 ;; needs paths to be set explicitly
 (add-to-list 'exec-path (getenv "PATH"))
+(push "/usr/local/bin/scala/bin/" exec-path)
 
 (defun ib ()
   "indent whole buffer"
