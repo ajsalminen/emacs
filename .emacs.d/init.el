@@ -174,6 +174,9 @@
   (setq load-path (cons path load-path))
   (load "scala-mode-auto.el"))
 (require 'scala-mode-auto)
+(add-hook 'scala-mode-hook
+          (lambda ()
+            (local-set-key (kbd "RET") 'reindent-then-newline-and-indent)))
 
 (add-to-list 'load-path "~/.emacs.d/ensime_2.8.1-0.4.1/elisp/")
 (require 'ensime)
