@@ -998,8 +998,8 @@ directory, select directory. Lastly the file is opened."
 
 
 (require 'flymake)
-(defvar xcode:gccver "4.2.1")
-(defvar xcode:sdkver "3.2.5")
+(defvar xcode:gccver "4.2")
+(defvar xcode:sdkver "4.2")
 (defvar xcode:sdkpath "/Developer/Platforms/iPhoneSimulator.platform/Developer")
 (defvar xcode:sdk (concat xcode:sdkpath "/SDKs/iPhoneSimulator" xcode:sdkver ".sdk"))
 (defvar flymake-objc-compiler (concat xcode:sdkpath "/usr/bin/gcc-" xcode:gccver))
@@ -1014,14 +1014,15 @@ directory, select directory. Lastly the file is opened."
                       (file-name-directory buffer-file-name))))
     (list flymake-objc-compiler (append flymake-objc-compile-default-options flymake-objc-compile-options (list local-file)))))
 
-(add-hook 'objc-mode-hook
-          (lambda ()
+;; Flymake is unusable for Obj-c right now
+;; (add-hook 'objc-mode-hook
+;;           (lambda ()
 
-            (push '("\\.m$" flymake-objc-init) flymake-allowed-file-name-masks)
-            (push '("\\.h$" flymake-objc-init) flymake-allowed-file-name-masks)
+;;             (push '("\\.m$" flymake-objc-init) flymake-allowed-file-name-masks)
+;;             (push '("\\.h$" flymake-objc-init) flymake-allowed-file-name-masks)
 
-            (if (and (not (null buffer-file-name)) (file-writable-p buffer-file-name))
-                (flymake-mode t))))
+;;             (if (and (not (null buffer-file-name)) (file-writable-p buffer-file-name))
+;;                 (flymake-mode t))))
 
 (defun flymake-display-err-minibuffer ()
   "現在行の error や warinig minibuffer に表示する"
