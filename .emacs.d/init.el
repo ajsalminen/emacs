@@ -578,7 +578,7 @@
     (magit-log-edit-commit)
     (magit-push)))
 
-(define-key magit-log-edit-mode-map (kbd "C-x C-s") 'magit-log-edit-commit)
+(define-key magit-log-edit-mode-map (kbd "C-x C-s") 'magit-commit-then-push)
 
 (require 'gist)
 (setq gist-use-curl t)
