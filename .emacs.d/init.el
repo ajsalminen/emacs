@@ -571,6 +571,13 @@
 (require 'magit)
 (require 'magit-svn)
 (defalias 'mg 'magit-status)
+
+(defun magit-commit-then-push ()
+  (interactive)
+  (progn
+    (magit-log-edit-commit)
+    (magit-push)))
+
 (require 'gist)
 (setq gist-use-curl t)
 
