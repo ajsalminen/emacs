@@ -576,7 +576,9 @@
   (interactive)
   (progn
     (magit-log-edit-commit)
+    (sleep-for 1)
     (magit-push)))
+
 
 (require 'gist)
 (setq gist-use-curl t)

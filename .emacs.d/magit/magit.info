@@ -1,5 +1,4 @@
-これは magit.info、magit.texi より makeinfo バージョン 4.8
-によって作成されました。
+This is magit.info, produced by makeinfo version 4.13 from magit.texi.
 
 INFO-DIR-SECTION Emacs
 START-INFO-DIR-ENTRY
@@ -44,6 +43,7 @@ an extension to Emacs.
 * Rebasing::
 * Rewriting::
 * Pushing and Pulling::
+* Submodules::
 * Using Magit Extensions::
 * Using Git Directly::
 
@@ -209,18 +209,18 @@ the working tree and the staging area.  You can hide and show them as
 described in the previous section.
 
    The first section shows _Untracked files_, if there are any.  See
-*Note Untracked files:: for more details.
+*note Untracked files:: for more details.
 
    Two section show your local changes.  They are explained fully in the
-next chapter, *Note Staging and Committing::.
+next chapter, *note Staging and Committing::.
 
    If the current branch is associated with a remote tracking branch,
 the status buffer shows the differences between the current branch and
-the tracking branch.  See *Note Pushing and Pulling:: for more
+the tracking branch.  See *note Pushing and Pulling:: for more
 information.
 
    During a history rewriting session, the status buffer shows the
-_Pending changes_ and _Pending commits_ sections.  See *Note
+_Pending changes_ and _Pending commits_ sections.  See *note
 Rewriting:: for more details.
 
 
@@ -507,7 +507,7 @@ head.
    To create a new branch and switch to it immediately, type `b B'.
 
    Typing `b V' will list the local and remote branches in a new buffer
-called `*magit-branches*' from which you can work with them. See *Note
+called `*magit-branches*' from which you can work with them. See *note
 The branch list:: for more details.
 
 
@@ -630,7 +630,7 @@ different order.  You could pick them from the reflog, for example.
 associated with rewriting.  These commands all start with the `r'
 prefix key.
 
-   Typing `r s' will start a rewrite operation.  You will be prompted
+   Typing `r b' will start a rewrite operation.  You will be prompted
 for a _base_ commit, and all commits between the current head and this
 commit are put in a list of _Pending commits_ (including the base
 commit).  The current head will then be reset to the parent of the base
@@ -674,7 +674,7 @@ changes that you still need to rewrite, and you can apply hunks from
 it, like from any other diff.
 
 
-File: magit.info,  Node: Pushing and Pulling,  Next: Using Magit Extensions,  Prev: Rewriting,  Up: Top
+File: magit.info,  Node: Pushing and Pulling,  Next: Submodules,  Prev: Rewriting,  Up: Top
 
 19 Pushing and Pulling
 **********************
@@ -701,16 +701,36 @@ section that shows the commits on your current head that are not in the
 branch named `<remote>/<branch>'.  This section works just like the
 history buffer: you can see details about a commit with `RET', compare
 two of them with `.' and `=', and you can reset your current head to
-one of them with `x', for example.
+one of them with `x', for example. If you want to push the changes then
+type `P p'.
 
    When the remote branch has changes that are not in the current
 branch, Magit shows them in a section called _Unpulled changes_.  Typing
-`f f' will merge them into the current branch.
+`F p' will merge them into the current branch.
 
 
-File: magit.info,  Node: Using Magit Extensions,  Next: Using Git Directly,  Prev: Pushing and Pulling,  Up: Top
+File: magit.info,  Node: Submodules,  Next: Using Magit Extensions,  Prev: Pushing and Pulling,  Up: Top
 
-20 Magit Extensions
+20 Submodules
+*************
+
+`M u'
+     Update the submodules, with a prefix argument it will initializing.
+
+`M i'
+     Initialize the submodules.
+
+`M b'
+     Update and initialize the submodules in one go.
+
+`M s'
+     Synchronizes submodules' remote URL configuration setting to the
+     value specified in .gitmodules.
+
+
+File: magit.info,  Node: Using Magit Extensions,  Next: Using Git Directly,  Prev: Submodules,  Up: Top
+
+21 Magit Extensions
 *******************
 
 * Menu:
@@ -722,7 +742,7 @@ File: magit.info,  Node: Using Magit Extensions,  Next: Using Git Directly,  Pre
 
 File: magit.info,  Node: Interfacing with Subversion,  Next: Interfacing with Topgit,  Up: Using Magit Extensions
 
-20.1 Interfacing with Subversion
+21.1 Interfacing with Subversion
 ================================
 
 Typing `N r' runs `git svn rebase', typing `N c' runs `git svn dcommit'
@@ -736,7 +756,7 @@ the user will also be prompted for a branch to search in.
 
 File: magit.info,  Node: Interfacing with Topgit,  Next: Developing Extensions,  Prev: Interfacing with Subversion,  Up: Using Magit Extensions
 
-20.2 Interfacing with Topgit
+21.2 Interfacing with Topgit
 ============================
 
 Topgit (http://repo.or.cz/r/topgit.git) is a patch queue manager that
@@ -752,7 +772,7 @@ prefix by convention. So, creating a "t/foo" branch will actually
 populate the "Topics" section with one more branch after committing
 `.topdeps' and `.topmsg'.
 
-   Also, the way we pull (see *Note Pushing and Pulling::) such a
+   Also, the way we pull (see *note Pushing and Pulling::) such a
 branch is slightly different, since it requires updating the various
 dependencies of that branch. This should be mostly transparent, except
 in case of conflicts.
@@ -760,7 +780,7 @@ in case of conflicts.
 
 File: magit.info,  Node: Developing Extensions,  Prev: Interfacing with Topgit,  Up: Using Magit Extensions
 
-20.3 Developing Extensions
+21.3 Developing Extensions
 ==========================
 
 Magit provides a generic mechanism to allow cooperation with Git-related
@@ -838,7 +858,7 @@ systems, such as foreign VCS, patch systems,…
 
 File: magit.info,  Node: Using Git Directly,  Prev: Using Magit Extensions,  Up: Top
 
-21 Using Git Directly
+22 Using Git Directly
 *********************
 
 For situations when Magit doesn't do everything you need, you can run
@@ -849,30 +869,36 @@ it, and refresh the status buffer.  The output can be viewed by typing
 
 
 Tag Table:
-Node: Top586
-Node: Introduction1135
-Node: Acknowledgments2606
-Node: Sections3230
-Node: Status5780
-Node: Untracked files8509
-Node: Staging and Committing9456
-Node: History12796
-Node: Reflogs15537
-Node: Diffing15935
-Node: Tagging16533
-Node: Resetting16981
-Node: Stashing18505
-Node: Branching19217
-Node: The branch list20200
-Node: Wazzup21188
-Node: Merging21976
-Node: Rebasing23027
-Node: Rewriting23842
-Node: Pushing and Pulling26697
-Node: Using Magit Extensions28347
-Node: Interfacing with Subversion28600
-Node: Interfacing with Topgit29168
-Node: Developing Extensions30195
-Node: Using Git Directly33068
+Node: Top550
+Node: Introduction1114
+Node: Acknowledgments2585
+Node: Sections3209
+Node: Status5759
+Node: Untracked files8488
+Node: Staging and Committing9435
+Node: History12775
+Node: Reflogs15516
+Node: Diffing15914
+Node: Tagging16512
+Node: Resetting16960
+Node: Stashing18484
+Node: Branching19196
+Node: The branch list20179
+Node: Wazzup21167
+Node: Merging21955
+Node: Rebasing23006
+Node: Rewriting23821
+Node: Pushing and Pulling26676
+Node: Submodules28363
+Node: Using Magit Extensions28793
+Node: Interfacing with Subversion29037
+Node: Interfacing with Topgit29605
+Node: Developing Extensions30632
+Node: Using Git Directly33505
 
 End Tag Table
+
+
+Local Variables:
+coding: utf-8
+End:
