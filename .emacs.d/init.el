@@ -576,9 +576,9 @@
   (interactive)
   (progn
     (magit-log-edit-commit)
-    (sleep-for 1)
     (magit-push)))
 
+(define-key magit-log-edit-mode-map (kbd "C-x C-s") 'magit-log-edit-commit)
 
 (require 'gist)
 (setq gist-use-curl t)
