@@ -576,7 +576,7 @@
   (interactive)
   (progn
     (magit-log-edit-commit)
-;;     (sleep-for 1)
+    (sleep-for 1)
     (magit-push)))
 
 
