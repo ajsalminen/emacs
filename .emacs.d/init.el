@@ -1600,7 +1600,7 @@ post command hook に機能追加"
       (ding)))
   (isearch-search-and-update))
 
-(define-key isearch-mode-map "\M-e" 'isearch-yank-symbol)
+(define-key isearch-mode-map "\M-E" 'isearch-yank-symbol)
 
 (require 'switch-window)
 (setq switch-window-increase 50)
