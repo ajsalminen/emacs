@@ -1808,6 +1808,8 @@ post command hook に機能追加"
 
 (require 'rainbow-mode)
 
+(require 'move-region)
+
 (server-start)
 
 (message "********** successfully initialized **********")
