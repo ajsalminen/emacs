@@ -264,19 +264,21 @@
 
 (add-to-list 'load-path "~/.emacs.d/reftex-4.34a/lisp/")
 (require 'reftex)
+(setq reftex-toc-split-windows-horizontally t)
 
 (setq TeX-auto-save t)
 (setq TeX-parse-self t)
 (setq-default TeX-master nil)
-;;(add-hook 'LaTeX-mode-hook 'auto-fill-mode)
 (add-hook 'LaTeX-mode-hook 'flyspell-mode)
-;;(add-hook 'LaTeX-mode-hook 'pabbrev-mode)
 (add-hook 'LaTeX-mode-hook 'LaTeX-math-mode)
 (add-hook 'LaTeX-mode-hook 'TeX-source-correlate-mode)
 
 (add-hook 'LaTeX-mode-hook 'turn-on-reftex) ; with AUCTeX LaTeX mode
 (add-hook 'latex-mode-hook 'turn-on-reftex) ; with Emacs latex mode
+
 (setq reftex-plug-into-AUCTeX t)
+
+(add-hook 'reftex-mode-hook 'reftex-toc)
 
 (setq TeX-default-mode 'japanese-latex-mode)
 
@@ -324,6 +326,9 @@
                             '("m" "latexmk -pv -pdf %t" TeX-run-TeX nil t
                               :help "Run Latexmk on file")
                             TeX-command-list)))
+
+;; (add-hook 'TeX-mode-hook 'reftex-toc)
+
 
 ;; for some reason hitting backspace in latex mode with CJK IME on
 ;; makes the input act funny
