@@ -265,6 +265,9 @@
 (add-to-list 'load-path "~/.emacs.d/reftex-4.34a/lisp/")
 (require 'reftex)
 (setq reftex-toc-split-windows-horizontally t)
+(setq reftex-allow-automatic-rescan t)
+(setq reftex-auto-update-selection-buffers t)
+(setq reftex-enable-partial-scans t)
 
 (setq TeX-auto-save t)
 (setq TeX-parse-self t)
@@ -278,9 +281,28 @@
 
 (setq reftex-plug-into-AUCTeX t)
 
-(add-hook 'reftex-mode-hook 'reftex-toc)
+;; (add-hook 'reftex-mode-hook 'reftex-toc)
 
 (setq TeX-default-mode 'japanese-latex-mode)
+
+(defun reftex-toc-rescan-after-save (&rest ignore)
+  (interactive)
+  (if (boundp 'reftex-last-toc-file)
+      (switch-to-buffer-other-window
+       (reftex-get-file-buffer-force reftex-last-toc-file)
+       (reftex-toc t t))
+    (reftex-toc t t)))
+
+
+;; (add-hook 'LaTeX-mode-hook
+;;           (lambda ()
+;;             (add-hook 'after-save-hook (lambda ()
+;;                                          (save-excursion
+;;                                            (reftex-toc-rescan-after-save))))))
+
+;; (add-hook 'LaTeX-mode-hook 'reftex-toc-rescan-after-save)
+;; (add-hook 'latex-mode-hook 'reftex-toc-rescan-after-save)
+
 
 ;; Minimal OS X-friendly configuration of AUCTeX. Since there is no
 ;; DVI viewer for the platform, use pdftex/pdflatex by default for
