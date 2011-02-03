@@ -1321,8 +1321,9 @@ post command hook に機能追加"
         ":search/emacs/"
         "richstyles/foo"))
 
-(define-key twittering-edit-mode-map "\M-s" 'twittering-edit-replace-at-point)
+(define-key twittering-edit-mode-map "\M-j" 'twittering-edit-replace-at-point)
 (define-key twittering-edit-mode-map "\M-q" 'twittering-edit-cancel-status)
+(define-key twittering-edit-mode-map "\M-s" 'twittering-edit-post-status)
 
 (defun twittering-mode-exit ()
   "twittering-mode を終了する。"
