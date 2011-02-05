@@ -467,6 +467,7 @@
 (global-set-key (kbd "C-c t") '(lambda() (interactive) (recenter 1)))
 
 (require 'maxframe)
+;; (add-hook 'window-setup-hook 'maximize-frame t)
 
 ;; just the frame thanks
 (tool-bar-mode -1)
@@ -806,8 +807,18 @@ directory, select directory. Lastly the file is opened."
     (if (frame-parameter nil 'fullscreen)
         (set-frame-parameter nil 'fullscreen nil)
       (set-frame-parameter nil 'fullscreen 'fullboth)))
-  (global-set-key "\M-\r" 'toggle-max-window))
 
+  (defun toggle-fullscreen (&optional f)
+    (interactive)
+    (let ((current-value (frame-parameter nil 'fullscreen)))
+      (set-frame-parameter nil 'fullscreen
+                           (if (equal 'fullboth current-value)
+                               (if (boundp 'old-fullscreen) old-fullscreen nil)
+                             (progn (setq old-fullscreen current-value)
+                                    'fullboth)))))
+
+  (global-set-key "\M-\r" 'toggle-max-window)
+  (add-hook 'after-make-frame-functions (lambda (frame) (set-frame-parameter frame 'fullscreen 'fullboth))))
 
 ;; I always compile my .emacs, saves me about two seconds
 ;; startuptime. But that only helps if the .emacs.elc is newer
