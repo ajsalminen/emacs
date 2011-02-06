@@ -818,6 +818,7 @@ directory, select directory. Lastly the file is opened."
                                     'fullboth)))))
 
   (global-set-key "\M-\r" 'toggle-max-window)
+  (add-hook 'after-init-hook (lambda () (set-frame-parameter nil 'fullscreen 'fullboth)))
   (add-hook 'after-make-frame-functions (lambda (frame) (set-frame-parameter frame 'fullscreen 'fullboth))))
 
 ;; I always compile my .emacs, saves me about two seconds
