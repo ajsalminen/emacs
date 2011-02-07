@@ -1850,6 +1850,14 @@ post command hook に機能追加"
 
 (require 'move-region)
 
+(defvar current-time-format "%a %H:%M:%S")
+
+(defun echo-time-now ()
+  (interactive)
+  (message (format-time-string current-time-format (current-time))))
+
+(defalias 'ti 'echo-time-now)
+
 (server-start)
 
 (message "********** successfully initialized **********")
