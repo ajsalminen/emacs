@@ -1178,8 +1178,9 @@ post command hook に機能追加"
   (goto-char onPoint))
 
 
-(global-set-key (kbd "C-c s") (quote copy-string))
-(global-set-key (kbd "C-c r") 'ispell-word)
+(global-set-key (kbd "C-c r") (quote copy-string))
+(global-set-key (kbd "C-c s") 'ispell)
+(global-set-key (kbd "M-s") 'ispell-word)
 
 (require 'basic-edit-toolkit)
 
