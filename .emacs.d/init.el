@@ -599,6 +599,7 @@
 (require 'magit)
 (require 'magit-svn)
 (defalias 'mg 'magit-status)
+(setq magit-revert-item-confirm t)
 
 (defun magit-commit-then-push ()
   (interactive)
