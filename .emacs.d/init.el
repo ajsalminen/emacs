@@ -1566,6 +1566,9 @@ post command hook に機能追加"
 (global-set-key [(control c)(n)] 'bc-goto-current) ;; C-c j for jump to current bookmark
 (global-set-key [(control c)(m)] 'bc-list) ;; C-x M-j for the bookmark menu list
 
+(global-set-key [(control tab)] 'other-frame)
+(global-set-key [(shift control tab)] '(lambda() (interactive) (other-frame -1)))
+
 (require 'redo+)
 (global-set-key (kbd "C-M-/") 'redo)
 (setq undo-no-redo t)
