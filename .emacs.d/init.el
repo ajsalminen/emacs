@@ -1878,6 +1878,15 @@ post command hook に機能追加"
                     'ignore))))
   (global-auto-mark-mode 1))
 
+(require 'popwin)
+(setq display-buffer-function 'popwin:display-buffer)
+(setq special-display-function
+      'popwin:special-display-popup-window)
+(push '(dired-mode :position top) popwin:special-display-config)
+
+(defalias 'dj 'dired-jump-other-window)
+
+
 (server-start)
 
 (message "********** successfully initialized **********")
