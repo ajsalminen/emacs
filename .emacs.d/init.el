@@ -1719,6 +1719,10 @@ post command hook に機能追加"
 (require 'text-translator)
 (global-set-key "\C-x\M-t" 'text-translator)
 
+;; options to switch enjine
+;; (setq text-translator-default-engine "excite.co.jp_enja")
+;; (setq text-translator-default-engine "google.com_enja")
+
 (defun insert-translation-buffer ()
   (interactive)
   (newline)
