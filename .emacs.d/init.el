@@ -1883,6 +1883,7 @@ post command hook に機能追加"
 (setq special-display-function
       'popwin:special-display-popup-window)
 (push '(dired-mode :position top) popwin:special-display-config)
+(push '("*Compile-Log*" :height 10 :noselect t) popwin:special-display-config)
 
 (defalias 'dj 'dired-jump-other-window)
 
