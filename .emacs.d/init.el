@@ -1675,7 +1675,7 @@ post command hook に機能追加"
 
 (require 'yaoddmuse)
 (setq yaoddmuse-username "baron")
-(yaoddmuse-update-pagename t)
+;; (yaoddmuse-update-pagename nil)
 
 (autoload 'shell-toggle "shell-toggle"
   "Toggles between the *shell* buffer and whatever buffer you are editing."
