@@ -1891,8 +1891,17 @@ post command hook に機能追加"
 (push '(ess-help-mode :height 20) popwin:special-display-config)
 (push '("*translated*" :height 10 :noselect t) popwin:special-display-config)
 
-(defalias 'dj 'dired-jump-other-window)
+(defun popwin:define-advice (func buffer)
+  (eval `(defadvice ,func (around popwin activate)
+           (save-window-excursion ad-do-it)
+           (popwin:popup-buffer ,buffer)
+           (goto-char (point-min)))))
 
+(popwin:define-advice 'vc-diff "*vc-diff*")
+(popwin:define-advice 'magit-diff-working-tree "*magit-diff*")
+;; (popwin:define-advice 'text-translator-all "*translated*")
+
+(defalias 'dj 'dired-jump-other-window)
 
 (server-start)
 
