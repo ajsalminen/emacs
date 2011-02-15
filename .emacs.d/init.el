@@ -178,7 +178,7 @@
           (lambda ()
             (local-set-key (kbd "RET") 'reindent-then-newline-and-indent)))
 
-(add-to-list 'load-path "~/.emacs.d/ensime_2.8.1-0.4.1/elisp/")
+(add-to-list 'load-path "~/.emacs.d/ensime_2.8.1-0.4.2/elisp/")
 (require 'ensime)
 (add-hook 'scala-mode-hook 'ensime-scala-mode-hook)
 
