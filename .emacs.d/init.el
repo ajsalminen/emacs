@@ -1849,7 +1849,10 @@ post command hook に機能追加"
   (interactive)
   (byte-recompile-directory "~/.emacs.d" 0 t)
   (byte-recompile-directory "~/.emacs.d/wanderlust" 0 t)
+  (byte-recompile-directory "~/.emacs.d/ensime_2.8.1-0.4.2/elisp/" 0 t)
   (byte-recompile-directory "~/.emacs.d/twittering" 0 t))
+
+(defalias 'by 'byte-compile-all-my-files)
 
 (require 'nazna)
 
