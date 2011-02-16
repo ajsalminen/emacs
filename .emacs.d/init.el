@@ -1458,6 +1458,9 @@ post command hook に機能追加"
 ;; This is your old M-x.
 (global-set-key (kbd "C-c C-c M-x") 'execute-extended-command)
 
+(when (eq window-system 'mac)
+  (remove-hook 'minibuffer-setup-hook 'mac-change-language-to-us))
+
 (require 'auto-install)
 (setq auto-install-directory "~/.emacs.d/site-lisp/")
 (auto-install-update-emacswiki-package-name t)
@@ -1787,7 +1790,7 @@ post command hook に機能追加"
 
 (require 'goto-chg)
 
-(require 'slack-rtm)
+;; (require 'slack-rtm)
 
 (add-to-list 'auto-mode-alist '("\\.[Cc][Ss][Vv]\\'" . csv-mode))
 (autoload 'csv-mode "csv-mode"
