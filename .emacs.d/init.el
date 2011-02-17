@@ -513,6 +513,7 @@
    "-apple-hiragino_kaku_gothic_pro-medium-normal-normal-*-14-*-iso10646-1")
   )
 
+;; Ubuntu related settings
 (when (and (= emacs-major-version 23) (eq window-system 'x))
   (add-hook 'after-init-hook (lambda () (toggle-fullscreen)))
   (set-default-font "Bitstream Vera Sans Mono-11")
