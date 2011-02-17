@@ -6,7 +6,7 @@
 ;; Author: Carsten Dominik <carsten at orgmode dot org>
 ;; Keywords: outlines, hypermedia, calendar, wp
 ;; Homepage: http://orgmode.org
-;; Version: 7.01trans
+;; Version: 7.4
 ;;
 ;; This file is part of GNU Emacs.
 ;;
@@ -47,6 +47,12 @@
 (defvar orgtbl-mode-menu) ; defined when orgtbl mode get initialized
 (defvar org-export-html-table-tag) ; defined in org-exp.el
 (defvar constants-unit-system)
+
+(defvar orgtbl-after-send-table-hook nil
+  "Hook for functions attaching to `C-c C-c', if the table is sent.
+This can be used to add additional functionality after the table is sent
+to the receiver position, othewise, if table is not sent, the functions 
+are not run.")
 
 (defcustom orgtbl-optimized (eq org-enable-table-editor 'optimized)
   "Non-nil means use the optimized table editor version for `orgtbl-mode'.
@@ -342,17 +348,21 @@ available parameters."
 
 (defun org-table-cookie-line-p (line)
   "Is this a table line with only alignment/width cookies?"
-
   (save-match-data
     (and (string-match "[<>]\\|&[lg]t;" line)
-	 (or (string-match "\\`[ \t]*|[ \t]*/[ \t]*\\(|[ \t<>0-9|lgt&;]+\\)\\'" line)
-	     (string-match "\\(\\`[ \t<>lr0-9|gt&;]+\\'\\)" line))
+	 (or (string-match
+	      "\\`[ \t]*|[ \t]*/[ \t]*\\(|[ \t<>0-9|lrcgt&;]+\\)\\'" line)
+	     (string-match "\\(\\`[ \t<>lrc0-9|gt&;]+\\'\\)" line))
 	 (not (delq nil (mapcar
 			 (lambda (s)
 			   (not (or (equal s "")
-				    (string-match "\\`<\\([lr]?[0-9]+\\|[lr]\\)>\\'" s)
-				    (string-match "\\`&lt;\\([lr]?[0-9]+\\|[lr]\\)&gt;\\'" s))))
-			 (org-split-string (match-string 1 line) "[ \t]*|[ \t]*")))))))
+				    (string-match
+				     "\\`<\\([lrc]?[0-9]+\\|[lrc]\\)>\\'" s)
+				    (string-match
+				     "\\`&lt;\\([lrc]?[0-9]+\\|[lrc]\\)&gt;\\'"
+				     s))))
+			 (org-split-string (match-string 1 line)
+					   "[ \t]*|[ \t]*")))))))
 
 (defconst org-table-translate-regexp
   (concat "\\(" "@[-0-9I$]+" "\\|" "[a-zA-Z]\\{1,2\\}\\([0-9]+\\|&\\)" "\\)")
@@ -657,9 +667,9 @@ When nil, simply write \"#ERROR\" in corrupted fields.")
     (goto-char beg)
     (setq narrow (and org-table-do-narrow
 		      org-format-transports-properties-p
-		      (re-search-forward "<[rl]?[0-9]+>" end t)))
+		      (re-search-forward "<[lrc]?[0-9]+>" end t)))
     (goto-char beg)
-    (setq falign (re-search-forward "<[rl][0-9]*>" end t))
+    (setq falign (re-search-forward "<[lrc][0-9]*>" end t))
     (goto-char beg)
     ;; Get the rows
     (setq lines (org-split-string
@@ -700,7 +710,7 @@ When nil, simply write \"#ERROR\" in corrupted fields.")
 	(setq c column fmax nil falign1 nil)
 	(while c
 	  (setq e (pop c))
-	  (when (and (stringp e) (string-match "^<\\([rl]\\)?\\([0-9]+\\)?>$" e))
+	  (when (and (stringp e) (string-match "^<\\([lrc]\\)?\\([0-9]+\\)?>$" e))
 	    (if (match-end 1) (setq falign1 (match-string 1 e)))
 	    (if (and org-table-do-narrow (match-end 2))
 		(setq fmax (string-to-number (match-string 2 e)) c nil))))
@@ -3725,7 +3735,8 @@ With prefix arg, also recompute table."
 	  (call-interactively 'org-table-recalculate)
 	(org-table-maybe-recalculate-line))
       (call-interactively 'org-table-align)
-      (orgtbl-send-table 'maybe))
+      (when (orgtbl-send-table 'maybe)
+	(run-hooks 'orgtbl-after-send-table-hook)))
      ((eq action 'recalc)
       (save-excursion
 	(beginning-of-line 1)
@@ -3939,7 +3950,10 @@ this table."
 	  (orgtbl-send-replace-tbl name txt))
 	(setq ntbl (1+ ntbl)))
       (message "Table converted and installed at %d receiver location%s"
-	       ntbl (if (> ntbl 1) "s" "")))))
+			   ntbl (if (> ntbl 1) "s" ""))
+      (if (> ntbl 0)
+	  ntbl
+	nil))))
 
 (defun org-remove-by-index (list indices &optional i0)
   "Remove the elements in LIST with indices in INDICES.

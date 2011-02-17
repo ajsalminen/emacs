@@ -6,7 +6,7 @@
 ;; Author: Carsten Dominik <carsten at orgmode dot org>
 ;; Keywords: outlines, hypermedia, calendar, wp
 ;; Homepage: http://orgmode.org
-;; Version: 7.01trans
+;; Version: 7.4
 ;;
 ;; This file is part of GNU Emacs.
 ;;
@@ -39,6 +39,22 @@
 
 (declare-function org-add-props "org-compat" (string plist &rest props))
 (declare-function org-string-match-p "org-compat" (&rest args))
+
+(defmacro org-called-interactively-p (&optional kind)
+  `(if (featurep 'xemacs)
+       (interactive-p)
+     (if (or (> emacs-major-version 23)
+	     (and (>= emacs-major-version 23)
+		  (>= emacs-minor-version 2)))
+	 (with-no-warnings (called-interactively-p ,kind)) ;; defined with no argument in <=23.1
+       (interactive-p))))
+
+(if (and (not (fboundp 'with-silent-modifications))
+	 (or (< emacs-major-version 23)
+	     (and (= emacs-major-version 23)
+		  (< emacs-minor-version 2))))
+    (defmacro with-silent-modifications (&rest body)
+      `(org-unmodified ,@body)))
 
 (defmacro org-bound-and-true-p (var)
   "Return the value of symbol VAR if it is bound, else nil."

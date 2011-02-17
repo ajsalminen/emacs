@@ -5,7 +5,7 @@
 ;; Author: Eric Schulte
 ;; Keywords: literate programming, reproducible research
 ;; Homepage: http://orgmode.org
-;; Version: 7.01trans
+;; Version: 7.4
 
 ;; This file is part of GNU Emacs.
 
@@ -83,7 +83,8 @@ functions which are assigned key bindings, and see
     ("a" . org-babel-sha1-hash)
     ("h" . org-babel-describe-bindings)
     ("\C-x" . org-babel-do-key-sequence-in-edit-buffer)
-    ("x" . org-babel-do-key-sequence-in-edit-buffer))
+    ("x" . org-babel-do-key-sequence-in-edit-buffer)
+    ("\C-\M-h" . org-babel-mark-block))
   "Alist of key bindings and interactive Babel functions.
 This list associates interactive Babel functions
 with keys.  Each element of this list will add an entry to the

@@ -34,7 +34,7 @@
 (load blog-file 'noerror)
 
 (setq Info-directory-list
-      '("/usr/local/share/info" "~/info" "/usr/share/info" "/usr/local/info"))
+      '("/usr/local/share/info" "~/info" "/usr/share/info" "/usr/local/info" "/usr/share/info/emacs-23"))
 
 ;;; This was installed by package-install.el.
 ;;; This provides support for the package system and
@@ -513,6 +513,14 @@
    "-apple-hiragino_kaku_gothic_pro-medium-normal-normal-*-14-*-iso10646-1")
   )
 
+(when (and (= emacs-major-version 23) (eq window-system 'x))
+  (add-hook 'after-init-hook (lambda () (toggle-fullscreen)))
+  (set-default-font "Bitstream Vera Sans Mono-11")
+  (set-face-font 'variable-pitch "Bitstream Vera Sans Mono-11")
+  (set-fontset-font (frame-parameter nil 'font)
+                  'japanese-jisx0208
+                  '("Takaoゴシック" . "unicode-bmp")))
+
 ;; recentf stuff
 (require 'recentf)
 (recentf-mode 1)
@@ -809,18 +817,20 @@ directory, select directory. Lastly the file is opened."
         (set-frame-parameter nil 'fullscreen nil)
       (set-frame-parameter nil 'fullscreen 'fullboth)))
 
-  (defun toggle-fullscreen (&optional f)
-    (interactive)
-    (let ((current-value (frame-parameter nil 'fullscreen)))
-      (set-frame-parameter nil 'fullscreen
-                           (if (equal 'fullboth current-value)
-                               (if (boundp 'old-fullscreen) old-fullscreen nil)
-                             (progn (setq old-fullscreen current-value)
-                                    'fullboth)))))
+
 
   (global-set-key "\M-\r" 'toggle-max-window)
   (add-hook 'after-init-hook (lambda () (set-frame-parameter nil 'fullscreen 'fullboth)))
   (add-hook 'after-make-frame-functions (lambda (frame) (set-frame-parameter frame 'fullscreen 'fullboth))))
+
+(defun toggle-fullscreen (&optional f)
+  (interactive)
+  (let ((current-value (frame-parameter nil 'fullscreen)))
+    (set-frame-parameter nil 'fullscreen
+                         (if (equal 'fullboth current-value)
+                             (if (boundp 'old-fullscreen) old-fullscreen nil)
+                           (progn (setq old-fullscreen current-value)
+                                  'fullboth)))))
 
 ;; I always compile my .emacs, saves me about two seconds
 ;; startuptime. But that only helps if the .emacs.elc is newer

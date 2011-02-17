@@ -5,7 +5,7 @@
 ;; Author: Eric Schulte
 ;; Keywords: literate programming, reproducible research
 ;; Homepage: http://orgmode.org
-;; Version: 7.01trans
+;; Version: 7.4
 
 ;; This file is part of GNU Emacs.
 
@@ -42,9 +42,6 @@
 (defvar org-babel-default-header-args:ditaa
   '((:results . "file") (:exports . "results"))
   "Default arguments for evaluating a ditaa source block.")
-
-(defun org-babel-expand-body:ditaa (body params &optional processed-params)
-  "Expand BODY according to PARAMS, return the expanded body." body)
 
 (defvar org-ditaa-jar-path)
 (defun org-babel-execute:ditaa (body params)

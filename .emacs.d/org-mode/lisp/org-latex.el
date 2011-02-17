@@ -4,7 +4,7 @@
 ;;
 ;; Emacs Lisp Archive Entry
 ;; Filename: org-latex.el
-;; Version: 7.01trans
+;; Version: 7.4
 ;; Author: Bastien Guerry <bzg AT altern DOT org>
 ;; Maintainer: Carsten Dominik <carsten.dominik AT gmail DOT com>
 ;; Keywords: org, wp, tex
@@ -295,7 +295,14 @@ markup defined, the first one in the association list will be used."
   :group 'org-export-latex
   :type 'string)
 
-(defcustom org-export-latex-hyperref-format "\\href{%s}{%s}"
+(defcustom org-export-latex-href-format "\\href{%s}{%s}"
+  "A printf format string to be applied to href links.
+The format must contain two %s instances.  The first will be filled with
+the link, the second with the link description."
+  :group 'org-export-latex
+  :type 'string)
+
+(defcustom org-export-latex-hyperref-format "\\hyperref[%s]{%s}"
   "A printf format string to be applied to hyperref links.
 The format must contain two %s instances.  The first will be filled with
 the link, the second with the link description."
@@ -376,7 +383,25 @@ for example using customize, or with something like
 
   (require 'org-latex)
   (add-to-list 'org-export-latex-packages-alist '(\"\" \"listings\"))
-  (add-to-list 'org-export-latex-packages-alist '(\"\" \"color\"))"
+  (add-to-list 'org-export-latex-packages-alist '(\"\" \"color\"))
+
+Alternatively,
+
+  (setq org-export-latex-listings 'minted)
+
+causes source code to be exported using the minted package as
+opposed to listings. If you want to use minted, you need to add
+the minted package to `org-export-latex-packages-alist', for
+example using customize, or with
+
+  (require 'org-latex)
+  (add-to-list 'org-export-latex-packages-alist '(\"\" \"minted\"))
+
+In addition, it is neccessary to install
+pygments (http://pygments.org), and to configure
+`org-latex-to-pdf-process' so that the -shell-escape option is
+passed to pdflatex.
+"
   :group 'org-export-latex
   :type 'boolean)
 
@@ -411,23 +436,6 @@ of noweb."
   :group 'org-export-latex
   :type 'boolean)
 
-(defcustom org-export-latex-minted nil
-  "Non-nil means export source code using the minted package.
-This package will fontify source code with color.
-If you want to use this, you need to make LaTeX use the
-minted package. Add this to `org-export-latex-packages-alist',
-for example using customize, or with something like
-
-  (require 'org-latex)
-  (add-to-list 'org-export-latex-packages-alist '(\"\" \"minted\"))
-
-In addition, it is neccessary to install
-pygments (http://pygments.org), and configure
-`org-latex-to-pdf-process' so that the -shell-escape option is
-passed to pdflatex."
-  :group 'org-export-latex
-  :type 'boolean)
-
 (defcustom org-export-latex-minted-langs
   '((emacs-lisp "common-lisp")
     (cc "c++")
@@ -451,12 +459,6 @@ pygmentize -L lexers
 	  (list
 	   (symbol :tag "Major mode       ")
 	   (string :tag "Listings language"))))
-
-(defcustom org-export-latex-minted-with-line-numbers nil
-  "Should source code line numbers be included when exporting
-with the latex minted package?"
-  :group 'org-export-latex
-  :type 'boolean)
 
 (defcustom org-export-latex-remove-from-headlines
   '(:todo nil :priority nil :tags nil)
@@ -534,21 +536,21 @@ This function should accept the file name as its single argument."
 	  (repeat :tag "Shell command sequence"
 		  (string :tag "Shell command"))
 	  (const :tag "2 runs of pdflatex"
-		 '("pdflatex -interaction nonstopmode -output-directory %o %f"
+		 ("pdflatex -interaction nonstopmode -output-directory %o %f"
 		   "pdflatex -interaction nonstopmode -output-directory %o %f"))
 	  (const :tag "3 runs of pdflatex"
-		 '("pdflatex -interaction nonstopmode -output-directory %o %f"
+		 ("pdflatex -interaction nonstopmode -output-directory %o %f"
 		   "pdflatex -interaction nonstopmode -output-directory %o %f"
 		   "pdflatex -interaction nonstopmode -output-directory %o %f"))
 	  (const :tag "pdflatex,bibtex,pdflatex,pdflatex"
-		 '("pdflatex -interaction nonstopmode -output-directory %o %f"
+		 ("pdflatex -interaction nonstopmode -output-directory %o %f"
 		   "bibtex %b"
 		   "pdflatex -interaction nonstopmode -output-directory %o %f"
 		   "pdflatex -interaction nonstopmode -output-directory %o %f"))
 	  (const :tag "texi2dvi"
-		 '("texi2dvi -p -b -c -V %f"))
+		 ("texi2dvi -p -b -c -V %f"))
 	  (const :tag "rubber"
-		 '("rubber -d --into %o %f"))
+		 ("rubber -d --into %o %f"))
 	  (function)))
 
 (defcustom org-export-pdf-logfiles
@@ -944,7 +946,7 @@ when PUB-DIR is set, use this as the publishing directory."
 		     (save-match-data
 		       (shell-quote-argument output-dir))
 		     t t cmd)))
-	(shell-command cmd outbuf outbuf)))
+	(shell-command cmd outbuf)))
     (message (concat "Processing LaTeX file " file "...done"))
     (setq errors (org-export-latex-get-error outbuf))
     (if (not (file-exists-p pdffile))
@@ -1277,14 +1279,15 @@ OPT-PLIST is the options plist for current buffer."
        (plist-get opt-plist :latex-header-extra)))
      ;; append another special variable
      (org-export-apply-macros-in-string org-export-latex-append-header)
-     ;; define align if not yet defined
+     ;; define alert if not yet defined
      "\n\\providecommand{\\alert}[1]{\\textbf{#1}}"
+     ;; beginning of the document
+     "\n\\begin{document}\n\n"
      ;; insert the title
      (format
       "\n\n\\title{%s}\n"
       ;; convert the title
-      (org-export-latex-content
-       title '(lists tables fixed-width keywords)))
+      (org-export-latex-fontify-headline title))
      ;; insert author info
      (if (plist-get opt-plist :author-info)
 	 (format "\\author{%s}\n"
@@ -1296,8 +1299,6 @@ OPT-PLIST is the options plist for current buffer."
 	     (format-time-string
 	      (or (plist-get opt-plist :date)
 		  org-export-latex-date-format)))
-     ;; beginning of the document
-     "\n\\begin{document}\n\n"
      ;; insert the title command
      (when (string-match "\\S-" title)
        (if (string-match "%s" org-export-latex-title-command)
@@ -1324,7 +1325,7 @@ If END is non-nil, it is the end of the region."
   (save-excursion
     (goto-char (or beg (point-min)))
     (let* ((pt (point))
-	   (end (if (re-search-forward "^\\*+ " end t)
+	   (end (if (re-search-forward (org-get-limited-outline-regexp) end t)
 		    (goto-char (match-beginning 0))
 		  (goto-char (or end (point-max))))))
       (prog1
@@ -1451,6 +1452,33 @@ links, keywords, lists, tables, fixed-width"
     ;; FIXME: org-inside-LaTeX-fragment-p doesn't work when the $...$ is at
     ;; the beginning of the buffer - inserting "\n" is safe here though.
     (insert "\n" string)
+
+    ;; Preserve math snippets
+    
+    (let* ((matchers (plist-get org-format-latex-options :matchers))
+	   (re-list org-latex-regexps)
+	   beg end re e m n block off)
+      ;; Check the different regular expressions
+      (while (setq e (pop re-list))
+	(setq m (car e) re (nth 1 e) n (nth 2 e)
+	      block (if (nth 3 e) "\n\n" ""))
+	(setq off (if (member m '("$" "$1")) 1 0))
+	(when (and (member m matchers) (not (equal m "begin")))
+	  (goto-char (point-min))
+	  (while (re-search-forward re nil t)
+	    (setq beg (+ (match-beginning 0) off) end (- (match-end 0) 0))
+	    (add-text-properties beg end
+				 '(org-protected t org-latex-math t))))))
+
+    ;; Convert LaTeX to \LaTeX{} and TeX to \TeX{}
+    (goto-char (point-min))
+    (let ((case-fold-search nil))
+      (while (re-search-forward "\\<\\(\\(La\\)?TeX\\)\\>" nil t)
+	(unless (eq (char-before (match-beginning 1)) ?\\)
+	  (org-if-unprotected-1
+	   (replace-match (org-export-latex-protect-string
+			   (concat "\\" (match-string 1)
+				   "{}")) t t)))))
     (goto-char (point-min))
     (let ((re (concat "\\\\\\([a-zA-Z]+\\)"
 		      "\\(?:<[^<>\n]*>\\)*"
@@ -2015,10 +2043,10 @@ The conversion is made depending of STRING-BEFORE and STRING-AFTER."
 	      (insert (format
 		       (org-export-get-coderef-format path desc)
 		       (cdr (assoc path org-export-code-refs)))))
-	     (radiop (insert (format "\\hyperref[%s]{%s}"
+	     (radiop (insert (format org-export-latex-hyperref-format
 				     (org-solidify-link-text raw-path) desc)))
 	     ((not type)
-	      (insert (format "\\hyperref[%s]{%s}"
+	      (insert (format org-export-latex-hyperref-format
 			      (org-remove-initial-hash
 			       (org-solidify-link-text raw-path))
 			      desc)))
@@ -2029,7 +2057,7 @@ The conversion is made depending of STRING-BEFORE and STRING-AFTER."
 		;; a LaTeX issue, but we here implement a work-around anyway.
 		(setq path (org-export-latex-protect-amp path)
 		      desc (org-export-latex-protect-amp desc)))
-	      (insert (format org-export-latex-hyperref-format path desc)))
+	      (insert (format org-export-latex-href-format path desc)))
 
 	     ((functionp (setq fnc (nth 2 (assoc type org-link-protocols))))
 	      ;; The link protocol has a function for formatting the link
@@ -2355,7 +2383,7 @@ The conversion is made depending of STRING-BEFORE and STRING-AFTER."
 			   "\n"
 			   (match-string 1 res))
 		   t t res)))
-      (insert res "\n"))))
+      (insert res))))
 
 (defconst org-latex-entities
  '("\\!"

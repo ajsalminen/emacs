@@ -71,6 +71,7 @@ LISPF      = 	org.el			\
 	     	org-colview.el		\
 	     	org-colview-xemacs.el	\
 	     	org-compat.el		\
+	     	org-complete.el		\
 	     	org-crypt.el		\
 	     	org-ctags.el		\
 	     	org-datetree.el		\
@@ -125,6 +126,7 @@ LISPF      = 	org.el			\
 		ob-eval.el		\
 		ob-keys.el		\
 		ob-C.el			\
+		ob-calc.el		\
 		ob-ditaa.el		\
 		ob-haskell.el		\
 		ob-perl.el		\
@@ -200,7 +202,7 @@ compile: $(ELCFILES0) $(ELCBFILES)
 
 install: install-lisp
 
-doc: doc/org.html doc/org.pdf doc/orgcard.pdf doc/orgcard_letter.pdf doc/orgguide.pdf
+doc: doc/org.html doc/org.pdf doc/orgcard.pdf doc/orgcard_letter.pdf doc/orgguide.pdf doc/orgcard.txt
 
 p:
 	${MAKE} pdf && open doc/org.pdf
@@ -308,10 +310,10 @@ release:
 	make relup TAG=$(TAG)
 	make cleanrel
 	rm -rf org-$(TAG)
-	rm org-$(TAG)*.zip
-	rm org-$(TAG)*.tar.gz
+	rm -f org-$(TAG)*.zip
+	rm -f org-$(TAG)*.tar.gz
 	make pushreleasetag TAG=$(TAG)
-	git push origin maint
+	git push -f origin maint
 	git checkout master
 	git merge -s ours maint
 	UTILITIES/set-version.pl -o $(TAG)
@@ -340,7 +342,7 @@ fixrelease:
 	rm org-$(TAG)*.zip
 	rm org-$(TAG)*.tar.gz
 	make pushreleasetag TAG=$(TAG)
-	git push origin maint
+	git push -f origin maint
 	git checkout master
 	git merge -s ours maint
 	UTILITIES/set-version.pl -o $(TAG)

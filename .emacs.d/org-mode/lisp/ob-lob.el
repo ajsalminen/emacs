@@ -5,7 +5,7 @@
 ;; Author: Eric Schulte, Dan Davison
 ;; Keywords: literate programming, reproducible research
 ;; Homepage: http://orgmode.org
-;; Version: 7.01trans
+;; Version: 7.4
 
 ;; This file is part of GNU Emacs.
 
@@ -50,7 +50,7 @@ To add files to this list use the `org-babel-lob-ingest' command."
   (interactive "f")
   (let ((lob-ingest-count 0))
     (org-babel-map-src-blocks file
-      (let* ((info (org-babel-get-src-block-info))
+      (let* ((info (org-babel-get-src-block-info 'light))
 	     (source-name (nth 4 info)))
 	(when source-name
 	  (setq source-name (intern source-name)
@@ -59,7 +59,8 @@ To add files to this list use the `org-babel-lob-ingest' command."
 		      (assq-delete-all source-name org-babel-library-of-babel))
 		lob-ingest-count (1+ lob-ingest-count)))))
     (message "%d src block%s added to Library of Babel"
-	     lob-ingest-count (if (> lob-ingest-count 1) "s" ""))))
+	     lob-ingest-count (if (> lob-ingest-count 1) "s" ""))
+    lob-ingest-count))
 
 (defconst org-babel-lob-call-aliases '("lob" "call")
   "Aliases to call a source block function.
@@ -70,7 +71,8 @@ If you change the value of this variable then your files may
   (concat
    "^\\([ \t]*\\)#\\+\\(?:"
    (mapconcat #'regexp-quote org-babel-lob-call-aliases "\\|")
-   "\\):[ \t]+\\([^\(\)\n]+\\)\(\\([^\n]*\\)\)\\(\\[.+\\]\\|\\)[ \t]*\\([^\n]*\\)")
+   "\\):[ \t]+\\([^\(\)\n]+?\\)\\(\\[\\(.*\\)\\]\\|\\(\\)\\)"
+   "\(\\([^\n]*\\)\)\\(\\[.+\\]\\|\\)[ \t]*\\([^\n]*\\)")
   "Regexp to match calls to predefined source block functions.")
 
 ;; functions for executing lob one-liners
@@ -93,21 +95,25 @@ if so then run the appropriate source block from the Library."
           (append
 	   (mapcar #'org-babel-clean-text-properties 
 		   (list
-		    (format "%s(%s)%s"
-			    (match-string 2) (match-string 3) (match-string 4))
-		    (match-string 5)))
+		    (format "%s%s(%s)%s"
+			    (match-string 2)
+			    (if (match-string 4)
+				(concat "[" (match-string 4) "]") "")
+			    (or (match-string 6) "") (match-string 7))
+		    (match-string 8)))
 	   (list (length (match-string 1))))))))
   
 (defun org-babel-lob-execute (info)
   "Execute the lob call specified by INFO."
-  (let ((params (org-babel-merge-params
-		 org-babel-default-header-args
-		 (org-babel-params-from-buffer)
-                 (org-babel-params-from-properties)
-		 (org-babel-parse-header-arguments
-		  (org-babel-clean-text-properties
-		   (concat ":var results="
-			   (mapconcat #'identity (butlast info) " ")))))))
+  (let ((params (org-babel-process-params
+		 (org-babel-merge-params
+		  org-babel-default-header-args
+		  (org-babel-params-from-buffer)
+		  (org-babel-params-from-properties)
+		  (org-babel-parse-header-arguments
+		   (org-babel-clean-text-properties
+		    (concat ":var results="
+			    (mapconcat #'identity (butlast info) " "))))))))
     (org-babel-execute-src-block
      nil (list "emacs-lisp" "results" params nil nil (nth 2 info)))))
 

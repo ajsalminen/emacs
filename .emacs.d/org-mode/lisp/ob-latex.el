@@ -5,7 +5,7 @@
 ;; Author: Eric Schulte
 ;; Keywords: literate programming, reproducible research
 ;; Homepage: http://orgmode.org
-;; Version: 7.01trans
+;; Version: 7.4
 
 ;; This file is part of GNU Emacs.
 
@@ -53,7 +53,7 @@
   '((:results . "latex") (:exports . "results"))
   "Default arguments to use when evaluating a LaTeX source block.")
 
-(defun org-babel-expand-body:latex (body params &optional processed-params)
+(defun org-babel-expand-body:latex (body params)
   "Expand BODY according to PARAMS, return the expanded body."
   (mapc (lambda (pair) ;; replace variables
           (setq body
@@ -61,7 +61,7 @@
                  (regexp-quote (format "%S" (car pair)))
                  (if (stringp (cdr pair))
                      (cdr pair) (format "%S" (cdr pair)))
-                 body))) (nth 1 (org-babel-process-params params)))
+                 body))) (mapcar #'cdr (org-babel-get-header params :var)))
   (org-babel-trim body))
 
 (defun org-babel-execute:latex (body params)
@@ -75,6 +75,7 @@ This function is called by `org-babel-execute-src-block'."
 	     (fit (or (cdr (assoc :fit params)) border))
 	     (height (and fit (cdr (assoc :pdfheight params))))
 	     (width (and fit (cdr (assoc :pdfwidth params))))
+	     (headers (cdr (assoc :headers params)))
 	     (in-buffer (not (string= "no" (cdr (assoc :buffer params)))))
 	     (org-export-latex-packages-alist
 	      (append (cdr (assoc :packages params))
@@ -102,6 +103,12 @@ This function is called by `org-babel-execute-src-block'."
 	     (if border (format "\\setlength{\\PreviewBorder}{%s}" border) "")
 	     (if height (concat "\n" (format "\\pdfpageheight %s" height)) "")
 	     (if width  (concat "\n" (format "\\pdfpagewidth %s" width))   "")
+	     (if headers
+		 (concat "\n"
+			 (if (listp headers)
+			     (mapconcat #'identity headers "\n")
+			   headers) "\n")
+	       "")
 	     (if org-format-latex-header-extra
 		 (concat "\n" org-format-latex-header-extra)
 	       "")
@@ -150,7 +157,7 @@ Extracted from `org-export-as-pdf' in org-latex.el."
 		     (save-match-data
 		       (shell-quote-argument output-dir))
 		     t t cmd)))
-	(shell-command cmd outbuf outbuf)))
+	(shell-command cmd outbuf)))
     (message (concat "Processing LaTeX file " file "...done"))
     (if (not (file-exists-p pdffile))
 	(error (concat "PDF file " pdffile " was not produced"))

@@ -4,7 +4,7 @@
 ;;
 ;; Emacs Lisp Archive Entry
 ;; Filename: org-docbook.el
-;; Version: 7.01trans
+;; Version: 7.4
 ;; Author: Baoqiu Cui <cbaoqiu AT yahoo DOT com>
 ;; Maintainer: Baoqiu Cui <cbaoqiu AT yahoo DOT com>
 ;; Keywords: org, wp, docbook
@@ -1005,7 +1005,8 @@ publishing directory."
 		    table-orig-buffer (nreverse table-orig-buffer))
 	      (org-export-docbook-close-para-maybe)
 	      (insert (org-export-docbook-finalize-table
-		       (org-format-table-html table-buffer table-orig-buffer)))))
+		       (org-format-table-html table-buffer table-orig-buffer
+					      'no-css)))))
 
 	   (t
 	    ;; Normal lines

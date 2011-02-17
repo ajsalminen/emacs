@@ -8,7 +8,7 @@
 ;;         Dan Davison <davison at stats dot ox dot ac dot uk>
 ;; Keywords: outlines, hypermedia, calendar, wp
 ;; Homepage: http://orgmode.org
-;; Version: 7.01trans
+;; Version: 7.4
 ;;
 ;; This file is part of GNU Emacs.
 ;;
@@ -153,7 +153,8 @@ but which mess up the display of a snippet in Org exported files.")
 
 (defcustom org-src-lang-modes
   '(("ocaml" . tuareg) ("elisp" . emacs-lisp) ("ditaa" . artist)
-    ("asymptote" . asy) ("dot" . fundamental) ("sqlite" . sql))
+    ("asymptote" . asy) ("dot" . fundamental) ("sqlite" . sql)
+    ("calc" . fundamental))
   "Alist mapping languages to their major mode.
 The key is the language name, the value is the string that should
 be inserted as the name of the major mode.  For many languages this is
@@ -214,7 +215,7 @@ buffer."
   (let ((mark (and (org-region-active-p) (mark)))
 	(case-fold-search t)
 	(info (org-edit-src-find-region-and-lang))
-	(babel-info (org-babel-get-src-block-info))
+	(babel-info (org-babel-get-src-block-info 'light))
 	(org-mode-p (eq major-mode 'org-mode))
 	(beg (make-marker))
 	(end (make-marker))
@@ -239,8 +240,8 @@ buffer."
 	    block-nindent (nth 5 info)
 	    lang-f (intern (concat lang "-mode"))
 	    begline (save-excursion (goto-char beg) (org-current-line)))
-      (if (and mark (>= mark beg) (<= mark end))
-	  (save-excursion (goto-char mark)
+      (if (and mark (>= mark beg) (<= mark (1+ end)))
+	  (save-excursion (goto-char (min mark end))
 			  (setq markline (org-current-line)
 				markcol (current-column))))
       (if (equal lang-f 'table.el-mode)

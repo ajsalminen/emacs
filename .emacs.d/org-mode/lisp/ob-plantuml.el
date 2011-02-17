@@ -5,7 +5,7 @@
 ;; Author: Zhang Weize
 ;; Keywords: literate programming, reproducible research
 ;; Homepage: http://orgmode.org
-;; Version: 7.01trans
+;; Version: 7.4
 
 ;; This file is part of GNU Emacs.
 
@@ -41,9 +41,6 @@
 (defvar org-babel-default-header-args:plantuml
   '((:results . "file") (:exports . "results"))
   "Default arguments for evaluating a plantuml source block.")
-
-(defun org-babel-expand-body:plantuml (body params &optional processed-params)
-  "Expand BODY according to PARAMS, return the expanded body." body)
 
 (defcustom org-plantuml-jar-path nil
   "Path to the plantuml.jar file."
