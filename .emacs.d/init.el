@@ -978,6 +978,7 @@ directory, select directory. Lastly the file is opened."
 (require 'ac-company)
 ;; 対象の全てで補完を有効にする
 (global-auto-complete-mode t)
+
 ;; ac-company で company-xcode を有効にする
 (ac-company-define-source ac-source-company-xcode company-xcode)
 ;; objc-mode で補完候補を設定
@@ -1001,6 +1002,13 @@ directory, select directory. Lastly the file is opened."
 (ac-set-trigger-key "TAB")
 ;; 候補の最大件数 デフォルトは 10件
 (setq ac-candidate-max 20)
+
+(require 'auto-complete-latex)
+(setq ac-l-dict-directory "~/.emacs.d/ac-l-dict/")
+(setq ac-modes (append ac-modes '(LaTeX-mode latex-mode YaTeX-mode)))
+(add-hook 'LaTeX-mode-hook 'ac-l-setup)
+(add-hook 'latex-mode-hook 'ac-l-setup)
+(add-hook 'YaTeX-mode-hook 'ac-l-setup)
 
 ;; etags-table の機能を有効にする
 (require 'etags-table)
