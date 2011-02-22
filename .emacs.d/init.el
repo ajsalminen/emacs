@@ -1323,6 +1323,7 @@ post command hook に機能追加"
 (require 'twittering-mode)
 (setq twittering-use-master-password t)
 (setq twittering-url-show-status nil)
+(setq twittering-number-of-tweets-on-retrieval 200)
 (twittering-icon-mode t)
 (setq twittering-timer-interval 900)
 
@@ -1927,6 +1928,8 @@ post command hook に機能追加"
 ;; (popwin:define-advice 'text-translator-all "*translated*")
 
 (defalias 'dj 'dired-jump-other-window)
+
+(require 'generic-x)
 
 (server-start)
 
