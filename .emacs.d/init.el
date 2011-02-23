@@ -1920,6 +1920,8 @@ post command hook に機能追加"
 (push '(ess-help-mode :height 20) popwin:special-display-config)
 (push '("*translated*" :height 10 :noselect t) popwin:special-display-config)
 (push '("*Process List*" :height 10) popwin:special-display-config)
+(push '(" *auto-async-byte-compile*" :height 10) popwin:special-display-config)
+
 
 (defun popwin:define-advice (func buffer)
   (eval `(defadvice ,func (around popwin activate)
@@ -1929,6 +1931,7 @@ post command hook に機能追加"
 
 (popwin:define-advice 'vc-diff "*vc-diff*")
 (popwin:define-advice 'magit-diff-working-tree "*magit-diff*")
+;; (popwin:define-advice 'auto-async-byte-compile "*auto-async-byte-compile*")
 ;; (popwin:define-advice 'text-translator-all "*translated*")
 
 (defalias 'dj 'dired-jump-other-window)
