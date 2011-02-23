@@ -517,6 +517,8 @@
 (when (and (= emacs-major-version 23) (eq window-system 'x))
   (add-hook 'after-init-hook (lambda () (toggle-fullscreen)))
   (global-set-key "\M-\r" 'toggle-fullscreen)
+  (setq x-super-keysym 'meta)
+  (setq x-alt-keysym 'meta)
   (set-default-font "Bitstream Vera Sans Mono-11")
   (set-face-font 'variable-pitch "Bitstream Vera Sans Mono-11")
   (set-fontset-font (frame-parameter nil 'font)
