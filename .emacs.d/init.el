@@ -358,7 +358,7 @@
   (interactive)
   (progn
     (delete-backward-char 1)
-      (keyboard-quit)))
+    (keyboard-quit)))
 
 (add-hook 'LaTeX-mode-hook (lambda ()
                              (define-key LaTeX-mode-map (kbd "<backspace>") 'backspace-cjk-hack)))
@@ -525,13 +525,49 @@
   ;; (set-default-font "Bitstream Vera Sans Mono-11")
   )
 
-(if (eq window-system 'x)
-  ;; (set-default-font "Droid Sans Mono-12")
-  (set-default-font "Bitstream Vera Sans Mono-11")
-  (set-fontset-font (frame-parameter nil 'font)
-                    'japanese-jisx0208
-                    '("Sans" . "unicode-bmp"))
+(defun set-ubuntu-fonts ()
+  (interactive)
+  (if (eq window-system 'x)
+      ;; settings that never quite worked
+      ;; (progn
+      ;;   ;;set one
+      ;;   (set-default-font "Droid Sans Mono-12")
+      ;;   (set-default-font "Bitstream Vera Sans Mono-11")
+      ;;   (set-fontset-font (frame-parameter nil 'font)
+      ;;                     'japanese-jisx0208
+      ;;                     '("Sans" . "unicode-bmp"))
+
+      ;;   ;; set two
+      ;;   (set-default-font "Inconsolata-12")
+      ;;   (set-face-font 'variable-pitch "Inconsolata-12")
+      ;;   (set-fontset-font (frame-parameter nil 'font)
+      ;;                     'japanese-jisx0208
+      ;;                     '("Takaoゴシック" . "unicode-bmp")
+      ;;                     )
+      ;;   )
+
+      (progn
+        (set-face-attribute 'default nil
+                            :family "Droid Sans Mono"
+                            :height 110)
+        (set-fontset-font "fontset-default"
+                          'japanese-jisx0208
+                          '("Droid Sans Fallback" . "iso10646-1"))
+        (set-fontset-font "fontset-default"
+                          'katakana-jisx0201
+                          '("Droid Sans Fallback" . "iso10646-1"))
+        (setq face-font-rescale-alist
+              '((".*Droid_Sans_Mono.*" . 1.0)
+                (".*Droid_Sans_Mono-medium.*" . 1.0)
+                (".*Droid_Sans_Fallback.*" . 1.2)
+                (".*Droid_Sans_Fallback-medium.*" . 1.2)))
+
+        )
+    )
   )
+
+(if (eq window-system 'x)
+    (add-hook 'after-init-hook (lambda () (set-ubuntu-fonts))))
 
 ;; recentf stuff
 (require 'recentf)
@@ -1700,7 +1736,7 @@ post command hook に機能追加"
 ;;(add-hook 'ange-ftp-process-startup-hook 'ecb-deactivate)
 (require 'tramp)
 
-(setq-default line-spacing 2)
+(setq-default line-spacing 0)
 
 (require 'cssh)
 
@@ -1881,6 +1917,7 @@ post command hook に機能追加"
 (defun byte-compile-all-my-files ()
   "byte compile everything"
   (interactive)
+  (byte-recompile-directory "~/.emacs.d/site-lisp" 0 t)
   (byte-recompile-directory "~/.emacs.d" 0 t)
   (byte-recompile-directory "~/.emacs.d/wanderlust" 0 t)
   (byte-recompile-directory "~/.emacs.d/ensime_2.8.1-0.4.2/elisp/" 0 t)
