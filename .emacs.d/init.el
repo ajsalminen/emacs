@@ -515,15 +515,23 @@
 
 ;; Ubuntu related settings
 (when (and (= emacs-major-version 23) (eq window-system 'x))
-  (add-hook 'after-init-hook (lambda () (toggle-fullscreen)))
+  ;; (add-hook 'after-init-hook (lambda () (toggle-fullscreen)))
   (global-set-key "\M-\r" 'toggle-fullscreen)
   (setq x-super-keysym 'meta)
   (setq x-alt-keysym 'meta)
+
+  ;; (set-face-font 'variable-pitch "Droid Sans Mono-11")
+  ;; (set-face-font 'default "Droid Sans Mono-11")
+  ;; (set-default-font "Bitstream Vera Sans Mono-11")
+  )
+
+(if (eq window-system 'x)
+  ;; (set-default-font "Droid Sans Mono-12")
   (set-default-font "Bitstream Vera Sans Mono-11")
-  (set-face-font 'variable-pitch "Bitstream Vera Sans Mono-11")
   (set-fontset-font (frame-parameter nil 'font)
-                  'japanese-jisx0208
-                  '("Takaoゴシック" . "unicode-bmp")))
+                    'japanese-jisx0208
+                    '("Sans" . "unicode-bmp"))
+  )
 
 ;; recentf stuff
 (require 'recentf)
