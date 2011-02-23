@@ -1932,6 +1932,20 @@ post command hook に機能追加"
 
 (require 'generic-x)
 
+(autoload 'tidy-buffer "tidy" "Run Tidy HTML parser on current buffer" t)
+(autoload 'tidy-parse-config-file "tidy" "Parse the `tidy-config-file'" t)
+(autoload 'tidy-save-settings "tidy" "Save settings to `tidy-config-file'" t)
+(autoload 'tidy-build-menu  "tidy" "Install an options menu for HTML Tidy." t)
+
+(defun toggle-line-spacing ()
+  "Toggle line spacing between no extra space to extra half line height."
+  (interactive)
+  (if (eq line-spacing nil)
+      (setq-default line-spacing 0.5)   ; add 0.5 height between lines
+    (setq-default line-spacing nil)))
+
+(defalias 'ts 'toggle-line-spacing)
+
 (server-start)
 
 (message "********** successfully initialized **********")
