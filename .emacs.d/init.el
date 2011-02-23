@@ -1919,6 +1919,7 @@ post command hook に機能追加"
 (push '("*Compile-Log*" :height 10 :noselect t) popwin:special-display-config)
 (push '(ess-help-mode :height 20) popwin:special-display-config)
 (push '("*translated*" :height 10 :noselect t) popwin:special-display-config)
+(push '("*Process List*" :height 10) popwin:special-display-config)
 
 (defun popwin:define-advice (func buffer)
   (eval `(defadvice ,func (around popwin activate)
