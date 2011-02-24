@@ -701,7 +701,31 @@
 (require 'gist)
 (setq gist-use-curl t)
 
-;; dictionary stuff
+(require 'popwin)
+(setq display-buffer-function 'popwin:display-buffer)
+(setq special-display-function
+      'popwin:special-display-popup-window)
+(push '(dired-mode :position top) popwin:special-display-config)
+(push '("*Compile-Log*" :height 10) popwin:special-display-config)
+(push '("*Warnings*" :height 10 :noselect t) popwin:special-display-config)
+(push '(ess-help-mode :height 20) popwin:special-display-config)
+(push '("*translated*" :height 10 :noselect t) popwin:special-display-config)
+(push '("*Process List*" :height 10) popwin:special-display-config)
+(push '(" *auto-async-byte-compile*" :height 10) popwin:special-display-config)
+(push '("\*grep\*.*" :regexp t :height 20) popwin:special-display-config)
+
+
+(defun popwin:define-advice (func buffer)
+  (eval `(defadvice ,func (around popwin activate)
+           (save-window-excursion ad-do-it)
+           (popwin:popup-buffer ,buffer)
+           (goto-char (point-min)))))
+
+(popwin:define-advice 'vc-diff "*vc-diff*")
+(popwin:define-advice 'magit-diff-working-tree "*magit-diff*")
+;; (popwin:define-advice 'auto-async-byte-compile "*auto-async-byte-compile*")
+;; (popwin:define-advice 'text-translator-all "*translated*")
+
 (require 'anything-config)
 ;; (require 'anything-startup)
 (global-set-key (kbd "C-z") 'anything)
@@ -1994,30 +2018,6 @@ post command hook に機能追加"
                          (eq last-command-char ? ))
                     'ignore))))
   (global-auto-mark-mode 1))
-
-(require 'popwin)
-(setq display-buffer-function 'popwin:display-buffer)
-(setq special-display-function
-      'popwin:special-display-popup-window)
-(push '(dired-mode :position top) popwin:special-display-config)
-(push '("*Compile-Log*" :height 10 :noselect t) popwin:special-display-config)
-(push '("*Warnings*" :height 10 :noselect t) popwin:special-display-config)
-(push '(ess-help-mode :height 20) popwin:special-display-config)
-(push '("*translated*" :height 10 :noselect t) popwin:special-display-config)
-(push '("*Process List*" :height 10) popwin:special-display-config)
-(push '(" *auto-async-byte-compile*" :height 10) popwin:special-display-config)
-
-
-(defun popwin:define-advice (func buffer)
-  (eval `(defadvice ,func (around popwin activate)
-           (save-window-excursion ad-do-it)
-           (popwin:popup-buffer ,buffer)
-           (goto-char (point-min)))))
-
-(popwin:define-advice 'vc-diff "*vc-diff*")
-(popwin:define-advice 'magit-diff-working-tree "*magit-diff*")
-;; (popwin:define-advice 'auto-async-byte-compile "*auto-async-byte-compile*")
-;; (popwin:define-advice 'text-translator-all "*translated*")
 
 (defalias 'dj 'dired-jump-other-window)
 
