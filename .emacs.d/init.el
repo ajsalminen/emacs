@@ -520,6 +520,39 @@
   (setq x-super-keysym 'meta)
   (setq x-alt-keysym 'meta)
 
+
+  (defun setup-scim ()
+    (interactive)
+    (require 'scim-bridge-ja)
+    ;; C-SPC は Set Mark に使う
+    (scim-define-common-key ?\C-\s nil)
+    (scim-define-common-key ?\C-\\ t)
+    (scim-define-common-key ?\C-\S-\s t)
+
+    ;; (global-set-key (kbd "C-\\") 'scim-mode)
+
+    ;; C-/ は Undo に使う
+    (scim-define-common-key ?\C-/ nil)
+    ;; SCIMの状態によってカーソル色を変化させる
+    (setq scim-cursor-color '("red" "blue" "limegreen"))
+    ;; C-j で半角英数モードをトグルする
+    (scim-define-common-key ?\C-j t)
+    ;; SCIM-Anthy 使用時に、選択領域を再変換できるようにする
+    (scim-define-common-key 'S-henkan nil)
+    (global-set-key [S-henkan] 'scim-anthy-reconvert-region)
+    ;; SCIM がオフのままローマ字入力してしまった時に、プリエディットに入れ直す
+    (global-set-key [C-henkan] 'scim-transfer-romaji-into-preedit))
+
+  (defun setup-mozc ()
+    (interactive)
+    (require 'mozc)  ; or (load-file "path-to-mozc.el")
+    (set-language-environment "Japanese")
+    (setq default-input-method "japanese-mozc"))
+
+  (progn
+    (setup-scim)
+    (add-hook 'after-init-hook 'scim-mode-on))
+
   ;; (set-face-font 'variable-pitch "Droid Sans Mono-11")
   ;; (set-face-font 'default "Droid Sans Mono-11")
   ;; (set-default-font "Bitstream Vera Sans Mono-11")
