@@ -709,6 +709,10 @@
 (setq anything-input-idle-delay 0.2)
 (setq anything-candidate-number-limit 100)
 
+(require 'anything-yaetags)
+(global-set-key (kbd "M-.") 'anything-yaetags-find-tag)
+;; (global-set-key (kbd "M-.") 'find-tag)
+
 (require 'anything-match-plugin)
 (require 'eijiro)
 (setq eijiro-directory "~/Downloads/EDP-124/EIJIRO/") ; 英辞郎の辞書を置いているディレクトリ
@@ -1341,6 +1345,8 @@ post command hook に機能追加"
 ;; (defalias 'wwo 'w3m-view-url-with-external-browser)
 (defalias 'ww 'w3m-browse-clipboard)
 (setq browse-url-browser-function 'w3m)
+;; (setq browse-url-browser-function 'browse-url-default-macosx-browser)
+
 ;;(load-file (expand-file-name "~/.emacs.d/site-lisp/w3mkeymap.el"))
 ;;(add-hook 'w3m-mode-hook '(lambda () (use-local-map dka-w3m-map)))
 
@@ -1995,6 +2001,7 @@ post command hook に機能追加"
       'popwin:special-display-popup-window)
 (push '(dired-mode :position top) popwin:special-display-config)
 (push '("*Compile-Log*" :height 10 :noselect t) popwin:special-display-config)
+(push '("*Warnings*" :height 10 :noselect t) popwin:special-display-config)
 (push '(ess-help-mode :height 20) popwin:special-display-config)
 (push '("*translated*" :height 10 :noselect t) popwin:special-display-config)
 (push '("*Process List*" :height 10) popwin:special-display-config)
