@@ -10,6 +10,7 @@ syntax: glob
 elispcache/*
 .emacs.d/eproject.lst
 .emacs.d/url
+.emacs.d/tramp
 */CVS/*
 CVS
 .svn

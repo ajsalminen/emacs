@@ -804,16 +804,28 @@
 
 ;; highlight current line
 (require 'highline)
-(global-hl-line-mode 1)
+(global-hl-line-mode nil)
 ;; To customize the background color
 (set-face-background 'hl-line "#222") ;; Emacs 22 Only
 
 (require 'hl-line+)
 (toggle-hl-line-when-idle 1)
 
+(require 'highlight-current-line)
+(setq highlight-current-line-globally t)
+(set-face-background 'highlight-current-line-face "#222")
+(add-hook 'highlight-current-line-hook (lambda () (redisplay t)))
+
+(require 'col-highlight)
+;; to enable at all times
+;; (column-highlight-mode t)
+(toggle-highlight-column-when-idle t)
+(col-highlight-set-interval 20)
+(set-face-background 'col-highlight "#222")
+
 ;; Display line and column numbers
-(setq line-number-mode t)
-(setq column-number-mode t)
+(setq line-number-mode nil)
+(setq column-number-mode nil)
 
 (iswitchb-mode 1)
 
