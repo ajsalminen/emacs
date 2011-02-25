@@ -711,6 +711,7 @@
 (push '(ess-help-mode :height 20) popwin:special-display-config)
 (push '("*translated*" :height 10 :noselect t) popwin:special-display-config)
 (push '("*Process List*" :height 10) popwin:special-display-config)
+(push '("*Locate*" :height 10 :noselect t) popwin:special-display-config)
 (push '(" *auto-async-byte-compile*" :height 10) popwin:special-display-config)
 (push '("\*grep\*.*" :regexp t :height 20) popwin:special-display-config)
 
@@ -733,6 +734,7 @@
 (setq anything-input-idle-delay 0.2)
 (setq anything-candidate-number-limit 100)
 
+(require 'anything-c-shell-history)
 (require 'anything-yaetags)
 (global-set-key (kbd "M-.") 'anything-yaetags-find-tag)
 ;; (global-set-key (kbd "M-.") 'find-tag)
@@ -1807,9 +1809,11 @@ post command hook に機能追加"
 
 (require 'sr-speedbar)
 
-(require 'ange-ftp)
+(autoload 'ange-ftp "ange-ftp" nil t)
 ;;(add-hook 'ange-ftp-process-startup-hook 'ecb-deactivate)
-(require 'tramp)
+(autoload 'tramp "tramp" nil t)
+(setq tramp-shell-prompt-pattern "^[^$>\n]*[#$%>] *\\(\[[0-9;]*[a-zA-Z] *\\)*")
+(setq tramp-persistency-file-name nil)
 
 (setq-default line-spacing 0)
 
@@ -1822,11 +1826,98 @@ post command hook に機能追加"
 (setq yaoddmuse-username "baron")
 ;; (yaoddmuse-update-pagename nil)
 
+(require 'eshell)
+(require 'shell-pop)
+(shell-pop-set-internal-mode "eshell")
+(shell-pop-set-window-height 60)
+
+(defun eshell-maybe-bol ()
+  (interactive)
+  (let ((p (point)))
+    (eshell-bol)
+    (if (= p (point))
+        (beginning-of-line))))
+
+(add-hook 'eshell-mode-hook
+          (lambda ()
+            (define-key eshell-mode-map (kbd "C-a") 'eshell-maybe-bol)
+            (define-key eshell-mode-map (kbd "C-r") 'eshell-isearch-backward)))
+
+(autoload 'ansi-color-for-comint-mode-on "ansi-color"
+  "Set `ansi-color-for-comint-mode' to t." t)
+(add-hook 'eshell-load-hook 'ansi-color-for-comint-mode-on)
+(autoload 'ansi-color-apply-on-region "ansi-color" nil t)
+(defun eshell-handle-ansi-color ()
+  (ansi-color-apply-on-region eshell-last-output-start
+                              eshell-last-output-end))
+(add-hook 'eshell-output-filter-functions 'eshell-handle-ansi-color)
+
+(when (require 'pcmpl-auto nil t)
+  (when (require 'pcmpl-ssh nil t)
+    (add-hook 'eshell-mode-hook 'pcomplete-shell-setup)))
+
+(setq eshell-cmpl-ignore-case t)
+(setq eshell-glob-include-dot-files t)
+(setq eshell-glob-include-dot-dot t)
+(setq eshell-ask-to-save-history nil)
+(setq eshell-cmpl-cycle-completions t)
+(setq eshell-history-file-name "~/.bash_history")
+(setq eshell-history-size 1000000)
+(setq eshell-hist-ignoredups t)
+
+;; shell
+(when (require 'shell-history nil t)
+  (when (require 'anything-complete nil t)
+    (add-hook 'shell-mode-hook
+              (lambda ()
+                (define-key shell-mode-map (kbd "C-r") 'anything-complete-shell-history)))
+
+    (use-anything-show-completion 'anything-complete-shell-history
+                                  '(length anything-c-source-complete-shell-history))))
+
+(defun ido-eshell-history ()
+  "Prompt with a completing list of unique eshell history items.
+
+The selected item will be placed at the prompt on the eshell switched to by (eshell).
+If existing, the current prompt will be deleted."
+  (interactive)
+  (progn
+    (eshell)
+    (end-of-buffer)
+    (eshell-bol)
+    (unless (= (point) (point-max))
+      (kill-line))
+    (let ((history nil)
+          (index (1- (ring-length eshell-history-ring))))
+      ;; taken from em-hist.el, excepting the duplicate check
+      (while (>= index 0)
+        (let ((hist (eshell-get-history index)))
+          (when (not (member hist history))
+            (setq history (cons hist history))))
+        (setq index (1- index)))
+      (let* ((item (if (and (boundp 'ido-mode) ido-mode)
+                       (ido-completing-read "Select history item: "
+                                            history)
+                     (completing-read "Select history item: "
+                                      history))))
+        (insert item)))))
+(add-hook 'eshell-mode-hook (lambda ()
+                              (define-key
+                                eshell-mode-map "\C-c\C-x" 'ido-eshell-history)))
+
+
+(autoload 'multi-eshell "multi-eshell" t)
+(setq multi-eshell-name "*eshell*")
+(setq multi-eshell-shell-function `(eshell))
+
+(load-library "~/.emacs.d/site-lisp/shell-toggle-patched.el")
 (autoload 'shell-toggle "shell-toggle"
   "Toggles between the *shell* buffer and whatever buffer you are editing."
   t)
 (autoload 'shell-toggle-cd "shell-toggle"
   "Pops up a shell-buffer and insert a \"cd <file-dir>\" command." t)
+(setq shell-toggle-launch-shell 'shell-toggle-eshell)
+
 
 (defalias 'sh 'shell-toggle-cd)
 (global-set-key (kbd "C-'") 'smex)
@@ -2086,7 +2177,6 @@ post command hook に機能追加"
 
 
 ;; (add-hook 'before-save-hook 'sudo-before-save-hook)
-
 
 
 (server-start)
