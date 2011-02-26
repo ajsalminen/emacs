@@ -1477,6 +1477,7 @@ post command hook に機能追加"
         ":search/keysnail/"
         ":search/vimperator/"
         ":search/emacs/"
+        ":search/eshell/"
         "richstyles/foo"))
 
 (define-key twittering-edit-mode-map "\M-j" 'twittering-edit-replace-at-point)
