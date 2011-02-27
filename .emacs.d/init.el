@@ -748,6 +748,7 @@
         anything-c-source-info-pages
         anything-c-source-info-elisp
         anything-c-source-buffers
+        ;; anything-c-source-shell-history
         anything-c-source-file-name-history
         anything-c-source-locate
         anything-c-source-occur))
@@ -2187,5 +2188,12 @@ If existing, the current prompt will be deleted."
 ;; sudo-ext requires server
 (when (and (= emacs-major-version 23) (eq window-system 'x))
   (require 'sudo-ext))
+
+(cond
+ ((>= emacs-major-version '23)
+  (progn
+    (require 'zlc)
+    (setq zlc-select-completion-immediately t))))
+
 
 (message "********** successfully initialized **********")
