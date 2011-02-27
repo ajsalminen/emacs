@@ -2193,7 +2193,8 @@ If existing, the current prompt will be deleted."
  ((>= emacs-major-version '23)
   (progn
     (require 'zlc)
-    (setq zlc-select-completion-immediately t))))
+    (setq zlc-select-completion-immediately t)
+    (setq delete-by-moving-to-trash t))))
 
 (require 'savekill)
 
