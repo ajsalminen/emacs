@@ -826,8 +826,8 @@
 (set-face-background 'col-highlight "#222")
 
 ;; Display line and column numbers
-(setq line-number-mode nil)
-(setq column-number-mode nil)
+(setq line-number-mode t)
+(setq column-number-mode t)
 
 (iswitchb-mode 1)
 
@@ -2178,6 +2178,9 @@ If existing, the current prompt will be deleted."
 
 
 ;; (add-hook 'before-save-hook 'sudo-before-save-hook)
+
+(add-to-list 'auto-mode-alist '("\\.cron\\(tab\\)?\\'" . crontab-mode))
+(add-to-list 'auto-mode-alist '("cron\\(tab\\)?\\."    . crontab-mode))
 
 
 (server-start)
