@@ -2195,5 +2195,7 @@ If existing, the current prompt will be deleted."
     (require 'zlc)
     (setq zlc-select-completion-immediately t))))
 
+(require 'savekill)
+
 
 (message "********** successfully initialized **********")
