@@ -2197,5 +2197,6 @@ If existing, the current prompt will be deleted."
 
 (require 'savekill)
 
+(setq x-select-enable-clipboard t)
 
 (message "********** successfully initialized **********")
