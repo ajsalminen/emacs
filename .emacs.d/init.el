@@ -769,16 +769,15 @@
 
 (defun vim-mode-toggle-with-input ()
   (interactive)
-  (progn
-    (if vim-mode
-        (progn
-          (activate-input-method (if (boundp 'prev-buffer-input-method)
-                                     prev-buffer-input-method
-                                   current-input-method))
-          (vim-mode 0))
+  (if vim-mode
       (progn
-        (setq prev-buffer-input-method current-input-method)
-        (inactivate-input-method))
+        (activate-input-method (if (boundp 'prev-buffer-input-method)
+                                   prev-buffer-input-method
+                                 current-input-method))
+        (vim-mode 0))
+    (progn
+      (setq prev-buffer-input-method current-input-method)
+      (inactivate-input-method)
       (vim-mode t))))
 
 (global-set-key (kbd "C-c v") 'vim-mode-toggle-with-input)
@@ -792,7 +791,13 @@
 
 (add-hook 'vim:insert-mode-on-hook 'input-mode-toggle-enter)
 
-;; at some point I might want to get it working when toggling on Japanese
+(add-hook 'vim-mode-define-mode-map-hook
+          (lambda ()
+            (vim:omap (kbd "SPC") 'vim:scroll-page-down)
+            (vim:omap (kbd "S-SPC") 'vim:scroll-page-up)))
+
+;; (vim:omap (kbd "SPC") 'vim:scroll-page-down)
+;; (vim:ovim:insert-mode-on-hook
 ;; upon entering vim mode
 
 ;; (defun input-mode-toggle-exit ()
@@ -2163,6 +2168,7 @@ If existing, the current prompt will be deleted."
   (byte-recompile-directory "~/.emacs.d/site-lisp" 0 t)
   (byte-recompile-directory "~/.emacs.d" 0 t)
   (byte-recompile-directory "~/.emacs.d/wanderlust" 0 t)
+  (byte-recompile-directory "~/.emacs.d/vim" 0 t)
   (byte-recompile-directory "~/.emacs.d/ensime_2.8.1-0.4.2/elisp/" 0 t)
   (byte-recompile-directory "~/.emacs.d/twittering" 0 t))
 
@@ -2334,5 +2340,9 @@ If existing, the current prompt will be deleted."
                   (indent-region (region-beginning) (region-end) nil))))))
 
 (defalias 'ir 'indent-region)
+
+(defun save-elisp-to-local ()
+  (interactive)
+  (write-file "~/.emacs.d/site-lisp/"))
 
 (message "********** successfully initialized **********")
