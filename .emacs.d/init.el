@@ -761,7 +761,7 @@
 (descbinds-anything-install)
 (defalias 'rf 'anything-recentf)
 
-(global-set-key (kbd "C-c v") 'vip-mode)
+(global-set-key (kbd "C-c v") 'toggle-viper-mode)
 
 ;; ----- sdicが呼ばれたときの設定
 (autoload 'sdic-describe-word "sdic" "search word" t nil)
