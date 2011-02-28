@@ -796,6 +796,10 @@
             (vim:omap (kbd "SPC") 'vim:scroll-page-down)
             (vim:omap (kbd "S-SPC") 'vim:scroll-page-up)))
 
+(push '(magit-mode . insert) vim:initial-modes)
+(push '(magit-log-edit-mode . insert) vim:initial-modes)
+(push '(w3m-mode . insert) vim:initial-modes)
+
 ;; (vim:omap (kbd "SPC") 'vim:scroll-page-down)
 ;; (vim:ovim:insert-mode-on-hook
 ;; upon entering vim mode
@@ -2344,5 +2348,4 @@ If existing, the current prompt will be deleted."
 (defun save-elisp-to-local ()
   (interactive)
   (write-file "~/.emacs.d/site-lisp/"))
-
 (message "********** successfully initialized **********")
