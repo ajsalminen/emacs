@@ -761,7 +761,25 @@
 (descbinds-anything-install)
 (defalias 'rf 'anything-recentf)
 
-(global-set-key (kbd "C-c v") 'toggle-viper-mode)
+(require 'emaci)
+
+(defvar prev-buffer-input-method nil "save previously set inputmethod")
+(make-variable-buffer-local 'prev-buffer-input-method)
+
+(defun toggle-emaci ()
+  (interactive)
+  (if emaci-mode
+      (progn
+        (activate-input-method (if (boundp 'prev-buffer-input-method)
+                                   prev-buffer-input-method
+                                 current-input-method))
+        (emaci-mode-off))
+    (progn
+      (setq prev-buffer-input-method current-input-method)
+      (inactivate-input-method)
+      (emaci-mode-on))))
+
+(global-set-key (kbd "C-c v") 'toggle-emaci)
 
 ;; ----- sdicが呼ばれたときの設定
 (autoload 'sdic-describe-word "sdic" "search word" t nil)
@@ -2204,15 +2222,14 @@ If existing, the current prompt will be deleted."
 (cond
  ((>= emacs-major-version '23)
   (progn
+    (setq x-select-enable-clipboard t)
+    (set-clipboard-coding-system 'utf-8)
+
     (require 'zlc)
     (setq zlc-select-completion-immediately t)
     (setq delete-by-moving-to-trash t))))
 
 (require 'savekill)
-
-(when window-system
-  (setq x-select-enable-clipboard nil)
-  (set-clipboard-coding-system 'utf-8))
 
 ;; credit to Benjamin Riefenstahl <Benjamin.Riefenstahl@epost.de>
 (defun benny-antiword-file-handler (operation &rest args)
