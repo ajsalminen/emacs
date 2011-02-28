@@ -475,7 +475,7 @@
 (tool-bar-mode -1)
 (scroll-bar-mode -1)
 
-(define-key global-map (kbd "RET") 'newline-and-indent)
+(define-key global-map (kbd "RET") 'reindent-then-newline-and-indent)
 
 ;; offset for dock on left side
 (setq mf-offset-x 47)
@@ -761,25 +761,47 @@
 (descbinds-anything-install)
 (defalias 'rf 'anything-recentf)
 
-(require 'emaci)
-
 (defvar prev-buffer-input-method nil "save previously set inputmethod")
 (make-variable-buffer-local 'prev-buffer-input-method)
 
-(defun toggle-emaci ()
-  (interactive)
-  (if emaci-mode
-      (progn
-        (activate-input-method (if (boundp 'prev-buffer-input-method)
-                                   prev-buffer-input-method
-                                 current-input-method))
-        (emaci-mode-off))
-    (progn
-      (setq prev-buffer-input-method current-input-method)
-      (inactivate-input-method)
-      (emaci-mode-on))))
+(add-to-list 'load-path "~/.emacs.d/vim")
+(require 'vim)
 
-(global-set-key (kbd "C-c v") 'toggle-emaci)
+(defun vim-mode-toggle-with-input ()
+  (interactive)
+  (progn
+    (if vim-mode
+        (progn
+          (activate-input-method (if (boundp 'prev-buffer-input-method)
+                                     prev-buffer-input-method
+                                   current-input-method))
+          (vim-mode 0))
+      (progn
+        (setq prev-buffer-input-method current-input-method)
+        (inactivate-input-method))
+      (vim-mode t))))
+
+(global-set-key (kbd "C-c v") 'vim-mode-toggle-with-input)
+
+(defun input-mode-toggle-enter ()
+  (interactive)
+  (progn
+    (activate-input-method (if (boundp 'prev-buffer-input-method)
+                               prev-buffer-input-method
+                             current-input-method))))
+
+(add-hook 'vim:insert-mode-on-hook 'input-mode-toggle-enter)
+
+;; at some point I might want to get it working when toggling on Japanese
+;; upon entering vim mode
+
+;; (defun input-mode-toggle-exit ()
+;;   (interactive)
+;;   (progn
+;;     (setq prev-buffer-input-method current-input-method)
+;;     (inactivate-input-method)))
+
+;; (remove-hook 'vim:insert-mode-off-hook 'input-mode-toggle-exit)
 
 ;; ----- sdicが呼ばれたときの設定
 (autoload 'sdic-describe-word "sdic" "search word" t nil)
@@ -856,6 +878,29 @@
 (setq column-number-mode t)
 
 (iswitchb-mode 1)
+
+(defvar prev-minibuffer-input-method nil "save previously set inputmethod")
+
+(defun toggle-iswitchb-input ()
+  (interactive)
+  (progn
+    (activate-input-method (if (boundp 'prev-minibuffer-input-method)
+                               prev-minibuffer-input-method
+                             current-input-method))))
+
+;; (add-hook 'iswitchb-minibuffer-setup-hook (lambda () (toggle-iswitchb-input)))
+;; (add-hook 'minibuffer-setup-hook (lambda () (activate-input-method nil)))
+(add-hook 'minibuffer-exit-hook 'toggle-iswitchb-input)
+
+(defun iswitchb-toggle-input-method ()
+  (interactive)
+  (progn
+    (message "coming in******************")
+    (setq prev-minibuffer-input-method current-input-method)
+    (activate-input-method nil)
+    (iswitchb-buffer)))
+
+(global-set-key "\C-xb" 'iswitchb-toggle-input-method)
 
 (require 'filecache)
 
@@ -2273,5 +2318,21 @@ If existing, the current prompt will be deleted."
     (beginning-of-buffer)))
 
 (add-to-list 'auto-mode-alist '("\\.doc\\'" . no-word))
+
+
+(dolist (command '(yank yank-pop))
+  (eval `(defadvice ,command (after indent-region activate)
+           (and (not current-prefix-arg)
+                (member major-mode '(emacs-lisp-mode lisp-mode
+                                                     clojure-mode    scheme-mode
+                                                     haskell-mode    ruby-mode
+                                                     rspec-mode      python-mode
+                                                     c-mode          c++-mode
+                                                     objc-mode       latex-mode
+                                                     plain-tex-mode))
+                (let ((mark-even-if-inactive transient-mark-mode))
+                  (indent-region (region-beginning) (region-end) nil))))))
+
+(defalias 'ir 'indent-region)
 
 (message "********** successfully initialized **********")
