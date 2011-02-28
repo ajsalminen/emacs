@@ -1683,7 +1683,15 @@ post command hook に機能追加"
 (setq smex-auto-update nil)
 (setq smex-prompt-string "M-x :")
 (run-at-time t 360 '(lambda () (if (smex-detect-new-commands) (smex-update))))
-(global-set-key (kbd "M-x") 'smex)
+
+(defun smex-hack ()
+  (interactive)
+  (progn
+    (smex)
+    (keyboard-quit)
+    (smex)))
+
+(global-set-key (kbd "M-x") 'smex-hack)
 (global-set-key (kbd "M-X") 'smex-major-mode-commands)
 ;; This is your old M-x.
 (global-set-key (kbd "C-c C-c M-x") 'execute-extended-command)
@@ -2368,5 +2376,23 @@ If existing, the current prompt will be deleted."
 (defun save-elisp-to-local ()
   (interactive)
   (write-file "~/.emacs.d/site-lisp/"))
+
+(require 'sequential-command-config)
+(sequential-command-setup-keys)
+
+(require 'transpose-frame)
+
+(add-to-list 'auto-mode-alist
+             '("/\\(rfc\\|std\\)[0-9]+\\.txt\\'" . rfcview-mode))
+(autoload 'rfcview-mode "rfcview" nil t)
+
+(autoload 'get-rfc-view-rfc "get-rfc" "Get and view an RFC" t nil)
+(autoload 'get-rfc-view-rfc-at-point "get-rfc" "View the RFC at point" t nil)
+(autoload 'get-rfc-grep-rfc-index "get-rfc" "Grep rfc-index.txt" t nil)
+(setq get-rfc-local-rfc-directory "~/Dropbox/rfc/")
+(setq get-rfc-open-in-new-frame nil)
+
+(require 'google)
+(defalias 'g 'google-code)
 
 (message "********** successfully initialized **********")
