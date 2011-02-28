@@ -436,9 +436,6 @@
 
 (global-set-key "\M-/" 'hippie-expand)
 
-;; get text from pdf instead of viewer
-(add-to-list 'auto-mode-alist '("\\.pdf\\'" . no-pdf))
-
 (defun no-pdf ()
   "Run pdftotext on the entire buffer."
   (interactive)
@@ -449,6 +446,11 @@
      (current-buffer)
      t)
     (set-buffer-modified-p modified)))
+
+;; get text from pdf instead of viewer
+;; not needed on ubuntu
+(if (or (< emacs-major-version 23) (featurep 'carbon-emacs-package))
+    (add-to-list 'auto-mode-alist '("\\.pdf\\'" . no-pdf)))
 
 ;;(set-frame-parameter (selected-frame) 'alpha '(<active> [<inactive>]))
 ;;(set-frame-parameter (selected-frame) 'alpha '(85 50))
@@ -1661,6 +1663,11 @@ post command hook に機能追加"
 (defalias 'qrr 'query-replace-regexp)
 (global-set-key "\C-s" 'isearch-forward-regexp)
 (global-set-key "\C-r" 'isearch-backward-regexp)
+(global-set-key "\C-S" 'isearch-fozrward)
+(global-set-key "\C-R" 'isearch-backward)
+
+(require 'fuzzy)
+(turn-on-fuzzy-isearch)
 
 (defalias 'hb 'hide-body)
 (defalias 'sb 'show-all)
