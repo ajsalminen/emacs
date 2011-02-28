@@ -606,10 +606,12 @@
 
 ;; recentf stuff
 (require 'recentf)
-(recentf-mode 1)
+(setq recentf-keep '(file-remote-p file-readable-p))
+(setq recentf-auto-cleanup 'never)
 (setq recentf-max-saved-items 10000)
 (setq recentf-max-menu-items 10000)
 (require 'recentf-ext)
+(recentf-mode 1)
 ;;(global-set-key "\C-x\ \C-r" 'recentf-open-files)
 
 (transient-mark-mode 1)
@@ -757,6 +759,9 @@
 
 (require 'descbinds-anything)
 (descbinds-anything-install)
+(defalias 'rf 'anything-recentf)
+
+(global-set-key (kbd "C-c v") 'vip-mode)
 
 ;; ----- sdicが呼ばれたときの設定
 (autoload 'sdic-describe-word "sdic" "search word" t nil)
@@ -1663,8 +1668,8 @@ post command hook に機能追加"
 (defalias 'qrr 'query-replace-regexp)
 (global-set-key "\C-s" 'isearch-forward-regexp)
 (global-set-key "\C-r" 'isearch-backward-regexp)
-(global-set-key "\C-S" 'isearch-fozrward)
-(global-set-key "\C-R" 'isearch-backward)
+(global-set-key (kbd "C-S-s") 'isearch-forward)
+(global-set-key (kbd "C-S-r") 'isearch-backward)
 
 (require 'fuzzy)
 (turn-on-fuzzy-isearch)
@@ -2207,7 +2212,7 @@ If existing, the current prompt will be deleted."
 
 (when window-system
   (setq x-select-enable-clipboard nil)
-  (set-clipboard-coding-system 'utf-8-auto))
+  (set-clipboard-coding-system 'utf-8))
 
 ;; credit to Benjamin Riefenstahl <Benjamin.Riefenstahl@epost.de>
 (defun benny-antiword-file-handler (operation &rest args)
