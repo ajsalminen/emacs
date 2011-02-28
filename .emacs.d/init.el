@@ -791,14 +791,16 @@
 
 (add-hook 'vim:insert-mode-on-hook 'input-mode-toggle-enter)
 
-(add-hook 'vim-mode-define-mode-map-hook
-          (lambda ()
-            (vim:omap (kbd "SPC") 'vim:scroll-page-down)
-            (vim:omap (kbd "S-SPC") 'vim:scroll-page-up)))
+(vim:omap (kbd "SPC") 'vim:scroll-page-down)
+(vim:omap (kbd "S-SPC") 'vim:scroll-page-up)
+(vim:nmap (kbd "C-z") 'anything)
+(vim:nmap (kbd "C-S-z") 'vim:activate-emacs-mode)
+(vim:map (kbd "C-S-z") 'vim:activate-normal-mode :keymap vim:emacs-keymap)
 
 (push '(magit-mode . insert) vim:initial-modes)
 (push '(magit-log-edit-mode . insert) vim:initial-modes)
 (push '(w3m-mode . insert) vim:initial-modes)
+(push '(eshell-mode . insert) vim:initial-modes)
 
 ;; (vim:omap (kbd "SPC") 'vim:scroll-page-down)
 ;; (vim:ovim:insert-mode-on-hook
@@ -1678,6 +1680,9 @@ post command hook に機能追加"
 
 (require 'smex)
 (smex-initialize)
+(setq smex-auto-update nil)
+(setq smex-prompt-string "M-x :")
+(run-at-time t 360 '(lambda () (if (smex-detect-new-commands) (smex-update))))
 (global-set-key (kbd "M-x") 'smex)
 (global-set-key (kbd "M-X") 'smex-major-mode-commands)
 ;; This is your old M-x.
@@ -2345,7 +2350,23 @@ If existing, the current prompt will be deleted."
 
 (defalias 'ir 'indent-region)
 
+(defun fixup-spaces ()
+  (interactive)
+  (save-excursion
+    (if(eq mark-active nil)
+        (progn
+          (beginning-of-line)
+          ;; (line-beginning-position)
+          (while (re-search-forward "[ ]+" (line-end-position) t)
+            (replace-match " " nil nil))
+          )
+      (progn
+        (goto-char (region-beginning))
+        (while (re-search-forward "[ ]+" (region-end) t)
+          (replace-match " " nil nil))))))
+
 (defun save-elisp-to-local ()
   (interactive)
   (write-file "~/.emacs.d/site-lisp/"))
+
 (message "********** successfully initialized **********")
