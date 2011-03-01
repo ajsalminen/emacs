@@ -797,6 +797,7 @@
 (push '(magit-log-edit-mode . insert) vim:initial-modes)
 (push '(w3m-mode . insert) vim:initial-modes)
 (push '(eshell-mode . insert) vim:initial-modes)
+(push '(debugger-mode . insert) vim:initial-modes)
 
 ;; (vim:omap (kbd "SPC") 'vim:scroll-page-down)
 ;; (vim:ovim:insert-mode-on-hook
@@ -861,14 +862,19 @@
 
 ;; highlight current line
 (require 'highline)
-(global-hl-line-mode nil)
+(global-hl-line-mode t)
 ;; To customize the background color
 (set-face-background 'hl-line "#222") ;; Emacs 22 Only
 
 (require 'hl-line+)
-(toggle-hl-line-when-idle 1)
+(toggle-hl-line-when-idle nil)
+
+(require 'hl-spotlight)
+(global-hl-spotlight-mode 1)
+(setq hl-spotlight-height 0)
 
 (require 'highlight-current-line)
+(highlight-current-line-on t)
 (setq highlight-current-line-globally t)
 (set-face-background 'highlight-current-line-face "#222")
 (add-hook 'highlight-current-line-hook (lambda () (redisplay t)))
@@ -902,7 +908,6 @@
 (defun iswitchb-toggle-input-method ()
   (interactive)
   (progn
-    (message "coming in******************")
     (setq prev-minibuffer-input-method current-input-method)
     (activate-input-method nil)
     (iswitchb-buffer)))
@@ -1536,6 +1541,10 @@ post command hook に機能追加"
            (setq twittering-tinyurl-service 'jmp)))
 
 (define-key twittering-mode-map (kbd "S-<tab>") 'twittering-goto-previous-thing)
+(define-key twittering-mode-map (kbd "<S-tab>") 'twittering-goto-previous-thing)
+(define-key twittering-mode-map (kbd "<S-iso-lefttab>") 'twittering-goto-previous-thing)
+(define-key twittering-mode-map [(shift tab)] 'twittering-goto-previous-thing)
+(define-key twittering-mode-map (kbd "S-TAB") 'twittering-goto-previous-thing)
 (define-key twittering-mode-map (kbd "S-<return>") 'wwo)
 
 (add-hook 'twittering-edit-mode-hook (lambda () (ispell-minor-mode) (flyspell-mode)))
