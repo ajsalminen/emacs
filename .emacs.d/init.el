@@ -716,8 +716,10 @@
 (push '("*translated*" :height 10 :noselect t) popwin:special-display-config)
 (push '("*Process List*" :height 10) popwin:special-display-config)
 (push '("*Locate*" :height 10 :noselect t) popwin:special-display-config)
+(push '("*Moccur*" :height 20 :position bottom) popwin:special-display-config)
 (push '(" *auto-async-byte-compile*" :height 10) popwin:special-display-config)
 (push '("\*grep\*.*" :regexp t :height 20) popwin:special-display-config)
+(push '("function\-in\-.*" :regexp t) popwin:special-display-config)
 (push '("*magit-diff*") popwin:special-display-config)
 
 
@@ -2407,5 +2409,132 @@ If existing, the current prompt will be deleted."
 (defalias 'g 'google-code)
 
 (require 'elisp-format)
+
+(require 'color-moccur)
+(require 'moccur-edit)
+(setq moccur-split-word t)
+(global-set-key (kbd "C-c o") 'occur-by-moccur)
+
+
+;; adapted from
+;; http://d.hatena.ne.jp/derui/20100223/1266929390
+(require 'viewer)
+(viewer-stay-in-setup)
+(setq viewer-modeline-color-unwritable "tomato"
+      viewer-modeline-color-view "orange")
+(viewer-change-modeline-color-setup)
+
+
+(setq view-read-only t)
+(defvar pager-keybind
+  `( ;; vi-like
+    ("a" . ,(lambda () (interactive)
+              (let ((anything-c-moccur-enable-initial-pattern nil))
+                (anything-c-moccur-occur-by-moccur))))
+    (";" . anything)
+    ("h" . backward-word)
+    ("l" . forward-word)
+    ("j" . next-line)
+    ("k" . previous-line)
+    ("b" . scroll-down)
+    (" " . scroll-up)
+    ;; w3m-like
+    ;; ("m" . gene-word)
+    ("i" . win-delete-current-window-and-squeeze)
+    ("w" . forward-word)
+    ("e" . backward-word)
+    ("(" . point-undo)
+    (")" . point-redo)
+    ("J" . ,(lambda () (interactive) (scroll-up 1)))
+    ("K" . ,(lambda () (interactive) (scroll-down 1)))
+    ;; bm-easy
+    ;; ("." . bm-toggle)
+    ;; ("[" . bm-previous)
+    ;; ("]" . bm-next)
+    ;; langhelp-like
+    ("c" . scroll-other-window-down)
+    ("v" . scroll-other-window)
+    ))
+
+(defun define-many-keys (keymap key-table &optional includes)
+  (let (key cmd)
+    (dolist (key-cmd key-table)
+      (setq key (car key-cmd)
+            cmd (cdr key-cmd))
+      (if (or (not includes) (member key includes))
+          (define-key keymap key cmd))))
+  keymap)
+
+(defadvice find-file
+  (around find-file-switch-to-view-file (file &optional wild) activate)
+  (if (and (not (file-writable-p file))
+           (not (file-directory-p file)))
+      (view-file file)
+    ad-do-it))
+
+(defvar view-mode-original-keybind nil)
+(defun view-mode-set-window-controls (prefix-key)
+  (unless view-mode-original-keybind
+    (dolist (l (cdr view-mode-map))
+      (if (equal ?s (car l))
+          (setq view-mode-original-keybind (list prefix-key (cdr l))))))
+  (define-key view-mode-map prefix-key view-mode-window-control-map))
+
+(defun view-mode-unset-window-controls()
+  (when view-mode-original-keybind
+    (define-key view-mode-map (car view-mode-original-keybind)
+      (cadr view-mode-original-keybind))
+    (setq view-mode-original-keybind nil)))
+
+
+
+;; view-mode時に、手軽にウィンドウ移動、切替を行えるようにする。
+(defvar view-mode-window-control-map nil)
+(unless view-mode-window-control-map
+  (setq view-mode-window-control-map (make-sparse-keymap))
+
+  (define-key view-mode-window-control-map (kbd "l") 'windmove-right)
+  (define-key view-mode-window-control-map (kbd "h") 'windmove-left)
+  (define-key view-mode-window-control-map (kbd "k") 'windmove-down)
+  (define-key view-mode-window-control-map (kbd "j") 'windmove-up)
+
+  (define-key view-mode-window-control-map (kbd "d") 'delete-window)
+  (define-key view-mode-window-control-map (kbd "wh") 'split-window-horizontally)
+  (define-key view-mode-window-control-map (kbd "wv") 'split-window-vertically)
+  (define-key view-mode-window-control-map (kbd "o") 'delete-other-windows)
+  )
+
+(defun view-mode-set-vi-keybindings ()
+  (define-many-keys view-mode-map pager-keybind)
+  (hl-line-mode 1)
+  (view-mode-set-window-controls "s")
+  )
+
+(add-hook 'view-mode-hook 'view-mode-set-vi-keybindings)
+
+
+(setq header-line-format
+      (concat (propertize " " 'display '((space :align-to 0)))
+              "some header text"))
+
+(which-func-mode 1)
+(setq which-func-modes t)
+(delete (assoc 'which-func-mode mode-line-format) mode-line-format)
+(setq header-line-format
+      (list "-"
+            "%b--"
+            ;; Note that this is evaluated while making the list.
+            ;; It makes a mode-line construct which is just a string.
+            ":"
+            '(:eval (current-time-string))
+            "   "
+            '(which-func-mode ("" which-func-format))
+            '(line-number-mode "L%l--")
+            '(column-number-mode "C%c--")
+            ))
+
+(require 'summarye)
+(defalias 'summarize-funcs 'se/make-summary-buffer)
+
 
 (message "********** successfully initialized **********")

@@ -38,7 +38,7 @@
 ;;   fix text-property bug
 ;; rubikitch@ruby-lang.org [2005-06-30T13:08:07.00+9:00]
 ;;   add soccur
-;; Ver 2.4.1
+;; Ver 2.4.1 
 ;; rubikitch@ruby-lang.org [2005-06-29T11:47:11.00+9:00]
 ;;  - use window-width instead of frame-width
 ;;  - add rd-mode, yatex-mode and ruby-*-mode to mode-delimiter-alist
@@ -65,7 +65,7 @@
 ;;    like the following:
 ;;    (define-key help-map "M" 'se/make-summary-buffer)
 ;;    NOTE: You can use summarye from menu (Tools->Make summary) or
-;;    M-x se/make-summary-buffer
+;;    M-x se/make-summary-buffer 
 ;; 3. Invoke it. You will get the summary buffer of current buffer. You
 ;;    will use it easily, I think.
 ;; 4. If you want to specify the item pattern, set the value to buffer-local
@@ -94,7 +94,7 @@
   (require 'which-func)
   (cond ((featurep 'mule)
 	 (defalias 'se/string-display-width 'string-width))
-	(t
+	(t 
 	 (defun se/string-display-width (str) (length str)))))
 
 ;;; requires common lisp package
@@ -253,10 +253,10 @@ matched. The second is the end of the item-delimiter matched. The function
 is invoked in save-excursion and save-restriction, thun you can move point
 anywhere. The third is category(string) or nil.")
 (make-variable-buffer-local 'se/item-name-constructor-function)
-
+ 
 (cond ((and (< 21 emacs-major-version)
 	    (string= current-language-environment "Japanese"))
-       (defvar se/shortcut-menu-list
+       (defvar se/shortcut-menu-list 
 	 (list "summary menu"
 	       (list "summary menu"
 		     '("表示" . se/show-current-item)
@@ -277,7 +277,7 @@ anywhere. The third is category(string) or nil.")
 		     '("サマリーの再生成" . se/remake-summary)
 		     '("項目の定義を見る" . se/show-item-documentation)))))
       (t
-       (defvar se/shortcut-menu-list
+       (defvar se/shortcut-menu-list 
 	 (list "summary menu"
 	       (list "summary menu"
 		     '("Show" . se/show-current-item)
@@ -350,7 +350,7 @@ anywhere. The third is category(string) or nil.")
 
 (cond ((featurep 'mule)
        (defalias 'se/string-display-width 'string-width))
-      (t
+      (t 
        (defun se/string-display-width (str) (length str))))
 
 (defsubst se/string-cut-down-to (string width &optional cut-head)
@@ -467,7 +467,7 @@ and summary buffer. Thus Changing to buffer-local variable is not convenient.")
   (` (aset (, cluster) 0 (, position))))
 (defmacro se/cluster-name (cluster) (` (aref (, cluster) 1)))
 (defmacro se/cluster-beg (cluster) (` (aref (, cluster) 2)))
-(defmacro se/cluster-buffer (cluster)
+(defmacro se/cluster-buffer (cluster) 
   (` (and (, cluster) (marker-buffer (aref (, cluster) 2)))))
 (defmacro se/cluster-end (cluster) (` (aref (, cluster) 3)))
 (defmacro se/set-cluster-end (cluster end) (` (aset (, cluster) 3 (, end))))
@@ -754,9 +754,9 @@ interactively.
 			 (symbolp lineformatter))
 		     (format "%3s" (funcall lineformatter cluster))))))
     (unless (and cachedp str)
-      (setq str (se/untabify-string
+      (setq str (se/untabify-string 
 		 (se/string-cut-down-to (se/cluster-name cluster) name-width)))
-      (setq str (concat str (make-string (- name-width
+      (setq str (concat str (make-string (- name-width 
 					    (se/string-display-width str)) ?\ )))
       (se/set-cluster-display-string cluster str))
     (format line-format
@@ -874,9 +874,9 @@ this case, matched string is discarded.")
   "Show all lines in the current buffer containing a match for regexp.
 Through the generated buffer, you can scroll, hilighten or get some statistics
 data of the original buffer."
-  (interactive
+  (interactive 
    (list (completing-read (if (car-safe se/summary-soccur-history)
-			      (format "Regexp for SOccur (default %s): "
+			      (format "Regexp for SOccur (default %s): " 
 				      (car se/summary-soccur-history))
 			    (format "Regexp for SOccur: "))
 			  nil
@@ -955,7 +955,7 @@ data of the original buffer."
       (set-window-start (get-buffer-window (current-buffer)) p)
     (goto-char p)
     ))
-
+                    
 (defun se/show-cluster (cluster &optional point-continuation backward-p)
   (let ((last-item)
 	(mem se/*memory-structure*)
@@ -1466,7 +1466,7 @@ integer or marker. The type of ATTR is symbol. Its default value is bold."
   t)
 
 (provide 'summarye)
-
+ 
 ;; summarye.el ends here
 ;; Local Variables:
 ;; time-stamp-format: "%u@%h %:y-%02m-%02dT%02H:%02M:%02S"
