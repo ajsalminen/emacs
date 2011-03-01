@@ -449,7 +449,7 @@
 
 ;; get text from pdf instead of viewer
 ;; not needed on ubuntu
-(if (or (< emacs-major-version 23) (featurep 'carbon-emacs-package))
+(when (or (< emacs-major-version 23) (featurep 'carbon-emacs-package))
     (add-to-list 'auto-mode-alist '("\\.pdf\\'" . no-pdf)))
 
 ;;(set-frame-parameter (selected-frame) 'alpha '(<active> [<inactive>]))
@@ -1367,8 +1367,25 @@ post command hook に機能追加"
           (lambda ()
             (define-key objc-mode-map (kbd "C-c w") 'xcdoc:ask-search)))
 
-
 ;; end of iphone-related settings
+
+(require 'smex)
+(smex-initialize)
+(setq smex-auto-update t)
+(run-at-time t 360 '(lambda () (if (smex-detect-new-commands) (smex-update))))
+(global-set-key (kbd "C-'") 'smex)
+
+(defun smex-hack ()
+  (interactive)
+  (progn
+    (smex)
+    (keyboard-quit)
+    (smex)))
+
+(global-set-key (kbd "M-x") 'smex-hack)
+(global-set-key (kbd "M-X") 'smex-major-mode-commands)
+;; This is your old M-x.
+(global-set-key (kbd "C-c C-c M-x") 'execute-extended-command)
 
 ;; Common copying and pasting functions
 (defun copy-word (&optional arg)
@@ -1691,24 +1708,6 @@ post command hook に機能追加"
 
 (define-key weblogger-entry-mode-map "\C-x\C-s" 'publish-post)
 
-(require 'smex)
-(smex-initialize)
-(setq smex-auto-update t)
-(setq smex-prompt-string "M-x :")
-(run-at-time t 360 '(lambda () (if (smex-detect-new-commands) (smex-update))))
-
-(defun smex-hack ()
-  (interactive)
-  (progn
-    (smex)
-    (keyboard-quit)
-    (smex)))
-
-(global-set-key (kbd "M-x") 'smex-hack)
-(global-set-key (kbd "M-X") 'smex-major-mode-commands)
-;; This is your old M-x.
-(global-set-key (kbd "C-c C-c M-x") 'execute-extended-command)
-
 (when (eq window-system 'mac)
   (remove-hook 'minibuffer-setup-hook 'mac-change-language-to-us))
 
@@ -1940,6 +1939,7 @@ post command hook に機能追加"
 
 (require 'eshell)
 (require 'shell-pop)
+(setq eshell-save-history-on-exit t)
 (shell-pop-set-internal-mode "eshell")
 (shell-pop-set-window-height 60)
 
@@ -2032,7 +2032,6 @@ If existing, the current prompt will be deleted."
 
 
 (defalias 'sh 'shell-toggle-cd)
-(global-set-key (kbd "C-'") 'smex)
 (require 'lispxmp)
 
 ;; needed since OSX 's "ls" command is different from unix
@@ -2536,5 +2535,10 @@ If existing, the current prompt will be deleted."
 (require 'summarye)
 (defalias 'summarize-funcs 'se/make-summary-buffer)
 
+(require 'http-twiddle)
+
+
+(defun eshell/ff (file)
+  (find-file-other-window file))
 
 (message "********** successfully initialized **********")
