@@ -135,6 +135,14 @@
 
 (set-face-foreground 'default "white")
 
+(set-face-background 'modeline-inactive "chocolate3")
+(set-face-foreground 'modeline-inactive "White")
+(set-face-background 'modeline "SteelBlue")
+(set-face-foreground 'modeline "Black")
+(set-face-background 'modeline-highlight "White")
+(set-face-background 'modeline-buffer-id "RoyalBlue")
+(set-face-foreground 'modeline-buffer-id "OldLace")
+
 (defun short-file-name ()
   "Display the file path and name in the modeline"
   (interactive "*")
@@ -145,14 +153,6 @@
   (interactive "*")
   (setq-default mode-line-buffer-identification
                 '("%S:" (buffer-file-name "%f"))))
-
-(set-face-background 'modeline-inactive "chocolate3")
-(set-face-foreground 'modeline-inactive "White")
-(set-face-background 'modeline "SteelBlue")
-(set-face-foreground 'modeline "Black")
-(set-face-background 'modeline-highlight "White")
-(set-face-background 'modeline-buffer-id "RoyalBlue")
-(set-face-foreground 'modeline-buffer-id "OldLace")
 
 (defface egoge-display-time
   '((((type x w32 mac))
@@ -701,19 +701,24 @@
 (require 'gist)
 (setq gist-use-curl t)
 
+;; (setq popwin:special-display-config nil)
+
 (require 'popwin)
 (setq display-buffer-function 'popwin:display-buffer)
+(setq popwin:popup-window-height 0.5)
 (setq special-display-function
       'popwin:special-display-popup-window)
 (push '(dired-mode :position top) popwin:special-display-config)
 (push '("*Compile-Log*" :height 10) popwin:special-display-config)
 (push '("*Warnings*" :height 10 :noselect t) popwin:special-display-config)
+(push '("*Help*" :height 10 :noselect nil) popwin:special-display-config)
 (push '(ess-help-mode :height 20) popwin:special-display-config)
 (push '("*translated*" :height 10 :noselect t) popwin:special-display-config)
 (push '("*Process List*" :height 10) popwin:special-display-config)
 (push '("*Locate*" :height 10 :noselect t) popwin:special-display-config)
 (push '(" *auto-async-byte-compile*" :height 10) popwin:special-display-config)
 (push '("\*grep\*.*" :regexp t :height 20) popwin:special-display-config)
+(push '("*magit-diff*") popwin:special-display-config)
 
 
 (defun popwin:define-advice (func buffer)
@@ -724,8 +729,12 @@
 
 (popwin:define-advice 'vc-diff "*vc-diff*")
 (popwin:define-advice 'magit-diff-working-tree "*magit-diff*")
+(popwin:define-advice 'describe-key "*Help*")
+(popwin:define-advice 'describe-function "*Help*")
+(popwin:define-advice 'describe-mode "*Help*")
 ;; (popwin:define-advice 'auto-async-byte-compile "*auto-async-byte-compile*")
 ;; (popwin:define-advice 'text-translator-all "*translated*")
+
 
 (require 'anything-config)
 ;; (require 'anything-startup)
@@ -867,7 +876,7 @@
 (set-face-background 'hl-line "#222") ;; Emacs 22 Only
 
 (require 'hl-line+)
-(toggle-hl-line-when-idle nil)
+(toggle-hl-line-when-idle t)
 
 (require 'hl-spotlight)
 (global-hl-spotlight-mode 1)
