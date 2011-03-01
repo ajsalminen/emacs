@@ -512,8 +512,7 @@
   (set-fontset-font
    "fontset-hirakaku12"
    'katakana-jisx0201
-   "-apple-hiragino_kaku_gothic_pro-medium-normal-normal-*-14-*-iso10646-1")
-  )
+   "-apple-hiragino_kaku_gothic_pro-medium-normal-normal-*-14-*-iso10646-1"))
 
 ;; Ubuntu related settings
 (when (and (= emacs-major-version 23) (eq window-system 'x))
@@ -596,10 +595,7 @@
                 (".*Droid_Sans_Mono-medium.*" . 1.0)
                 (".*Droid_Sans_Fallback.*" . 1.2)
                 (".*Droid_Sans_Fallback-medium.*" . 1.2)))
-
-        )
-    )
-  )
+)))
 
 (if (eq window-system 'x)
     (add-hook 'after-init-hook (lambda () (set-ubuntu-fonts))))
@@ -1167,8 +1163,7 @@ directory, select directory. Lastly the file is opened."
         ("\\.hpp$" (".cpp" ".c"))))
 (add-hook 'objc-mode-hook
           (lambda ()
-            (define-key c-mode-base-map (kbd "C-c o") 'ff-find-other-file)
-            ))
+            (define-key c-mode-base-map (kbd "C-c o") 'ff-find-other-file)))
 
 ;; load-path を通す
 (let ((default-directory (expand-file-name "~/.emacs.d/site-lisp/")))
@@ -1195,8 +1190,7 @@ directory, select directory. Lastly the file is opened."
             ;; XCode を利用した補完を有効にする
             (push 'ac-source-company-xcode ac-sources)
             ;; C++ のキーワード補完をする Objective-C++ を利用する人だけ設定してください
-            (push 'ac-source-c++-keywords ac-sources)
-            ))
+            (push 'ac-source-c++-keywords ac-sources)))
 ;; 補完ウィンドウ内でのキー定義
 (define-key ac-completing-map (kbd "C-n") 'ac-next)
 (define-key ac-completing-map (kbd "C-p") 'ac-previous)
@@ -1673,14 +1667,13 @@ post command hook に機能追加"
 (defun publish-post ()
   (interactive)
   (textile-to-html-buffer-respect-weblogger)
-  (weblogger-publish-entry)
-  )
+  (weblogger-publish-entry))
 
 (define-key weblogger-entry-mode-map "\C-x\C-s" 'publish-post)
 
 (require 'smex)
 (smex-initialize)
-(setq smex-auto-update nil)
+(setq smex-auto-update t)
 (setq smex-prompt-string "M-x :")
 (run-at-time t 360 '(lambda () (if (smex-detect-new-commands) (smex-update))))
 
@@ -2361,13 +2354,13 @@ If existing, the current prompt will be deleted."
 (defun fixup-spaces ()
   (interactive)
   (save-excursion
-    (if(eq mark-active nil)
+    (if(eq mark-active
+           nil)
         (progn
           (beginning-of-line)
           ;; (line-beginning-position)
           (while (re-search-forward "[ ]+" (line-end-position) t)
-            (replace-match " " nil nil))
-          )
+            (replace-match " " nil nil)))
       (progn
         (goto-char (region-beginning))
         (while (re-search-forward "[ ]+" (region-end) t)
@@ -2394,5 +2387,7 @@ If existing, the current prompt will be deleted."
 
 (require 'google)
 (defalias 'g 'google-code)
+
+(require 'elisp-format)
 
 (message "********** successfully initialized **********")
