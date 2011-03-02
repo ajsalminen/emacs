@@ -262,6 +262,8 @@
 ;;(add-to-list 'pabbrev-global-mode-excluded-modes 'org-mode)
 ;;(add-hook 'text-mode-hook 'pabbrev-mode)
 
+(setq flyspell-issue-welcome-flag nil)
+
 (add-to-list 'load-path "~/.emacs.d/reftex-4.34a/lisp/")
 (require 'reftex)
 (setq reftex-toc-split-windows-horizontally t)
