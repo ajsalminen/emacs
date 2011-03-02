@@ -2188,8 +2188,62 @@ If existing, the current prompt will be deleted."
 
 (load "~/.emacs.d/nxhtml/autostart.el")
 
+;; numbering rects usage:
+;; http://d.hatena.ne.jp/rubikitch/20110221/seq
+(eval-when-compile (require 'cl))
+(defun number-rectangle (start end format-string from)
+  "Delete (don't save) text in the region-rectangle, then number it."
+  (interactive
+   (list (region-beginning) (region-end)
+         (read-string "Number rectangle: " (if (looking-back "^ *") "%d. " "%d"))
+         (read-number "From: " 1)))
+  (save-excursion
+    (goto-char start)
+    (setq start (point-marker))
+    (goto-char end)
+    (setq end (point-marker))
+    (delete-rectangle start end)
+    (goto-char start)
+    (loop with column = (current-column)
+          while (<= (point) end)
+          for i from from   do
+          (insert (format format-string i))
+          (forward-line 1)
+          (move-to-column column)))
+  (goto-char start))
+
+(defun count-string-matches (regexp string)
+  (with-temp-buffer
+    (insert string)
+    (count-matches regexp (point-min) (point-max))))
+(defun seq (format-string from to)
+  "Insert sequences with FORMAT-STRING.
+FORMAT-STRING is like `format', but it can have multiple %-sequences."
+  (interactive
+   (list (read-string "Input sequence Format: ")
+         (read-number "From: " 1)
+         (read-number "To: ")))
+  (save-excursion
+    (loop for i from from to to do
+          (insert (apply 'format format-string
+                         (make-list (count-string-matches "%[^%]" format-string) i))
+                  "\n")))
+  (end-of-line))
+
+(defun duplicate-this-line-forward (n)
+  "Duplicates the line point is on.  The point is next line.
+ With prefix arg, duplicate current line this many times."
+  (interactive "p")
+  (when (eq (point-at-eol)(point-max))
+    (save-excursion (end-of-line) (insert "\n")))
+  (save-excursion
+    (beginning-of-line)
+    (dotimes (i n)
+      (insert-buffer-substring (current-buffer) (point-at-bol)(1+ (point-at-eol))))))
+
+
 (require 'gse-number-rect)
-(global-set-key "\C-hj" 'gse-number-rectangle)
+(global-set-key "\C-hj" 'number-rectangle)
 
 (defun byte-compile-all-my-files ()
   "byte compile everything"
