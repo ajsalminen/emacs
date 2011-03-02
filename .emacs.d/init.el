@@ -2541,4 +2541,10 @@ If existing, the current prompt will be deleted."
 (defun eshell/ff (file)
   (find-file-other-window file))
 
+(autoload 'markdown-mode "markdown-mode.el"
+  "Major mode for editing Markdown files" t)
+(setq auto-mode-alist
+      (cons '("\\.md" . markdown-mode) auto-mode-alist))
+
+
 (message "********** successfully initialized **********")
