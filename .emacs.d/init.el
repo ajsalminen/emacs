@@ -3,6 +3,11 @@
 (setq eval-expression-debug-on-error t)
 (setq lang "en_US")
 
+;; workaround for cocoa emacs byte-compiling
+(when (eq window-system 'ns)
+  (setq warning-suppress-types nil)
+  (setq ispell-program-name "/usr/local/bin/aspell"))
+
 (add-to-list 'load-path "~/.emacs.d/site-lisp")
 (defun kill-ci-buffer ()
   (interactive)
@@ -26,6 +31,15 @@
      (expand-file-name "~/.emacs.d/elpa/package.el"))
   (package-initialize))
 
+(add-to-list 'load-path "~/.emacs.d/el-get/el-get")
+(require 'el-get)
+;; (setq el-get-init-files-pattern "~/emacs/init.d/[0-9]*.el")
+;; (setq el-get-sources nil)
+(setq el-get-sources
+      '((:name tail
+               :after (lambda ()
+                        (autoload 'tail-file "tail.el" nil t)))))
+(el-get)
 
 ;; All my custom settings that differ and/or can't be under version control
 (setq custom-file "~/custom.el")
@@ -106,6 +120,14 @@
 ;; needs paths to be set explicitly
 (add-to-list 'exec-path (getenv "PATH"))
 (push "/usr/local/bin/scala/bin/" exec-path)
+;; Setup PATH
+
+(when (and (= emacs-major-version 23) (eq window-system 'ns))
+  (setenv "PATH" (shell-command-to-string "source ~/.bashrc; echo -n $PATH"))
+  ;; Update exec-path with the contents of $PATH
+  (loop for path in (split-string (getenv "PATH") ":") do
+        (add-to-list 'exec-path path)))
+
 
 (defun ib ()
   "indent whole buffer"
@@ -452,7 +474,7 @@
 ;; get text from pdf instead of viewer
 ;; not needed on ubuntu
 (when (or (< emacs-major-version 23) (featurep 'carbon-emacs-package))
-    (add-to-list 'auto-mode-alist '("\\.pdf\\'" . no-pdf)))
+  (add-to-list 'auto-mode-alist '("\\.pdf\\'" . no-pdf)))
 
 ;;(set-frame-parameter (selected-frame) 'alpha '(<active> [<inactive>]))
 ;;(set-frame-parameter (selected-frame) 'alpha '(85 50))
@@ -489,7 +511,7 @@
 (setq mac-allow-anti-aliasing t)
 
 ;;Font settings for CJK fonts on Cocoa Emacs
-(when (and (= emacs-major-version 23) (eq window-system 'mac))
+(when (and (= emacs-major-version 23) (or (eq window-system 'mac) (eq window-system 'ns)))
   (create-fontset-from-ascii-font
    "-apple-monaco-medium-normal-normal-*-12-*" nil "hirakaku12")
 
@@ -514,7 +536,26 @@
   (set-fontset-font
    "fontset-hirakaku12"
    'katakana-jisx0201
-   "-apple-hiragino_kaku_gothic_pro-medium-normal-normal-*-14-*-iso10646-1"))
+   "-apple-hiragino_kaku_gothic_pro-medium-normal-normal-*-14-*-iso10646-1")
+
+  (setq default-input-method "MacOSX")
+  (if (fboundp 'ns-toggle-fullscreen)
+      (global-set-key "\M-\r" 'ns-toggle-fullscreen)))
+
+(when (and (< emacs-major-version 23)  (eq window-system 'mac))
+  (set-face-attribute 'default nil
+                      :family "monaco"
+                      :height 130)
+
+  (set-fontset-font "fontset-default"
+                    'katakana-jisx0201
+                    '("ヒラギノ丸ゴ pro w4*" . "jisx0201.*"))
+
+  (set-fontset-font "fontset-default"
+                    'japanese-jisx0208
+                    '("ヒラギノ丸ゴ pro w4*" . "jisx0208.*")))
+
+(blink-cursor-mode t)
 
 ;; Ubuntu related settings
 (when (and (= emacs-major-version 23) (eq window-system 'x))
@@ -597,7 +638,7 @@
                 (".*Droid_Sans_Mono-medium.*" . 1.0)
                 (".*Droid_Sans_Fallback.*" . 1.2)
                 (".*Droid_Sans_Fallback-medium.*" . 1.2)))
-)))
+        )))
 
 (if (eq window-system 'x)
     (add-hook 'after-init-hook (lambda () (set-ubuntu-fonts))))
@@ -1432,8 +1473,8 @@ post command hook に機能追加"
 
 
 (global-set-key (kbd "C-c r") (quote copy-string))
-(global-set-key (kbd "C-c s") 'ispell)
-(global-set-key (kbd "M-s") 'ispell-word)
+(global-set-key (kbd "C-c s") 'ispell-word)
+(global-set-key (kbd "M-s") 'ispell)
 
 (require 'basic-edit-toolkit)
 
@@ -1556,6 +1597,9 @@ post command hook に機能追加"
 (require 'alpaca)
 (add-to-list 'load-path "~/.emacs.d/twittering")
 (require 'twittering-mode)
+(autoload 'twittering-numbering "twittering-numbering" nil t)
+(add-hook 'twittering-mode-hook 'twittering-numbering)
+
 (setq twittering-use-master-password t)
 (setq twittering-url-show-status nil)
 (setq twittering-number-of-tweets-on-retrieval 200)
@@ -1867,17 +1911,6 @@ post command hook に機能追加"
 
 (require 'grep-edit)
 
-(set-face-attribute 'default nil
-                    :family "monaco"
-                    :height 130)
-
-(set-fontset-font "fontset-default"
-                  'katakana-jisx0201
-                  '("ヒラギノ丸ゴ pro w4*" . "jisx0201.*"))
-
-(set-fontset-font "fontset-default"
-                  'japanese-jisx0208
-                  '("ヒラギノ丸ゴ pro w4*" . "jisx0208.*"))
 
 
 (add-to-list 'load-path "~/.emacs.d/elib-1.0")
@@ -2327,21 +2360,21 @@ FORMAT-STRING is like `format', but it can have multiple %-sequences."
 ;;     (unless(file-writable-p sudo:file)
 ;;       (set (make-local-variable 'sudo:old-owner-uid) (nth 2 (file-attributes sudo:file)))
 ;;       (when (numberp sudo:old-owner-uid)
-;; 	(unless (= (user-uid) sudo:old-owner-uid)
-;; 	  (when (y-or-n-p
-;; 		 (format "File %s is owned by %s, save it with sudo? "
-;; 			 (file-name-nondirectory sudo:file)
-;; 			 (user-login-name sudo:old-owner-uid)))
-;; 	    (sudo-chown-file (int-to-string (user-uid)) (sudo-quoting sudo:file))
-;; 	    (add-hook 'after-save-hook
-;; 		      (lambda ()
-;; 			(sudo-chown-file (int-to-string sudo:old-owner-uid)
-;; 					 (sudo-quoting sudo:file))
-;; 			(if sudo-clear-password-always
-;; 			    (sudo-kill-password-timeout)))
-;; 		      nil ;; not append
-;; 		      t   ;; buffer local hook
-;; 		      )))))))
+;;      (unless (= (user-uid) sudo:old-owner-uid)
+;;        (when (y-or-n-p
+;;               (format "File %s is owned by %s, save it with sudo? "
+;;                       (file-name-nondirectory sudo:file)
+;;                       (user-login-name sudo:old-owner-uid)))
+;;          (sudo-chown-file (int-to-string (user-uid)) (sudo-quoting sudo:file))
+;;          (add-hook 'after-save-hook
+;;                    (lambda ()
+;;                      (sudo-chown-file (int-to-string sudo:old-owner-uid)
+;;                                       (sudo-quoting sudo:file))
+;;                      (if sudo-clear-password-always
+;;                          (sudo-kill-password-timeout)))
+;;                    nil ;; not append
+;;                    t   ;; buffer local hook
+;;                    )))))))
 
 
 ;; (add-hook 'before-save-hook 'sudo-before-save-hook)
@@ -2372,34 +2405,34 @@ FORMAT-STRING is like `format', but it can have multiple %-sequences."
   ;; First check for the specific operations
   ;; that we have special handling for.
   (cond ((eq operation 'insert-file-contents)
-	 (apply 'benny-antiword-insert-file args))
-	((eq operation 'file-writable-p)
-	 nil)
-	((eq operation 'write-region)
-	 (error "Word documents can't be written"))
-	;; Handle any operation we don't know about.
-	(t (let ((inhibit-file-name-handlers
-		  (cons 'benny-antiword-file-handler
-			(and (eq inhibit-file-name-operation operation)
-			     inhibit-file-name-handlers)))
-		 (inhibit-file-name-operation operation))
-	     (apply operation args)))))
+         (apply 'benny-antiword-insert-file args))
+        ((eq operation 'file-writable-p)
+         nil)
+        ((eq operation 'write-region)
+         (error "Word documents can't be written"))
+        ;; Handle any operation we don't know about.
+        (t (let ((inhibit-file-name-handlers
+                  (cons 'benny-antiword-file-handler
+                        (and (eq inhibit-file-name-operation operation)
+                             inhibit-file-name-handlers)))
+                 (inhibit-file-name-operation operation))
+             (apply operation args)))))
 
 (defun benny-antiword-insert-file (filename &optional visit beg end replace)
   (set-buffer-modified-p nil)
   (setq buffer-file-name (file-truename filename))
   (setq buffer-read-only t)
   (let ((start (point))
-	(inhibit-read-only t))
+        (inhibit-read-only t))
     (if replace (delete-region (point-min) (point-max)))
     (save-excursion
       (let ((coding-system-for-read 'utf-8)
-	    (filename (encode-coding-string
-		       buffer-file-name
-		       (or file-name-coding-system
-			   default-file-name-coding-system))))
-	(call-process "antiword" nil t nil "-m" "UTF-8.txt"
-		      filename))
+            (filename (encode-coding-string
+                       buffer-file-name
+                       (or file-name-coding-system
+                           default-file-name-coding-system))))
+        (call-process "antiword" nil t nil "-m" "UTF-8.txt"
+                      filename))
       (list buffer-file-name (- (point) start)))))
 
 (defun no-word ()
@@ -2613,5 +2646,8 @@ FORMAT-STRING is like `format', but it can have multiple %-sequences."
     (message "Canceled exit")))
 
 (global-set-key (kbd "C-x C-c") 'ask-before-closing)
+
+(require 'info)
+(add-to-list 'Info-additional-directory-list "~/devdocs")
 
 (message "********** successfully initialized **********")
