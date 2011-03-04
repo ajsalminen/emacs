@@ -1,1 +1,1 @@
-(:el-get "installed" :wanderlust "removed" :wanderlust-github "removed" :tail "installed" :apel "installed" :flim "installed" :semi "installed")
+(:apel "installed" :flim "installed" :semi "installed" :wanderlust "installed")

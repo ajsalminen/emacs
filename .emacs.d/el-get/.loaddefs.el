@@ -4,9 +4,9 @@
 
 
 ;;;### (autoloads (vassoc set-modified-alist modify-alist remove-alist
-;;;;;;  set-alist del-alist put-alist) "alist" "apel/site-lisp/apel/alist.el"
-;;;;;;  (19824 52889))
-;;; Generated autoloads from apel/site-lisp/apel/alist.el
+;;;;;;  set-alist del-alist put-alist) "alist" "../../../../../.emacs.d/el-get/apel/site-lisp/apel/alist.el"
+;;;;;;  (19825 729))
+;;; Generated autoloads from ../../../../../.emacs.d/el-get/apel/site-lisp/apel/alist.el
 
 (autoload 'put-alist "alist" "\
 Set cdr of an element (KEY . ...) in ALIST to VALUE and return ALIST.
@@ -52,12 +52,49 @@ See also `assoc'.
 
 ;;;***
 
+;;;### (autoloads (bbdb-wl-setup) "bbdb-wl" "../../../../../.emacs.d/el-get/wanderlust/utils/bbdb-wl.el"
+;;;;;;  (19825 1230))
+;;; Generated autoloads from ../../../../../.emacs.d/el-get/wanderlust/utils/bbdb-wl.el
+
+(autoload 'bbdb-wl-setup "bbdb-wl" "\
+Not documented
+
+\(fn)" nil nil)
+
+;;;***
+
+;;;### (autoloads (elmo-make-folder) "elmo" "../../../../../.emacs.d/el-get/wanderlust/site-lisp/wl/elmo.el"
+;;;;;;  (19825 1230))
+;;; Generated autoloads from ../../../../../.emacs.d/el-get/wanderlust/site-lisp/wl/elmo.el
+
+(autoload 'elmo-make-folder "elmo" "\
+Make an ELMO folder structure specified by NAME.
+If optional argument NON-PERSISTENT is non-nil, the folder msgdb is not saved.
+If optional argument MIME-CHARSET is specified, it is used for
+encode and decode a multibyte string.
+
+\(fn NAME &optional NON-PERSISTENT MIME-CHARSET)" nil nil)
+
+;;;***
+
+;;;### (autoloads (elmo-split) "elmo-split" "../../../../../.emacs.d/el-get/wanderlust/site-lisp/wl/elmo-split.el"
+;;;;;;  (19825 1230))
+;;; Generated autoloads from ../../../../../.emacs.d/el-get/wanderlust/site-lisp/wl/elmo-split.el
+
+(autoload 'elmo-split "elmo-split" "\
+Split messages in the `elmo-split-folder' according to `elmo-split-rule'.
+If prefix argument ARG is specified, do a reharsal (no harm).
+
+\(fn &optional ARG)" t nil)
+
+;;;***
+
 ;;;### (autoloads (mime-decode-header-in-buffer mime-decode-header-in-region
 ;;;;;;  mime-decode-field-body mime-update-field-decoder-cache mime-find-field-decoder
 ;;;;;;  mime-find-field-presentation-method mime-set-field-decoder)
-;;;;;;  "eword-decode" "flim/site-lisp/flim/eword-decode.el" (19824
-;;;;;;  53462))
-;;; Generated autoloads from flim/site-lisp/flim/eword-decode.el
+;;;;;;  "eword-decode" "../../../../../.emacs.d/el-get/flim/site-lisp/flim/eword-decode.el"
+;;;;;;  (19825 1024))
+;;; Generated autoloads from ../../../../../.emacs.d/el-get/flim/site-lisp/flim/eword-decode.el
 
 (autoload 'mime-set-field-decoder "eword-decode" "\
 Set decoder of FIELD.
@@ -122,9 +159,9 @@ If SEPARATOR is not nil, it is used as header separator.
 ;;;***
 
 ;;;### (autoloads (mime-encode-header-in-buffer mime-encode-field-body)
-;;;;;;  "eword-encode" "flim/site-lisp/flim/eword-encode.el" (19824
-;;;;;;  53462))
-;;; Generated autoloads from flim/site-lisp/flim/eword-encode.el
+;;;;;;  "eword-encode" "../../../../../.emacs.d/el-get/flim/site-lisp/flim/eword-encode.el"
+;;;;;;  (19825 1024))
+;;; Generated autoloads from ../../../../../.emacs.d/el-get/flim/site-lisp/flim/eword-encode.el
 
 (autoload 'mime-encode-field-body "eword-encode" "\
 Encode FIELD-BODY as FIELD-NAME, and return the result.
@@ -141,10 +178,22 @@ It refers the `mime-field-encoding-method-alist' variable.
 
 ;;;***
 
+;;;### (autoloads (wl-draft-send-with-imput-async) "im-wl" "../../../../../.emacs.d/el-get/wanderlust/site-lisp/wl/im-wl.el"
+;;;;;;  (19825 1230))
+;;; Generated autoloads from ../../../../../.emacs.d/el-get/wanderlust/site-lisp/wl/im-wl.el
+
+(autoload 'wl-draft-send-with-imput-async "im-wl" "\
+Send the message in the current buffer with imput asynchronously.
+
+\(fn EDITING-BUFFER KILL-WHEN-DONE)" nil nil)
+
+;;;***
+
 ;;;### (autoloads (mime-write-decoded-region mime-insert-encoded-file
 ;;;;;;  mime-decode-string mime-decode-region mime-encode-region)
-;;;;;;  "mel" "flim/site-lisp/flim/mel.el" (19824 53462))
-;;; Generated autoloads from flim/site-lisp/flim/mel.el
+;;;;;;  "mel" "../../../../../.emacs.d/el-get/flim/site-lisp/flim/mel.el"
+;;;;;;  (19825 1024))
+;;; Generated autoloads from ../../../../../.emacs.d/el-get/flim/site-lisp/flim/mel.el
 
 (autoload 'mime-encode-region "mel" "\
 Encode region START to END of current buffer using ENCODING.
@@ -180,9 +229,9 @@ START and END are buffer positions.
 ;;;***
 
 ;;;### (autoloads (mime-format-mailcap-command mime-parse-mailcap-file
-;;;;;;  mime-parse-mailcap-buffer) "mime-conf" "flim/site-lisp/flim/mime-conf.el"
-;;;;;;  (19824 53462))
-;;; Generated autoloads from flim/site-lisp/flim/mime-conf.el
+;;;;;;  mime-parse-mailcap-buffer) "mime-conf" "../../../../../.emacs.d/el-get/flim/site-lisp/flim/mime-conf.el"
+;;;;;;  (19825 1024))
+;;; Generated autoloads from ../../../../../.emacs.d/el-get/flim/site-lisp/flim/mime-conf.el
 
 (autoload 'mime-parse-mailcap-buffer "mime-conf" "\
 Parse BUFFER as a mailcap, and return the result.
@@ -222,9 +271,9 @@ may be:
 ;;;***
 
 ;;;### (autoloads (mime-edit-again mime-edit-decode-message-in-buffer
-;;;;;;  turn-on-mime-edit mime-edit-mode) "mime-edit" "semi/mime-edit.el"
-;;;;;;  (19824 53619))
-;;; Generated autoloads from semi/mime-edit.el
+;;;;;;  turn-on-mime-edit mime-edit-mode) "mime-edit" "../../../../../.emacs.d/el-get/semi/mime-edit.el"
+;;;;;;  (19825 1124))
+;;; Generated autoloads from ../../../../../.emacs.d/el-get/semi/mime-edit.el
 
 (autoload 'mime-edit-mode "mime-edit" "\
 MIME minor mode for editing the tagged MIME message.
@@ -388,8 +437,9 @@ converted to MIME-Edit tags.
 ;;;;;;  mime-read-Content-Transfer-Encoding mime-parse-Content-Transfer-Encoding
 ;;;;;;  mime-read-Content-Disposition mime-parse-Content-Disposition
 ;;;;;;  mime-read-Content-Type mime-parse-Content-Type) "mime-parse"
-;;;;;;  "flim/site-lisp/flim/mime-parse.el" (19824 53463))
-;;; Generated autoloads from flim/site-lisp/flim/mime-parse.el
+;;;;;;  "../../../../../.emacs.d/el-get/flim/site-lisp/flim/mime-parse.el"
+;;;;;;  (19825 1024))
+;;; Generated autoloads from ../../../../../.emacs.d/el-get/flim/site-lisp/flim/mime-parse.el
 
 (autoload 'mime-parse-Content-Type "mime-parse" "\
 Parse FIELD-BODY as a Content-Type field.
@@ -455,8 +505,9 @@ If buffer is omitted, it parses current-buffer.
 ;;;***
 
 ;;;### (autoloads (mime-play-entity mime-preview-play-current-entity)
-;;;;;;  "mime-play" "semi/mime-play.el" (19824 53619))
-;;; Generated autoloads from semi/mime-play.el
+;;;;;;  "mime-play" "../../../../../.emacs.d/el-get/semi/mime-play.el"
+;;;;;;  (19825 1124))
+;;; Generated autoloads from ../../../../../.emacs.d/el-get/semi/mime-play.el
 
 (autoload 'mime-preview-play-current-entity "mime-play" "\
 Play current entity.
@@ -479,8 +530,9 @@ specified, play as it.  Default MODE is \"play\".
 ;;;***
 
 ;;;### (autoloads (mime-view-buffer mime-display-message) "mime-view"
-;;;;;;  "semi/mime-view.el" (19824 53619))
-;;; Generated autoloads from semi/mime-view.el
+;;;;;;  "../../../../../.emacs.d/el-get/semi/mime-view.el" (19825
+;;;;;;  1124))
+;;; Generated autoloads from ../../../../../.emacs.d/el-get/semi/mime-view.el
 
 (autoload 'mime-display-message "mime-view" "\
 View MESSAGE in MIME-View mode.
@@ -521,9 +573,9 @@ message.  It must be nil, `binary' or `cooked'.  If it is nil,
 ;;;***
 
 ;;;### (autoloads (module-installed-p exec-installed-p file-installed-p
-;;;;;;  get-latest-path add-latest-path add-path) "path-util" "apel/site-lisp/apel/path-util.el"
-;;;;;;  (19824 52889))
-;;; Generated autoloads from apel/site-lisp/apel/path-util.el
+;;;;;;  get-latest-path add-latest-path add-path) "path-util" "../../../../../.emacs.d/el-get/apel/site-lisp/apel/path-util.el"
+;;;;;;  (19825 729))
+;;; Generated autoloads from ../../../../../.emacs.d/el-get/apel/site-lisp/apel/path-util.el
 
 (autoload 'add-path "path-util" "\
 Add PATH to `load-path' if it exists under `default-load-path'
@@ -586,8 +638,8 @@ If PATHS is omitted, `load-path' is used.
 
 ;;;### (autoloads (pgg-snarf-keys-region pgg-insert-key pgg-verify-region
 ;;;;;;  pgg-sign-region pgg-decrypt-region pgg-encrypt-region) "pgg"
-;;;;;;  "semi/pgg.el" (19824 53619))
-;;; Generated autoloads from semi/pgg.el
+;;;;;;  "../../../../../.emacs.d/el-get/semi/pgg.el" (19825 1124))
+;;; Generated autoloads from ../../../../../.emacs.d/el-get/semi/pgg.el
 
 (autoload 'pgg-encrypt-region "pgg" "\
 Encrypt the current region between START and END for RCPTS.
@@ -628,9 +680,9 @@ Import public keys in the current region between START and END.
 
 ;;;***
 
-;;;### (autoloads (pgg-make-scheme-gpg) "pgg-gpg" "semi/pgg-gpg.el"
-;;;;;;  (19824 53619))
-;;; Generated autoloads from semi/pgg-gpg.el
+;;;### (autoloads (pgg-make-scheme-gpg) "pgg-gpg" "../../../../../.emacs.d/el-get/semi/pgg-gpg.el"
+;;;;;;  (19825 1124))
+;;; Generated autoloads from ../../../../../.emacs.d/el-get/semi/pgg-gpg.el
 
 (autoload 'pgg-make-scheme-gpg "pgg-gpg" "\
 Not documented
@@ -639,9 +691,9 @@ Not documented
 
 ;;;***
 
-;;;### (autoloads (pgg-make-scheme-pgp) "pgg-pgp" "semi/pgg-pgp.el"
-;;;;;;  (19824 53619))
-;;; Generated autoloads from semi/pgg-pgp.el
+;;;### (autoloads (pgg-make-scheme-pgp) "pgg-pgp" "../../../../../.emacs.d/el-get/semi/pgg-pgp.el"
+;;;;;;  (19825 1124))
+;;; Generated autoloads from ../../../../../.emacs.d/el-get/semi/pgg-pgp.el
 
 (autoload 'pgg-make-scheme-pgp "pgg-pgp" "\
 Not documented
@@ -650,9 +702,9 @@ Not documented
 
 ;;;***
 
-;;;### (autoloads (pgg-make-scheme-pgp5) "pgg-pgp5" "semi/pgg-pgp5.el"
-;;;;;;  (19824 53619))
-;;; Generated autoloads from semi/pgg-pgp5.el
+;;;### (autoloads (pgg-make-scheme-pgp5) "pgg-pgp5" "../../../../../.emacs.d/el-get/semi/pgg-pgp5.el"
+;;;;;;  (19825 1124))
+;;; Generated autoloads from ../../../../../.emacs.d/el-get/semi/pgg-pgp5.el
 
 (autoload 'pgg-make-scheme-pgp5 "pgg-pgp5" "\
 Not documented
@@ -662,8 +714,9 @@ Not documented
 ;;;***
 
 ;;;### (autoloads (mime-display-application/x-postpet postpet-decode)
-;;;;;;  "postpet" "semi/postpet.el" (19824 53619))
-;;; Generated autoloads from semi/postpet.el
+;;;;;;  "postpet" "../../../../../.emacs.d/el-get/semi/postpet.el"
+;;;;;;  (19825 1124))
+;;; Generated autoloads from ../../../../../.emacs.d/el-get/semi/postpet.el
 
 (autoload 'postpet-decode "postpet" "\
 Not documented
@@ -677,9 +730,9 @@ Not documented
 
 ;;;***
 
-;;;### (autoloads (qmtp-send-buffer qmtp-via-qmtp) "qmtp" "flim/site-lisp/flim/qmtp.el"
-;;;;;;  (19824 53464))
-;;; Generated autoloads from flim/site-lisp/flim/qmtp.el
+;;;### (autoloads (qmtp-send-buffer qmtp-via-qmtp) "qmtp" "../../../../../.emacs.d/el-get/flim/site-lisp/flim/qmtp.el"
+;;;;;;  (19825 1024))
+;;; Generated autoloads from ../../../../../.emacs.d/el-get/flim/site-lisp/flim/qmtp.el
 
 (defvar qmtp-open-connection-function #'open-network-stream)
 
@@ -695,9 +748,9 @@ Not documented
 
 ;;;***
 
-;;;### (autoloads (richtext-decode richtext-encode) "richtext" "apel/site-lisp/emu/richtext.el"
-;;;;;;  (19824 52889))
-;;; Generated autoloads from apel/site-lisp/emu/richtext.el
+;;;### (autoloads (richtext-decode richtext-encode) "richtext" "../../../../../.emacs.d/el-get/apel/site-lisp/emu/richtext.el"
+;;;;;;  (19825 729))
+;;; Generated autoloads from ../../../../../.emacs.d/el-get/apel/site-lisp/emu/richtext.el
 
 (autoload 'richtext-encode "richtext" "\
 Not documented
@@ -711,9 +764,9 @@ Not documented
 
 ;;;***
 
-;;;### (autoloads (sha1) "sha1-el" "flim/site-lisp/flim/sha1-el.el"
-;;;;;;  (19824 53464))
-;;; Generated autoloads from flim/site-lisp/flim/sha1-el.el
+;;;### (autoloads (sha1) "sha1-el" "../../../../../.emacs.d/el-get/flim/site-lisp/flim/sha1-el.el"
+;;;;;;  (19825 1024))
+;;; Generated autoloads from ../../../../../.emacs.d/el-get/flim/site-lisp/flim/sha1-el.el
 
 (autoload 'sha1 "sha1-el" "\
 Return the SHA1 (Secure Hash Algorithm) of an object.
@@ -727,8 +780,9 @@ If BINARY is non-nil, return a string in binary form.
 ;;;***
 
 ;;;### (autoloads (smime-verify-region smime-sign-region smime-decrypt-region
-;;;;;;  smime-encrypt-region) "smime" "semi/smime.el" (19824 53619))
-;;; Generated autoloads from semi/smime.el
+;;;;;;  smime-encrypt-region) "smime" "../../../../../.emacs.d/el-get/semi/smime.el"
+;;;;;;  (19825 1124))
+;;; Generated autoloads from ../../../../../.emacs.d/el-get/semi/smime.el
 
 (autoload 'smime-encrypt-region "smime" "\
 Encrypt the current region between START and END.
@@ -756,9 +810,9 @@ the detached signature of the current region.
 
 ;;;***
 
-;;;### (autoloads (smtp-send-buffer smtp-via-smtp) "smtp" "flim/site-lisp/flim/smtp.el"
-;;;;;;  (19824 53464))
-;;; Generated autoloads from flim/site-lisp/flim/smtp.el
+;;;### (autoloads (smtp-send-buffer smtp-via-smtp) "smtp" "../../../../../.emacs.d/el-get/flim/site-lisp/flim/smtp.el"
+;;;;;;  (19825 1024))
+;;; Generated autoloads from ../../../../../.emacs.d/el-get/flim/site-lisp/flim/smtp.el
 
 (defvar smtp-open-connection-function #'open-network-stream "\
 *Function used for connecting to a SMTP server.
@@ -797,8 +851,9 @@ BUFFER may be a buffer or a buffer name which contains mail message.
 ;;;;;;  std11-fill-msg-id-list-string std11-msg-id-string std11-full-name-string
 ;;;;;;  std11-address-string std11-lexical-analyze std11-unfold-string
 ;;;;;;  std11-field-body std11-narrow-to-header std11-fetch-field)
-;;;;;;  "std11" "flim/site-lisp/flim/std11.el" (19824 53464))
-;;; Generated autoloads from flim/site-lisp/flim/std11.el
+;;;;;;  "std11" "../../../../../.emacs.d/el-get/flim/site-lisp/flim/std11.el"
+;;;;;;  (19825 1024))
+;;; Generated autoloads from ../../../../../.emacs.d/el-get/flim/site-lisp/flim/std11.el
 
 (autoload 'std11-fetch-field "std11" "\
 Return the value of the header field NAME.
@@ -877,38 +932,212 @@ If no name can be extracted, FULL-NAME will be nil.
 
 ;;;***
 
-;;;### (autoloads nil nil ("apel/site-lisp/apel/calist.el" "apel/site-lisp/apel/filename.el"
-;;;;;;  "apel/site-lisp/apel/install.el" "apel/site-lisp/emu/apel-ver.el"
-;;;;;;  "apel/site-lisp/emu/broken.el" "apel/site-lisp/emu/emu.el"
-;;;;;;  "apel/site-lisp/emu/inv-23.el" "apel/site-lisp/emu/invisible.el"
-;;;;;;  "apel/site-lisp/emu/mcharset.el" "apel/site-lisp/emu/mcs-20.el"
-;;;;;;  "apel/site-lisp/emu/mcs-e20.el" "apel/site-lisp/emu/mule-caesar.el"
-;;;;;;  "apel/site-lisp/emu/pccl-20.el" "apel/site-lisp/emu/pccl.el"
-;;;;;;  "apel/site-lisp/emu/pces-20.el" "apel/site-lisp/emu/pces-e20.el"
-;;;;;;  "apel/site-lisp/emu/pces.el" "apel/site-lisp/emu/pcustom.el"
-;;;;;;  "apel/site-lisp/emu/poe.el" "apel/site-lisp/emu/poem-e20.el"
-;;;;;;  "apel/site-lisp/emu/poem-e20_3.el" "apel/site-lisp/emu/poem.el"
-;;;;;;  "apel/site-lisp/emu/product.el" "apel/site-lisp/emu/pym.el"
-;;;;;;  "apel/site-lisp/emu/static.el" "el-get/el-get-install.el"
-;;;;;;  "el-get/el-get.el" "flim/site-lisp/flim/hex-util.el" "flim/site-lisp/flim/hmac-def.el"
-;;;;;;  "flim/site-lisp/flim/hmac-md5.el" "flim/site-lisp/flim/hmac-sha1.el"
-;;;;;;  "flim/site-lisp/flim/luna.el" "flim/site-lisp/flim/lunit.el"
-;;;;;;  "flim/site-lisp/flim/md4.el" "flim/site-lisp/flim/md5.el"
-;;;;;;  "flim/site-lisp/flim/mel-b-ccl.el" "flim/site-lisp/flim/mel-b-el.el"
-;;;;;;  "flim/site-lisp/flim/mel-g.el" "flim/site-lisp/flim/mel-q-ccl.el"
-;;;;;;  "flim/site-lisp/flim/mel-q.el" "flim/site-lisp/flim/mel-u.el"
-;;;;;;  "flim/site-lisp/flim/mime-def.el" "flim/site-lisp/flim/mime.el"
-;;;;;;  "flim/site-lisp/flim/mmbuffer.el" "flim/site-lisp/flim/mmcooked.el"
-;;;;;;  "flim/site-lisp/flim/mmexternal.el" "flim/site-lisp/flim/mmgeneric.el"
-;;;;;;  "flim/site-lisp/flim/ntlm.el" "flim/site-lisp/flim/sasl-cram.el"
-;;;;;;  "flim/site-lisp/flim/sasl-digest.el" "flim/site-lisp/flim/sasl-ntlm.el"
-;;;;;;  "flim/site-lisp/flim/sasl-scram.el" "flim/site-lisp/flim/sasl.el"
-;;;;;;  "flim/site-lisp/flim/sha1.el" "semi/mail-mime-setup.el" "semi/mime-bbdb.el"
-;;;;;;  "semi/mime-image.el" "semi/mime-mc.el" "semi/mime-partial.el"
-;;;;;;  "semi/mime-pgp.el" "semi/mime-setup.el" "semi/mime-w3.el"
-;;;;;;  "semi/pgg-def.el" "semi/pgg-parse.el" "semi/semi-def.el"
-;;;;;;  "semi/semi-setup.el" "semi/signature.el" "tail/tail.el")
-;;;;;;  (19824 53651 743090))
+;;;### (autoloads (wl-other-frame wl) "wl" "../../../../../.emacs.d/el-get/wanderlust/site-lisp/wl/wl.el"
+;;;;;;  (19825 1230))
+;;; Generated autoloads from ../../../../../.emacs.d/el-get/wanderlust/site-lisp/wl/wl.el
+
+(autoload 'wl "wl" "\
+Start Wanderlust -- Yet Another Message Interface On Emacsen.
+If ARG (prefix argument) is specified, folder checkings are skipped.
+
+\(fn &optional ARG)" t nil)
+
+(autoload 'wl-other-frame "wl" "\
+Pop up a frame to read messages via Wanderlust.
+
+\(fn &optional ARG)" t nil)
+
+;;;***
+
+;;;### (autoloads (wl-addrmgr) "wl-addrmgr" "../../../../../.emacs.d/el-get/wanderlust/site-lisp/wl/wl-addrmgr.el"
+;;;;;;  (19825 1230))
+;;; Generated autoloads from ../../../../../.emacs.d/el-get/wanderlust/site-lisp/wl/wl-addrmgr.el
+
+(autoload 'wl-addrmgr "wl-addrmgr" "\
+Start an Address manager.
+
+\(fn)" t nil)
+
+;;;***
+
+;;;### (autoloads (wl-user-agent-compose wl-draft) "wl-draft" "../../../../../.emacs.d/el-get/wanderlust/site-lisp/wl/wl-draft.el"
+;;;;;;  (19825 1230))
+;;; Generated autoloads from ../../../../../.emacs.d/el-get/wanderlust/site-lisp/wl/wl-draft.el
+
+(autoload 'wl-draft "wl-draft" "\
+Write and send mail/news message with Wanderlust.
+
+\(fn &optional HEADER-ALIST CONTENT-TYPE CONTENT-TRANSFER-ENCODING BODY EDIT-AGAIN PARENT-FOLDER PARENT-NUMBER)" t nil)
+
+(autoload 'wl-user-agent-compose "wl-draft" "\
+Support the `compose-mail' interface for wl.
+Only support for TO, SUBJECT, and OTHER-HEADERS has been implemented.
+Support for CONTINUE, YANK-ACTION, SEND-ACTIONS and RETURN-ACTION has not
+been implemented yet.  Partial support for SWITCH-FUNCTION now supported.
+
+\(fn &optional TO SUBJECT OTHER-HEADERS CONTINUE SWITCH-FUNCTION YANK-ACTION SEND-ACTIONS RETURN-ACTION)" nil nil)
+
+;;;***
+
+;;;### (autoloads nil nil ("../../../../../.emacs.d/el-get/apel/site-lisp/apel/alist.el"
+;;;;;;  "../../../../../.emacs.d/el-get/apel/site-lisp/apel/calist.el"
+;;;;;;  "../../../../../.emacs.d/el-get/apel/site-lisp/apel/filename.el"
+;;;;;;  "../../../../../.emacs.d/el-get/apel/site-lisp/apel/install.el"
+;;;;;;  "../../../../../.emacs.d/el-get/apel/site-lisp/apel/path-util.el"
+;;;;;;  "../../../../../.emacs.d/el-get/apel/site-lisp/emu/apel-ver.el"
+;;;;;;  "../../../../../.emacs.d/el-get/apel/site-lisp/emu/broken.el"
+;;;;;;  "../../../../../.emacs.d/el-get/apel/site-lisp/emu/emu.el"
+;;;;;;  "../../../../../.emacs.d/el-get/apel/site-lisp/emu/inv-23.el"
+;;;;;;  "../../../../../.emacs.d/el-get/apel/site-lisp/emu/invisible.el"
+;;;;;;  "../../../../../.emacs.d/el-get/apel/site-lisp/emu/mcharset.el"
+;;;;;;  "../../../../../.emacs.d/el-get/apel/site-lisp/emu/mcs-20.el"
+;;;;;;  "../../../../../.emacs.d/el-get/apel/site-lisp/emu/mcs-e20.el"
+;;;;;;  "../../../../../.emacs.d/el-get/apel/site-lisp/emu/mule-caesar.el"
+;;;;;;  "../../../../../.emacs.d/el-get/apel/site-lisp/emu/pccl-20.el"
+;;;;;;  "../../../../../.emacs.d/el-get/apel/site-lisp/emu/pccl.el"
+;;;;;;  "../../../../../.emacs.d/el-get/apel/site-lisp/emu/pces-20.el"
+;;;;;;  "../../../../../.emacs.d/el-get/apel/site-lisp/emu/pces-e20.el"
+;;;;;;  "../../../../../.emacs.d/el-get/apel/site-lisp/emu/pces.el"
+;;;;;;  "../../../../../.emacs.d/el-get/apel/site-lisp/emu/pcustom.el"
+;;;;;;  "../../../../../.emacs.d/el-get/apel/site-lisp/emu/poe.el"
+;;;;;;  "../../../../../.emacs.d/el-get/apel/site-lisp/emu/poem-e20.el"
+;;;;;;  "../../../../../.emacs.d/el-get/apel/site-lisp/emu/poem-e20_3.el"
+;;;;;;  "../../../../../.emacs.d/el-get/apel/site-lisp/emu/poem.el"
+;;;;;;  "../../../../../.emacs.d/el-get/apel/site-lisp/emu/product.el"
+;;;;;;  "../../../../../.emacs.d/el-get/apel/site-lisp/emu/pym.el"
+;;;;;;  "../../../../../.emacs.d/el-get/apel/site-lisp/emu/richtext.el"
+;;;;;;  "../../../../../.emacs.d/el-get/apel/site-lisp/emu/static.el"
+;;;;;;  "../../../../../.emacs.d/el-get/flim/site-lisp/flim/eword-decode.el"
+;;;;;;  "../../../../../.emacs.d/el-get/flim/site-lisp/flim/eword-encode.el"
+;;;;;;  "../../../../../.emacs.d/el-get/flim/site-lisp/flim/hex-util.el"
+;;;;;;  "../../../../../.emacs.d/el-get/flim/site-lisp/flim/hmac-def.el"
+;;;;;;  "../../../../../.emacs.d/el-get/flim/site-lisp/flim/hmac-md5.el"
+;;;;;;  "../../../../../.emacs.d/el-get/flim/site-lisp/flim/hmac-sha1.el"
+;;;;;;  "../../../../../.emacs.d/el-get/flim/site-lisp/flim/luna.el"
+;;;;;;  "../../../../../.emacs.d/el-get/flim/site-lisp/flim/lunit.el"
+;;;;;;  "../../../../../.emacs.d/el-get/flim/site-lisp/flim/md4.el"
+;;;;;;  "../../../../../.emacs.d/el-get/flim/site-lisp/flim/md5.el"
+;;;;;;  "../../../../../.emacs.d/el-get/flim/site-lisp/flim/mel-b-ccl.el"
+;;;;;;  "../../../../../.emacs.d/el-get/flim/site-lisp/flim/mel-b-el.el"
+;;;;;;  "../../../../../.emacs.d/el-get/flim/site-lisp/flim/mel-g.el"
+;;;;;;  "../../../../../.emacs.d/el-get/flim/site-lisp/flim/mel-q-ccl.el"
+;;;;;;  "../../../../../.emacs.d/el-get/flim/site-lisp/flim/mel-q.el"
+;;;;;;  "../../../../../.emacs.d/el-get/flim/site-lisp/flim/mel-u.el"
+;;;;;;  "../../../../../.emacs.d/el-get/flim/site-lisp/flim/mel.el"
+;;;;;;  "../../../../../.emacs.d/el-get/flim/site-lisp/flim/mime-conf.el"
+;;;;;;  "../../../../../.emacs.d/el-get/flim/site-lisp/flim/mime-def.el"
+;;;;;;  "../../../../../.emacs.d/el-get/flim/site-lisp/flim/mime-parse.el"
+;;;;;;  "../../../../../.emacs.d/el-get/flim/site-lisp/flim/mime.el"
+;;;;;;  "../../../../../.emacs.d/el-get/flim/site-lisp/flim/mmbuffer.el"
+;;;;;;  "../../../../../.emacs.d/el-get/flim/site-lisp/flim/mmcooked.el"
+;;;;;;  "../../../../../.emacs.d/el-get/flim/site-lisp/flim/mmexternal.el"
+;;;;;;  "../../../../../.emacs.d/el-get/flim/site-lisp/flim/mmgeneric.el"
+;;;;;;  "../../../../../.emacs.d/el-get/flim/site-lisp/flim/ntlm.el"
+;;;;;;  "../../../../../.emacs.d/el-get/flim/site-lisp/flim/qmtp.el"
+;;;;;;  "../../../../../.emacs.d/el-get/flim/site-lisp/flim/sasl-cram.el"
+;;;;;;  "../../../../../.emacs.d/el-get/flim/site-lisp/flim/sasl-digest.el"
+;;;;;;  "../../../../../.emacs.d/el-get/flim/site-lisp/flim/sasl-ntlm.el"
+;;;;;;  "../../../../../.emacs.d/el-get/flim/site-lisp/flim/sasl-scram.el"
+;;;;;;  "../../../../../.emacs.d/el-get/flim/site-lisp/flim/sasl.el"
+;;;;;;  "../../../../../.emacs.d/el-get/flim/site-lisp/flim/sha1-el.el"
+;;;;;;  "../../../../../.emacs.d/el-get/flim/site-lisp/flim/sha1.el"
+;;;;;;  "../../../../../.emacs.d/el-get/flim/site-lisp/flim/smtp.el"
+;;;;;;  "../../../../../.emacs.d/el-get/flim/site-lisp/flim/std11.el"
+;;;;;;  "../../../../../.emacs.d/el-get/semi/mail-mime-setup.el"
+;;;;;;  "../../../../../.emacs.d/el-get/semi/mime-bbdb.el" "../../../../../.emacs.d/el-get/semi/mime-edit.el"
+;;;;;;  "../../../../../.emacs.d/el-get/semi/mime-image.el" "../../../../../.emacs.d/el-get/semi/mime-mc.el"
+;;;;;;  "../../../../../.emacs.d/el-get/semi/mime-partial.el" "../../../../../.emacs.d/el-get/semi/mime-pgp.el"
+;;;;;;  "../../../../../.emacs.d/el-get/semi/mime-play.el" "../../../../../.emacs.d/el-get/semi/mime-setup.el"
+;;;;;;  "../../../../../.emacs.d/el-get/semi/mime-view.el" "../../../../../.emacs.d/el-get/semi/mime-w3.el"
+;;;;;;  "../../../../../.emacs.d/el-get/semi/pgg-def.el" "../../../../../.emacs.d/el-get/semi/pgg-gpg.el"
+;;;;;;  "../../../../../.emacs.d/el-get/semi/pgg-parse.el" "../../../../../.emacs.d/el-get/semi/pgg-pgp.el"
+;;;;;;  "../../../../../.emacs.d/el-get/semi/pgg-pgp5.el" "../../../../../.emacs.d/el-get/semi/pgg.el"
+;;;;;;  "../../../../../.emacs.d/el-get/semi/postpet.el" "../../../../../.emacs.d/el-get/semi/semi-def.el"
+;;;;;;  "../../../../../.emacs.d/el-get/semi/semi-setup.el" "../../../../../.emacs.d/el-get/semi/signature.el"
+;;;;;;  "../../../../../.emacs.d/el-get/semi/smime.el" "../../../../../.emacs.d/el-get/wanderlust/site-lisp/wl/acap.el"
+;;;;;;  "../../../../../.emacs.d/el-get/wanderlust/site-lisp/wl/elmo-access.el"
+;;;;;;  "../../../../../.emacs.d/el-get/wanderlust/site-lisp/wl/elmo-archive.el"
+;;;;;;  "../../../../../.emacs.d/el-get/wanderlust/site-lisp/wl/elmo-cache.el"
+;;;;;;  "../../../../../.emacs.d/el-get/wanderlust/site-lisp/wl/elmo-date.el"
+;;;;;;  "../../../../../.emacs.d/el-get/wanderlust/site-lisp/wl/elmo-dop.el"
+;;;;;;  "../../../../../.emacs.d/el-get/wanderlust/site-lisp/wl/elmo-file.el"
+;;;;;;  "../../../../../.emacs.d/el-get/wanderlust/site-lisp/wl/elmo-filter.el"
+;;;;;;  "../../../../../.emacs.d/el-get/wanderlust/site-lisp/wl/elmo-flag.el"
+;;;;;;  "../../../../../.emacs.d/el-get/wanderlust/site-lisp/wl/elmo-imap4.el"
+;;;;;;  "../../../../../.emacs.d/el-get/wanderlust/site-lisp/wl/elmo-internal.el"
+;;;;;;  "../../../../../.emacs.d/el-get/wanderlust/site-lisp/wl/elmo-localdir.el"
+;;;;;;  "../../../../../.emacs.d/el-get/wanderlust/site-lisp/wl/elmo-localnews.el"
+;;;;;;  "../../../../../.emacs.d/el-get/wanderlust/site-lisp/wl/elmo-maildir.el"
+;;;;;;  "../../../../../.emacs.d/el-get/wanderlust/site-lisp/wl/elmo-map.el"
+;;;;;;  "../../../../../.emacs.d/el-get/wanderlust/site-lisp/wl/elmo-mime.el"
+;;;;;;  "../../../../../.emacs.d/el-get/wanderlust/site-lisp/wl/elmo-msgdb.el"
+;;;;;;  "../../../../../.emacs.d/el-get/wanderlust/site-lisp/wl/elmo-multi.el"
+;;;;;;  "../../../../../.emacs.d/el-get/wanderlust/site-lisp/wl/elmo-net.el"
+;;;;;;  "../../../../../.emacs.d/el-get/wanderlust/site-lisp/wl/elmo-nntp.el"
+;;;;;;  "../../../../../.emacs.d/el-get/wanderlust/site-lisp/wl/elmo-null.el"
+;;;;;;  "../../../../../.emacs.d/el-get/wanderlust/site-lisp/wl/elmo-pipe.el"
+;;;;;;  "../../../../../.emacs.d/el-get/wanderlust/site-lisp/wl/elmo-pop3.el"
+;;;;;;  "../../../../../.emacs.d/el-get/wanderlust/site-lisp/wl/elmo-search.el"
+;;;;;;  "../../../../../.emacs.d/el-get/wanderlust/site-lisp/wl/elmo-sendlog.el"
+;;;;;;  "../../../../../.emacs.d/el-get/wanderlust/site-lisp/wl/elmo-signal.el"
+;;;;;;  "../../../../../.emacs.d/el-get/wanderlust/site-lisp/wl/elmo-spam.el"
+;;;;;;  "../../../../../.emacs.d/el-get/wanderlust/site-lisp/wl/elmo-split.el"
+;;;;;;  "../../../../../.emacs.d/el-get/wanderlust/site-lisp/wl/elmo-util.el"
+;;;;;;  "../../../../../.emacs.d/el-get/wanderlust/site-lisp/wl/elmo-vars.el"
+;;;;;;  "../../../../../.emacs.d/el-get/wanderlust/site-lisp/wl/elmo-version.el"
+;;;;;;  "../../../../../.emacs.d/el-get/wanderlust/site-lisp/wl/elmo.el"
+;;;;;;  "../../../../../.emacs.d/el-get/wanderlust/site-lisp/wl/elsp-bogofilter.el"
+;;;;;;  "../../../../../.emacs.d/el-get/wanderlust/site-lisp/wl/elsp-bsfilter.el"
+;;;;;;  "../../../../../.emacs.d/el-get/wanderlust/site-lisp/wl/elsp-sa.el"
+;;;;;;  "../../../../../.emacs.d/el-get/wanderlust/site-lisp/wl/elsp-spamoracle.el"
+;;;;;;  "../../../../../.emacs.d/el-get/wanderlust/site-lisp/wl/im-wl.el"
+;;;;;;  "../../../../../.emacs.d/el-get/wanderlust/site-lisp/wl/mmimap.el"
+;;;;;;  "../../../../../.emacs.d/el-get/wanderlust/site-lisp/wl/modb-entity.el"
+;;;;;;  "../../../../../.emacs.d/el-get/wanderlust/site-lisp/wl/modb-legacy.el"
+;;;;;;  "../../../../../.emacs.d/el-get/wanderlust/site-lisp/wl/modb-standard.el"
+;;;;;;  "../../../../../.emacs.d/el-get/wanderlust/site-lisp/wl/modb.el"
+;;;;;;  "../../../../../.emacs.d/el-get/wanderlust/site-lisp/wl/pldap.el"
+;;;;;;  "../../../../../.emacs.d/el-get/wanderlust/site-lisp/wl/rfc2368.el"
+;;;;;;  "../../../../../.emacs.d/el-get/wanderlust/site-lisp/wl/slp.el"
+;;;;;;  "../../../../../.emacs.d/el-get/wanderlust/site-lisp/wl/ssl.el"
+;;;;;;  "../../../../../.emacs.d/el-get/wanderlust/site-lisp/wl/utf7.el"
+;;;;;;  "../../../../../.emacs.d/el-get/wanderlust/site-lisp/wl/wl-acap.el"
+;;;;;;  "../../../../../.emacs.d/el-get/wanderlust/site-lisp/wl/wl-action.el"
+;;;;;;  "../../../../../.emacs.d/el-get/wanderlust/site-lisp/wl/wl-addrbook.el"
+;;;;;;  "../../../../../.emacs.d/el-get/wanderlust/site-lisp/wl/wl-address.el"
+;;;;;;  "../../../../../.emacs.d/el-get/wanderlust/site-lisp/wl/wl-addrmgr.el"
+;;;;;;  "../../../../../.emacs.d/el-get/wanderlust/site-lisp/wl/wl-batch.el"
+;;;;;;  "../../../../../.emacs.d/el-get/wanderlust/site-lisp/wl/wl-complete.el"
+;;;;;;  "../../../../../.emacs.d/el-get/wanderlust/site-lisp/wl/wl-demo.el"
+;;;;;;  "../../../../../.emacs.d/el-get/wanderlust/site-lisp/wl/wl-draft.el"
+;;;;;;  "../../../../../.emacs.d/el-get/wanderlust/site-lisp/wl/wl-e21.el"
+;;;;;;  "../../../../../.emacs.d/el-get/wanderlust/site-lisp/wl/wl-expire.el"
+;;;;;;  "../../../../../.emacs.d/el-get/wanderlust/site-lisp/wl/wl-fldmgr.el"
+;;;;;;  "../../../../../.emacs.d/el-get/wanderlust/site-lisp/wl/wl-folder.el"
+;;;;;;  "../../../../../.emacs.d/el-get/wanderlust/site-lisp/wl/wl-highlight.el"
+;;;;;;  "../../../../../.emacs.d/el-get/wanderlust/site-lisp/wl/wl-mailto.el"
+;;;;;;  "../../../../../.emacs.d/el-get/wanderlust/site-lisp/wl/wl-message.el"
+;;;;;;  "../../../../../.emacs.d/el-get/wanderlust/site-lisp/wl/wl-mime.el"
+;;;;;;  "../../../../../.emacs.d/el-get/wanderlust/site-lisp/wl/wl-news.el"
+;;;;;;  "../../../../../.emacs.d/el-get/wanderlust/site-lisp/wl/wl-refile.el"
+;;;;;;  "../../../../../.emacs.d/el-get/wanderlust/site-lisp/wl/wl-score.el"
+;;;;;;  "../../../../../.emacs.d/el-get/wanderlust/site-lisp/wl/wl-spam.el"
+;;;;;;  "../../../../../.emacs.d/el-get/wanderlust/site-lisp/wl/wl-summary.el"
+;;;;;;  "../../../../../.emacs.d/el-get/wanderlust/site-lisp/wl/wl-template.el"
+;;;;;;  "../../../../../.emacs.d/el-get/wanderlust/site-lisp/wl/wl-thread.el"
+;;;;;;  "../../../../../.emacs.d/el-get/wanderlust/site-lisp/wl/wl-util.el"
+;;;;;;  "../../../../../.emacs.d/el-get/wanderlust/site-lisp/wl/wl-vars.el"
+;;;;;;  "../../../../../.emacs.d/el-get/wanderlust/site-lisp/wl/wl-version.el"
+;;;;;;  "../../../../../.emacs.d/el-get/wanderlust/site-lisp/wl/wl.el"
+;;;;;;  "../../../../../.emacs.d/el-get/wanderlust/utils/bbdb-wl.el"
+;;;;;;  "../../../../../.emacs.d/el-get/wanderlust/utils/im-wl.el"
+;;;;;;  "../../../../../.emacs.d/el-get/wanderlust/utils/ptexinfmt.el"
+;;;;;;  "../../../../../.emacs.d/el-get/wanderlust/utils/rfc2368.el"
+;;;;;;  "../../../../../.emacs.d/el-get/wanderlust/utils/ssl.el"
+;;;;;;  "../../../../../.emacs.d/el-get/wanderlust/utils/wl-addrbook.el"
+;;;;;;  "../../../../../.emacs.d/el-get/wanderlust/utils/wl-complete.el"
+;;;;;;  "../../../../../.emacs.d/el-get/wanderlust/utils/wl-mailto.el")
+;;;;;;  (19825 1260 540031))
 
 ;;;***
 

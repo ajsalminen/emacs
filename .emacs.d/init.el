@@ -21,6 +21,125 @@
 (setq byte-compile-verbose nil)
 (setq bcc-cache-directory "~/.elispcache")
 
+;; Emervency stuff that I want before debugging init files
+;; On Mac OS X, Emacs launched from a bundle
+;; needs paths to be set explicitly
+(add-to-list 'exec-path (getenv "PATH"))
+(push "/usr/local/bin/scala/bin/" exec-path)
+;; Setup PATH
+
+(eval-when-compile (require 'cl))
+(when (and (= emacs-major-version 23) (eq window-system 'ns))
+  (setenv "PATH" (shell-command-to-string "source ~/.bashrc; echo -n $PATH"))
+  ;; Update exec-path with the contents of $PATH
+  (loop for path in (split-string (getenv "PATH") ":") do
+        (add-to-list 'exec-path path)))
+
+(setq mac-option-key-is-meta nil)
+(setq mac-command-key-is-meta t)
+(setq mac-command-modifier 'meta)
+(setq mac-option-modifier nil)
+
+(add-to-list 'load-path "~/.emacs.d/color-theme")
+(require 'color-theme)
+(require 'color-theme-inkpot)
+(require 'manoj-colors)
+(require 'color-theme-sunburst)
+(eval-after-load "color-theme"
+  '(progn
+     (color-theme-initialize)
+     (color-theme-manoj-gnus)
+     (color-theme-inkpot)))
+
+(set-face-foreground 'default "white")
+
+(set-face-background 'modeline-inactive "chocolate3")
+(set-face-foreground 'modeline-inactive "White")
+(set-face-background 'modeline "SteelBlue")
+(set-face-foreground 'modeline "Black")
+(set-face-background 'modeline-highlight "White")
+(set-face-background 'modeline-buffer-id "RoyalBlue")
+(set-face-foreground 'modeline-buffer-id "OldLace")
+
+(require 'paredit)
+(require 'highlight-parentheses)
+
+(setq hl-paren-colors
+      '("orange1" "yellow1" "greenyellow" "green1"
+        "springgreen1" "cyan1" "slateblue1" "magenta1" "purple"))
+
+(add-hook 'clojure-mode-hook (lambda () (highlight-parentheses-mode t) (paredit-mode t)))
+(add-hook 'emacs-lisp-mode-hook (lambda () (highlight-parentheses-mode t) (paredit-mode t)))
+(add-hook 'slime-repl-mode-hook (lambda () (highlight-parentheses-mode t) (paredit-mode t)))
+
+(require 'anything-config)
+;; (require 'anything-startup)
+(global-set-key (kbd "C-z") 'anything)
+(setq anything-idle-delay 0.3)
+(setq anything-input-idle-delay 0.2)
+(setq anything-candidate-number-limit 100)
+
+(require 'anything-c-shell-history)
+(require 'anything-yaetags)
+(global-set-key (kbd "M-.") 'anything-yaetags-find-tag)
+;; (global-set-key (kbd "M-.") 'find-tag)
+
+(require 'anything-match-plugin)
+(require 'eijiro)
+(setq eijiro-directory "~/Downloads/EDP-124/EIJIRO/") ; 英辞郎の辞書を置いているディレクトリ
+
+(setq anything-sources
+      '(anything-c-source-recentf
+        anything-c-source-info-pages
+        anything-c-source-info-elisp
+        anything-c-source-buffers
+        ;; anything-c-source-shell-history
+        anything-c-source-file-name-history
+        anything-c-source-locate
+        anything-c-source-occur))
+
+(require 'descbinds-anything)
+(descbinds-anything-install)
+(defalias 'rf 'anything-recentf)
+
+(require 'smex)
+(smex-initialize)
+(setq smex-auto-update t)
+(run-at-time t 360 '(lambda () (if (smex-detect-new-commands) (smex-update))))
+(global-set-key (kbd "C-'") 'smex)
+
+(defun smex-hack ()
+  (interactive)
+  (progn
+    (smex)
+    (keyboard-quit)
+    (smex)))
+
+(global-set-key (kbd "M-x") 'smex-hack)
+(global-set-key (kbd "M-X") 'smex-major-mode-commands)
+;; This is your old M-x.
+(global-set-key (kbd "C-c C-c M-x") 'execute-extended-command)
+
+(iswitchb-mode 1)
+
+(dolist (command '(yank yank-pop))
+  (eval `(defadvice ,command (after indent-region activate)
+           (and (not current-prefix-arg)
+                (member major-mode '(emacs-lisp-mode lisp-mode
+                                                     clojure-mode    scheme-mode
+                                                     haskell-mode    ruby-mode
+                                                     rspec-mode      python-mode
+                                                     c-mode          c++-mode
+                                                     objc-mode       latex-mode
+                                                     plain-tex-mode))
+                (let ((mark-even-if-inactive transient-mark-mode))
+                  (indent-region (region-beginning) (region-end) nil))))))
+
+(define-key global-map (kbd "RET") 'reindent-then-newline-and-indent)
+
+;; emergency settings end here
+
+
 ;;; This was installed by package-install.el.
 ;;; This provides support for the package system and
 ;;; interfacing with ELPA, the package archive.
@@ -39,10 +158,21 @@
       '((:name tail
                :after (lambda ()
                         (autoload 'tail-file "tail.el" nil t)))
+	(:name cedet)
+	(:name ecb
+	       :after (lambda ()
+			(setq ecb-layout-name "left8")
+			;;(setq ecb-auto-activate t)
+			(setq ecb-tip-of-the-day nil)
+			(setq ecb-fix-window-size (quote width))
+			(setq ecb-compile-window-width (quote edit-window))
+			(setq ecb-major-modes-deactivate '(wl-mode tramp-mode))
+			;;(setq ecb-major-modes-activate '(text-mode LaTeX-mode latex-mode))
+			(setq ecb-windows-width 25)))
         (:name apel
                :type git
-               :module "apel_github"
-               :url "git://github.com/wanderlust/apel.git"
+               :module "apel"
+               :url "https://github.com/wanderlust/apel.git"
                :build
                (mapcar
                 (lambda (target)
@@ -55,7 +185,7 @@
         (:name flim
                :type git
                :module "flim"
-               :url "git://github.com/wanderlust/flim.git"
+               :url "https://github.com/wanderlust/flim.git"
                :build
                (mapcar
                 (lambda (target)
@@ -72,7 +202,7 @@
         (:name semi
                :type git
                :module "semi"
-               :url "git://github.com/wanderlust/semi.git"
+               :url "https://github.com/wanderlust/semi.git"
                :build
                (mapcar
                 (lambda (target)
@@ -80,11 +210,79 @@
                         (mapcar (lambda (pkg)
                                   (mapcar (lambda (d) `("-L" ,d)) (el-get-load-path pkg)))
                                 '("apel" "flim"))
-
                         (split-string "-batch -q -no-site-file -l SEMI-MK -f")
                         target
                         "prefix" "NONE" "NONE"))
-                '("compile-semi" "install-semi")))))
+                '("compile-semi" "install-semi")))
+        (:name bbdb
+               :after (lambda ()
+                        (setq
+                         bbdb-offer-save 1             ;; 1 means save-without-asking
+                         bbdb-use-pop-up t             ;; allow popups for addresses
+                         bbdb-electric-p t             ;; be disposable with SPC
+                         bbdb-popup-target-lines  1    ;; very small
+                         bbdb-dwim-net-address-allow-redundancy t ;; always use full name
+                         bbdb-quiet-about-name-mismatches 2 ;; show name-mismatches 2 secs
+                         bbdb-always-add-address t ;; add new addresses to existing...
+                         ;; ...contacts automatically
+                         bbdb-canonicalize-redundant-nets-p t  ;; x@foo.bar.cx => x@bar.cx
+                         bbdb-completion-type nil              ;; complete on anything
+                         bbdb-complete-name-allow-cycling t    ;; cycle through matches
+                         ;; this only works partially
+                         bbbd-message-caching-enabled t ;; be fast
+                         bbdb-use-alternate-names t     ;; use AKA
+                         bbdb-elided-display t          ;; single-line addresses
+                         ;; auto-create addresses from mail
+                         bbdb/mail-auto-create-p 'bbdb-ignore-some-messages-hook
+                         bbdb-ignore-some-messages-alist ;; don't ask about fake addresses
+                         ;; NOTE: there can be only one entry per header (such as To, From)
+                         ;; http://flex.ee.uec.ac.jp/texi/bbdb/bbdb_11.html
+                         '(( "From" . "no.?reply\\|DAEMON\\|daemon\\|facebookmail\\|twitter")))))
+         (:name wanderlust
+               :type git
+               :module "wanderlust"
+               :url "https://github.com/wanderlust/wanderlust.git"
+               :build (mapcar
+                       (lambda (target-and-dirs)
+                         (list el-get-emacs
+                               (mapcar (lambda (pkg)
+                                         (mapcar (lambda (d) `("-L" ,d)) (el-get-load-path pkg)))
+                                       '("apel" "flim" "semi"))
+
+                               "--eval" (prin1-to-string
+                                         '(progn (setq wl-install-utils t)
+                                                 (setq wl-info-lang "en")
+                                                 (setq wl-news-lang "en")))
+
+                               (split-string "-batch -q -no-site-file -l WL-MK -f")
+                               target-and-dirs))
+                       '(("wl-texinfo-format" "doc")
+                         ("compile-wl-package"  "site-lisp" "icons")
+                         ("install-wl-package" "site-lisp" "icons")))
+               :info "doc/wl.info"
+               :load-path ("site-lisp/wl" "utils")
+               :after (lambda ()
+                          (autoload 'wl "wl" "Wanderlust" t)
+                          (autoload 'wl-other-frame "wl" "Wanderlust on new frame." t)
+                          (autoload 'wl-draft "wl-draft" "Write draft with Wanderlust." t)
+                          (add-hook 'wl-init-hook 'ecb-deactivate)
+                          ;;(add-hook 'wl-exit-hook 'ecb-activate)
+                          (require 'mime-w3m)
+                          (defalias 'wle 'wl-exit)
+                          (add-hook 'mime-view-mode-hook
+                                    (lambda ()
+                                      (local-set-key "s" 'w3m-view-this-url-new-session)))
+                          (add-hook 'wl-init-hook (lambda ()
+                                                    (require 'bbdb-wl)
+                                                    (bbdb-wl-setup)))
+                          (require 'wl-draft)
+                          (add-hook 'wl-draft-mode-hook
+                                    (lambda ()
+                                      (define-key wl-draft-mode-map (kbd "<tab>") 'bbdb-complete-name)))
+
+
+                          ))
+         ))
 (el-get)
 
 ;; All my custom settings that differ and/or can't be under version control
@@ -110,8 +308,6 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(ecb-options-version "2.40")
- '(ecb-source-path (quote (("~/projects/ghub" "Projects"))))
  '(inhibit-startup-screen t)
  '(inhibit-startup-message t))
 (custom-set-faces
@@ -120,27 +316,6 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  )
-
-(add-to-list 'load-path "~/.emacs.d/cedet-1.0/common")
-(require 'cedet)
-(global-ede-mode 1)             ; Enable the Project management system
-(semantic-load-enable-code-helpers) ; Enable prototype help and smart completion
-(global-srecode-minor-mode 1)       ; Enable template insertion menu
-
-(add-to-list 'load-path "~/.emacs.d/ecb-2.40")
-(require 'ecb)
-(semantic-load-enable-minimum-features)
-(setq ecb-layout-name "left8")
-;;(setq ecb-auto-activate t)
-(setq ecb-tip-of-the-day nil)
-(setq ecb-fix-window-size (quote width))
-(setq ecb-compile-window-width (quote edit-window))
-(setq ecb-major-modes-deactivate '(wl-mode tramp-mode))
-;;(setq ecb-major-modes-activate '(text-mode LaTeX-mode latex-mode))
-(setq ecb-windows-width 25)
-
-;;(setq ecb-maximize-ecb-window-after-selection t)
-;;(ecb-activate)
 
 (setq initial-scratch-message nil)
 
@@ -162,19 +337,6 @@
 
 (setq-default indent-tabs-mode nil)
 
-;; On Mac OS X, Emacs launched from a bundle
-;; needs paths to be set explicitly
-(add-to-list 'exec-path (getenv "PATH"))
-(push "/usr/local/bin/scala/bin/" exec-path)
-;; Setup PATH
-
-(when (and (= emacs-major-version 23) (eq window-system 'ns))
-  (setenv "PATH" (shell-command-to-string "source ~/.bashrc; echo -n $PATH"))
-  ;; Update exec-path with the contents of $PATH
-  (loop for path in (split-string (getenv "PATH") ":") do
-        (add-to-list 'exec-path path)))
-
-
 (defun ib ()
   "indent whole buffer"
   (interactive)
@@ -189,27 +351,6 @@
 
 (setq work-timer-working-time 30)
 ;;(defalias 'work-timer-start 'p)
-
-(add-to-list 'load-path "~/.emacs.d/color-theme")
-(require 'color-theme)
-(require 'color-theme-inkpot)
-(require 'manoj-colors)
-(require 'color-theme-sunburst)
-(eval-after-load "color-theme"
-  '(progn
-     (color-theme-initialize)
-     (color-theme-manoj-gnus)
-     (color-theme-inkpot)))
-
-(set-face-foreground 'default "white")
-
-(set-face-background 'modeline-inactive "chocolate3")
-(set-face-foreground 'modeline-inactive "White")
-(set-face-background 'modeline "SteelBlue")
-(set-face-foreground 'modeline "Black")
-(set-face-background 'modeline-highlight "White")
-(set-face-background 'modeline-buffer-id "RoyalBlue")
-(set-face-foreground 'modeline-buffer-id "OldLace")
 
 (defun short-file-name ()
   "Display the file path and name in the modeline"
@@ -257,13 +398,6 @@
 (add-to-list 'ensime-doc-lookup-map '("net\\.liftweb\\." . make-lift-doc-url))
 
 
-(setq mac-option-key-is-meta nil)
-(setq mac-command-key-is-meta t)
-(setq mac-command-modifier 'meta)
-(setq mac-option-modifier nil)
-
-
-
 ;; Frame fiddling
 (defun set-frame-size-according-to-resolution ()
   (interactive)
@@ -282,8 +416,6 @@
         (add-to-list 'default-frame-alist
                      (cons 'height (/ (- (x-display-pixel-height) 200) (frame-char-height)))))))
 
-(set-frame-size-according-to-resolution)
-
 (defun arrange-frame (w h x y)
   "Set the width, height, and x/y position of the current frame"
   (let ((frame (selected-frame)))
@@ -291,8 +423,6 @@
     (set-frame-position frame x y)
     (set-frame-size frame w h)))
 
-
-;;(arrange-frame 160 50 2 22)
 (defalias 'yes-or-no-p 'y-or-n-p)
 
 ;; Hard Code the window dimensions, that's how we roll
@@ -545,12 +675,6 @@
 (tool-bar-mode -1)
 (scroll-bar-mode -1)
 
-(define-key global-map (kbd "RET") 'reindent-then-newline-and-indent)
-
-;; offset for dock on left side
-(setq mf-offset-x 47)
-;;(add-hook 'window-setup-hook 'maximize-frame t)
-
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 
 ;;; Mac AntiAlias
@@ -584,7 +708,12 @@
    'katakana-jisx0201
    "-apple-hiragino_kaku_gothic_pro-medium-normal-normal-*-14-*-iso10646-1")
 
-  (setq default-input-method "MacOSX")
+  ;; apologetic hack to make sure my mac input is used
+  (progn
+    (setq default-input-method "MacOSX")
+    (set-input-method "MacOSX")
+    (toggle-input-method))
+
   (if (fboundp 'ns-toggle-fullscreen)
       (global-set-key "\M-\r" 'ns-toggle-fullscreen)))
 
@@ -706,62 +835,6 @@
 (setq echo-keystrokes 0.1)
 (setq history-length 1000)
 
-;; wl
-;; (add-to-list 'load-path "~/.emacs.d/apel")
-;; (add-to-list 'load-path "~/.emacs.d/flim")
-;; (add-to-list 'load-path "~/.emacs.d/semi")
-(add-to-list 'load-path "~/.emacs.d/wanderlust/elmo")
-(add-to-list 'load-path "~/.emacs.d/wanderlust/utils")
-(add-to-list 'load-path "~/.emacs.d/wanderlust/wl")
-
-(autoload 'wl "wl" "Wanderlust" t)
-(autoload 'wl-other-frame "wl" "Wanderlust on new frame." t)
-(autoload 'wl-draft "wl-draft" "Write draft with Wanderlust." t)
-(add-hook 'wl-init-hook 'ecb-deactivate)
-;;(add-hook 'wl-exit-hook 'ecb-activate)
-(require 'mime-w3m)
-(defalias 'wle 'wl-exit)
-
-(add-hook 'mime-view-mode-hook
-          (lambda ()
-            (local-set-key "s" 'w3m-view-this-url-new-session)))
-
-(add-to-list 'load-path "~/.emacs.d/bbdb-2.35")
-(add-to-list 'load-path "~/.emacs.d/bbdb-2.35/lisp")
-(require 'bbdb)
-(bbdb-initialize)
-
-(setq
- bbdb-offer-save 1             ;; 1 means save-without-asking
- bbdb-use-pop-up t             ;; allow popups for addresses
- bbdb-electric-p t             ;; be disposable with SPC
- bbdb-popup-target-lines  1    ;; very small
- bbdb-dwim-net-address-allow-redundancy t ;; always use full name
- bbdb-quiet-about-name-mismatches 2 ;; show name-mismatches 2 secs
- bbdb-always-add-address t ;; add new addresses to existing...
- ;; ...contacts automatically
- bbdb-canonicalize-redundant-nets-p t  ;; x@foo.bar.cx => x@bar.cx
- bbdb-completion-type nil              ;; complete on anything
- bbdb-complete-name-allow-cycling t    ;; cycle through matches
- ;; this only works partially
- bbbd-message-caching-enabled t ;; be fast
- bbdb-use-alternate-names t     ;; use AKA
- bbdb-elided-display t          ;; single-line addresses
- ;; auto-create addresses from mail
- bbdb/mail-auto-create-p 'bbdb-ignore-some-messages-hook
- bbdb-ignore-some-messages-alist ;; don't ask about fake addresses
- ;; NOTE: there can be only one entry per header (such as To, From)
- ;; http://flex.ee.uec.ac.jp/texi/bbdb/bbdb_11.html
- '(( "From" . "no.?reply\\|DAEMON\\|daemon\\|facebookmail\\|twitter")))
-
-
-(require 'bbdb-wl)
-(bbdb-wl-setup)
-
-(require 'wl-draft)
-(add-hook 'wl-draft-mode-hook
-          (lambda ()
-            (define-key wl-draft-mode-map (kbd "<tab>") 'bbdb-complete-name)))
 
 (require 'dired+)
 (define-key dired-mode-map "W" 'diredp-mark-region-files)
@@ -827,35 +900,6 @@
 ;; (popwin:define-advice 'text-translator-all "*translated*")
 
 
-(require 'anything-config)
-;; (require 'anything-startup)
-(global-set-key (kbd "C-z") 'anything)
-(setq anything-idle-delay 0.3)
-(setq anything-input-idle-delay 0.2)
-(setq anything-candidate-number-limit 100)
-
-(require 'anything-c-shell-history)
-(require 'anything-yaetags)
-(global-set-key (kbd "M-.") 'anything-yaetags-find-tag)
-;; (global-set-key (kbd "M-.") 'find-tag)
-
-(require 'anything-match-plugin)
-(require 'eijiro)
-(setq eijiro-directory "~/Downloads/EDP-124/EIJIRO/") ; 英辞郎の辞書を置いているディレクトリ
-
-(setq anything-sources
-      '(anything-c-source-recentf
-        anything-c-source-info-pages
-        anything-c-source-info-elisp
-        anything-c-source-buffers
-        ;; anything-c-source-shell-history
-        anything-c-source-file-name-history
-        anything-c-source-locate
-        anything-c-source-occur))
-
-(require 'descbinds-anything)
-(descbinds-anything-install)
-(defalias 'rf 'anything-recentf)
 
 (defvar prev-buffer-input-method nil "save previously set inputmethod")
 (make-variable-buffer-local 'prev-buffer-input-method)
@@ -990,7 +1034,7 @@
 (setq line-number-mode t)
 (setq column-number-mode t)
 
-(iswitchb-mode 1)
+
 
 (defvar prev-minibuffer-input-method nil "save previously set inputmethod")
 
@@ -1115,15 +1159,12 @@ directory, select directory. Lastly the file is opened."
 (setq server-visit-hook (quote (save-place-find-file-hook)))
 
 ;; toggle-max-window
-(when
-    (featurep 'carbon-emacs-package)
+(when (featurep 'carbon-emacs-package)
   (defun toggle-max-window ()
     (interactive)
     (if (frame-parameter nil 'fullscreen)
         (set-frame-parameter nil 'fullscreen nil)
       (set-frame-parameter nil 'fullscreen 'fullboth)))
-
-
 
   (global-set-key "\M-\r" 'toggle-max-window)
   (add-hook 'after-init-hook (lambda () (set-frame-parameter nil 'fullscreen 'fullboth)))
@@ -1458,23 +1499,6 @@ post command hook に機能追加"
 
 ;; end of iphone-related settings
 
-(require 'smex)
-(smex-initialize)
-(setq smex-auto-update t)
-(run-at-time t 360 '(lambda () (if (smex-detect-new-commands) (smex-update))))
-(global-set-key (kbd "C-'") 'smex)
-
-(defun smex-hack ()
-  (interactive)
-  (progn
-    (smex)
-    (keyboard-quit)
-    (smex)))
-
-(global-set-key (kbd "M-x") 'smex-hack)
-(global-set-key (kbd "M-X") 'smex-major-mode-commands)
-;; This is your old M-x.
-(global-set-key (kbd "C-c C-c M-x") 'execute-extended-command)
 
 ;; Common copying and pasting functions
 (defun copy-word (&optional arg)
@@ -1873,7 +1897,6 @@ post command hook に機能追加"
 ;; (add-hook 'LaTeX-mode-hook 'enclose-mode)
 (add-hook 'weblogger-entry-mode 'enclose-mode)
 
-(require 'paredit)
 
 (require 'eldoc-extension)
 (add-hook 'emacs-lisp-mode-hook 'turn-on-eldoc-mode)
@@ -1957,12 +1980,10 @@ post command hook に機能追加"
 
 (require 'grep-edit)
 
-
-
 (add-to-list 'load-path "~/.emacs.d/elib-1.0")
 (add-to-list 'load-path "~/.emacs.d/jdee-2.4.0.1/lisp")
 
-(require 'jde)
+;; (require 'jde)
 (autoload 'jde-mode "jde" "JDE mode." t)
 (add-to-list 'auto-mode-alist '("\\java\\'" . jde-mode))
 
@@ -2257,15 +2278,6 @@ If existing, the current prompt will be deleted."
                  (make-directory (file-name-directory buffer-file-name) t))))
 
 
-(require 'highlight-parentheses)
-
-(setq hl-paren-colors
-      '("orange1" "yellow1" "greenyellow" "green1"
-        "springgreen1" "cyan1" "slateblue1" "magenta1" "purple"))
-
-(add-hook 'clojure-mode-hook (lambda () (highlight-parentheses-mode t) (paredit-mode t)))
-(add-hook 'emacs-lisp-mode-hook (lambda () (highlight-parentheses-mode t) (paredit-mode t)))
-(add-hook 'slime-repl-mode-hook (lambda () (highlight-parentheses-mode t) (paredit-mode t)))
 
 (load "~/.emacs.d/nxhtml/autostart.el")
 
@@ -2488,20 +2500,6 @@ FORMAT-STRING is like `format', but it can have multiple %-sequences."
     (beginning-of-buffer)))
 
 (add-to-list 'auto-mode-alist '("\\.doc\\'" . no-word))
-
-
-(dolist (command '(yank yank-pop))
-  (eval `(defadvice ,command (after indent-region activate)
-           (and (not current-prefix-arg)
-                (member major-mode '(emacs-lisp-mode lisp-mode
-                                                     clojure-mode    scheme-mode
-                                                     haskell-mode    ruby-mode
-                                                     rspec-mode      python-mode
-                                                     c-mode          c++-mode
-                                                     objc-mode       latex-mode
-                                                     plain-tex-mode))
-                (let ((mark-even-if-inactive transient-mark-mode))
-                  (indent-region (region-beginning) (region-end) nil))))))
 
 (defalias 'ir 'indent-region)
 
