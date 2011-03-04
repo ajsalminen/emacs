@@ -38,7 +38,53 @@
 (setq el-get-sources
       '((:name tail
                :after (lambda ()
-                        (autoload 'tail-file "tail.el" nil t)))))
+                        (autoload 'tail-file "tail.el" nil t)))
+        (:name apel
+               :type git
+               :module "apel_github"
+               :url "git://github.com/wanderlust/apel.git"
+               :build
+               (mapcar
+                (lambda (target)
+                  (list el-get-emacs
+                        (split-string "-batch -q -no-site-file -l APEL-MK -f")
+                        target
+                        "prefix" "site-lisp" "site-lisp"))
+                '("compile-apel" "install-apel"))
+               :load-path ("site-lisp/apel" "site-lisp/emu"))
+        (:name flim
+               :type git
+               :module "flim"
+               :url "git://github.com/wanderlust/flim.git"
+               :build
+               (mapcar
+                (lambda (target)
+                  (list el-get-emacs
+                        (mapcar (lambda (pkg)
+                                  (mapcar (lambda (d) `("-L" ,d)) (el-get-load-path pkg)))
+                                '("apel"))
+
+                        (split-string "-batch -q -no-site-file -l FLIM-MK -f")
+                        target
+                        "prefix" "site-lisp" "site-lisp"))
+                '("compile-flim" "install-flim"))
+               :load-path ("site-lisp/flim"))
+        (:name semi
+               :type git
+               :module "semi"
+               :url "git://github.com/wanderlust/semi.git"
+               :build
+               (mapcar
+                (lambda (target)
+                  (list el-get-emacs
+                        (mapcar (lambda (pkg)
+                                  (mapcar (lambda (d) `("-L" ,d)) (el-get-load-path pkg)))
+                                '("apel" "flim"))
+
+                        (split-string "-batch -q -no-site-file -l SEMI-MK -f")
+                        target
+                        "prefix" "NONE" "NONE"))
+                '("compile-semi" "install-semi")))))
 (el-get)
 
 ;; All my custom settings that differ and/or can't be under version control
@@ -661,9 +707,9 @@
 (setq history-length 1000)
 
 ;; wl
-(add-to-list 'load-path "~/.emacs.d/apel")
-(add-to-list 'load-path "~/.emacs.d/flim")
-(add-to-list 'load-path "~/.emacs.d/semi")
+;; (add-to-list 'load-path "~/.emacs.d/apel")
+;; (add-to-list 'load-path "~/.emacs.d/flim")
+;; (add-to-list 'load-path "~/.emacs.d/semi")
 (add-to-list 'load-path "~/.emacs.d/wanderlust/elmo")
 (add-to-list 'load-path "~/.emacs.d/wanderlust/utils")
 (add-to-list 'load-path "~/.emacs.d/wanderlust/wl")
