@@ -1,1 +1,1 @@
-(:apel "installed" :flim "installed" :semi "installed" :wanderlust "required" :bbdb "installed")
+(:apel "installed" :flim "installed" :semi "installed" :wanderlust "installed" :bbdb "installed" :el-get "installed" :tail "installed" :cedet "removed" :ecb "required" :chuck-mode "removed" :slime "removed")
