@@ -15,7 +15,9 @@ elispcache/*
 */CVS/*
 CVS
 .svn
+.git
 .emacs.d/history
+.emacs.d/el-get/*/.git
 .emacs.d/thumbs
 .org-id-locations
 org-clock-save.el
