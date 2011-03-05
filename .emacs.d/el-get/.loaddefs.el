@@ -959,8 +959,8 @@ If no name can be extracted, FULL-NAME will be nil.
 ;;;;;;  "../../../../../.emacs.d/el-get/semi/pgg-pgp5.el" "../../../../../.emacs.d/el-get/semi/pgg.el"
 ;;;;;;  "../../../../../.emacs.d/el-get/semi/postpet.el" "../../../../../.emacs.d/el-get/semi/semi-def.el"
 ;;;;;;  "../../../../../.emacs.d/el-get/semi/semi-setup.el" "../../../../../.emacs.d/el-get/semi/signature.el"
-;;;;;;  "../../../../../.emacs.d/el-get/semi/smime.el") (19825 36326
-;;;;;;  47086))
+;;;;;;  "../../../../../.emacs.d/el-get/semi/smime.el") (19825 37254
+;;;;;;  832376))
 
 ;;;***
 
