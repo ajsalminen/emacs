@@ -15,6 +15,7 @@ elispcache/*
 */CVS/*
 CVS
 .svn
+.bzr
 .git
 .emacs.d/history
 .emacs.d/el-get/*/.git
@@ -22,3 +23,4 @@ CVS
 .org-id-locations
 org-clock-save.el
 ac-comphist.dat
+.emacs.d/nxhtml/etc/schema/xhtml-loader.rnc
