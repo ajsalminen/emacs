@@ -1262,6 +1262,7 @@ directory, select directory. Lastly the file is opened."
 
 (add-to-list 'auto-mode-alist '("\\.org$" . org-mode))
 (global-set-key "\C-cl" 'org-store-link)
+
 (global-set-key "\C-ca" 'org-agenda)
 (global-set-key "\C-cb" 'org-iswitchb)
 (add-hook 'org-mode-hook 'turn-on-font-lock) ; Org buffers only
@@ -1293,11 +1294,12 @@ directory, select directory. Lastly the file is opened."
 (define-key global-map "\C-cc" 'org-capture)
 
 (setq org-capture-templates
-      '(("i" "Inbox" entry (file+headline "~/org/todo.org" "Inbox") "** TODO %? %i :inbox%a %T")
-        ("r" "Research" entry (file+headline "~/org/diss.org" "Research") "** %? %i :research%a %T")
-        ("t" "Writing" entry (file+headline "~/org/write.org" "Writing") "** TODO %? :write%a %T")
-        ("w" "Work" entry (file+headline "~/org/work.org" "Work") "** TODO %? :work%a %T")
-        ("d" "Dev" entry (file+headline "~/org/dev.org" "Dev") "** TODO %? :dev%i %a %T")))
+      '(("i" "Inbox" entry (file+headline "~/org/todo.org" "Inbox") "** TODO %? %i :inbox %a %T")
+        ("r" "Research" entry (file+headline "~/org/diss.org" "Research") "** %? %i :research %a %T")
+        ("t" "Writing" entry (file+headline "~/org/write.org" "Writing") "** TODO %? :write %a %T")
+        ("w" "Work" entry (file+headline "~/org/work.org" "Work") "** TODO %? :work\n %a %T")
+        ("d" "Dev" entry (file+headline "~/org/dev.org" "Dev") "** TODO %? \n:dev %i %a %T")
+        ("p" "Personal" entry (file+headline "~/org/personal.org" "Personal") "* TODO %? \n:personal\n %T\n \nEntered on %U\n  %i\n  %a")))
 
 ;;(setq org-refile-targets (quote ((org-agenda-files :regexp . "*"))))
 (setq org-refile-targets (quote ((org-agenda-files :level . 1))))
