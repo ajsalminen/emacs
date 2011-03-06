@@ -111,7 +111,30 @@
 (smex-initialize)
 (setq smex-auto-update t)
 (run-at-time t 360 '(lambda () (if (smex-detect-new-commands) (smex-update))))
-(global-set-key (kbd "C-'") 'smex)
+
+
+
+(defvar prev-minibuffer-input-method nil "save previously set inputmethod")
+(defun toggle-back-minibuffer-input ()
+  (interactive)
+  (progn
+    (activate-input-method (if (boundp 'prev-minibuffer-input-method)
+                               prev-minibuffer-input-method
+                             current-input-method))))
+(add-hook 'minibuffer-exit-hook 'toggle-back-minibuffer-input)
+
+(defun enter-minibuf-with-toggle-input-method (f)
+  (interactive)
+  (progn
+    (setq prev-minibuffer-input-method current-input-method)
+    (activate-input-method nil)
+    (funcall f)))
+
+(defun smex-with-toggle ()
+  (interactive)
+  (enter-minibuf-with-toggle-input-method 'smex))
+
+(global-set-key (kbd "C-'") 'smex-with-toggle)
 
 (defun smex-hack ()
   (interactive)
@@ -756,10 +779,12 @@
    "-apple-hiragino_kaku_gothic_pro-medium-normal-normal-*-14-*-iso10646-1")
 
   ;; apologetic hack to make sure my mac input is used
-  (progn
-    (setq default-input-method "MacOSX")
-    (set-input-method "MacOSX")
-    (toggle-input-method))
+  (defun set-mac-input ()
+    (interactive)
+    (progn
+      (setq default-input-method "MacOSX")
+      (set-input-method "MacOSX")
+      (toggle-input-method)))
 
   (if (fboundp 'ns-toggle-fullscreen)
       (global-set-key "\M-\r" 'ns-toggle-fullscreen)))
@@ -1082,26 +1107,12 @@
 (setq column-number-mode t)
 
 
-
-(defvar prev-minibuffer-input-method nil "save previously set inputmethod")
-
-(defun toggle-iswitchb-input ()
-  (interactive)
-  (progn
-    (activate-input-method (if (boundp 'prev-minibuffer-input-method)
-                               prev-minibuffer-input-method
-                             current-input-method))))
-
 ;; (add-hook 'iswitchb-minibuffer-setup-hook (lambda () (toggle-iswitchb-input)))
 ;; (add-hook 'minibuffer-setup-hook (lambda () (activate-input-method nil)))
-(add-hook 'minibuffer-exit-hook 'toggle-iswitchb-input)
 
 (defun iswitchb-toggle-input-method ()
   (interactive)
-  (progn
-    (setq prev-minibuffer-input-method current-input-method)
-    (activate-input-method nil)
-    (iswitchb-buffer)))
+  (enter-minibuf-with-toggle-input-method 'iswitchb-buffer))
 
 (global-set-key "\C-xb" 'iswitchb-toggle-input-method)
 
@@ -1244,17 +1255,61 @@ directory, select directory. Lastly the file is opened."
         (delete-other-windows) ))))
 
 
+(autoload 'iimage-mode "iimage" "Support Inline image minor mode." t)
+(autoload 'turn-on-iimage-mode "iimage" "Turn on Inline image minor mode." t)
+
+(add-to-list 'iimage-mode-image-regex-alist
+             (cons (concat "\\[\\[file:\\(~?" iimage-mode-image-filename-regex
+                           "\\)\\]")  1))
+
+(defun org-toggle-iimage-in-org ()
+  "display images in your org file"
+  (interactive)
+  (if (face-underline-p 'org-link)
+      (set-face-underline-p 'org-link nil)
+    (set-face-underline-p 'org-link t))
+  (iimage-mode))
+
+(add-hook 'org-mode-hook 'turn-on-iimage-mode)
+
+
+
 
 ;; org-modeを利用するための設定
 (add-to-list 'load-path "~/.emacs.d/org-mode/lisp")
 (add-to-list 'load-path "~/.emacs.d/org-mode/contrib/lisp")
-(add-to-list 'load-path "~/.emacs.d/remember-2.0")
 (require 'org-install)
-(require 'remember)
-
 (require 'org-clock)
 (require 'org-timer)
 (require 'org-habit)
+
+(require 'google-weather)
+(require 'org-google-weather)
+
+(setq org-google-weather-icon-alist
+      (quote ((chance_of_rain . "50_11.png")
+              (chance_of_snow . "50_14.png")
+              (chance_of_storm . "50_3.png")
+              (cloudy . "50_26.png")
+              (dust . "50_23.png")
+              (flurries . "50_43.png")
+              (fog . "50_20.png")
+
+              (haze . "50_21.png")
+              (icy . "50_25.png")
+              (mist . "50_10.png")
+              (mostly_cloudy . "50_28.png")
+              (mostly_sunny . "50_30.png")
+              (partly_cloudy . "50_34.png")
+              (rain . "50_9.png")
+              (sleet . "50_25.png")
+              (smoke . "50_19.png")
+              (snow . "50_6.png")
+              (storm . "50_38.png")
+              (thunderstorm . "50_35.png")
+              (sunny . "50_36.png"))))
+
+(setq org-google-weather-icon-directory "~/Dropbox/weather_icons")
 
 (setq org-timer-default-timer 25)
 
@@ -1303,6 +1358,7 @@ directory, select directory. Lastly the file is opened."
         ("t" "Writing" entry (file+headline "~/org/write.org" "Writing") "** TODO %? :write %a %T")
         ("w" "Work" entry (file+headline "~/org/work.org" "Work") "** TODO %? :work\n %a %T")
         ("d" "Dev" entry (file+headline "~/org/dev.org" "Dev") "** TODO %? \n:dev %i %a %T")
+        ("h" "HJ" entry (file+headline "~/org/hj.org" "HJ") "* TODO %? \n:hj\n %T\n \nEntered on %U\n  %i\n  %a")
         ("p" "Personal" entry (file+headline "~/org/personal.org" "Personal") "* TODO %? \n:personal\n %T\n \nEntered on %U\n  %i\n  %a")))
 
 (setq org-todo-keyword-faces
