@@ -44,11 +44,15 @@
 (require 'color-theme)
 (require 'color-theme-inkpot)
 (require 'manoj-colors)
+(require 'color-theme-tangotango)
 (require 'color-theme-sunburst)
+
 (eval-after-load "color-theme"
   '(progn
      (color-theme-initialize)
+     (color-theme-tangotango)
      (color-theme-manoj-gnus)
+     (color-theme-manoj-org)
      (color-theme-inkpot)))
 
 (set-face-foreground 'default "white")
@@ -1300,6 +1304,12 @@ directory, select directory. Lastly the file is opened."
         ("w" "Work" entry (file+headline "~/org/work.org" "Work") "** TODO %? :work\n %a %T")
         ("d" "Dev" entry (file+headline "~/org/dev.org" "Dev") "** TODO %? \n:dev %i %a %T")
         ("p" "Personal" entry (file+headline "~/org/personal.org" "Personal") "* TODO %? \n:personal\n %T\n \nEntered on %U\n  %i\n  %a")))
+
+(setq org-todo-keyword-faces
+      '(("TODO"      . org-warning)
+        ("DEFERRED"  . shadow)
+        ("CANCELED"  . (:foreground "blue" :weight bold))))
+
 
 ;;(setq org-refile-targets (quote ((org-agenda-files :regexp . "*"))))
 (setq org-refile-targets (quote ((org-agenda-files :level . 1))))

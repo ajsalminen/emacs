@@ -1,15 +1,15 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;; -*- Mode: Emacs-Lisp -*- ;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; manoj-colors.el --- 
-;; Author           : Manoj Srivastava ( srivasta@anzu.internal.golden-gryphon.com ) 
+;; manoj-colors.el ---
+;; Author           : Manoj Srivastava ( srivasta@anzu.internal.golden-gryphon.com )
 ;; Created On       : Sun May 25 15:17:44 2008
 ;; Created On Node  : anzu.internal.golden-gryphon.com
 ;; Last Modified By : Manoj Srivastava
 ;; Status           : Unknown, Use with caution!
-;; HISTORY          : 
-;; Description      : 
+;; HISTORY          :
+;; Description      :
 ;;
 ;; Copyright © 2008 Manoj Srivastava <srivasta@debian.org
-;; 
+;;
 ;; This file is free software: you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
 ;; the Free Software Foundation, either version 3 of the License, or
@@ -410,51 +410,25 @@ This is intended for other color themes to use."
   (color-theme-install
    '(color-theme-manoj-org
      nil
-     (org-agenda-date ((t (:foreground "LightSkyBlue"))))
-     (org-agenda-date-weekend ((t (:bold t :foreground "LightSkyBlue" :weight bold))))
-     (org-agenda-restriction-lock ((t (:background "skyblue4"))))
-     (org-agenda-structure ((t (:foreground "LightSkyBlue"))))
-     (org-archived ((t (:foreground "grey70"))))
-     (org-code ((t (:foreground "grey70"))))
-     (org-column ((t (:background "grey30" :strike-through nil :underline nil :slant normal :weight normal :height 81 :family "unknown-DejaVu Sans Mono"))))
-     (org-column-title ((t (:bold t :background "grey30" :underline t :weight bold))))
-     (org-date ((t (:foreground "Cyan" :underline t))))
-     (org-done ((t (:bold t :foreground "PaleGreen" :weight bold))))
-     (org-drawer ((t (:foreground "LightSkyBlue"))))
-     (org-ellipsis ((t (:foreground "LightGoldenrod" :underline t))))
-     (org-formula ((t (:foreground "chocolate1"))))
-     (org-headline-done ((t (:foreground "LightSalmon"))))
-     (org-hide ((t (:foreground "black"))))
-     (org-latex-and-export-specials ((t (:foreground "burlywood"))))
-     (org-level-1 ((t (:foreground "LightSkyBlue"))))
-     (org-level-2 ((t (:foreground "LightGoldenrod"))))
-     (org-level-3 ((t (:foreground "Cyan1"))))
-     (org-level-4 ((t (:foreground "chocolate1"))))
-     (org-level-5 ((t (:foreground "PaleGreen"))))
-     (org-level-6 ((t (:foreground "Aquamarine"))))
-     (org-level-7 ((t (:foreground "LightSteelBlue"))))
-     (org-level-8 ((t (:foreground "LightSalmon"))))
-     (org-link ((t (:foreground "Cyan" :underline t))))
-     (org-property-value ((t (nil))))
-     (org-scheduled-previously ((t (:foreground "chocolate1"))))
-     (org-scheduled-today ((t (:foreground "PaleGreen"))))
-     (org-sexp-date ((t (:foreground "Cyan"))))
-     (org-special-keyword ((t (:foreground "LightSalmon"))))
-     (org-table ((t (:foreground "LightSkyBlue"))))
-     (org-tag ((t (:bold t :weight bold))))
-     (org-target ((t (:underline t))))
-     (org-time-grid ((t (:foreground "LightGoldenrod"))))
-     (org-todo ((t (:bold t :foreground "Pink" :weight bold))))
-     (org-upcoming-deadline ((t (:foreground "chocolate1"))))
-     (org-verbatim ((t (:foreground "grey70" :underline t))))
-     (org-warning ((t (:bold t :weight bold :foreground "Pink"))))
-     (outline-1 ((t (:foreground "LightSkyBlue"))))
-     (outline-2 ((t (:foreground "LightGoldenrod"))))
-     (outline-3 ((t (:foreground "Cyan1"))))
-     (outline-4 ((t (:foreground "chocolate1"))))
-     (outline-5 ((t (:foreground "PaleGreen"))))
-     (outline-6 ((t (:foreground "Aquamarine"))))
-     (outline-7 ((t (:foreground "LightSteelBlue"))))
+     (org-hide ((t (:foreground "#2e3436"))))
+     (org-level-1 ((t (:bold t :foreground "dodger blue" :height 1.5))))
+     (org-level-2 ((t (:bold nil :foreground "#edd400" :height 1.2))))
+     (org-level-3 ((t (:bold t :foreground "#6ac214" :height 1.0))))
+     (org-level-4 ((t (:bold nil :foreground "tomato" :height 1.0))))
+     (org-date ((t (:underline t :foreground "magenta3"))))
+     (org-footnote  ((t (:underline t :foreground "magenta3"))))
+     (org-link ((t (:foreground "skyblue2" :background "#2e3436"))))
+     (org-special-keyword ((t (:foreground "brown"))))
+     (org-verbatim ((t (:foreground "#eeeeec" :underline t :slant italic))))
+     (org-block ((t (:foreground "#bbbbbc"))))
+     (org-quote ((t (:inherit org-block :slant italic))))
+     (org-verse ((t (:inherit org-block :slant italic))))
+     (org-todo ((t (:bold t :foreground "Red"))))
+     (org-done ((t (:bold t :foreground "ForestGreen"))))
+     (org-agenda-structure ((t (:weight bold :foreground "tomato"))))
+     (org-agenda-date ((t (:foreground "#6ac214"))))
+     (org-agenda-date-weekend ((t (:weight normal :foreground "dodger blue"))))
+     (org-agenda-date-today ((t (:weight bold :foreground "#edd400"))))
      (outline-8 ((t (:foreground "LightSalmon")))))))
 
 (defun color-theme-manoj-dark ()
@@ -728,7 +702,7 @@ A dark background theme, with special care being taken for gnus faces."
        (hyper-apropos-section-heading ((t (:bold t))))
        (hyper-apropos-warning ((t (:bold t :foreground "red"))))
        (ibuffer-deletion-face ((t (:foreground "red"))))
-       (ibuffer-dired-buffer-face ((t (:foreground "mediumspringgreen" :weight bold :height 1.1)))) 
+       (ibuffer-dired-buffer-face ((t (:foreground "mediumspringgreen" :weight bold :height 1.1))))
        (ibuffer-help-buffer-face  ((t (:italic t :slant oblique :foreground "chocolate1"))))
        (ibuffer-hidden-buffer-face  ((t (:bold t :foreground "Pink" :weight bold))))
        (ibuffer-marked-face ((t (:foreground "green"))))
