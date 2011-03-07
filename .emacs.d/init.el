@@ -203,9 +203,10 @@
 ;; (setq el-get-init-files-pattern "~/emacs/init.d/[0-9]*.el")
 ;; (setq el-get-sources nil)
 (setq el-get-sources
-      '((:name tail
-		     :after (lambda ()
-			      (autoload 'tail-file "tail.el" nil t)))
+      '(google-weather
+        (:name tail
+               :after (lambda ()
+                        (autoload 'tail-file "tail.el" nil t)))
 	      (:name ecb
 		     :after (lambda ()
 			      (setq ecb-layout-name "left8")
@@ -1258,10 +1259,9 @@ directory, select directory. Lastly the file is opened."
 (autoload 'iimage-mode "iimage" "Support Inline image minor mode." t)
 (autoload 'turn-on-iimage-mode "iimage" "Turn on Inline image minor mode." t)
 
-(add-to-list 'iimage-mode-image-regex-alist
-             (cons (concat "\\[\\[file:\\(~?" iimage-mode-image-filename-regex
-                           "\\)\\]")  1))
-
+(add-hook 'iimage-mode-hook (lambda () (add-to-list 'iimage-mode-image-regex-alist
+                                                    (cons (concat "\\[\\[file:\\(~?" iimage-mode-image-filename-regex
+                                                                  "\\)\\]")  1))))
 (defun org-toggle-iimage-in-org ()
   "display images in your org file"
   (interactive)
