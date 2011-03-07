@@ -242,7 +242,7 @@
      (magit-diff-add ((t (:foreground "#729fcf"))))
      (magit-header ((t (:foreground "#edd400"))))
      (magit-item-highlight ((t (:bold t :weight extra-bold))))
-     (match ((t (:bold t :background "#e9b96e" :foreground "#2e3436" :weight bold))))
+     (match ((t (:bold t :underline t :background "white" :foreground "red1" :weight bold))))
      (menu ((t (nil))))
      (message-cited-text ((t (:foreground "#edd400"))))
      (message-header-cc ((t (:foreground "white"))))
