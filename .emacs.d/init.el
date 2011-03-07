@@ -42,28 +42,12 @@
 
 (add-to-list 'load-path "~/.emacs.d/color-theme")
 (require 'color-theme)
-(require 'color-theme-inkpot)
-(require 'manoj-colors)
-(require 'color-theme-tangotango)
-(require 'color-theme-sunburst)
-
+;; (require 'color-theme-inkpot)
+(require 'color-theme-invaders)
 (eval-after-load "color-theme"
   '(progn
      (color-theme-initialize)
-     (color-theme-tangotango)
-     (color-theme-manoj-gnus)
-     (color-theme-manoj-org)
-     (color-theme-inkpot)))
-
-(set-face-foreground 'default "white")
-
-(set-face-background 'modeline-inactive "chocolate3")
-(set-face-foreground 'modeline-inactive "White")
-(set-face-background 'modeline "SteelBlue")
-(set-face-foreground 'modeline "Black")
-(set-face-background 'modeline-highlight "White")
-(set-face-background 'modeline-buffer-id "RoyalBlue")
-(set-face-foreground 'modeline-buffer-id "OldLace")
+     (color-theme-invaders)))
 
 (require 'paredit)
 (require 'highlight-parentheses)
@@ -111,8 +95,6 @@
 (smex-initialize)
 (setq smex-auto-update t)
 (run-at-time t 360 '(lambda () (if (smex-detect-new-commands) (smex-update))))
-
-
 
 (defvar prev-minibuffer-input-method nil "save previously set inputmethod")
 (defun toggle-back-minibuffer-input ()
@@ -1340,15 +1322,16 @@ directory, select directory. Lastly the file is opened."
 
 
 (setq org-capture-templates
-      '(("i" "Inbox" entry (file+headline "~/org/todo.org" "Inbox") "** TODO %? \n %i :inbox %a %T \n %U")
-        ("r" "Research" entry (file+headline "~/org/diss.org" "Research") "** TODO %? \n %i :research %a %T")
-        ("t" "Writing" entry (file+headline "~/org/write.org" "Writing") "** TODO %? :write %a %T")
-        ("w" "Work" entry (file+headline "~/org/work.org" "Work") "** TODO %? :work\n %a %T")
-        ("l" "RIL" entry (file+headline "~/org/ril.org" "Ril") "** TODO %? :ril\n %a %T")
-        ("d" "Dev" entry (file+headline "~/org/dev.org" "Dev") "** TODO %? \n:dev %i %a %T")
-        ("h" "HJ" entry (file+headline "~/org/hj.org" "HJ") "* TODO %? \n:hj\n %T\n \nEntered on %U\n  %i\n  %a")
-        ("p" "Personal" entry (file+headline "~/org/personal.org" "Personal") "* TODO %? \n:personal\n %T\n \nEntered on %U\n  %i\n  %a")))
+      '(("i" "Inbox" entry (file+headline "~/org/todo.org" "Inbox") "** TODO %? \n %i :inbox: %a %T \n %U")
+        ("r" "Research" entry (file+headline "~/org/diss.org" "Research") "** TODO %? \n %i :research: %a %T")
+        ("t" "Writing" entry (file+headline "~/org/write.org" "Writing") "** TODO %? :write: %a %T")
+        ("w" "Work" entry (file+headline "~/org/work.org" "Work") "** TODO %? :work: \n %a %T")
+        ("l" "RIL" entry (file+headline "~/org/ril.org" "Ril") "** TODO %? :ril: \n %a %T")
+        ("d" "Dev" entry (file+headline "~/org/dev.org" "Dev") "** TODO %? \n:dev: %i %a %T")
+        ("h" "HJ" entry (file+headline "~/org/hj.org" "HJ") "* TODO %? \n:hj: \n %T\n \nEntered on %U\n  %i\n  %a")
+        ("p" "Personal" entry (file+headline "~/org/personal.org" "Personal") "* TODO %? \n:personal: \n %T\n \nEntered on %U\n  %i\n  %a")))
 
+(setq org-todo-keyword-faces nil)
 (setq org-todo-keyword-faces
       '(("TODO"      . org-warning)
         ("DEFERRED"  . shadow)
