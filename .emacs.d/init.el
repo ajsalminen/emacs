@@ -1303,16 +1303,15 @@ directory, select directory. Lastly the file is opened."
 (setq org-agenda-skip-unavailable-files t)
 (setq org-log-done-with-time t)
 
-(defun org-mobile-pullpush nil nil (org-mobile-pull)
-  (org-mobile-push))
+(defun org-mobile-pullpush ()
+  (interactive)
+  (progn
+    (org-mobile-pull)
+    (org-mobile-push)))
 
 (require 'deferred)
 
-(defun async-org-mobile-pullpush
-  (deferred:call(org-mobile-pullpush)))
-
-(run-at-time t 3600 'async-org-mobile-pullpush)
-
+(run-at-time t 3600 (lambda () (deferred:call(org-mobile-pullpush))))
 
 (setq org-default-notes-file (concat org-directory "memo.org"))
 (define-key global-map "\C-cc" 'org-capture)
