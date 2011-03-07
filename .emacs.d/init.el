@@ -35,7 +35,7 @@
   (loop for path in (split-string (getenv "PATH") ":") do
         (add-to-list 'exec-path path)))
 
-(setq mac-option-key-is-meta nil)
+(setq mac-option-key-is-meta t)
 (setq mac-command-key-is-meta t)
 (setq mac-command-modifier 'meta)
 (setq mac-option-modifier nil)
@@ -1270,10 +1270,12 @@ directory, select directory. Lastly the file is opened."
     (set-face-underline-p 'org-link t))
   (iimage-mode))
 
-(add-hook 'org-mode-hook 'turn-on-iimage-mode)
-
-
-
+(setq display-time-world-list '(("PST8PDT" "Bay Area")
+                                ("EST5EDT" "New York")
+                                ("GMT0BST" "London")
+                                ("CET-1CDT" "Paris")
+                                ("IST-5:30" "Bangalore")
+                                ("JST-9" "Tokyo")))
 
 ;; org-modeを利用するための設定
 (add-to-list 'load-path "~/.emacs.d/org-mode/lisp")
@@ -1286,30 +1288,9 @@ directory, select directory. Lastly the file is opened."
 (require 'google-weather)
 (require 'org-google-weather)
 
-(setq org-google-weather-icon-alist
-      (quote ((chance_of_rain . "50_11.png")
-              (chance_of_snow . "50_14.png")
-              (chance_of_storm . "50_3.png")
-              (cloudy . "50_26.png")
-              (dust . "50_23.png")
-              (flurries . "50_43.png")
-              (fog . "50_20.png")
 
-              (haze . "50_21.png")
-              (icy . "50_25.png")
-              (mist . "50_10.png")
-              (mostly_cloudy . "50_28.png")
-              (mostly_sunny . "50_30.png")
-              (partly_cloudy . "50_34.png")
-              (rain . "50_9.png")
-              (sleet . "50_25.png")
-              (smoke . "50_19.png")
-              (snow . "50_6.png")
-              (storm . "50_38.png")
-              (thunderstorm . "50_35.png")
-              (sunny . "50_36.png"))))
-
-(setq org-google-weather-icon-directory "~/Dropbox/weather_icons")
+(add-hook 'org-mode-hook 'turn-on-iimage-mode)
+(setq org-google-weather-icon-directory "~/Dropbox/status")
 
 (setq org-timer-default-timer 25)
 
@@ -1337,6 +1318,7 @@ directory, select directory. Lastly the file is opened."
 ;; Set to <your Dropbox root directory>/MobileOrg.
 (setq org-mobile-directory "~/Dropbox/MobileOrg")
 (setq org-agenda-skip-unavailable-files t)
+(setq org-log-done-with-time t)
 
 (defun org-mobile-pullpush nil nil (org-mobile-pull)
   (org-mobile-push))
@@ -1352,11 +1334,17 @@ directory, select directory. Lastly the file is opened."
 (setq org-default-notes-file (concat org-directory "memo.org"))
 (define-key global-map "\C-cc" 'org-capture)
 
+(setq org-log-done 'time)
+(setq org-todo-keywords
+      '((sequence "TODO(t)" "WAIT(w@/!)" "|" "DONE(d!)" "CANCELED(c@)")))
+
+
 (setq org-capture-templates
-      '(("i" "Inbox" entry (file+headline "~/org/todo.org" "Inbox") "** TODO %? %i :inbox %a %T")
-        ("r" "Research" entry (file+headline "~/org/diss.org" "Research") "** %? %i :research %a %T")
+      '(("i" "Inbox" entry (file+headline "~/org/todo.org" "Inbox") "** TODO %? \n %i :inbox %a %T \n %U")
+        ("r" "Research" entry (file+headline "~/org/diss.org" "Research") "** TODO %? \n %i :research %a %T")
         ("t" "Writing" entry (file+headline "~/org/write.org" "Writing") "** TODO %? :write %a %T")
         ("w" "Work" entry (file+headline "~/org/work.org" "Work") "** TODO %? :work\n %a %T")
+        ("l" "RIL" entry (file+headline "~/org/ril.org" "Ril") "** TODO %? :ril\n %a %T")
         ("d" "Dev" entry (file+headline "~/org/dev.org" "Dev") "** TODO %? \n:dev %i %a %T")
         ("h" "HJ" entry (file+headline "~/org/hj.org" "HJ") "* TODO %? \n:hj\n %T\n \nEntered on %U\n  %i\n  %a")
         ("p" "Personal" entry (file+headline "~/org/personal.org" "Personal") "* TODO %? \n:personal\n %T\n \nEntered on %U\n  %i\n  %a")))
@@ -2126,7 +2114,7 @@ post command hook に機能追加"
 (define-key isearch-mode-map "\M-E" 'isearch-yank-symbol)
 
 (require 'switch-window)
-(setq switch-window-increase 50)
+(setq switch-window-increase 10)
 (setq switch-window-timeout 3)
 
 (require 'sr-speedbar)
@@ -2364,7 +2352,16 @@ If existing, the current prompt will be deleted."
 (setq disabled-command-function nil)
 
 (require 'window-numbering)
-(window-numbering-mode 1)
+(window-numbering-mode nil)
+
+(require 'window-number)
+(window-number-mode t)
+(autoload 'window-number-meta-mode "window-number"
+  "A global minor mode that enables use of the M- prefix to select
+windows, use `window-number-mode' to display the window numbers in
+the mode-line."
+  t)
+
 
 (autoload 'save-current-configuration "revive" "Save status" t)
 (autoload 'resume "revive" "Resume Emacs" t)
