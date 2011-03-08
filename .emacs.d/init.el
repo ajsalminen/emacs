@@ -1276,6 +1276,8 @@ directory, select directory. Lastly the file is opened."
 (add-hook 'org-mode-hook 'turn-on-iimage-mode)
 (setq org-google-weather-icon-directory "~/Dropbox/status")
 
+(setq org-habit-graph-column 70)
+
 (defun org-cmp-title (a b)
   "Compare the titles of string A and B"
   (cond ((string-lessp a b) -1)
