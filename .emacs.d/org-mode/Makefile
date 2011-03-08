@@ -71,7 +71,7 @@ LISPF      = 	org.el			\
 	     	org-colview.el		\
 	     	org-colview-xemacs.el	\
 	     	org-compat.el		\
-	     	org-complete.el		\
+	     	org-pcomplete.el	\
 	     	org-crypt.el		\
 	     	org-ctags.el		\
 	     	org-datetree.el		\
@@ -108,6 +108,7 @@ LISPF      = 	org.el			\
 		org-protocol.el		\
 		org-remember.el		\
 		org-rmail.el		\
+		org-special-blocks.el	\
 		org-src.el		\
 		org-table.el		\
 		org-taskjuggler.el	\
@@ -135,6 +136,7 @@ LISPF      = 	org.el			\
 		ob-dot.el		\
 		ob-mscgen.el		\
 		ob-latex.el		\
+		ob-lisp.el		\
 		ob-ledger.el		\
 		ob-python.el		\
 		ob-sql.el		\
@@ -262,9 +264,6 @@ doc/orgcard_letter.pdf: doc/orgcard_letter.tex
 
 # Below here are special targets for maintenance only
 
-updateweb:
-	ssh cdominik@orgmode.org 'pull-worg-orgweb.sh && publish-worg-orgweb.sh'
-
 html: doc/org.html
 
 html_manual: doc/org.texi
@@ -297,7 +296,7 @@ testrelease:
 	git checkout master
 	git branch -D testrelease
 
-# The following target makes a full release fro the stuff that is
+# The following target makes a full release for the stuff that is
 # currently on master.  Do it like this:
 #
 #   make release TAG=7.01
@@ -316,12 +315,11 @@ release:
 	git push -f origin maint
 	git checkout master
 	git merge -s ours maint
-	UTILITIES/set-version.pl -o $(TAG)
+	UTILITIES/set-version.pl -a $(TAG)
 	git commit -a -m "Update website to show $(TAG) as current release"
 	git push
-	make updateweb
 
-# The following target makes a release, but from the studd that is on
+# The following target makes a release, but from the stuff that is on
 # maint, not from the stuff that is on master.  The idea is that it pushes
 # out a minor fix into a minor update, while development on master
 # already went full steam ahead.  To make a micro-relesse, cherry-pick
@@ -348,42 +346,13 @@ fixrelease:
 	UTILITIES/set-version.pl -o $(TAG)
 	git commit -a -m "Update website to show $(TAG) as current release"
 	git push
-	make updateweb
 
+# ~$ make relup only makes sense from orgmode.org server
+# Don't call it from your computer!
 relup:
 	${MAKE} makerelease
-	${MAKE} upload_release
-	${MAKE} upload_manual
-
-distfile:
-	@if [ "X$(TAG)" = "X" ]; then echo "*** No tag ***"; exit 1; fi
-	touch doc/org.texi doc/orgcard.tex # force update
-	${MAKE} cleancontrib
-	${MAKE} info
-	${MAKE} doc
-	${MAKE} lisp/org-install.el
-	rm -rf org-$(TAG) org-$(TAG).zip
-	$(MKDIR) org-$(TAG)
-	$(MKDIR) org-$(TAG)/doc
-	$(MKDIR) org-$(TAG)/lisp
-	cp -r $(LISPFILES) org-$(TAG)/lisp
-	cp -r $(DOCFILES) $(CARDFILES) org-$(TAG)/doc
-	cp -r $(DISTFILES_extra) org-$(TAG)/
-	cp -r README_DIST org-$(TAG)/README
-	cp -r ORGWEBPAGE/Changes.org org-$(TAG)/
-	zip -r org-$(TAG).zip org-$(TAG)
-	gtar zcvf org-$(TAG).tar.gz org-$(TAG)
-
-pkg:
-	@if [ "X$(PKG_TAG)" = "X" ]; then echo "*** No tag ***"; exit 1; fi
-	touch doc/org.texi doc/orgcard.tex # force update
-	${MAKE} info
-	${MAKE} doc
-	rm -rf org-$(PKG_TAG) org-$(PKG_TAG).tar
-	$(MKDIR) org-$(PKG_TAG)
-	cp -r $(PKG_FILES) org-$(PKG_TAG)
-	echo "(define-package \"org\" \"$(PKG_TAG)\" \"$(PKG_DOC)\" $(PKG_REQ))" > org-$(PKG_TAG)/org-pkg.el
-	tar cf org-$(PKG_TAG).tar org-$(PKG_TAG) --remove-files
+	${MAKE} sync_release
+	${MAKE} sync_manual
 
 makerelease:
 	@if [ "X$(TAG)" = "X" ]; then echo "*** No tag ***"; exit 1; fi
@@ -401,12 +370,45 @@ makerelease:
 	cp RELEASEDIR/org-$(TAG).zip    RELEASEDIR/org.zip
 	cp RELEASEDIR/org-$(TAG).tar.gz RELEASEDIR/org.tar.gz
 
-upload_release:
-	rsync -avuz RELEASEDIR/ cdominik@orgmode.org:orgmode.org/
+# ~$ make sync_release only makes sense from orgmode.org server
+# Don't call it from your computer!
+sync_release:
+	rsync -avuz RELEASEDIR/ /var/www/orgmode.org/
 
-upload_manual:
-	rsync -avuz --delete doc/manual/ cdominik@orgmode.org:orgmode.org/manual/
-	rsync -avuz --delete doc/guide/ cdominik@orgmode.org:orgmode.org/guide/
+# ~$ make sync_manual only makes sense from orgmode.org server
+# Don't call it from your computer!
+sync_manual:
+	rsync -avuz --delete doc/manual/ /var/www/orgmode.org/manual/
+	rsync -avuz --delete doc/guide/ /var/www/orgmode.org/guide/
+
+distfile:
+	@if [ "X$(TAG)" = "X" ]; then echo "*** No tag ***"; exit 1; fi
+	touch doc/org.texi doc/orgcard.tex # force update
+	${MAKE} cleancontrib
+	${MAKE} info
+	${MAKE} doc
+	${MAKE} lisp/org-install.el
+	rm -rf org-$(TAG) org-$(TAG).zip
+	$(MKDIR) org-$(TAG)
+	$(MKDIR) org-$(TAG)/doc
+	$(MKDIR) org-$(TAG)/lisp
+	cp -r $(LISPFILES) org-$(TAG)/lisp
+	cp -r $(DOCFILES) $(CARDFILES) org-$(TAG)/doc
+	cp -r $(DISTFILES_extra) org-$(TAG)/
+	cp -r README_DIST org-$(TAG)/README
+	zip -r org-$(TAG).zip org-$(TAG)
+	tar zcvf org-$(TAG).tar.gz org-$(TAG)
+
+pkg:
+	@if [ "X$(PKG_TAG)" = "X" ]; then echo "*** No tag ***"; exit 1; fi
+	touch doc/org.texi doc/orgcard.tex # force update
+	${MAKE} info
+	${MAKE} doc
+	rm -rf org-$(PKG_TAG) org-$(PKG_TAG).tar
+	$(MKDIR) org-$(PKG_TAG)
+	cp -r $(PKG_FILES) org-$(PKG_TAG)
+	echo "(define-package \"org\" \"$(PKG_TAG)\" \"$(PKG_DOC)\" $(PKG_REQ))" > org-$(PKG_TAG)/org-pkg.el
+	tar cf org-$(PKG_TAG).tar org-$(PKG_TAG) --remove-files
 
 cleanall:
 	${MAKE} clean
@@ -424,7 +426,7 @@ cleancontrib:
 cleanelc:
 	rm -f $(ELCFILES)
 cleandoc:
-	(cd doc; rm -f org.pdf org org.html orgcard.pdf)
+	(cd doc; rm -f org.pdf org org.html orgcard.pdf orgguide.pdf)
 	(cd doc; rm -f *.aux *.cp *.cps *.dvi *.fn *.fns *.ky *.kys *.pg *.pgs)
 	(cd doc; rm -f *.toc *.tp *.tps *.vr *.vrs *.log *.html *.ps)
 	(cd doc; rm -f orgcard_letter.tex orgcard_letter.pdf)
@@ -440,15 +442,15 @@ cleanrel:
 
 
 push:
-	git-push git+ssh://repo.or.cz/srv/git/org-mode.git master
+	git-push orgmode@orgmode.org:org-mode.git master
 
 pushtag:
 	git-tag -m "Adding tag" -a $(TAG)
-	git-push git+ssh://repo.or.cz/srv/git/org-mode.git $(TAG)
+	git-push orgmode@orgmode.org:org-mode.git $(TAG)
 
 pushreleasetag:
 	git-tag -m "Adding release tag" -a release_$(TAG)
-	git-push git+ssh://repo.or.cz/srv/git/org-mode.git release_$(TAG)
+	git-push orgmode@orgmode.org:org-mode.git release_$(TAG)
 
 # Dependencies
 
@@ -501,6 +503,7 @@ lisp/org-publish.elc:
 lisp/org-protocol.elc:	lisp/org.el
 lisp/org-remember.elc:	lisp/org.el
 lisp/org-rmail.elc:	lisp/org.el
+lisp/org-special-blocks.elc:	lisp/org-compat.el
 lisp/org-src.elc:	lisp/org-macs.el lisp/org-compat.el
 lisp/org-table.elc:	lisp/org.el
 lisp/org-taskjuggler.elc: lisp/org.el lisp/org-exp.el

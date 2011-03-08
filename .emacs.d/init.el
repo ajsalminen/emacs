@@ -1259,7 +1259,7 @@ directory, select directory. Lastly the file is opened."
                   (append japanese-holidays local-holidays other-holidays))))
 (setq mark-holidays-in-calendar t)
 
-
+(require 'calendar)
 (add-hook 'today-visible-calendar-hook 'calendar-mark-today)
 
 ;; 日曜日を赤字にする場合、以下の設定を追加します。
