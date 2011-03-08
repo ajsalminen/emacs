@@ -589,7 +589,7 @@
 (require 'yatex)
 (setq YaTeX-fill-column nil)
 
-;; Alias the two major modes for fast switching
+;; ;; Alias the two major modes for fast switching
 (defalias 'jl 'yatex-mode)
 (defalias 'el 'japanese-latex-mode)
 
@@ -1245,20 +1245,51 @@ directory, select directory. Lastly the file is opened."
 (add-hook 'iimage-mode-hook (lambda () (add-to-list 'iimage-mode-image-regex-alist
                                                     (cons (concat "\\[\\[file:\\(~?" iimage-mode-image-filename-regex
                                                                   "\\)\\]")  1))))
-(defun org-toggle-iimage-in-org ()
-  "display images in your org file"
-  (interactive)
-  (if (face-underline-p 'org-link)
-      (set-face-underline-p 'org-link nil)
-    (set-face-underline-p 'org-link t))
-  (iimage-mode))
-
 (setq display-time-world-list '(("PST8PDT" "Bay Area")
                                 ("EST5EDT" "New York")
                                 ("GMT0BST" "London")
                                 ("CET-1CDT" "Paris")
                                 ("IST-5:30" "Bangalore")
                                 ("JST-9" "Tokyo")))
+
+(add-hook 'calendar-load-hook
+          (lambda ()
+            (require 'japanese-holidays)
+            (setq calendar-holidays
+                  (append japanese-holidays local-holidays other-holidays))))
+(setq mark-holidays-in-calendar t)
+
+
+(add-hook 'today-visible-calendar-hook 'calendar-mark-today)
+
+;; 日曜日を赤字にする場合、以下の設定を追加します。
+(setq calendar-weekend-marker 'diary)
+(add-hook 'today-visible-calendar-hook 'calendar-mark-weekend)
+(add-hook 'today-invisible-calendar-hook 'calendar-mark-weekend)
+
+
+(require 'calfw) ; 初回一度だけ
+;; (cfw:open-calendar-buffer)
+;; (cfw:contents-debug-data)
+
+;;for carbon emacs
+(unless (fboundp 'calendar-extract-day)
+  (defalias 'calendar-extract-day (symbol-function 'extract-calendar-day))
+  (defalias 'calendar-extract-month (symbol-function 'extract-calendar-month))
+  (defalias 'calendar-extract-year (symbol-function 'extract-calendar-year)))
+
+
+(setq calendar-month-name-array
+      ["January" "February" "March"     "April"   "May"      "June"
+       "July"    "August"   "September" "October" "November" "December"])
+
+(setq calendar-day-name-array
+      ["Sunday" "Monday" "Tuesday" "Wednesday" "Thursday" "Friday" "Saturday"])
+
+;; 週の先頭の曜日
+(setq calendar-week-start-day 0) ; 日曜日は0, 月曜日は1
+(require 'calfw-ical)
+;; (cfw:install-ical-schedules)
 
 ;; org-modeを利用するための設定
 (add-to-list 'load-path "~/.emacs.d/org-mode/lisp")
@@ -1272,6 +1303,14 @@ directory, select directory. Lastly the file is opened."
 (require 'org-google-weather)
 
 (add-to-list 'org-modules 'org-habit)
+
+(defun org-toggle-iimage-in-org ()
+  "display images in your org file"
+  (interactive)
+  (if (face-underline-p 'org-link)
+      (set-face-underline-p 'org-link nil)
+    (set-face-underline-p 'org-link t))
+  (iimage-mode))
 
 (add-hook 'org-mode-hook 'turn-on-iimage-mode)
 (setq org-google-weather-icon-directory "~/Dropbox/status")
@@ -1299,7 +1338,7 @@ directory, select directory. Lastly the file is opened."
 ;;   - %s the temperature unit symbol"
 
 (setq org-agenda-sorting-strategy
-      '((agenda habit-up time-up category-up user-defined-down priority-up tag-up)
+      '((agenda habit-up time-up category-up priority-down user-defined-up tag-up)
         (todo user-defined-up todo-state-up priority-up effort-down)
         (tags user-defined-up)
         (search category-keep)))
@@ -1309,6 +1348,9 @@ directory, select directory. Lastly the file is opened."
 (add-hook 'org-clock-in-hook '(lambda ()
                                 (if (not org-timer-current-timer)
                                     (org-timer-set-timer '(16)))))
+
+
+(setq org-icalendar-use-scheduled '(todo-start event-if-todo))
 
 (setq system-time-locale "C")
 
@@ -1322,6 +1364,8 @@ directory, select directory. Lastly the file is opened."
 
 (setq org-startup-truncated nil)
 (setq org-return-follows-link t)
+
+(setq org-agenda-include-diary t)
 
 ;; Set to the location of your Org files on your local system
 (setq org-directory "~/org")
