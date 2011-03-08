@@ -1275,6 +1275,32 @@ directory, select directory. Lastly the file is opened."
 (add-hook 'org-mode-hook 'turn-on-iimage-mode)
 (setq org-google-weather-icon-directory "~/Dropbox/status")
 
+(defun org-cmp-title (a b)
+  "Compare the titles of string A and B"
+  (cond ((string-lessp a b) -1)
+        ((string-lessp b a) +1)
+        (t nil)))
+
+(setq org-agenda-cmp-user-defined 'org-cmp-title)
+
+(setq org-google-weather-format "[ %i %c, %L [%l,%h] %s ]")
+
+;;   "String to return to describe the weather.
+;; Valid %-sequences are:
+;;   - %i the icon
+;;   - %c means the weather condition
+;;   - %L the supplied location
+;;   - %C the city the weather is for
+;;   - %l the lower temperature
+;;   - %h the higher temperature
+;;   - %s the temperature unit symbol"
+
+(setq org-agenda-sorting-strategy
+      '((agenda habit-up time-up category-up user-defined-down priority-up tag-up)
+        (todo user-defined-up todo-state-up priority-up effort-down)
+        (tags user-defined-up)
+        (search category-keep)))
+
 (setq org-timer-default-timer 25)
 
 (add-hook 'org-clock-in-hook '(lambda ()
