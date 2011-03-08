@@ -938,6 +938,7 @@
 (push '("\*grep\*.*" :regexp t :height 20) popwin:special-display-config)
 (push '("function\-in\-.*" :regexp t) popwin:special-display-config)
 (push '("*magit-diff*") popwin:special-display-config)
+(push '("*wclock*" :height 10 :noselect t :position bottom) popwin:special-display-config)
 
 
 (defun popwin:define-advice (func buffer)
@@ -1800,7 +1801,13 @@ post command hook に機能追加"
 (define-key twittering-mode-map (kbd "S-TAB") 'twittering-goto-previous-thing)
 (define-key twittering-mode-map (kbd "S-<return>") 'wwo)
 
-(add-hook 'twittering-edit-mode-hook (lambda () (ispell-minor-mode) (flyspell-mode)))
+(add-hook 'twittering-edit-mode-hook (lambda ()
+                                       (ispell-minor-mode)
+                                       (flyspell-mode)))
+
+(add-hook 'twittering-mode-hook (lambda ()
+                                       (twittering-search "emacs exclude:retweets filter:links")
+                                       (twittering-search "emacs exclude:retweets")))
 
 (defalias 'tw 'twittering-mode)
 (defalias 'tt 'twittering-update-status-interactive)
