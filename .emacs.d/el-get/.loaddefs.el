@@ -5,7 +5,7 @@
 
 ;;;### (autoloads (vassoc set-modified-alist modify-alist remove-alist
 ;;;;;;  set-alist del-alist put-alist) "alist" "../../../../../.emacs.d/el-get/apel/site-lisp/apel/alist.el"
-;;;;;;  (19826 28070))
+;;;;;;  (19831 41366))
 ;;; Generated autoloads from ../../../../../.emacs.d/el-get/apel/site-lisp/apel/alist.el
 
 (autoload 'put-alist "alist" "\
@@ -53,7 +53,7 @@ See also `assoc'.
 ;;;***
 
 ;;;### (autoloads (bbdb-wl-setup) "bbdb-wl" "../../../../../.emacs.d/el-get/wanderlust/utils/bbdb-wl.el"
-;;;;;;  (19826 28374))
+;;;;;;  (19831 41475))
 ;;; Generated autoloads from ../../../../../.emacs.d/el-get/wanderlust/utils/bbdb-wl.el
 
 (autoload 'bbdb-wl-setup "bbdb-wl" "\
@@ -64,7 +64,7 @@ Not documented
 ;;;***
 
 ;;;### (autoloads (elmo-make-folder) "elmo" "../../../../../.emacs.d/el-get/wanderlust/site-lisp/wl/elmo.el"
-;;;;;;  (19826 28374))
+;;;;;;  (19831 41475))
 ;;; Generated autoloads from ../../../../../.emacs.d/el-get/wanderlust/site-lisp/wl/elmo.el
 
 (autoload 'elmo-make-folder "elmo" "\
@@ -78,7 +78,7 @@ encode and decode a multibyte string.
 ;;;***
 
 ;;;### (autoloads (elmo-split) "elmo-split" "../../../../../.emacs.d/el-get/wanderlust/site-lisp/wl/elmo-split.el"
-;;;;;;  (19826 28374))
+;;;;;;  (19831 41475))
 ;;; Generated autoloads from ../../../../../.emacs.d/el-get/wanderlust/site-lisp/wl/elmo-split.el
 
 (autoload 'elmo-split "elmo-split" "\
@@ -93,7 +93,7 @@ If prefix argument ARG is specified, do a reharsal (no harm).
 ;;;;;;  mime-decode-field-body mime-update-field-decoder-cache mime-find-field-decoder
 ;;;;;;  mime-find-field-presentation-method mime-set-field-decoder)
 ;;;;;;  "eword-decode" "../../../../../.emacs.d/el-get/flim/site-lisp/flim/eword-decode.el"
-;;;;;;  (19826 28178))
+;;;;;;  (19831 41426))
 ;;; Generated autoloads from ../../../../../.emacs.d/el-get/flim/site-lisp/flim/eword-decode.el
 
 (autoload 'mime-set-field-decoder "eword-decode" "\
@@ -160,7 +160,7 @@ If SEPARATOR is not nil, it is used as header separator.
 
 ;;;### (autoloads (mime-encode-header-in-buffer mime-encode-field-body)
 ;;;;;;  "eword-encode" "../../../../../.emacs.d/el-get/flim/site-lisp/flim/eword-encode.el"
-;;;;;;  (19826 28178))
+;;;;;;  (19831 41426))
 ;;; Generated autoloads from ../../../../../.emacs.d/el-get/flim/site-lisp/flim/eword-encode.el
 
 (autoload 'mime-encode-field-body "eword-encode" "\
@@ -179,7 +179,7 @@ It refers the `mime-field-encoding-method-alist' variable.
 ;;;***
 
 ;;;### (autoloads (wl-draft-send-with-imput-async) "im-wl" "../../../../../.emacs.d/el-get/wanderlust/site-lisp/wl/im-wl.el"
-;;;;;;  (19826 28374))
+;;;;;;  (19831 41475))
 ;;; Generated autoloads from ../../../../../.emacs.d/el-get/wanderlust/site-lisp/wl/im-wl.el
 
 (autoload 'wl-draft-send-with-imput-async "im-wl" "\
@@ -192,7 +192,7 @@ Send the message in the current buffer with imput asynchronously.
 ;;;### (autoloads (mime-write-decoded-region mime-insert-encoded-file
 ;;;;;;  mime-decode-string mime-decode-region mime-encode-region)
 ;;;;;;  "mel" "../../../../../.emacs.d/el-get/flim/site-lisp/flim/mel.el"
-;;;;;;  (19826 28178))
+;;;;;;  (19831 41426))
 ;;; Generated autoloads from ../../../../../.emacs.d/el-get/flim/site-lisp/flim/mel.el
 
 (autoload 'mime-encode-region "mel" "\
@@ -230,7 +230,7 @@ START and END are buffer positions.
 
 ;;;### (autoloads (mime-format-mailcap-command mime-parse-mailcap-file
 ;;;;;;  mime-parse-mailcap-buffer) "mime-conf" "../../../../../.emacs.d/el-get/flim/site-lisp/flim/mime-conf.el"
-;;;;;;  (19826 28178))
+;;;;;;  (19831 41426))
 ;;; Generated autoloads from ../../../../../.emacs.d/el-get/flim/site-lisp/flim/mime-conf.el
 
 (autoload 'mime-parse-mailcap-buffer "mime-conf" "\
@@ -272,7 +272,7 @@ may be:
 
 ;;;### (autoloads (mime-edit-again mime-edit-decode-message-in-buffer
 ;;;;;;  turn-on-mime-edit mime-edit-mode) "mime-edit" "../../../../../.emacs.d/el-get/semi/mime-edit.el"
-;;;;;;  (19826 28273))
+;;;;;;  (19831 41438))
 ;;; Generated autoloads from ../../../../../.emacs.d/el-get/semi/mime-edit.el
 
 (autoload 'mime-edit-mode "mime-edit" "\
@@ -438,7 +438,7 @@ converted to MIME-Edit tags.
 ;;;;;;  mime-read-Content-Disposition mime-parse-Content-Disposition
 ;;;;;;  mime-read-Content-Type mime-parse-Content-Type) "mime-parse"
 ;;;;;;  "../../../../../.emacs.d/el-get/flim/site-lisp/flim/mime-parse.el"
-;;;;;;  (19826 28179))
+;;;;;;  (19831 41426))
 ;;; Generated autoloads from ../../../../../.emacs.d/el-get/flim/site-lisp/flim/mime-parse.el
 
 (autoload 'mime-parse-Content-Type "mime-parse" "\
@@ -506,7 +506,7 @@ If buffer is omitted, it parses current-buffer.
 
 ;;;### (autoloads (mime-play-entity mime-preview-play-current-entity)
 ;;;;;;  "mime-play" "../../../../../.emacs.d/el-get/semi/mime-play.el"
-;;;;;;  (19826 28273))
+;;;;;;  (19831 41438))
 ;;; Generated autoloads from ../../../../../.emacs.d/el-get/semi/mime-play.el
 
 (autoload 'mime-preview-play-current-entity "mime-play" "\
@@ -530,8 +530,8 @@ specified, play as it.  Default MODE is \"play\".
 ;;;***
 
 ;;;### (autoloads (mime-view-buffer mime-display-message) "mime-view"
-;;;;;;  "../../../../../.emacs.d/el-get/semi/mime-view.el" (19826
-;;;;;;  28273))
+;;;;;;  "../../../../../.emacs.d/el-get/semi/mime-view.el" (19831
+;;;;;;  41438))
 ;;; Generated autoloads from ../../../../../.emacs.d/el-get/semi/mime-view.el
 
 (autoload 'mime-display-message "mime-view" "\
@@ -572,9 +572,21 @@ message.  It must be nil, `binary' or `cooked'.  If it is nil,
 
 ;;;***
 
+;;;### (autoloads (org-google-weather) "org-google-weather" "../../../../../.emacs.d/el-get/google-weather/org-google-weather.el"
+;;;;;;  (19831 41896))
+;;; Generated autoloads from ../../../../../.emacs.d/el-get/google-weather/org-google-weather.el
+
+(autoload 'org-google-weather "org-google-weather" "\
+Return Org entry with the weather for LOCATION in LANGUAGE.
+If LOCATION is not set, use org-google-weather-location.
+
+\(fn &optional LOCATION LANGUAGE)" nil nil)
+
+;;;***
+
 ;;;### (autoloads (module-installed-p exec-installed-p file-installed-p
 ;;;;;;  get-latest-path add-latest-path add-path) "path-util" "../../../../../.emacs.d/el-get/apel/site-lisp/apel/path-util.el"
-;;;;;;  (19826 28070))
+;;;;;;  (19831 41366))
 ;;; Generated autoloads from ../../../../../.emacs.d/el-get/apel/site-lisp/apel/path-util.el
 
 (autoload 'add-path "path-util" "\
@@ -638,7 +650,7 @@ If PATHS is omitted, `load-path' is used.
 
 ;;;### (autoloads (pgg-snarf-keys-region pgg-insert-key pgg-verify-region
 ;;;;;;  pgg-sign-region pgg-decrypt-region pgg-encrypt-region) "pgg"
-;;;;;;  "../../../../../.emacs.d/el-get/semi/pgg.el" (19826 28273))
+;;;;;;  "../../../../../.emacs.d/el-get/semi/pgg.el" (19831 41438))
 ;;; Generated autoloads from ../../../../../.emacs.d/el-get/semi/pgg.el
 
 (autoload 'pgg-encrypt-region "pgg" "\
@@ -681,7 +693,7 @@ Import public keys in the current region between START and END.
 ;;;***
 
 ;;;### (autoloads (pgg-make-scheme-gpg) "pgg-gpg" "../../../../../.emacs.d/el-get/semi/pgg-gpg.el"
-;;;;;;  (19826 28273))
+;;;;;;  (19831 41438))
 ;;; Generated autoloads from ../../../../../.emacs.d/el-get/semi/pgg-gpg.el
 
 (autoload 'pgg-make-scheme-gpg "pgg-gpg" "\
@@ -692,7 +704,7 @@ Not documented
 ;;;***
 
 ;;;### (autoloads (pgg-make-scheme-pgp) "pgg-pgp" "../../../../../.emacs.d/el-get/semi/pgg-pgp.el"
-;;;;;;  (19826 28273))
+;;;;;;  (19831 41438))
 ;;; Generated autoloads from ../../../../../.emacs.d/el-get/semi/pgg-pgp.el
 
 (autoload 'pgg-make-scheme-pgp "pgg-pgp" "\
@@ -703,7 +715,7 @@ Not documented
 ;;;***
 
 ;;;### (autoloads (pgg-make-scheme-pgp5) "pgg-pgp5" "../../../../../.emacs.d/el-get/semi/pgg-pgp5.el"
-;;;;;;  (19826 28273))
+;;;;;;  (19831 41438))
 ;;; Generated autoloads from ../../../../../.emacs.d/el-get/semi/pgg-pgp5.el
 
 (autoload 'pgg-make-scheme-pgp5 "pgg-pgp5" "\
@@ -715,7 +727,7 @@ Not documented
 
 ;;;### (autoloads (mime-display-application/x-postpet postpet-decode)
 ;;;;;;  "postpet" "../../../../../.emacs.d/el-get/semi/postpet.el"
-;;;;;;  (19826 28273))
+;;;;;;  (19831 41438))
 ;;; Generated autoloads from ../../../../../.emacs.d/el-get/semi/postpet.el
 
 (autoload 'postpet-decode "postpet" "\
@@ -731,7 +743,7 @@ Not documented
 ;;;***
 
 ;;;### (autoloads (qmtp-send-buffer qmtp-via-qmtp) "qmtp" "../../../../../.emacs.d/el-get/flim/site-lisp/flim/qmtp.el"
-;;;;;;  (19826 28179))
+;;;;;;  (19831 41426))
 ;;; Generated autoloads from ../../../../../.emacs.d/el-get/flim/site-lisp/flim/qmtp.el
 
 (defvar qmtp-open-connection-function #'open-network-stream)
@@ -749,7 +761,7 @@ Not documented
 ;;;***
 
 ;;;### (autoloads (richtext-decode richtext-encode) "richtext" "../../../../../.emacs.d/el-get/apel/site-lisp/emu/richtext.el"
-;;;;;;  (19826 28070))
+;;;;;;  (19831 41366))
 ;;; Generated autoloads from ../../../../../.emacs.d/el-get/apel/site-lisp/emu/richtext.el
 
 (autoload 'richtext-encode "richtext" "\
@@ -765,7 +777,7 @@ Not documented
 ;;;***
 
 ;;;### (autoloads (sha1) "sha1-el" "../../../../../.emacs.d/el-get/flim/site-lisp/flim/sha1-el.el"
-;;;;;;  (19826 28179))
+;;;;;;  (19831 41426))
 ;;; Generated autoloads from ../../../../../.emacs.d/el-get/flim/site-lisp/flim/sha1-el.el
 
 (autoload 'sha1 "sha1-el" "\
@@ -781,7 +793,7 @@ If BINARY is non-nil, return a string in binary form.
 
 ;;;### (autoloads (smime-verify-region smime-sign-region smime-decrypt-region
 ;;;;;;  smime-encrypt-region) "smime" "../../../../../.emacs.d/el-get/semi/smime.el"
-;;;;;;  (19826 28273))
+;;;;;;  (19831 41438))
 ;;; Generated autoloads from ../../../../../.emacs.d/el-get/semi/smime.el
 
 (autoload 'smime-encrypt-region "smime" "\
@@ -811,7 +823,7 @@ the detached signature of the current region.
 ;;;***
 
 ;;;### (autoloads (smtp-send-buffer smtp-via-smtp) "smtp" "../../../../../.emacs.d/el-get/flim/site-lisp/flim/smtp.el"
-;;;;;;  (19826 28179))
+;;;;;;  (19831 41426))
 ;;; Generated autoloads from ../../../../../.emacs.d/el-get/flim/site-lisp/flim/smtp.el
 
 (defvar smtp-open-connection-function #'open-network-stream "\
@@ -852,7 +864,7 @@ BUFFER may be a buffer or a buffer name which contains mail message.
 ;;;;;;  std11-address-string std11-lexical-analyze std11-unfold-string
 ;;;;;;  std11-field-body std11-narrow-to-header std11-fetch-field)
 ;;;;;;  "std11" "../../../../../.emacs.d/el-get/flim/site-lisp/flim/std11.el"
-;;;;;;  (19826 28179))
+;;;;;;  (19831 41426))
 ;;; Generated autoloads from ../../../../../.emacs.d/el-get/flim/site-lisp/flim/std11.el
 
 (autoload 'std11-fetch-field "std11" "\
@@ -933,7 +945,7 @@ If no name can be extracted, FULL-NAME will be nil.
 ;;;***
 
 ;;;### (autoloads (wl-other-frame wl) "wl" "../../../../../.emacs.d/el-get/wanderlust/site-lisp/wl/wl.el"
-;;;;;;  (19826 28374))
+;;;;;;  (19831 41475))
 ;;; Generated autoloads from ../../../../../.emacs.d/el-get/wanderlust/site-lisp/wl/wl.el
 
 (autoload 'wl "wl" "\
@@ -950,7 +962,7 @@ Pop up a frame to read messages via Wanderlust.
 ;;;***
 
 ;;;### (autoloads (wl-addrmgr) "wl-addrmgr" "../../../../../.emacs.d/el-get/wanderlust/site-lisp/wl/wl-addrmgr.el"
-;;;;;;  (19826 28374))
+;;;;;;  (19831 41475))
 ;;; Generated autoloads from ../../../../../.emacs.d/el-get/wanderlust/site-lisp/wl/wl-addrmgr.el
 
 (autoload 'wl-addrmgr "wl-addrmgr" "\
@@ -961,7 +973,7 @@ Start an Address manager.
 ;;;***
 
 ;;;### (autoloads (wl-user-agent-compose wl-draft) "wl-draft" "../../../../../.emacs.d/el-get/wanderlust/site-lisp/wl/wl-draft.el"
-;;;;;;  (19826 28374))
+;;;;;;  (19831 41475))
 ;;; Generated autoloads from ../../../../../.emacs.d/el-get/wanderlust/site-lisp/wl/wl-draft.el
 
 (autoload 'wl-draft "wl-draft" "\
@@ -1007,8 +1019,7 @@ been implemented yet.  Partial support for SWITCH-FUNCTION now supported.
 ;;;;;;  "../../../../../.emacs.d/el-get/apel/site-lisp/emu/pym.el"
 ;;;;;;  "../../../../../.emacs.d/el-get/apel/site-lisp/emu/richtext.el"
 ;;;;;;  "../../../../../.emacs.d/el-get/apel/site-lisp/emu/static.el"
-;;;;;;  "../../../../../.emacs.d/el-get/el-get/el-get-install.el"
-;;;;;;  "../../../../../.emacs.d/el-get/el-get/el-get.el" "../../../../../.emacs.d/el-get/flim/site-lisp/flim/eword-decode.el"
+;;;;;;  "../../../../../.emacs.d/el-get/flim/site-lisp/flim/eword-decode.el"
 ;;;;;;  "../../../../../.emacs.d/el-get/flim/site-lisp/flim/eword-encode.el"
 ;;;;;;  "../../../../../.emacs.d/el-get/flim/site-lisp/flim/hex-util.el"
 ;;;;;;  "../../../../../.emacs.d/el-get/flim/site-lisp/flim/hmac-def.el"
@@ -1044,6 +1055,8 @@ been implemented yet.  Partial support for SWITCH-FUNCTION now supported.
 ;;;;;;  "../../../../../.emacs.d/el-get/flim/site-lisp/flim/sha1.el"
 ;;;;;;  "../../../../../.emacs.d/el-get/flim/site-lisp/flim/smtp.el"
 ;;;;;;  "../../../../../.emacs.d/el-get/flim/site-lisp/flim/std11.el"
+;;;;;;  "../../../../../.emacs.d/el-get/google-weather/google-weather.el"
+;;;;;;  "../../../../../.emacs.d/el-get/google-weather/org-google-weather.el"
 ;;;;;;  "../../../../../.emacs.d/el-get/semi/mail-mime-setup.el"
 ;;;;;;  "../../../../../.emacs.d/el-get/semi/mime-bbdb.el" "../../../../../.emacs.d/el-get/semi/mime-edit.el"
 ;;;;;;  "../../../../../.emacs.d/el-get/semi/mime-image.el" "../../../../../.emacs.d/el-get/semi/mime-mc.el"
@@ -1055,8 +1068,7 @@ been implemented yet.  Partial support for SWITCH-FUNCTION now supported.
 ;;;;;;  "../../../../../.emacs.d/el-get/semi/pgg-pgp5.el" "../../../../../.emacs.d/el-get/semi/pgg.el"
 ;;;;;;  "../../../../../.emacs.d/el-get/semi/postpet.el" "../../../../../.emacs.d/el-get/semi/semi-def.el"
 ;;;;;;  "../../../../../.emacs.d/el-get/semi/semi-setup.el" "../../../../../.emacs.d/el-get/semi/signature.el"
-;;;;;;  "../../../../../.emacs.d/el-get/semi/smime.el" "../../../../../.emacs.d/el-get/tail/tail.el"
-;;;;;;  "../../../../../.emacs.d/el-get/wanderlust/site-lisp/wl/acap.el"
+;;;;;;  "../../../../../.emacs.d/el-get/semi/smime.el" "../../../../../.emacs.d/el-get/wanderlust/site-lisp/wl/acap.el"
 ;;;;;;  "../../../../../.emacs.d/el-get/wanderlust/site-lisp/wl/elmo-access.el"
 ;;;;;;  "../../../../../.emacs.d/el-get/wanderlust/site-lisp/wl/elmo-archive.el"
 ;;;;;;  "../../../../../.emacs.d/el-get/wanderlust/site-lisp/wl/elmo-cache.el"
@@ -1139,7 +1151,7 @@ been implemented yet.  Partial support for SWITCH-FUNCTION now supported.
 ;;;;;;  "../../../../../.emacs.d/el-get/wanderlust/utils/wl-addrbook.el"
 ;;;;;;  "../../../../../.emacs.d/el-get/wanderlust/utils/wl-complete.el"
 ;;;;;;  "../../../../../.emacs.d/el-get/wanderlust/utils/wl-mailto.el")
-;;;;;;  (19826 28419 314053))
+;;;;;;  (19831 41897 89374))
 
 ;;;***
 
