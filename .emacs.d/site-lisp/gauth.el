@@ -54,21 +54,14 @@
 (defvar gauth-client-login-url "https://www.google.com/accounts/ClientLogin"
   "base url for Google authentication")
 
-(defvar gauth-authentication-header-format "accountType=HOSTED_OR_GOOGLE&Email=%s&Passwd=%s&service=reader"
+(defvar gauth-service-name "cl"
+  "name of service to authenticate")
+
+(defvar gauth-authentication-header-format (format "accountType=HOSTED_OR_GOOGLE&Email=%s&Passwd=%s&service=%s" gauth-service-name)
   "format for auth credential header for Google authentication")
 
 (defvar gauth-auth-token-header-format "Authorization: GoogleLogin auth=%s"
   "header format for authenticated requests")
-
-;; once users are able to specify url retrieval program the variables
-;; http program functions below should be converted to defcustom
-
-(defvar gauth-use-url-retrieve nil
-  "If nil, use external command-line HTTP client instead.")
-
-(defvar gauth-url-retrieval-program "curl"
-  "NOT IMPLEMENTED: URL retrieving program used when `install-elisp-use-url-retrieve' is nil.
-  you may want to try or the native program \"wget -q -O- %s\"")
 
 (defvar gauth-auth-token-buffer-name "*gauth auth token*"
   "this buffer is used for grabbing auth token")
@@ -79,15 +72,9 @@
 (defvar gauth-auth-token-string nil
   "this string will be used for all authentication requests")
 
-;;;;;;;;;;;;;;;;;;;;;
-(defvar gauth-http-buffer "*Google Reader Http Response Buffer*"
+;; buffer to hold auth response
+(defvar gauth-http-buffer "*Google Auth Http Response Buffer*"
   "buffer used to hold api request output")
-
-;;  These are various urls needed to access the Google Reader api
-(defvar gauth-api-base-url "https://www.google.com/reader/api/0/"
-  "Base url for all Google api requests")
-
-(defvar gauth-token-url "http://www.google.com/reader/api/0/token")
 
 (defvar gauth-token-string nil)
 
@@ -156,17 +143,30 @@
                    "--header"
                    gr-header)))
 
+(defun gauth-get-url (url &optional buffer-name)
+  (let* ((gr-header (format gauth-auth-token-header-format gauth-auth-token-string)))
+    (start-process "gauth-get-url"
+                   (if buffer-name
+                       buffer-name
+                     gauth-http-buffer)
+                   gauth-url-retrieval-program
+                   url
+                   "--silent"
+                   "--header"
+                   gr-header)))
+
 (defun gauth-setup-auth ()
   (progn
     (gauth-authenticate)
     (gauth-set-auth-token)
-    (gauth-kill-token-buffer)))
+;;         (gauth-kill-token-buffer)
+))
 
 ;; the declarations below are for testing purposes
-;; (gauth-authenticate)
-;; (gauth-set-auth-token)
+(gauth-authenticate)
+(gauth-set-auth-token)
 
-;; (gauth-reset-auth-token)
+(gauth-reset-auth-token)
 ;; (message gauth-auth-token-string)
 ;; (gauth-setup-auth)
 
