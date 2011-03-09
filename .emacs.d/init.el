@@ -1315,6 +1315,14 @@ directory, select directory. Lastly the file is opened."
 (setq org-google-weather-icon-directory "~/Dropbox/status")
 
 (setq org-habit-graph-column 70)
+(setq org-enforce-todo-dependencies t)
+
+(defun org-summary-todo (n-done n-not-done)
+  "Switch entry to DONE when all subentries are done, to TODO otherwise."
+  (let (org-log-done org-log-states)    ; turn off logging
+    (org-todo (if (= n-not-done 0) "DONE" "TODO"))))
+
+(remove-hook 'org-after-todo-statistics-hook 'org-summary-todo)
 
 (defun org-cmp-title (a b)
   "Compare the titles of string A and B"
@@ -1323,6 +1331,14 @@ directory, select directory. Lastly the file is opened."
         (t nil)))
 
 (setq org-agenda-cmp-user-defined 'org-cmp-title)
+
+;; for when timestamps get garbled by locale
+(defun org-fix-timestamp ()
+  (interactive)
+  (save-excursion
+    (goto-char (point-min))
+    (while (re-search-forward org-ts-regexp-both nil)
+      (org-timestamp-change 0))))
 
 (setq org-google-weather-format "[ %i %c, %L [%l,%h] %s ]")
 
