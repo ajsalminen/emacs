@@ -8,5 +8,5 @@ find $eed/elib* -type f -name *.el -print0 | xargs -0 emacs -batch -f batch-byte
 find $eed/jdee-*/lisp -type f -name *.el -print0 | xargs -0 emacs -batch -f batch-byte-compile
 cd $eed/yatex* && make elc
 for i in `find $eed/* -type f -name *.el`; do emacs -batch -f batch-byte-compile $i; done;
-cd $eed/bbdb-* && make
-cd $eed/bbdb-*/lisp && make
+#cd $eed/bbdb-* && make
+#cd $eed/bbdb-*/lisp && make

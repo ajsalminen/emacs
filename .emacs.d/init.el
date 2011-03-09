@@ -8,7 +8,28 @@
   (setq warning-suppress-types nil)
   (setq ispell-program-name "/usr/local/bin/aspell"))
 
-(add-to-list 'load-path "~/.emacs.d/site-lisp")
+;; the mother of all load paths
+(setq more-load-paths '("~/.emacs.d/auctex-11.86"
+                        "~/.emacs.d/auctex-11.86/preview"
+                        "~/.emacs.d/color-theme"
+                        "~/.emacs.d/el-get/el-get"
+                        "~/.emacs.d/elib-1.0"
+                        "~/.emacs.d/ensime_2.8.1-0.4.2/elisp"
+                        "~/.emacs.d/ess-5.11/lisp"
+                        "~/.emacs.d/jdee-2.4.0.1/lisp"
+                        "~/.emacs.d/magit"
+                        "~/.emacs.d/org-mode/contrib/lisp"
+                        "~/.emacs.d/org-mode/lisp"
+                        "~/.emacs.d/reftex-4.34a/lisp"
+                        "~/.emacs.d/rhtml"
+                        "~/.emacs.d/site-lisp"
+                        "~/.emacs.d/twittering"
+                        "~/.emacs.d/vim"
+                        "~/.emacs.d/yasnippet"
+                        "~/.emacs.d/yatex1.74"))
+
+(setq load-path (append load-path more-load-paths))
+
 (defun kill-ci-buffer ()
   (interactive)
   (switch-to-buffer " *Compiler Input*")
@@ -40,7 +61,6 @@
 (setq mac-command-modifier 'meta)
 (setq mac-option-modifier nil)
 
-(add-to-list 'load-path "~/.emacs.d/color-theme")
 (require 'color-theme)
 ;; (require 'color-theme-inkpot)
 (require 'color-theme-invaders)
@@ -160,7 +180,6 @@
   (package-initialize))
 
 ;; separate el-get stuff into its own file
-(add-to-list 'load-path "~/.emacs.d/el-get/el-get")
 (require 'el-get)
 
 ;; user the snippent below to bootstrap el-get
@@ -378,7 +397,6 @@
   (normal-top-level-add-to-load-path '("."))
   (normal-top-level-add-subdirs-to-load-path))
 
-
 (let ((nfsdir "~/.emacs.d/site-lisp")
       (cachedir "~/.elispcache"))
   (setq load-path (append load-path (list cachedir nfsdir)))
@@ -440,7 +458,6 @@
           (lambda ()
             (local-set-key (kbd "RET") 'reindent-then-newline-and-indent)))
 
-(add-to-list 'load-path "~/.emacs.d/ensime_2.8.1-0.4.2/elisp/")
 (require 'ensime)
 (add-hook 'scala-mode-hook 'ensime-scala-mode-hook)
 
@@ -487,9 +504,7 @@
 (setq truncate-lines nil)
 (setq truncate-partial-width-windows nil)
 
-(add-to-list 'load-path "~/.emacs.d/auctex-11.86")
 (load "auctex.el" nil t t)
-(add-to-list 'load-path "~/.emacs.d/auctex-11.86/preview")
 (load "preview-latex.el" nil t t)
 
 ;; (require 'smart-tab)
@@ -515,7 +530,6 @@
 
 (setq flyspell-issue-welcome-flag nil)
 
-(add-to-list 'load-path "~/.emacs.d/reftex-4.34a/lisp/")
 (require 'reftex)
 (setq reftex-toc-split-windows-horizontally t)
 (setq reftex-allow-automatic-rescan t)
@@ -584,8 +598,6 @@
 (add-hook 'LaTeX-mode-hook (lambda ()
                              (TeX-fold-mode 1)))
 
-(add-to-list 'load-path "~/.emacs.d/yatex1.74")
-
 (require 'yatex)
 (setq YaTeX-fill-column nil)
 
@@ -616,11 +628,7 @@
 (add-hook 'LaTeX-mode-hook (lambda ()
                              (define-key LaTeX-mode-map (kbd "<backspace>") 'backspace-cjk-hack)))
 
-;;(load "~/.emacs.d/ess-5.11/lisp/ess-site.el")
-(add-to-list 'load-path "~/.emacs.d/ess-5.11/lisp")
 (setq ess-etc-directory "~/.emacs.d/ess-5.11/etc")
-
-
 (require 'ess-site)
 (require 'ess-eldoc)
 (setq ess-source-directory (expand-file-name "~/ESS_Rdump/"))
@@ -642,8 +650,6 @@
 (setq default-directory "~/projects/ghub")
 
 ;; yasnippet
-(add-to-list 'load-path
-             "~/.emacs.d/yasnippet")
 (require 'yasnippet) ;; not yasnippet-bundle
 
 
@@ -901,7 +907,6 @@
 
 (setenv (concat "/usr/local/libexec/git-core" ";" (getenv "GIT_EXEC_PATH")))
 
-(add-to-list 'load-path "~/.emacs.d/magit")
 (require 'magit)
 (require 'magit-svn)
 (defalias 'mg 'magit-status)
@@ -960,7 +965,6 @@
 (defvar prev-buffer-input-method nil "save previously set inputmethod")
 (make-variable-buffer-local 'prev-buffer-input-method)
 
-(add-to-list 'load-path "~/.emacs.d/vim")
 (require 'vim)
 
 (defun vim-mode-toggle-with-input ()
@@ -1252,15 +1256,12 @@ directory, select directory. Lastly the file is opened."
                                 ("IST-5:30" "Bangalore")
                                 ("JST-9" "Tokyo")))
 
-(add-hook 'calendar-load-hook
-          (lambda ()
-            (require 'japanese-holidays)
-            (setq calendar-holidays
-                  (append japanese-holidays local-holidays other-holidays))))
-(setq mark-holidays-in-calendar t)
-
 (require 'calendar)
+(require 'japanese-holidays)
+(setq calendar-holidays
+      (append japanese-holidays local-holidays other-holidays))
 (add-hook 'today-visible-calendar-hook 'calendar-mark-today)
+(setq mark-holidays-in-calendar t)
 
 ;; 日曜日を赤字にする場合、以下の設定を追加します。
 (setq calendar-weekend-marker 'diary)
@@ -1289,11 +1290,9 @@ directory, select directory. Lastly the file is opened."
 ;; 週の先頭の曜日
 (setq calendar-week-start-day 0) ; 日曜日は0, 月曜日は1
 (require 'calfw-ical)
-;; (cfw:install-ical-schedules)
+(cfw:install-ical-schedules)
 
 ;; org-modeを利用するための設定
-(add-to-list 'load-path "~/.emacs.d/org-mode/lisp")
-(add-to-list 'load-path "~/.emacs.d/org-mode/contrib/lisp")
 (require 'org-install)
 (require 'org-clock)
 (require 'org-timer)
@@ -1338,7 +1337,7 @@ directory, select directory. Lastly the file is opened."
 ;;   - %s the temperature unit symbol"
 
 (setq org-agenda-sorting-strategy
-      '((agenda habit-up time-up category-up priority-down user-defined-up tag-up)
+      '((agenda habit-up time-up alpha-up tag-up user-defined-up priority-down)
         (todo user-defined-up todo-state-up priority-up effort-down)
         (tags user-defined-up)
         (search category-keep)))
@@ -1821,7 +1820,6 @@ post command hook に機能追加"
 (bookmark-bmenu-list)
 
 (require 'alpaca)
-(add-to-list 'load-path "~/.emacs.d/twittering")
 (require 'twittering-mode)
 (autoload 'twittering-numbering "twittering-numbering" nil t)
 (add-hook 'twittering-mode-hook 'twittering-numbering)
@@ -2083,7 +2081,6 @@ post command hook に機能追加"
 (define-key dired-mode-map "r" 'wdired-change-to-wdired-mode)
 (require 'dired-sort-map)
 
-(add-to-list 'load-path "~/.emacs.d/rhtml")
 (require 'rhtml-mode)
 (require 'ruby-electric)
 
@@ -2141,9 +2138,6 @@ post command hook に機能追加"
 (grep-a-lot-advise igrep)
 
 (require 'grep-edit)
-
-(add-to-list 'load-path "~/.emacs.d/elib-1.0")
-(add-to-list 'load-path "~/.emacs.d/jdee-2.4.0.1/lisp")
 
 ;; (require 'jde)
 (autoload 'jde-mode "jde" "JDE mode." t)
