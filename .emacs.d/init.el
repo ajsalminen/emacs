@@ -52,15 +52,19 @@
 
 (eval-when-compile (require 'cl))
 (when (and (= emacs-major-version 23) (eq window-system 'ns))
+  (setq mac-option-key-is-meta t)
+  (setq mac-command-key-is-meta t)
+  (setq mac-command-modifier 'meta)
+  (setq mac-option-modifier nil)
+
+  ;; really important when typing commasand such
+  (mac-add-key-passed-to-system 'shift)
+
   (setenv "PATH" (shell-command-to-string "source ~/.bashrc; echo -n $PATH"))
   ;; Update exec-path with the contents of $PATH
   (loop for path in (split-string (getenv "PATH") ":") do
         (add-to-list 'exec-path path)))
 
-(setq mac-option-key-is-meta t)
-(setq mac-command-key-is-meta t)
-(setq mac-command-modifier 'meta)
-(setq mac-option-modifier nil)
 
 (require 'color-theme)
 (require 'color-theme-invaders)
