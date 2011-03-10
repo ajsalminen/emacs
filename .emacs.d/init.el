@@ -62,12 +62,15 @@
 (setq mac-option-modifier nil)
 
 (require 'color-theme)
-;; (require 'color-theme-inkpot)
 (require 'color-theme-invaders)
 (eval-after-load "color-theme"
   '(progn
      (color-theme-initialize)
      (color-theme-invaders)))
+
+(defun color-theme-reset ()
+  (interactive)
+  (color-theme-reset-faces))
 
 (require 'paredit)
 (require 'highlight-parentheses)
