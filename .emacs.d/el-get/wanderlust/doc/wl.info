@@ -3,7 +3,6 @@ produced by `texinfo-format-buffer'
 from file `wl.texi'
 using `texinfmt.el' version 2.42 of  7 Jul 2006.
 
-
 INFO-DIR-SECTION GNU Emacs Lisp
 START-INFO-DIR-ENTRY
 * Wanderlust: (wl).         Yet Another Message Interface On Emacsen
@@ -7699,34 +7698,22 @@ Concept Index
 
 * Menu:
 
-* `$':                          Archive Folder.         (line   5)
-* `/':                          Filter Folder.          (line   5)
-* `%':                          IMAP Folder.            (line   5)
-* `'':                          Internal Folder.        (line   5)
-* `.':                          Maildir Folder.         (line   5)
-* `+':                          MH Folder.              (line   5)
-* `*':                          Multi Folder.           (line   5)
-* `=':                          News Spool Folder.      (line   5)
-* `-':                          NNTP Folder.            (line   5)
-* `|':                          Pipe Folder.            (line   5)
-* `&':                          POP Folder.             (line   5)
-* `[':                          Search Folder.          (line   5)
-* `@':                          Shimbun Folder.         (line   5)
 * Access Folder:                Access Folder.          (line   5)
 * Addrbook:                     Addrbook.               (line   5)
 * Address Book:                 Address Book.           (line   5)
 * Address book Definition:      Mail Addresses.         (line   5)
-* Address Manager:              Address Manager.        (line   5)
 * .addresses:                   Mail Addresses.         (line   5)
+* Address Manager:              Address Manager.        (line   5)
 * Advanced Issues:              Advanced Issues.        (line   5)
 * Alias, Address:               Mail Addresses.         (line   5)
 * APEL:                         MIME Modules.           (line   5)
 * APOP:                         POP Folder.             (line   5)
 * Apply Template:               Template.               (line   5)
 * Archive Folder:               Archive Folder.         (line   5)
+* `$':                          Archive Folder.         (line   5)
+* Archiver:                     Archiver.               (line   5)
 * Archive Tips:                 Archive Tips.           (line   5)
 * Archive variables:            Archive Vars.           (line   5)
-* Archiver:                     Archiver.               (line   5)
 * Backtrace:                    Mailing List.           (line   5)
 * Batch Processing:             Batch Processing.       (line   5)
 * BBDB:                         BBDB.                   (line   5)
@@ -7752,23 +7739,25 @@ Concept Index
 * Expire Message:               Expire.                 (line   5)
 * File Folder:                  File Folder.            (line   5)
 * Filter Folder:                Filter Folder.          (line   5)
+* `/':                          Filter Folder.          (line   5)
 * Flag:                         Filter Folder.          (line   5)
 * Flag:                         Internal Folder.        (line   5)
 * FLIM:                         MIME Modules.           (line   5)
-* Folder:                       Folder.                 (line   5)
-* Folder, `$' mark:             Internal Folder.        (line   5)
 * Folder, Conditional:          Filter Folder.          (line   5)
 * Folder Definition:            Folder Definition.      (line   5)
 * Folder, Edit:                 Folder Manager.         (line   5)
 * Folder, Filtering:            Filter Folder.          (line   5)
+* Folder:                       Folder.                 (line   5)
 * Folder, IMAP:                 IMAP Folder.            (line   5)
 * Folder Manager:               Folder Manager.         (line   5)
 * Folder, Marge:                Multi Folder.           (line   5)
+* Folder, `$' mark:             Internal Folder.        (line   5)
 * Folder, MH:                   MH Folder.              (line   5)
 * Folder, Multiple:             Multi Folder.           (line   5)
 * Folder, News:                 NNTP Folder.            (line   5)
 * Folder, NNTP:                 NNTP Folder.            (line   5)
 * Folder, Search:               Search Folder.          (line   5)
+* .folders:                     Folder Definition.      (line   5)
 * Folder, Shimbun:              Shimbun Folder.         (line   5)
 * Folder, Subscribe:            Folder Manager.         (line   5)
 * Folder, Text Search:          Search Folder.          (line   5)
@@ -7776,20 +7765,21 @@ Concept Index
 * Folder, Unsubscribe:          Folder Manager.         (line   5)
 * Folder, Virtual:              Filter Folder.          (line   5)
 * Folder, Web:                  Shimbun Folder.         (line   5)
-* .folders:                     Folder Definition.      (line   5)
 * Format of summary lines:      Summary View.           (line   5)
 * Get Message:                  Pipe Folder.            (line   5)
 * gnspool:                      News Spool Folder.      (line   5)
 * GNU TAR:                      Archiver.               (line   5)
 * grep:                         grep.                   (line   5)
-* IMAP Folder:                  IMAP Folder.            (line   5)
 * IMAP4rev1:                    IMAP Folder.            (line   5)
+* IMAP Folder:                  IMAP Folder.            (line   5)
+* `%':                          IMAP Folder.            (line   5)
 * imput:                        imput.                  (line   5)
 * im-wl:                        imput.                  (line   5)
 * Incorporate Message:          Pipe Folder.            (line   5)
 * Info-ZIP:                     Archiver.               (line   5)
 * Install:                      Install.                (line   5)
 * Internal Folder:              Internal Folder.        (line   5)
+* `'':                          Internal Folder.        (line   5)
 * Introduction:                 Introduction.           (line   5)
 * Keybind, Draft Buffer:        Key Bindings of Draft.  (line   5)
 * Keybind, Draft Mode:          Key Bindings of Draft.  (line   5)
@@ -7800,16 +7790,18 @@ Concept Index
 * Keybind, Summary Mode:        Key Bindings of Summary.  (line   5)
 * LHA:                          Archiver.               (line   5)
 * LSDB:                         LSDB.                   (line   5)
-* Maildir:                      Maildir Folder.         (line   5)
+* `.':                          Maildir Folder.         (line   5)
 * Maildir Folder:               Maildir Folder.         (line   5)
+* Maildir:                      Maildir Folder.         (line   5)
 * Mailer, Default:              Minimal Settings.       (line  49)
-* Make:                         Install.                (line   5)
 * Makefile:                     Install.                (line   5)
+* Make:                         Install.                (line   5)
 * Mark and Action:              Mark and Action.        (line   5)
 * Mark, Temporary:              Usage of Summary Mode.  (line  52)
-* MH:                           MH Folder.              (line   5)
-* MH Folder:                    MH Folder.              (line   5)
 * MHC:                          MHC.                    (line   5)
+* `+':                          MH Folder.              (line   5)
+* MH Folder:                    MH Folder.              (line   5)
+* MH:                           MH Folder.              (line   5)
 * Migration:                    Migration.              (line   5)
 * MIME modules:                 MIME Modules.           (line   5)
 * mime-w3m:                     mime-w3m.               (line   5)
@@ -7817,49 +7809,56 @@ Concept Index
 * Modified UTF7:                IMAP Folder.            (line  73)
 * mu-cite:                      mu-cite.                (line   5)
 * Mule-UCS:                     IMAP Folder.            (line  73)
+* `*':                          Multi Folder.           (line   5)
 * Multi Folder:                 Multi Folder.           (line   5)
 * namazu:                       namazu.                 (line   5)
 * NetNews:                      NNTP Folder.            (line   5)
-* News:                         NNTP Folder.            (line   5)
-* News spool Folder:            News Spool Folder.      (line   5)
 * Newsgroup:                    NNTP Folder.            (line   5)
+* News:                         NNTP Folder.            (line   5)
+* `=':                          News Spool Folder.      (line   5)
+* News spool Folder:            News Spool Folder.      (line   5)
+* `-':                          NNTP Folder.            (line   5)
 * NNTP Folder:                  NNTP Folder.            (line   5)
 * OpenSSL:                      Download.               (line  26)
 * Overview:                     Overview.               (line   5)
 * Package install, XEmacs:      Install.                (line  66)
 * Package, XEmacs:              Install.                (line  66)
+* `|':                          Pipe Folder.            (line   5)
 * Pipe Folder:                  Pipe Folder.            (line   5)
-* POP Folder:                   POP Folder.             (line   5)
 * POP3:                         POP Folder.             (line   5)
 * POP-before-SMTP:              POP-before-SMTP.        (line   5)
+* `&':                          POP Folder.             (line   5)
+* POP Folder:                   POP Folder.             (line   5)
 * qmail:                        Maildir Folder.         (line   5)
 * RAR:                          Archiver.               (line   5)
 * Regular Expressions Header Matching: Regular Expressions Header Matching.  (line   5)
 * RFC 1939:                     POP Folder.             (line   5)
 * RFC 2060:                     IMAP Folder.            (line   5)
 * RFC 977:                      NNTP Folder.            (line   5)
-* sc:                           supercite.              (line   5)
 * Score Commands:               Score Commands.         (line   5)
 * Score File Atoms:             Score File Format.      (line  94)
 * Score File Format:            Score File Format.      (line   5)
 * Scoring:                      Scoring.                (line   5)
+* sc:                           supercite.              (line   5)
+* `[':                          Search Folder.          (line   5)
 * Search Folder:                Search Folder.          (line   5)
 * Selecting Folder:             Selecting Folder.       (line   5)
 * SEMI:                         MIME Modules.           (line   5)
 * Settings:                     Minimal Settings.       (line   5)
+* `@':                          Shimbun Folder.         (line   5)
 * Shimbun Folder:               Shimbun Folder.         (line   5)
 * SMTP AUTH:                    Variables of Draft Mode.  (line   5)
-* Spam Filter:                  Spam Filter.            (line   5)
-* Spam Filter, Bogofilter:      Spam Filter Processors.  (line   5)
-* Spam Filter, Spamfilter:      Spam Filter Processors.  (line   5)
 * SpamAssassin:                 SpamAssassin.           (line   5)
+* Spam Filter, Bogofilter:      Spam Filter Processors.  (line   5)
+* Spam Filter:                  Spam Filter.            (line   5)
 * spamfilter:                   spamfilter.             (line   5)
+* Spam Filter, Spamfilter:      Spam Filter Processors.  (line   5)
 * SpamOracle:                   SpamOracle.             (line   5)
 * Split messages:               Split messages.         (line   5)
 * SSL:                          Download.               (line  26)
+* starttls:                     Download.               (line  26)
 * Start up:                     Start Me Up.            (line   5)
 * Start Wanderlust:             Start Wanderlust.       (line   5)
-* starttls:                     Download.               (line  26)
 * Sticky Summary:               Sticky Summary.         (line   5)
 * Summary, Sticky:              Sticky Summary.         (line   5)
 * supercite:                    supercite.              (line   5)
@@ -7874,11 +7873,11 @@ Concept Index
 * UTF8:                         IMAP Folder.            (line  73)
 * w3m:                          Shimbun Folder.         (line   5)
 * .wl:                          Minimal Settings.       (line   5)
-* XEmacs package:               Install.                (line  66)
 * XEmacs package install:       Install.                (line  66)
-* x-face:                       X-Face.                 (line   5)
+* XEmacs package:               Install.                (line  66)
 * x-face-e21:                   x-face-mule.            (line  15)
 * x-face-mule:                  x-face-mule.            (line   5)
+* x-face:                       X-Face.                 (line   5)
 * x-face-xmas:                  x-face-xmas.            (line   5)
 * X-Mailer:                     User-Agent Field.       (line   5)
 * ZOO:                          Archiver.               (line   5)
@@ -7892,42 +7891,16 @@ Key Index
 
 * Menu:
 
-* + (Folder):                   Folder Manager.         (line 147)
-* * (Folder):                   Folder Manager.         (line 170)
-* | (Folder):                   Folder Manager.         (line 177)
-* ? (Folder):                   Selecting Folder.       (line 180)
-* / (Folder):                   Selecting Folder.       (line 194)
-* [ (Folder):                   Selecting Folder.       (line 198)
-* ] (Folder):                   Selecting Folder.       (line 202)
-* . (Summary):                  Key Bindings of Summary.  (line  15)
-* < (Summary):                  Key Bindings of Summary.  (line  24)
-* > (Summary):                  Key Bindings of Summary.  (line  28)
-* - (Summary):                  Key Bindings of Summary.  (line  51)
-* / (Summary):                  Key Bindings of Summary.  (line  57)
-* [ (Summary):                  Key Bindings of Summary.  (line  63)
-* ] (Summary):                  Key Bindings of Summary.  (line  67)
-* $ (Summary):                  Key Bindings of Summary.  (line 113)
-* @ (Summary):                  Key Bindings of Summary.  (line 215)
-* | (Summary):                  Key Bindings of Summary.  (line 227)
-* # (Summary):                  Key Bindings of Summary.  (line 232)
-* ^ (Summary):                  Key Bindings of Summary.  (line 268)
-* ! (Summary):                  Key Bindings of Summary.  (line 272)
-* ? (Summary):                  Key Bindings of Summary.  (line 341)
-* * (Summary):                  Key Bindings of Summary.  (line 360)
-* ~ (Summary):                  Key Bindings of Summary.  (line 402)
 * a (Address Manager):          Address Manager.        (line  45)
 * a (Summary):                  Key Bindings of Summary.  (line  80)
 * A (Summary):                  Key Bindings of Summary.  (line  85)
 * b (Address Manager):          Address Manager.        (line  23)
-* B (Summary):                  Key Bindings of Summary.  (line 207)
 * BS (Summary):                 Key Bindings of Summary.  (line  35)
+* B (Summary):                  Key Bindings of Summary.  (line 207)
 * Button-2 (Message):           Message.                (line  26)
 * Button-4 (Message):           Message.                (line  32)
 * Button-5 (Message):           Message.                (line  37)
 * c (Address Manager):          Address Manager.        (line  19)
-* c (Folder):                   Selecting Folder.       (line 156)
-* c (Summary):                  Key Bindings of Summary.  (line  75)
-* C (Summary):                  Key Bindings of Summary.  (line  90)
 * C-c C-a (Draft):              Key Bindings of Draft.  (line  82)
 * C-c C-c (Draft):              Key Bindings of Draft.  (line  29)
 * C-c C-c (Score Mode):         Score Commands.         (line 166)
@@ -7949,9 +7922,12 @@ Key Index
 * C-c C-s (Score Mode):         Score Commands.         (line 179)
 * C-c C-y (Draft):              Key Bindings of Draft.  (line   9)
 * C-c C-z (Draft):              Key Bindings of Draft.  (line  46)
+* c (Folder):                   Selecting Folder.       (line 156)
 * C-k (Folder):                 Folder Manager.         (line 197)
 * C-l (Draft):                  Key Bindings of Draft.  (line  58)
 * C-o (Summary):                Key Bindings of Summary.  (line 370)
+* c (Summary):                  Key Bindings of Summary.  (line  75)
+* C (Summary):                  Key Bindings of Summary.  (line  90)
 * C-t (Folder):                 Selecting Folder.       (line 222)
 * C-t (Summary):                Key Bindings of Summary.  (line 669)
 * C-w (Folder):                 Folder Manager.         (line 203)
@@ -7961,16 +7937,23 @@ Key Index
 * C-y (Folder):                 Folder Manager.         (line 209)
 * C-y (Summary):                Key Bindings of Summary.  (line 685)
 * d (Address Manager):          Address Manager.        (line  49)
+* DEL (Summary):                Key Bindings of Summary.  (line  35)
 * D (Message):                  Message.                (line  42)
 * d (Summary):                  Key Bindings of Summary.  (line 385)
 * D (Summary):                  Key Bindings of Summary.  (line 392)
-* DEL (Summary):                Key Bindings of Summary.  (line  35)
 * e (Address Manager):          Address Manager.        (line  53)
 * E (Folder):                   Selecting Folder.       (line 167)
-* E (Summary):                  Key Bindings of Summary.  (line  95)
 * e (Summary):                  Key Bindings of Summary.  (line 129)
+* E (Summary):                  Key Bindings of Summary.  (line  95)
 * f (Folder):                   Selecting Folder.       (line 162)
 * F (Folder):                   Selecting Folder.       (line 171)
+* + (Folder):                   Folder Manager.         (line 147)
+* * (Folder):                   Folder Manager.         (line 170)
+* | (Folder):                   Folder Manager.         (line 177)
+* ? (Folder):                   Selecting Folder.       (line 180)
+* / (Folder):                   Selecting Folder.       (line 194)
+* [ (Folder):                   Selecting Folder.       (line 198)
+* ] (Folder):                   Selecting Folder.       (line 202)
 * f (Summary):                  Key Bindings of Summary.  (line 108)
 * F (Summary):                  Key Bindings of Summary.  (line 120)
 * g (Summary):                  Key Bindings of Summary.  (line  71)
@@ -8001,61 +7984,61 @@ Key Index
 * l (Message):                  Message.                (line  21)
 * l (Summary):                  Key Bindings of Summary.  (line 320)
 * L (Summary):                  Score Commands.         (line 124)
-* m $ (Summary):                Key Bindings of Summary.  (line 569)
-* m ! (Summary):                Key Bindings of Summary.  (line 580)
-* m ? (Summary):                Key Bindings of Summary.  (line 649)
-* m # (Summary):                Key Bindings of Summary.  (line 655)
-* m | (Summary):                Key Bindings of Summary.  (line 660)
 * m a (Folder):                 Folder Manager.         (line 139)
 * m A (Folder):                 Folder Manager.         (line 151)
 * m a (Summary):                Key Bindings of Summary.  (line 619)
 * m A (Summary):                Key Bindings of Summary.  (line 634)
 * m c (Folder):                 Folder Manager.         (line 184)
+* M-c (Folder):                 Folder Manager.         (line 184)
 * m C-s (Folder):               Folder Manager.         (line 227)
 * m C-w (Folder):               Folder Manager.         (line 203)
 * m d (Folder):                 Folder Manager.         (line 155)
 * m d (Summary):                Key Bindings of Summary.  (line 595)
 * m D (Summary):                Key Bindings of Summary.  (line 600)
+* M-E (Summary):                Key Bindings of Summary.  (line 102)
 * m f (Folder):                 Folder Manager.         (line 177)
 * m F (Summary):                Key Bindings of Summary.  (line 575)
 * m f (Summary):                Key Bindings of Summary.  (line 639)
 * m g (Folder):                 Folder Manager.         (line 147)
 * m i (Summary):                Key Bindings of Summary.  (line 605)
+* M-j (Summary):                Key Bindings of Summary.  (line 262)
 * m k (Folder):                 Folder Manager.         (line 197)
 * m k (Summary):                Usage of Spam Filter.   (line 199)
 * m l (Folder):                 Folder Manager.         (line 225)
 * m L (Folder):                 Folder Manager.         (line 232)
 * m m(Folder):                  Folder Manager.         (line 170)
 * m n (Summary):                Usage of Spam Filter.   (line 208)
+* M-o (Summary):                Key Bindings of Summary.  (line 379)
 * m o (Summary):                Key Bindings of Summary.  (line 585)
 * m O (Summary):                Key Bindings of Summary.  (line 590)
 * m p (Folder):                 Folder Manager.         (line 214)
 * m q (Folder):                 Folder Manager.         (line 218)
+* M-RET (Folder):               Selecting Folder.       (line  72)
+* M-RET (Summary):              Key Bindings of Summary.  (line  51)
 * m R (Folder):                 Folder Manager.         (line 163)
 * m R (Summary):                Key Bindings of Summary.  (line 564)
 * m r (Summary):                Key Bindings of Summary.  (line 629)
 * m s (Folder):                 Folder Manager.         (line 223)
+* M-s (Folder):                 Selecting Folder.       (line 214)
 * m s (Summary):                Usage of Spam Filter.   (line 203)
 * M (Summary):                  Key Bindings of Summary.  (line 187)
+* m $ (Summary):                Key Bindings of Summary.  (line 569)
+* m ! (Summary):                Key Bindings of Summary.  (line 580)
+* m ? (Summary):                Key Bindings of Summary.  (line 649)
+* m # (Summary):                Key Bindings of Summary.  (line 655)
+* m | (Summary):                Key Bindings of Summary.  (line 660)
+* M-t (Draft):                  Key Bindings of Draft.  (line  63)
+* M-t (Folder):                 Selecting Folder.       (line 218)
 * m t (Summary):                Key Bindings of Summary.  (line 624)
+* M-t (Summary):                Key Bindings of Summary.  (line 665)
 * m u (Folder):                 Folder Manager.         (line 211)
 * m u (Summary):                Key Bindings of Summary.  (line 615)
 * m U (Summary):                Key Bindings of Summary.  (line 644)
 * m W (Folder):                 Folder Manager.         (line 191)
-* m y (Folder):                 Folder Manager.         (line 209)
-* m y (Summary):                Key Bindings of Summary.  (line 610)
-* M-c (Folder):                 Folder Manager.         (line 184)
-* M-E (Summary):                Key Bindings of Summary.  (line 102)
-* M-j (Summary):                Key Bindings of Summary.  (line 262)
-* M-o (Summary):                Key Bindings of Summary.  (line 379)
-* M-RET (Folder):               Selecting Folder.       (line  72)
-* M-RET (Summary):              Key Bindings of Summary.  (line  51)
-* M-s (Folder):                 Selecting Folder.       (line 214)
-* M-t (Draft):                  Key Bindings of Draft.  (line  63)
-* M-t (Folder):                 Selecting Folder.       (line 218)
-* M-t (Summary):                Key Bindings of Summary.  (line 665)
 * M-w (Folder):                 Folder Manager.         (line 191)
 * M-w (Summary):                Key Bindings of Summary.  (line 680)
+* m y (Folder):                 Folder Manager.         (line 209)
+* m y (Summary):                Key Bindings of Summary.  (line 610)
 * N (Folder):                   Selecting Folder.       (line 130)
 * n (Folder):                   Selecting Folder.       (line 140)
 * n (Summary):                  Key Bindings of Summary.  (line 133)
@@ -8070,13 +8053,12 @@ Key Index
 * q (Address Manager):          Address Manager.        (line  41)
 * q (Folder):                   Selecting Folder.       (line 206)
 * q (Summary):                  Key Bindings of Summary.  (line 243)
-* r $ (Summary):                Key Bindings of Summary.  (line 421)
-* r ! (Summary):                Key Bindings of Summary.  (line 432)
-* r * (Summary):                Key Bindings of Summary.  (line 442)
 * r d (Summary):                Key Bindings of Summary.  (line 457)
 * r D (Summary):                Key Bindings of Summary.  (line 462)
-* r F (Summary):                Key Bindings of Summary.  (line 427)
+* RET (Folder):                 Selecting Folder.       (line  61)
+* RET (Summary):                Key Bindings of Summary.  (line  40)
 * R (Folder):                   Folder Manager.         (line 163)
+* r F (Summary):                Key Bindings of Summary.  (line 427)
 * r i (Summary):                Key Bindings of Summary.  (line 467)
 * r k c (Summary):              Usage of Spam Filter.   (line 159)
 * r k m (Summary):              Usage of Spam Filter.   (line 155)
@@ -8088,21 +8070,36 @@ Key Index
 * r s (Folder):                 Selecting Folder.       (line 110)
 * r S (Folder):                 Selecting Folder.       (line 115)
 * R (Summary):                  Key Bindings of Summary.  (line 350)
+* r $ (Summary):                Key Bindings of Summary.  (line 421)
+* r ! (Summary):                Key Bindings of Summary.  (line 432)
+* r * (Summary):                Key Bindings of Summary.  (line 442)
 * r u (Folder):                 Folder Manager.         (line 218)
 * r u (Summary):                Key Bindings of Summary.  (line 472)
 * r x (Summary):                Key Bindings of Summary.  (line 437)
 * r y (Summary):                Key Bindings of Summary.  (line 477)
-* RET (Folder):                 Selecting Folder.       (line  61)
-* RET (Summary):                Key Bindings of Summary.  (line  40)
 * s (Folder):                   Selecting Folder.       (line 100)
 * S (Folder):                   Selecting Folder.       (line 105)
-* s (Summary):                  Key Bindings of Summary.  (line 277)
-* S (Summary):                  Key Bindings of Summary.  (line 305)
 * SPC (Folder):                 Selecting Folder.       (line  61)
 * SPC (Summary):                Key Bindings of Summary.  (line  10)
-* t $ (Summary):                Key Bindings of Summary.  (line 487)
-* t ! (Summary):                Key Bindings of Summary.  (line 501)
-* t * (Summary):                Key Bindings of Summary.  (line 513)
+* s (Summary):                  Key Bindings of Summary.  (line 277)
+* S (Summary):                  Key Bindings of Summary.  (line 305)
+* $ (Summary):                  Key Bindings of Summary.  (line 113)
+* . (Summary):                  Key Bindings of Summary.  (line  15)
+* @ (Summary):                  Key Bindings of Summary.  (line 215)
+* | (Summary):                  Key Bindings of Summary.  (line 227)
+* # (Summary):                  Key Bindings of Summary.  (line 232)
+* < (Summary):                  Key Bindings of Summary.  (line  24)
+* ^ (Summary):                  Key Bindings of Summary.  (line 268)
+* ! (Summary):                  Key Bindings of Summary.  (line 272)
+* > (Summary):                  Key Bindings of Summary.  (line  28)
+* ? (Summary):                  Key Bindings of Summary.  (line 341)
+* * (Summary):                  Key Bindings of Summary.  (line 360)
+* ~ (Summary):                  Key Bindings of Summary.  (line 402)
+* - (Summary):                  Key Bindings of Summary.  (line  51)
+* / (Summary):                  Key Bindings of Summary.  (line  57)
+* [ (Summary):                  Key Bindings of Summary.  (line  63)
+* ] (Summary):                  Key Bindings of Summary.  (line  67)
+* TAB (Summary):                Key Bindings of Summary.  (line 336)
 * t (Address Manager):          Address Manager.        (line  15)
 * t d (Summary):                Key Bindings of Summary.  (line 534)
 * t D (Summary):                Key Bindings of Summary.  (line 541)
@@ -8116,10 +8113,12 @@ Key Index
 * t O (Summary):                Key Bindings of Summary.  (line 527)
 * t R (Summary):                Key Bindings of Summary.  (line 481)
 * T (Summary):                  Key Bindings of Summary.  (line 311)
+* t $ (Summary):                Key Bindings of Summary.  (line 487)
+* t ! (Summary):                Key Bindings of Summary.  (line 501)
+* t * (Summary):                Key Bindings of Summary.  (line 513)
 * t u (Summary):                Key Bindings of Summary.  (line 552)
 * t x (Summary):                Key Bindings of Summary.  (line 507)
 * t y (Summary):                Key Bindings of Summary.  (line 558)
-* TAB (Summary):                Key Bindings of Summary.  (line 336)
 * u (Address Manager):          Address Manager.        (line  27)
 * u (Folder):                   Folder Manager.         (line 211)
 * U (Folder):                   Folder Manager.         (line 218)
@@ -8194,8 +8193,8 @@ Variable Index
 * elmo-spam-header-spam-alist:  Regular Expressions Header Matching.  (line  33)
 * elmo-spam-spamassassin-learn-program: SpamAssassin.   (line  30)
 * elmo-spam-spamassassin-lern-program-arguments: SpamAssassin.  (line  45)
-* elmo-spam-spamassassin-program: SpamAssassin.         (line  24)
 * elmo-spam-spamassassin-program-arguments: SpamAssassin.  (line  37)
+* elmo-spam-spamassassin-program: SpamAssassin.         (line  24)
 * elmo-spam-spamfilter-corpus-filename: spamfilter.     (line  25)
 * elmo-spam-spamoracle-config-filename: SpamOracle.     (line  27)
 * elmo-spam-spamoracle-database-filename: SpamOracle.   (line  32)
@@ -8240,8 +8239,8 @@ Variable Index
 * wl-draft-reply-use-address-with-full-name: Variables of Draft Mode.  (line 181)
 * wl-draft-reply-with-argument-list: Draft for Reply.   (line   5)
 * wl-draft-reply-without-argument-list: Draft for Reply.  (line   5)
-* wl-draft-sendlog:             Variables of Draft Mode.  (line 355)
 * wl-draft-sendlog-max-size:    Variables of Draft Mode.  (line 369)
+* wl-draft-sendlog:             Variables of Draft Mode.  (line 355)
 * wl-draft-send-mail-function:  Variables of Draft Mode.  (line 231)
 * wl-draft-truncate-lines:      Variables of Draft Mode.  (line 145)
 * wl-draft-use-cache:           Variables of Draft Mode.  (line 192)
@@ -8429,28 +8428,28 @@ Function Index
 * Menu:
 
 * compose-mail:                 Minimal Settings.       (line  49)
-* wl-addrmgr:                   Key Bindings of Draft.  (line  82)
 * wl-addrmgr-add:               Address Manager.        (line  45)
 * wl-addrmgr-apply:             Address Manager.        (line  31)
 * wl-addrmgr-delete:            Address Manager.        (line  49)
 * wl-addrmgr-edit:              Address Manager.        (line  53)
+* wl-addrmgr:                   Key Bindings of Draft.  (line  82)
 * wl-addrmgr-quit:              Address Manager.        (line  41)
 * wl-addrmgr-set-bcc:           Address Manager.        (line  23)
 * wl-addrmgr-set-cc:            Address Manager.        (line  19)
 * wl-addrmgr-set-to:            Address Manager.        (line  15)
 * wl-addrmgr-unmark:            Address Manager.        (line  27)
 * wl-caesar-region:             Key Bindings of Draft.  (line  53)
-* wl-draft:                     Selecting Folder.       (line  79)
 * wl-draft-config-exec:         Key Bindings of Draft.  (line  74)
 * wl-draft-elide-region:        Key Bindings of Draft.  (line  86)
 * wl-draft-highlight-and-recenter: Key Bindings of Draft.  (line  58)
 * wl-draft-kill:                Key Bindings of Draft.  (line  38)
 * wl-draft-mimic-kill-buffer:   Key Bindings of Draft.  (line  42)
 * wl-draft-preview-message:     Key Bindings of Draft.  (line  18)
-* wl-draft-save:                Key Bindings of Draft.  (line  34)
 * wl-draft-save-and-exit:       Key Bindings of Draft.  (line  46)
-* wl-draft-send:                Key Bindings of Draft.  (line  23)
+* wl-draft-save:                Key Bindings of Draft.  (line  34)
+* wl-draft:                     Selecting Folder.       (line  79)
 * wl-draft-send-and-exit:       Key Bindings of Draft.  (line  29)
+* wl-draft-send:                Key Bindings of Draft.  (line  23)
 * wl-draft-yank-original:       Key Bindings of Draft.  (line   9)
 * wl-execute-temp-marks:        Selecting Folder.       (line 189)
 * wl-exit:                      Selecting Folder.       (line 206)
@@ -8528,8 +8527,8 @@ Function Index
 * wl-summary-cancel-message:    Key Bindings of Summary.  (line  90)
 * wl-summary-copy:              Key Bindings of Summary.  (line 375)
 * wl-summary-copy-region:       Key Bindings of Summary.  (line 452)
-* wl-summary-delete:            Key Bindings of Summary.  (line 392)
 * wl-summary-delete-all-temp-marks: Key Bindings of Summary.  (line 616)
+* wl-summary-delete:            Key Bindings of Summary.  (line 392)
 * wl-summary-delete-region:     Key Bindings of Summary.  (line 462)
 * wl-summary-display-bottom:    Key Bindings of Summary.  (line  28)
 * wl-summary-display-top:       Key Bindings of Summary.  (line  24)
@@ -8547,14 +8546,14 @@ Function Index
 * wl-summary-incorporate:       Key Bindings of Summary.  (line 259)
 * wl-summary-increase-score:    Score Commands.         (line 118)
 * wl-summary-jump-to-current-message: Key Bindings of Summary.  (line 247)
-* wl-summary-jump-to-msg:       Key Bindings of Summary.  (line 253)
 * wl-summary-jump-to-msg-by-message-id: Key Bindings of Summary.  (line 262)
+* wl-summary-jump-to-msg:       Key Bindings of Summary.  (line 253)
 * wl-summary-jump-to-parent-message: Key Bindings of Summary.  (line 269)
 * wl-summary-lower-score:       Score Commands.         (line 124)
 * wl-summary-mark-as-important: Key Bindings of Summary.  (line 113)
 * wl-summary-mark-as-important-region: Key Bindings of Summary.  (line 421)
-* wl-summary-mark-as-read:      Key Bindings of Summary.  (line 350)
 * wl-summary-mark-as-read-all:  Key Bindings of Summary.  (line  76)
+* wl-summary-mark-as-read:      Key Bindings of Summary.  (line 350)
 * wl-summary-mark-as-read-region: Key Bindings of Summary.  (line 416)
 * wl-summary-mark-as-unread:    Key Bindings of Summary.  (line 272)
 * wl-summary-mark-as-unread-region: Key Bindings of Summary.  (line 432)
@@ -8574,26 +8573,26 @@ Function Index
 * wl-summary-refile:            Key Bindings of Summary.  (line 366)
 * wl-summary-refile-prev-destination: Key Bindings of Summary.  (line 381)
 * wl-summary-refile-region:     Key Bindings of Summary.  (line 447)
-* wl-summary-register-as-good:  Usage of Spam Filter.   (line 146)
 * wl-summary-register-as-good-all: Usage of Spam Filter.  (line 150)
 * wl-summary-register-as-good-region: Usage of Spam Filter.  (line 169)
-* wl-summary-register-as-spam:  Usage of Spam Filter.   (line 138)
+* wl-summary-register-as-good:  Usage of Spam Filter.   (line 146)
 * wl-summary-register-as-spam-all: Usage of Spam Filter.  (line 142)
 * wl-summary-register-as-spam-region: Usage of Spam Filter.  (line 164)
+* wl-summary-register-as-spam:  Usage of Spam Filter.   (line 138)
 * wl-summary-reply:             Key Bindings of Summary.  (line  80)
 * wl-summary-reply-with-citation: Key Bindings of Summary.  (line  85)
 * wl-summary-rescore:           Score Commands.         (line 130)
-* wl-summary-resend:            Key Bindings of Summary.  (line 402)
 * wl-summary-resend-bounced-mail: Key Bindings of Summary.  (line 102)
-* wl-summary-save:              Key Bindings of Summary.  (line 130)
+* wl-summary-resend:            Key Bindings of Summary.  (line 402)
 * wl-summary-save-current-message: Key Bindings of Summary.  (line 680)
+* wl-summary-save:              Key Bindings of Summary.  (line 130)
 * wl-summary-save-region:       Key Bindings of Summary.  (line 478)
 * wl-summary-save-status:       Key Bindings of Summary.  (line 691)
 * wl-summary-set-flags:         Key Bindings of Summary.  (line 120)
 * wl-summary-set-flags-region:  Key Bindings of Summary.  (line 427)
 * wl-summary-sort:              Key Bindings of Summary.  (line 305)
-* wl-summary-spam:              Usage of Spam Filter.   (line 123)
 * wl-summary-spam-region:       Usage of Spam Filter.   (line 155)
+* wl-summary-spam:              Usage of Spam Filter.   (line 123)
 * wl-summary-sync:              Key Bindings of Summary.  (line 277)
 * wl-summary-target-mark-all:   Key Bindings of Summary.  (line 621)
 * wl-summary-target-mark-copy:  Key Bindings of Summary.  (line 590)
@@ -8619,21 +8618,21 @@ Function Index
 * wl-summary-target-mark-spam:  Usage of Spam Filter.   (line 199)
 * wl-summary-target-mark-thread: Key Bindings of Summary.  (line 625)
 * wl-summary-target-mark-uudecode: Key Bindings of Summary.  (line 644)
-* wl-summary-test-spam:         Usage of Spam Filter.   (line 127)
 * wl-summary-test-spam-region:  Usage of Spam Filter.   (line 159)
+* wl-summary-test-spam:         Usage of Spam Filter.   (line 127)
 * wl-summary-toggle-all-header: Key Bindings of Summary.  (line 177)
 * wl-summary-toggle-disp-folder: Key Bindings of Summary.  (line 320)
 * wl-summary-toggle-disp-msg:   Key Bindings of Summary.  (line 326)
 * wl-summary-toggle-header-narrowing: Key Bindings of Summary.  (line 202)
 * wl-summary-toggle-mime:       Key Bindings of Summary.  (line 187)
 * wl-summary-toggle-thread:     Key Bindings of Summary.  (line 311)
-* wl-summary-unmark:            Key Bindings of Summary.  (line 407)
 * wl-summary-unmark-all:        Key Bindings of Summary.  (line 413)
+* wl-summary-unmark:            Key Bindings of Summary.  (line 407)
 * wl-summary-unmark-region:     Key Bindings of Summary.  (line 472)
 * wl-summary-up:                Key Bindings of Summary.  (line 156)
 * wl-summary-virtual:           Key Bindings of Summary.  (line 333)
-* wl-summary-write:             Key Bindings of Summary.  (line 165)
 * wl-summary-write-current-folder: Key Bindings of Summary.  (line 169)
+* wl-summary-write:             Key Bindings of Summary.  (line 165)
 * wl-summary-yank-saved-message: Key Bindings of Summary.  (line 685)
 * wl-template-select:           Key Bindings of Draft.  (line  78)
 * wl-thread-close-all:          Key Bindings of Summary.  (line  68)
@@ -8661,124 +8660,124 @@ Function Index
 * wl-toggle-plugged:            Selecting Folder.       (line 218)
 
 Tag table:
-Node: Top1187
-Node: Introduction3071
-Node: Start Me Up5101
-Node: MIME Modules5703
-Node: Download7055
-Node: Install8270
-Node: Minimal Settings11596
-Node: Folder Definition14038
-Node: Start Wanderlust16525
-Node: Overview17028
-Node: Folders17844
-Node: IMAP Folder19150
-Node: NNTP Folder22408
-Node: MH Folder23618
-Node: Maildir Folder24228
-Node: News Spool Folder25207
-Node: Archive Folder25851
-Node: Archiver27428
-Node: Archive Tips29748
-Node: Archive Vars30664
-Node: POP Folder32862
-Node: Shimbun Folder34987
-Node: Search Folder36199
-Node: namazu36789
-Node: grep38727
-Node: Multi Folder39294
-Node: Filter Folder39946
-Node: Pipe Folder45073
-Node: Internal Folder46514
-Node: File Folder47904
-Node: Access Folder48250
-Node: Folder48671
-Node: Selecting Folder49017
-Node: Folder Manager58093
-Node: Summary67189
-Node: Usage of Summary Mode67859
-Node: Thread Operations73190
-Node: Cache74345
-Node: Auto Refile76694
-Node: Sticky Summary79501
-Node: Summary View80508
-Node: Mark and Action83668
-Node: Key Bindings of Summary85022
-Node: Variables of Summary105241
-Node: Message115837
-Node: Draft118532
-Node: Usage of Draft Mode119018
-Node: Parameters for Sending119333
-Node: Editing Header120823
-Node: Editing Message Body and Sending122196
-Node: Dynamical Message Re-arrangement123122
-Node: Template129018
-Node: POP-before-SMTP130920
-Node: Key Bindings of Draft132539
-Node: Variables of Draft Mode134953
-Node: Disconnected Operations148441
-Node: Off-line State148977
-Node: Enable Operations149661
-Node: Send Messages off-line150621
-Node: Re-file and Copy queue151320
-Node: Creation of Folders152090
-Node: Marking152543
-Node: Pre-fetching Reservations152829
-Node: Plugged Mode153178
-Node: Off-line State settings155578
-Node: Variables of Plugged Mode156780
-Node: Expire and Archive159952
-Node: Expire160237
-Node: Archive176917
-Node: Scoring179474
-Node: Score Commands180180
-Node: Score File Format188901
-Node: Address Book194363
-Node: Mail Addresses194670
-Node: Address Manager196600
-Node: Spam Filter197293
-Node: Usage of Spam Filter197707
-Node: Spam Filter Processors204943
-Node: bogofilter205462
-Node: spamfilter206789
-Node: bsfilter207562
-Node: SpamAssassin209185
-Node: SpamOracle211072
-Node: Regular Expressions Header Matching212394
-Node: Advanced Issues213557
-Node: Living with other packages214142
-Node: imput214832
-Node: BBDB215152
-Node: LSDB216219
-Node: supercite216729
-Node: mu-cite217089
-Node: X-Face217610
-Node: x-face-xmas218154
-Node: x-face-mule218521
-Node: dired-dd219257
-Node: MHC219994
-Node: Addrbook220519
-Node: mime-w3m220843
-Node: Highlights221134
-Node: Biff229520
-Node: Password Management230593
-Node: Split messages231853
-Node: Batch Processing236067
-Node: Advanced Settings236685
-Node: Draft for Reply237011
-Node: Thread Format240025
-Node: User-Agent Field241613
-Node: Customizable Variables242315
-Node: Hooks250756
-Node: Migration250871
-Node: Before 2.12.0251261
-Node: Terminology253344
-Node: Mailing List254330
-Node: Addition255918
-Node: Index259471
-Node: Concept Index259732
-Node: Key Index272143
-Node: Variable Index289048
-Node: Function Index307620
+Node: Top1186
+Node: Introduction3070
+Node: Start Me Up5100
+Node: MIME Modules5702
+Node: Download7054
+Node: Install8269
+Node: Minimal Settings11595
+Node: Folder Definition14037
+Node: Start Wanderlust16524
+Node: Overview17027
+Node: Folders17843
+Node: IMAP Folder19149
+Node: NNTP Folder22407
+Node: MH Folder23617
+Node: Maildir Folder24227
+Node: News Spool Folder25206
+Node: Archive Folder25850
+Node: Archiver27427
+Node: Archive Tips29747
+Node: Archive Vars30663
+Node: POP Folder32861
+Node: Shimbun Folder34986
+Node: Search Folder36198
+Node: namazu36788
+Node: grep38726
+Node: Multi Folder39293
+Node: Filter Folder39945
+Node: Pipe Folder45072
+Node: Internal Folder46513
+Node: File Folder47903
+Node: Access Folder48249
+Node: Folder48670
+Node: Selecting Folder49016
+Node: Folder Manager58092
+Node: Summary67188
+Node: Usage of Summary Mode67858
+Node: Thread Operations73189
+Node: Cache74344
+Node: Auto Refile76693
+Node: Sticky Summary79500
+Node: Summary View80507
+Node: Mark and Action83667
+Node: Key Bindings of Summary85021
+Node: Variables of Summary105240
+Node: Message115836
+Node: Draft118531
+Node: Usage of Draft Mode119017
+Node: Parameters for Sending119332
+Node: Editing Header120822
+Node: Editing Message Body and Sending122195
+Node: Dynamical Message Re-arrangement123121
+Node: Template129017
+Node: POP-before-SMTP130919
+Node: Key Bindings of Draft132538
+Node: Variables of Draft Mode134952
+Node: Disconnected Operations148440
+Node: Off-line State148976
+Node: Enable Operations149660
+Node: Send Messages off-line150620
+Node: Re-file and Copy queue151319
+Node: Creation of Folders152089
+Node: Marking152542
+Node: Pre-fetching Reservations152828
+Node: Plugged Mode153177
+Node: Off-line State settings155577
+Node: Variables of Plugged Mode156779
+Node: Expire and Archive159951
+Node: Expire160236
+Node: Archive176916
+Node: Scoring179473
+Node: Score Commands180179
+Node: Score File Format188900
+Node: Address Book194362
+Node: Mail Addresses194669
+Node: Address Manager196599
+Node: Spam Filter197292
+Node: Usage of Spam Filter197706
+Node: Spam Filter Processors204942
+Node: bogofilter205461
+Node: spamfilter206788
+Node: bsfilter207561
+Node: SpamAssassin209184
+Node: SpamOracle211071
+Node: Regular Expressions Header Matching212393
+Node: Advanced Issues213556
+Node: Living with other packages214141
+Node: imput214831
+Node: BBDB215151
+Node: LSDB216218
+Node: supercite216728
+Node: mu-cite217088
+Node: X-Face217609
+Node: x-face-xmas218153
+Node: x-face-mule218520
+Node: dired-dd219256
+Node: MHC219993
+Node: Addrbook220518
+Node: mime-w3m220842
+Node: Highlights221133
+Node: Biff229519
+Node: Password Management230592
+Node: Split messages231852
+Node: Batch Processing236066
+Node: Advanced Settings236684
+Node: Draft for Reply237010
+Node: Thread Format240024
+Node: User-Agent Field241612
+Node: Customizable Variables242314
+Node: Hooks250755
+Node: Migration250870
+Node: Before 2.12.0251260
+Node: Terminology253343
+Node: Mailing List254329
+Node: Addition255917
+Node: Index259470
+Node: Concept Index259731
+Node: Key Index272142
+Node: Variable Index289047
+Node: Function Index307619
 
 End tag table
