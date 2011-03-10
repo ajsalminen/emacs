@@ -19,6 +19,8 @@ CVS
 .git
 .emacs.d/history
 .emacs.d/el-get/*/.git
+.emacs.d/el-get/.loaddefs.elc  
+.emacs.d/el-get/.status.el
 .emacs.d/thumbs
 .org-id-locations
 org-clock-save.el

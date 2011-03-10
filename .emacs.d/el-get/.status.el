@@ -1,1 +1,0 @@
-(:google-weather "installed" :wanderlust "installed" :apel "installed" :flim "installed" :semi "installed" :bbdb "installed")
