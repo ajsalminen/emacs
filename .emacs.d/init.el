@@ -13,6 +13,7 @@
                         "~/.emacs.d/auctex-11.86/preview"
                         "~/.emacs.d/color-theme"
                         "~/.emacs.d/el-get/el-get"
+			"~/.emacs.d/el-get/google-weather"
                         "~/.emacs.d/elib-1.0"
                         "~/.emacs.d/ensime_2.8.1-0.4.2/elisp"
                         "~/.emacs.d/ess-5.11/lisp"
@@ -361,6 +362,11 @@
     (el-get-remove "flim")
     (el-get-remove "semi")
     (el-get-remove "wanderlust")))
+
+;; (el-get-install "apel")
+;; (el-get-install "flim")
+;; (el-get-install "semi")
+;; (el-get-install "wanderlust")
 
 ;; All my custom settings that differ and/or can't be under version control
 (setq custom-file "~/custom.el")
@@ -2876,5 +2882,7 @@ FORMAT-STRING is like `format', but it can have multiple %-sequences."
 
 (require 'info)
 (add-to-list 'Info-additional-directory-list "~/devdocs")
+
+(require 'rebound)
 
 (message "********** successfully initialized **********")
