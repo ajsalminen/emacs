@@ -2884,5 +2884,6 @@ FORMAT-STRING is like `format', but it can have multiple %-sequences."
 (add-to-list 'Info-additional-directory-list "~/devdocs")
 
 (require 'rebound)
+(rebound-mode t)
 
 (message "********** successfully initialized **********")
