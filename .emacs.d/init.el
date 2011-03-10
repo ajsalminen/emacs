@@ -167,6 +167,8 @@
 
 (define-key global-map (kbd "RET") 'reindent-then-newline-and-indent)
 
+(setq emerge-diff-options "--ignore-all-space")
+
 ;; emergency settings end here
 
 ;;; This was installed by package-install.el.
