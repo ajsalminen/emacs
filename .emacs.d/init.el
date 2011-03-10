@@ -1419,7 +1419,7 @@ directory, select directory. Lastly the file is opened."
         ("l" "RIL" entry (file+headline "~/org/ril.org" "Ril") "** TODO %? :ril: \n %a")
         ("d" "Dev" entry (file+headline "~/org/dev.org" "Dev") "** TODO %? \n:dev: %i %a")
         ("h" "HJ" entry (file+headline "~/org/hj.org" "HJ") "* TODO %? \n:hj: \n \nEntered on %U\n  %i\n  %a")
-        ("p" "Personal" entry (file+headline "~/org/personal.org" "Personal") "* TODO %? \n:personal: \n \nEntered on %U\n  %i\n  %a")))
+        ("p" "Personal" entry (file+headline "~/org/personal.org" "Personal") "* TODO %? \n SCHEDULED: %t \n:personal: \n \nEntered on %U\n  %i\n  %a")))
 
 (setq org-todo-keyword-faces nil)
 (setq org-todo-keyword-faces
