@@ -1319,19 +1319,19 @@ directory, select directory. Lastly the file is opened."
 (require 'google-weather)
 (require 'org-google-weather)
 
+(unless  (eq window-system 'ns)
+  (defun org-toggle-iimage-in-org ()
+    "display images in your org file"
+    (interactive)
+    (if (face-underline-p 'org-link)
+        (set-face-underline-p 'org-link nil)
+      (set-face-underline-p 'org-link t))
+    (iimage-mode))
+
+  (add-hook 'org-mode-hook 'turn-on-iimage-mode)
+  (setq org-google-weather-icon-directory "~/Dropbox/status"))
+
 (add-to-list 'org-modules 'org-habit)
-
-(defun org-toggle-iimage-in-org ()
-  "display images in your org file"
-  (interactive)
-  (if (face-underline-p 'org-link)
-      (set-face-underline-p 'org-link nil)
-    (set-face-underline-p 'org-link t))
-  (iimage-mode))
-
-(add-hook 'org-mode-hook 'turn-on-iimage-mode)
-(setq org-google-weather-icon-directory "~/Dropbox/status")
-
 (setq org-habit-graph-column 70)
 (setq org-enforce-todo-dependencies t)
 
