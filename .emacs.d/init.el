@@ -1178,7 +1178,6 @@ directory, select directory. Lastly the file is opened."
      (message "Loading file cache...")
      (file-cache-add-directory-list load-path)))
 
-(c-toggle-hungry-state 1)
 
 ;; utf-8 all the way
 (setq current-language-environment "UTF-8")
