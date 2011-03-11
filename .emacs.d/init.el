@@ -52,15 +52,19 @@
 
 (eval-when-compile (require 'cl))
 (when (and (= emacs-major-version 23) (eq window-system 'ns))
+  (setq mac-option-key-is-meta t)
+  (setq mac-command-key-is-meta t)
+  (setq mac-command-modifier 'meta)
+  (setq mac-option-modifier nil)
+
+  ;; really important when typing commasand such
+  (mac-add-key-passed-to-system 'shift)
+
   (setenv "PATH" (shell-command-to-string "source ~/.bashrc; echo -n $PATH"))
   ;; Update exec-path with the contents of $PATH
   (loop for path in (split-string (getenv "PATH") ":") do
         (add-to-list 'exec-path path)))
 
-(setq mac-option-key-is-meta t)
-(setq mac-command-key-is-meta t)
-(setq mac-command-modifier 'meta)
-(setq mac-option-modifier nil)
 
 (require 'color-theme)
 (require 'color-theme-invaders)
@@ -1118,7 +1122,9 @@
 
 (global-set-key "\C-xb" 'iswitchb-toggle-input-method)
 
+(setq iswitchb-use-virtual-buffers t)
 (require 'filecache)
+(require 'iswitchb-fc)
 
 (defun file-cache-iswitchb-file ()
   "Using iswitchb, interactively open file from file cache'.
@@ -1172,6 +1178,7 @@ directory, select directory. Lastly the file is opened."
      (message "Loading file cache...")
      (file-cache-add-directory-list load-path)))
 
+(c-toggle-hungry-state 1)
 
 ;; utf-8 all the way
 (setq current-language-environment "UTF-8")
@@ -1315,19 +1322,19 @@ directory, select directory. Lastly the file is opened."
 (require 'google-weather)
 (require 'org-google-weather)
 
+(unless  (eq window-system 'ns)
+  (defun org-toggle-iimage-in-org ()
+    "display images in your org file"
+    (interactive)
+    (if (face-underline-p 'org-link)
+        (set-face-underline-p 'org-link nil)
+      (set-face-underline-p 'org-link t))
+    (iimage-mode))
+
+  (add-hook 'org-mode-hook 'turn-on-iimage-mode)
+  (setq org-google-weather-icon-directory "~/Dropbox/status"))
+
 (add-to-list 'org-modules 'org-habit)
-
-(defun org-toggle-iimage-in-org ()
-  "display images in your org file"
-  (interactive)
-  (if (face-underline-p 'org-link)
-      (set-face-underline-p 'org-link nil)
-    (set-face-underline-p 'org-link t))
-  (iimage-mode))
-
-(add-hook 'org-mode-hook 'turn-on-iimage-mode)
-(setq org-google-weather-icon-directory "~/Dropbox/status")
-
 (setq org-habit-graph-column 70)
 (setq org-enforce-todo-dependencies t)
 
