@@ -1321,7 +1321,7 @@ directory, select directory. Lastly the file is opened."
 (require 'google-weather)
 (require 'org-google-weather)
 
-(unless  (eq window-system 'ns)
+(when (eq window-system 'ns)
   (defun org-toggle-iimage-in-org ()
     "display images in your org file"
     (interactive)
