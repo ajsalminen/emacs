@@ -793,6 +793,8 @@
       (set-input-method "MacOSX")
       (toggle-input-method)))
 
+  (add-hook 'after-init-hook 'set-mac-input)
+
   (if (fboundp 'ns-toggle-fullscreen)
       (global-set-key "\M-\r" 'ns-toggle-fullscreen)))
 
