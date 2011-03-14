@@ -4,8 +4,9 @@
 
 
 ;;;### (autoloads (rspec-buffer-is-spec-p rspec-mode) "rspec-mode"
-;;;;;;  "rspec-mode.el" (19615 20456))
-;;; Generated autoloads from rspec-mode.el
+;;;;;;  "../../../../../../.emacs.d/elpa/rspec-mode-0.2/rspec-mode.el"
+;;;;;;  (19837 46042))
+;;; Generated autoloads from ../../../../../../.emacs.d/elpa/rspec-mode-0.2/rspec-mode.el
 
 (autoload 'rspec-mode "rspec-mode" "\
 Minor mode for rSpec files
@@ -27,7 +28,9 @@ Returns true if the current buffer is a spec
 
 ;;;***
 
-;;;### (autoloads nil nil ("rspec-mode-pkg.el") (19615 20456 602285))
+;;;### (autoloads nil nil ("../../../../../../.emacs.d/elpa/rspec-mode-0.2/rspec-mode-pkg.el"
+;;;;;;  "../../../../../../.emacs.d/elpa/rspec-mode-0.2/rspec-mode.el")
+;;;;;;  (19837 46042 642695))
 
 ;;;***
 
