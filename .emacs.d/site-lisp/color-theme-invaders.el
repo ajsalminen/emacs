@@ -93,7 +93,7 @@
      (font-latex-verbatim-face ((t (:foreground "burlywood" :family "courier"))))
      (font-lock-builtin-face ((t (:foreground "RoyalBlue1"))))
      (font-lock-comment-delimiter-face ((t (:italic t :background "blue" :foreground "white" :slant italic))))
-     (font-lock-comment-face ((t (:bold t :italic t :foreground "honeydew2" :slant italic))))
+     (font-lock-comment-face ((t (:bold t :italic t :background nil :foreground "LemonChiffon" :slant italic))))
      (font-lock-constant-face ((t (:foreground "maroon1"))))
      (font-lock-doc-face ((t (:foreground "DarkOrange2"))))
      (font-lock-function-name-face ((t (:foreground "yellow1"))))
