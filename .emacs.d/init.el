@@ -1084,7 +1084,7 @@
 
 ;; highlight current line
 (require 'highline)
-(global-hl-line-mode t)
+(global-hl-line-mode nil)
 ;; To customize the background color
 (set-face-background 'hl-line "#222") ;; Emacs 22 Only
 
@@ -1092,12 +1092,12 @@
 (toggle-hl-line-when-idle t)
 
 (require 'hl-spotlight)
-(global-hl-spotlight-mode 1)
+(global-hl-spotlight-mode nil)
 (setq hl-spotlight-height 0)
 
 (require 'highlight-current-line)
-(highlight-current-line-on t)
-(setq highlight-current-line-globally t)
+(highlight-current-line-on nil)
+(setq highlight-current-line-globally nil)
 (set-face-background 'highlight-current-line-face "#222")
 (add-hook 'highlight-current-line-hook (lambda () (redisplay t)))
 
