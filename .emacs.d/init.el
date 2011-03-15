@@ -2903,4 +2903,6 @@ FORMAT-STRING is like `format', but it can have multiple %-sequences."
 (require 'rebound)
 (rebound-mode t)
 
+(require 'todochiku)
+
 (message "********** successfully initialized **********")
