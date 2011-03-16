@@ -361,7 +361,7 @@
      (tool-tips ((t (:family "Sans Serif" :background "lightyellow" :foreground "black"))))
      (tooltip ((t (:family "Sans Serif" :background "lightyellow" :foreground "black"))))
      (trailing-whitespace ((t (:background "red1"))))
-     (twittering-uri-face ((t (:foreground "DodgerBlue1" :background nil))))
+     (twittering-uri-face ((t (:foreground "DeepSkyBlue1" :background nil))))
      (twittering-username-face ((t (:foreground "yellow1" :background nil))))
      (underline ((t (:underline t))))
      (variable-pitch ((t (:family "Sans Serif"))))
