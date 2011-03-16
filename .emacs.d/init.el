@@ -57,6 +57,9 @@
   (setq mac-command-modifier 'meta)
   (setq mac-option-modifier nil)
 
+  (mac-set-input-method-parameter `japanese `cursor-color "yellow")
+  (mac-set-input-method-parameter "com.google.inputmethod.Japanese.base" `cursor-color "yellow")
+
   ;; really important when typing commasand such
   (mac-add-key-passed-to-system 'shift)
 
