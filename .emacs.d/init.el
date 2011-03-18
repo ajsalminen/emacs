@@ -2080,10 +2080,6 @@ post command hook に機能追加"
 
 (add-hook 'ido-setup-hook 'my-ido-keys)
 (defalias 'qrr 'query-replace-regexp)
-(global-set-key "\C-s" 'isearch-forward)
-(global-set-key "\C-r" 'isearch-backward)
-(global-set-key (kbd "C-S-s") 'isearch-forward-regexp)
-(global-set-key (kbd "C-S-r") 'isearch-backward-regexp)
 
 (require 'fuzzy)
 (turn-on-fuzzy-isearch)

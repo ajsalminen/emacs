@@ -346,7 +346,7 @@
      (paren-face-mismatch ((t (:background "purple" :foreground "white"))))
      (paren-face-no-match ((t (:background "yellow" :foreground "black"))))
      (query-replace ((t (:bold t :weight bold :foreground "#303030" :background "#cd8b60"))))
-     (region ((t (:background "#610d00"))))
+     (region ((t (:background "grey17"))))
      (scroll-bar ((t (nil))))
      (secondary-selection ((t (:background "SkyBlue4"))))
      (sense-region-offset-face ((t (:background "lightgoldenrod2"))))
