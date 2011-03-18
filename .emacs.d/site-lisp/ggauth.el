@@ -57,8 +57,16 @@
 (defvar ggauth-service-name "cl"
   "name of service to authenticate")
 
-(defvar ggauth-authentication-header-format (format "accountType=HOSTED_OR_GOOGLE&Email=%s&Passwd=%s&service=%s" ggauth-service-name)
+(defvar ggauth-authentication-header-format (format "accountType=HOSTED_OR_GOOGLE&Email=%s&Passwd=%s&service=%s" ggauth-account ggauth-password ggauth-service-name)
   "format for auth credential header for Google authentication")
+
+(defvar ggauth-use-url-retrieve nil
+  "If nil, use external command-line HTTP client instead.")
+
+(defvar ggauth-url-retrieval-program "curl"
+  "NOT IMPLEMENTED: URL retrieving program used when `install-elisp-use-url-retrieve' is nil.
+  you may want to try or the native program \"wget -q -O- %s\"")
+
 
 (defvar ggauth-auth-token-header-format "Authorization: GoogleLogin auth=%s"
   "header format for authenticated requests")
