@@ -26,3 +26,4 @@ CVS
 org-clock-save.el
 ac-comphist.dat
 .emacs.d/nxhtml/etc/schema/xhtml-loader.rnc
+.emacs.d/jabber/elc-temp
