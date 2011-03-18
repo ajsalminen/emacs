@@ -637,7 +637,7 @@
 
 ;; for some reason hitting backspace in latex mode with CJK IME on
 
-(when  (eq window-system 'mac)
+(when  (or (eq window-system 'mac) (eq window-system 'ns))
   ;; makes the input act funny
   (defun backspace-cjk-hack ()
     (interactive)
@@ -2080,10 +2080,10 @@ post command hook に機能追加"
 
 (add-hook 'ido-setup-hook 'my-ido-keys)
 (defalias 'qrr 'query-replace-regexp)
-(global-set-key "\C-s" 'isearch-forward-regexp)
-(global-set-key "\C-r" 'isearch-backward-regexp)
-(global-set-key (kbd "C-S-s") 'isearch-forward)
-(global-set-key (kbd "C-S-r") 'isearch-backward)
+(global-set-key "\C-s" 'isearch-forward)
+(global-set-key "\C-r" 'isearch-backward)
+(global-set-key (kbd "C-S-s") 'isearch-forward-regexp)
+(global-set-key (kbd "C-S-r") 'isearch-backward-regexp)
 
 (require 'fuzzy)
 (turn-on-fuzzy-isearch)
@@ -2907,5 +2907,14 @@ FORMAT-STRING is like `format', but it can have multiple %-sequences."
 (rebound-mode t)
 
 (require 'todochiku)
+
+(require 'migemo)
+(setq migemo-command "cmigemo")
+(setq migemo-options '("-q" "--emacs"))
+(setq migemo-dictionary "/usr/local/share/migemo/utf-8/migemo-dict")
+(setq migemo-user-dictionary nil)
+(setq migemo-regex-dictionary nil)
+(setq migemo-coding-system 'utf-8-unix)
+(migemo-init)
 
 (message "********** successfully initialized **********")
