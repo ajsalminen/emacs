@@ -231,7 +231,7 @@
      (help-argument-name ((t (:italic t :slant italic :underline nil))))
      (highlight ((t (:background "#404040"))))
      (hl-line ((t (:background "#141423"))))
-     (info-xref ((t (:foreground "#729fcf"))))
+     (info-xref ((t (:foreground "SpringGreen1"))))
      (info-xref-visited ((t (:foreground "#ad7fa8"))))
      (isearch ((t (:bold t :background "#cd8b60" :foreground "#303030" :weight bold))))
      (isearch-fail ((t (:background "red4"))))
