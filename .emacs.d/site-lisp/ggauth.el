@@ -103,6 +103,7 @@
 (defun ggauth-authenticate ()
   (ggauth-refresh-token-buffer)
   (let* ((gr-header (format ggauth-authentication-header-format ggauth-account ggauth-password)))
+    (message gr-header)
     ;; this calls a synchronous process ("curl, etc.") that writes output to temp buffer
     (call-process ggauth-url-retrieval-program
                   nil
@@ -140,7 +141,9 @@
 
 ;; FIXME: accept additional post params as args
 (defun ggauth-get-url (url &optional buffer-name)
-  (let* ((gr-header (format ggauth-auth-token-header-format ggauth-auth-token-string)))
+  (let* ((coding-system-for-read 'binary)
+         (coding-system-for-write 'binary)
+         (gr-header (format ggauth-auth-token-header-format ggauth-auth-token-string)))
     (start-process "ggauth-get-url"
                    (if buffer-name
                        buffer-name
@@ -149,26 +152,15 @@
                    url
                    "--silent"
                    "--header"
-                   gr-header)))
-
-(defun ggauth-get-url (url &optional buffer-name)
-  (let* ((gr-header (format ggauth-auth-token-header-format ggauth-auth-token-string)))
-    (start-process "ggauth-get-url"
-                   (if buffer-name
-                       buffer-name
-                     ggauth-http-buffer)
-                   ggauth-url-retrieval-program
-                   url
-                   "--silent"
-                   "--header"
-                   gr-header)))
+                   gr-header)
+    (set-buffer-multibyte nil)))
 
 (defun ggauth-setup-auth ()
   (progn
     (ggauth-authenticate)
     (ggauth-set-auth-token)
 ;;         (ggauth-kill-token-buffer)
-))
+    ))
 
 ;; the declarations below are for testing purposes
 (ggauth-authenticate)

@@ -18,7 +18,6 @@
 ;;; Commentary:
 ;;  Not really sure if or when this will be ready for consumption
 ;;
-;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
 ;;; Change Log:
@@ -67,7 +66,7 @@
 (defvar ggread-quickadd-format "%ssubscription/quickadd?quickadd=%s"
   "quick add format for subscriptions")
 
-(defvar ggread-default-fetch-number 5
+(defvar ggread-default-fetch-number 50
   "default number of items to fetch per request")
 
 (defvar ggread-reading-list-url-format "%sstream/contents/user/-/state/com.google/reading-list?xt=user/-/state/com.google/read&n=%d%s&client=scroll"
@@ -86,9 +85,20 @@
 (defun ggread-reading-list-parse ()
   "parses the fetched reading list (json format)"
   (set-buffer (get-buffer ggauth-http-buffer))
+  (print (decode-coding-string (buffer-string) 'utf-8))
   (setq reading-list-data (json-read-from-string (buffer-string)))
   (loop for item across (cdr (assoc 'items reading-list-data)) do
-        (message (cdr (assoc 'title item)))))
+        ;; (message "%s" item)
+        (message (decode-coding-string (cdr (assoc 'title item)) 'utf-8))
+        (let ((content (cdr (assoc 'content (assoc 'summary item)))))
+          (if content
+            (message "%s" (decode-coding-string content 'utf-8))))
+
+        ;; (message (decode-coding-string (mapconcat 'identity (cdr (assoc 'categories item)) "|") 'utf-8))
+        ;; (message (cdr (assoc 'url item)))
+        ;; (message (cdr (assoc 'author item)))
+        )
+  )
 
 ;; FIXME: need to get T token for editing
 ;; FIXME: use "T" and "quickadd" as post params
@@ -132,21 +142,21 @@
 
 
 ;; the declarations below are for testing purposes
-
-(ggauth-setup-auth)
-(message ggauth-auth-token-string)
-
 (ggauth-authenticate)
 (ggauth-set-auth-token)
+(ggread-reading-list-get)
+(ggread-reading-list-parse)
+
+
 
 ;; (ggread-reset-auth-token)
 ;; (message ggread-auth-token-string)
 ;; (ggread-setup-auth)
 
-(ggread-reading-list-get)
-(message (ggread-reading-list-url))
-(message reading-list-data)
-(ggread-reading-list-parse)
+;; (message (ggread-reading-list-url))
+
+;; (message reading-list-data)
+
 ;; (ggread-quickadd-url-string  "http://blogs.itmedia.co.jp/osonoi/")
 ;; (ggread-quickadd-url "http://blogs.itmedia.co.jp/osonoi/")
 
