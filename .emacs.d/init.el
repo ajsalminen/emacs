@@ -1326,6 +1326,22 @@ directory, select directory. Lastly the file is opened."
 (require 'google-weather)
 (require 'org-google-weather)
 
+(require 'todochiku)
+
+(setq todochiku-icons-directory "~/.emacs.d/todochiku-icons")
+(setq org-timer-default-timer 25)
+
+(add-hook 'org-clock-in-hook '(lambda ()
+                                (org-timer-set-timer '(25))))
+
+(add-hook 'org-clock-out-hook '(lambda ()
+                                 (org-timer-can)
+                                 (setq org-mode-line-string nil)))
+
+(add-hook 'org-timer-done-hook '(lambda()
+                                  (todochiku-message "Pomodoro" "completed" (todochiku-icon 'alarm))))
+
+
 (when (eq window-system 'ns)
   (defun org-toggle-iimage-in-org ()
     "display images in your org file"
@@ -2850,13 +2866,10 @@ FORMAT-STRING is like `format', but it can have multiple %-sequences."
 (add-hook 'view-mode-hook 'view-mode-set-vi-keybindings)
 
 
-(setq header-line-format
-      (concat (propertize " " 'display '((space :align-to 0)))
-              "some header text"))
-
 (which-func-mode 1)
 (setq which-func-modes t)
 (delete (assoc 'which-func-mode mode-line-format) mode-line-format)
+
 (setq header-line-format
       (list "-"
             "%b--"
@@ -2902,8 +2915,6 @@ FORMAT-STRING is like `format', but it can have multiple %-sequences."
 (require 'rebound)
 (rebound-mode t)
 
-(require 'todochiku)
-
 (require 'migemo)
 (setq migemo-command "cmigemo")
 (setq migemo-options '("-q" "--emacs"))
@@ -2912,5 +2923,16 @@ FORMAT-STRING is like `format', but it can have multiple %-sequences."
 (setq migemo-regex-dictionary nil)
 (setq migemo-coding-system 'utf-8-unix)
 (migemo-init)
+
+(require 'diminish)
+(diminish 'abbrev-mode "Abv")
+(diminish 'eldoc-mode)
+(diminish 'icicle-mode)
+(diminish 'paredit-mode "PE")
+(diminish 'highlight-parentheses-mode)
+(diminish 'undo-tree-mode)
+(diminish 'window-number-mode)
+(diminish 'auto-highlight-symbol-mode)
+(diminish 'auto-complete-mode)
 
 (message "********** successfully initialized **********")
