@@ -1461,7 +1461,7 @@ directory, select directory. Lastly the file is opened."
 
 (setq org-capture-templates
       '(("i" "Inbox" entry (file+headline "~/org/todo.org" "Inbox") "** TODO %? \n %i :inbox: %a \n SCHEDULED: %T \n %U")
-        ("r" "Research" entry (file+headline "~/org/diss.org" "Research") "** TODO %?  :research: \n %i %a")
+        ("r" "Research" entry (file+headline "~/org/diss.org" "Research") "** TODO %?  :research: \n %a")
         ("t" "Writing" entry (file+headline "~/org/write.org" "Writing") "** TODO %? :write: \n %a")
         ("w" "Work" entry (file+headline "~/org/work.org" "Work") "** TODO %? :work: \n %a")
         ("l" "RIL" entry (file+headline "~/org/ril.org" "Ril") "** TODO %? :ril: \n %a")
@@ -1469,7 +1469,6 @@ directory, select directory. Lastly the file is opened."
         ("h" "HJ" entry (file+headline "~/org/hj.org" "HJ") "* TODO %? :hj: \n \n Entered on %U\n  %i\n  %a")
         ("p" "Personal" entry (file+headline "~/org/personal.org" "Personal") "* TODO %? :personal: \n SCHEDULED: %t \n \nEntered on %U\n  %i\n  %a")))
 
-(setq org-todo-keyword-faces nil)
 (setq org-todo-keyword-faces
       '(("TODO"      . org-warning)
         ("DEFERRED"  . shadow)
