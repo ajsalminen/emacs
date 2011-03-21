@@ -1335,7 +1335,7 @@ directory, select directory. Lastly the file is opened."
                                 (org-timer-set-timer '(25))))
 
 (add-hook 'org-clock-out-hook '(lambda ()
-                                 (org-timer-can)
+                                 (org-timer-cancel-timer)
                                  (setq org-mode-line-string nil)))
 
 (add-hook 'org-timer-done-hook '(lambda()
@@ -2934,5 +2934,10 @@ FORMAT-STRING is like `format', but it can have multiple %-sequences."
 (diminish 'window-number-mode)
 (diminish 'auto-highlight-symbol-mode)
 (diminish 'auto-complete-mode)
+(diminish 'yas/minor-mode "Y")
+
+(add-hook 'emacs-lisp-mode-hook
+          (lambda()
+            (setq mode-name "el")))
 
 (message "********** successfully initialized **********")
