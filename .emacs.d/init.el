@@ -636,6 +636,7 @@
 
 
 ;; for some reason hitting backspace in latex mode with CJK IME on
+;; could be screen lines
 
 (when  (or (eq window-system 'mac) (eq window-system 'ns))
   ;; makes the input act funny
@@ -645,7 +646,14 @@
       (delete-backward-char 1)
       (keyboard-quit)))
 
+  ;; (defun newline-cjk-hack ()
+  ;;   (interactive)
+  ;;   (progn
+  ;;     (newline)
+  ;;     (keyboard-quit)))
+
   (add-hook 'LaTeX-mode-hook (lambda ()
+                               ;; (define-key LaTeX-mode-map (kbd "<return>") 'newline-cjk-hack)
                                (define-key LaTeX-mode-map (kbd "<backspace>") 'backspace-cjk-hack))))
 
 
@@ -1332,7 +1340,8 @@ directory, select directory. Lastly the file is opened."
 (setq org-timer-default-timer 25)
 
 (add-hook 'org-clock-in-hook '(lambda ()
-                                (org-timer-set-timer '(25))))
+                                (if (not org-timer-current-timer)
+                                    (org-timer-set-timer '(25)))))
 
 (add-hook 'org-clock-out-hook '(lambda ()
                                  (org-timer-cancel-timer)
@@ -2059,7 +2068,7 @@ post command hook に機能追加"
 (setq uniquify-separator ":")
 
 (require 'screen-lines)
-(add-hook 'text-mode-hook 'turn-on-screen-lines-mode)
+;; (add-hook 'text-mode-hook 'turn-on-screen-lines-mode)
 
 (require 'summarye)
 
