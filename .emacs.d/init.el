@@ -122,6 +122,11 @@
 (descbinds-anything-install)
 (defalias 'rf 'anything-recentf)
 
+(require 'icicles)
+(icy-mode 1)
+(global-set-key "\C-x\ \C-r" 'icicle-recent-file)
+;;(setq icicle-TAB-completion-methods (quote (fuzzy basic vanilla)))
+
 (require 'smex)
 (smex-initialize)
 (setq smex-auto-update t)
@@ -931,11 +936,6 @@
 (require 'dired+)
 (define-key dired-mode-map "W" 'diredp-mark-region-files)
 
-(require 'icicles)
-(icy-mode 1)
-(global-set-key "\C-x\ \C-r" 'icicle-recent-file)
-;;(setq icicle-TAB-completion-methods (quote (fuzzy basic vanilla)))
-
 (setenv (concat "/usr/local/libexec/git-core" ";" (getenv "GIT_EXEC_PATH")))
 
 (require 'magit)
@@ -1338,6 +1338,7 @@ directory, select directory. Lastly the file is opened."
 
 (setq todochiku-icons-directory "~/.emacs.d/todochiku-icons")
 (setq org-timer-default-timer 25)
+(setq org-clock-string-limit 35)
 
 (add-hook 'org-clock-in-hook '(lambda ()
                                 (if (not org-timer-current-timer)
@@ -2943,9 +2944,16 @@ FORMAT-STRING is like `format', but it can have multiple %-sequences."
 (diminish 'auto-highlight-symbol-mode)
 (diminish 'auto-complete-mode)
 (diminish 'yas/minor-mode "Y")
+(diminish 'reftex-mode)
+(diminish 'scim-mode)
+(diminish 'flyspell-mode "f")
 
 (add-hook 'emacs-lisp-mode-hook
           (lambda()
             (setq mode-name "el")))
+
+(add-hook 'LaTeX-mode-hook
+          (lambda()
+            (setq TeX-base-mode-name "lx")))
 
 (message "********** successfully initialized **********")
