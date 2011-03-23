@@ -387,7 +387,7 @@
 (load blog-file 'noerror)
 
 (setq Info-directory-list
-      '("/usr/local/share/info" "~/info" "/usr/share/info" "/usr/local/info" "/usr/share/info/emacs-23"))
+      '("/usr/local/share/info" "~/info" "~/devdocs" "/usr/share/info" "/usr/local/info" "/usr/share/info/emacs-23"))
 
 ;;; This was installed by package-install.el.
 ;;; This provides support for the package system and
@@ -2917,9 +2917,6 @@ FORMAT-STRING is like `format', but it can have multiple %-sequences."
     (message "Canceled exit")))
 
 (global-set-key (kbd "C-x C-c") 'ask-before-closing)
-
-(require 'info)
-(add-to-list 'Info-additional-directory-list "~/devdocs")
 
 (require 'rebound)
 (rebound-mode t)

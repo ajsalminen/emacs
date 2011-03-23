@@ -141,6 +141,12 @@
               (setq prevurl url))))))))
 
 
+(defun ggread-mode ()
+  "setup Google Reader"
+  (interactive)
+  (kill-all-local-variables))
+
+
 ;; the declarations below are for testing purposes
 (ggauth-authenticate)
 (ggauth-set-auth-token)
