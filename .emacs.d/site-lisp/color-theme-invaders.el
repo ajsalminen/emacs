@@ -291,6 +291,7 @@
      (nobreak-space ((t (:foreground "PaleTurquoise1" :underline t))))
      (ns-marked-text-face ((t (:underline t))))
      (ns-working-text-face ((t (:underline "gray20"))))
+     (org-agenda-clocking ((t (:background "dark red" :foreground "white"))))
      (org-agenda-date ((t (:foreground "LightSkyBlue"))))
      (org-agenda-date-today ((t (:bold t :foreground "#edd400" :weight bold))))
      (org-agenda-date-weekend ((t (:bold t :foreground "LightSkyBlue" :weight bold))))
