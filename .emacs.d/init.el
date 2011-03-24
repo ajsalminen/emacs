@@ -359,9 +359,8 @@
                         (require 'wl-draft)
                         (add-hook 'wl-draft-mode-hook
                                   (lambda ()
+                                    (flyspell-mode t)
                                     (define-key wl-draft-mode-map (kbd "<tab>") 'bbdb-complete-name)))
-
-
                         ))
         ))
 (el-get 'sync)
