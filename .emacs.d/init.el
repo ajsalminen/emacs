@@ -61,13 +61,15 @@
   (mac-set-input-method-parameter "com.google.inputmethod.Japanese.base" `cursor-color "yellow")
 
   ;; really important when typing commasand such
-  (mac-add-key-passed-to-system 'shift)
+  (mac-add-key-passed-to-system 'shift))
 
+(when (and (= emacs-major-version 23) (or (eq window-system 'ns) (eq window-system 'x)))
   (setenv "PATH" (shell-command-to-string "source ~/.bashrc; echo -n $PATH"))
+  (when (eq window-system 'x)
+    (setenv "PATH" (concat "/usr/local/texlive/2010/bin/i386-linux:" (getenv "PATH"))))
   ;; Update exec-path with the contents of $PATH
   (loop for path in (split-string (getenv "PATH") ":") do
         (add-to-list 'exec-path path)))
-
 
 (require 'color-theme)
 (require 'color-theme-invaders)
@@ -630,11 +632,14 @@
 (require 'tex)
 (add-to-list 'TeX-clean-default-intermediate-suffixes "\\.fdb_latexmk")
 
-(add-hook 'TeX-mode-hook (lambda ()
-                           (push
-                            '("m" "latexmk -pv -pdf %t" TeX-run-TeX nil t
-                              :help "Run Latexmk on file")
-                            TeX-command-list)))
+(eval-after-load "tex"
+  '(add-to-list 'TeX-command-list '("m" "latexmk -pv -pdf %t" TeX-run-TeX nil t
+                                    :help "Run Latexmk on file")))
+
+(eval-after-load "tex"
+  '(add-to-list 'TeX-command-list '("ubuntumk" "latexmk %t && platex %t && latexmk -pdfdvi %t" TeX-run-TeX nil t
+                                    :help "Run Latexmk on file (with hacks from ubuntu environment)")))
+
 
 ;; (add-hook 'TeX-mode-hook 'reftex-toc)
 
