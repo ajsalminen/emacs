@@ -69,6 +69,9 @@
 (defvar ggread-default-fetch-number 50
   "default number of items to fetch per request")
 
+(defvar ggread-buffer-name "*Google Reader*"
+  "name of Google Reader buffer")
+
 (defvar ggread-reading-list-url-format "%sstream/contents/user/-/state/com.google/reading-list?xt=user/-/state/com.google/read&n=%d%s&client=scroll"
   "This url fetches unread items where %d is the number of items per fetch and %s is where the continuation string will go if any")
 
@@ -144,8 +147,10 @@
 (defun ggread-mode ()
   "setup Google Reader"
   (interactive)
-  (kill-all-local-variables))
-
+  (let ((buffer (generate-new-buffer ggread-buffer-name)))
+    (with-current-buffer buffer
+      (message "hi"))
+    buffer))
 
 ;; the declarations below are for testing purposes
 (ggauth-authenticate)
