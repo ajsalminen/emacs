@@ -2958,4 +2958,8 @@ FORMAT-STRING is like `format', but it can have multiple %-sequences."
           (lambda()
             (setq TeX-base-mode-name "lx")))
 
+(require 'tepco-power-status)
+(require 'yasima)
+(yasima-mode)
+
 (message "********** successfully initialized **********")
