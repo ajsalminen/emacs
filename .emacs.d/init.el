@@ -359,9 +359,8 @@
                         (require 'wl-draft)
                         (add-hook 'wl-draft-mode-hook
                                   (lambda ()
+                                    (flyspell-mode t)
                                     (define-key wl-draft-mode-map (kbd "<tab>") 'bbdb-complete-name)))
-
-
                         ))
         ))
 (el-get 'sync)
@@ -387,7 +386,7 @@
 (load blog-file 'noerror)
 
 (setq Info-directory-list
-      '("/usr/local/share/info" "~/info" "/usr/share/info" "/usr/local/info" "/usr/share/info/emacs-23"))
+      '("/usr/local/share/info" "~/info" "~/devdocs" "/usr/share/info" "/usr/local/info" "/usr/share/info/emacs-23"))
 
 ;;; This was installed by package-install.el.
 ;;; This provides support for the package system and
@@ -2918,9 +2917,6 @@ FORMAT-STRING is like `format', but it can have multiple %-sequences."
 
 (global-set-key (kbd "C-x C-c") 'ask-before-closing)
 
-(require 'info)
-(add-to-list 'Info-additional-directory-list "~/devdocs")
-
 (require 'rebound)
 (rebound-mode t)
 
@@ -2935,18 +2931,19 @@ FORMAT-STRING is like `format', but it can have multiple %-sequences."
 
 (require 'diminish)
 (diminish 'abbrev-mode "Abv")
+(diminish 'auto-complete-mode)
+(diminish 'auto-highlight-symbol-mode)
 (diminish 'eldoc-mode)
+(diminish 'flyspell-mode "f")
+(diminish 'highlight-parentheses-mode)
 (diminish 'icicle-mode)
 (diminish 'paredit-mode "PE")
-(diminish 'highlight-parentheses-mode)
+(diminish 'reftex-mode)
+(if (featurep 'scim)
+    (diminish 'scim-mode))
 (diminish 'undo-tree-mode)
 (diminish 'window-number-mode)
-(diminish 'auto-highlight-symbol-mode)
-(diminish 'auto-complete-mode)
 (diminish 'yas/minor-mode "Y")
-(diminish 'reftex-mode)
-(diminish 'scim-mode)
-(diminish 'flyspell-mode "f")
 
 (add-hook 'emacs-lisp-mode-hook
           (lambda()
