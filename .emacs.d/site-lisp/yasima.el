@@ -43,3 +43,4 @@
 	(setq yasima-timer
 	      (run-at-time nil yasima-interval #'yasima-event-handler)))))
 
+(provide 'yasima)

@@ -352,6 +352,7 @@
                         ;;(add-hook 'wl-exit-hook 'ecb-activate)
                         (require 'mime-w3m)
                         (defalias 'wle 'wl-exit)
+                        (defalias 'wlo 'wl-other-frame)
                         (add-hook 'mime-view-mode-hook
                                   (lambda ()
                                     (local-set-key "s" 'w3m-view-this-url-new-session)))
@@ -818,6 +819,8 @@
   (if (fboundp 'ns-toggle-fullscreen)
       (global-set-key "\M-\r" 'ns-toggle-fullscreen)))
 
+
+
 (when (and (< emacs-major-version 23)  (eq window-system 'mac))
   (set-face-attribute 'default nil
                       :family "monaco"
@@ -837,6 +840,7 @@
 (when (and (= emacs-major-version 23) (eq window-system 'x))
   ;; (add-hook 'after-init-hook (lambda () (toggle-fullscreen)))
   (global-set-key "\M-\r" 'toggle-fullscreen)
+  (add-hook 'after-make-frame-functions 'toggle-fullscreen)
   (setq x-super-keysym 'meta)
   (setq x-alt-keysym 'meta)
 
