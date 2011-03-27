@@ -2966,4 +2966,6 @@ FORMAT-STRING is like `format', but it can have multiple %-sequences."
 (require 'yasima)
 (yasima-mode)
 
+(require 'offlineimap)
+
 (message "********** successfully initialized **********")
