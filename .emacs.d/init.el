@@ -364,6 +364,8 @@
                                   (lambda ()
                                     (flyspell-mode t)
                                     (define-key wl-draft-mode-map (kbd "<tab>") 'bbdb-complete-name)))
+                        (require 'offlineimap)
+                        (add-hook 'wl-init-hook 'offlineimap)
                         ))
         ))
 (el-get 'sync)
@@ -2965,7 +2967,5 @@ FORMAT-STRING is like `format', but it can have multiple %-sequences."
 (require 'tepco-power-status)
 (require 'yasima)
 (yasima-mode)
-
-(require 'offlineimap)
 
 (message "********** successfully initialized **********")
