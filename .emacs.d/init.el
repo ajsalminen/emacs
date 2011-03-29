@@ -365,7 +365,20 @@
                                     (flyspell-mode t)
                                     (define-key wl-draft-mode-map (kbd "<tab>") 'bbdb-complete-name)))
                         (require 'offlineimap)
-                        (add-hook 'wl-init-hook 'offlineimap)
+                        (defun kill-offlineimap ()
+                          (interactive)
+                          (ignore-errors
+                            (save-excursion
+                              (set-buffer (get-buffer-create "*OfflineIMAP*"))
+                              (offlineimap-kill))))
+
+                        (defun restart-offlineimap ()
+                          (interactive)
+                          (kill-offlineimap)
+                          (progn
+                            (offlineimap)))
+
+                        (add-hook 'wl-init-hook 'restart-offlineimap)
                         ))
         ))
 (el-get 'sync)
