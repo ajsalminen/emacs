@@ -378,7 +378,8 @@
                           (progn
                             (offlineimap)))
 
-                        (add-hook 'wl-init-hook 'restart-offlineimap)
+                        (add-hook 'wl-init-hook 'offlineimap)
+                        (add-hook 'wl-exit-hook 'offlineimap-resync)
                         ))
         ))
 (el-get 'sync)
