@@ -2696,10 +2696,7 @@ FORMAT-STRING is like `format', but it can have multiple %-sequences."
 (autoload 'crontab-mode "crontab-mode" "font-locking for crontab" t)
 
 (add-to-list 'auto-mode-alist '("\\.cron\\(tab\\)?\\'" . crontab-mode))
-;; (add-to-list 'auto-mode-alist '("cron\\(tab\\)?\\."    . crontab-mode))
-
-;; (delete 'auto-mode-alist '("\\.cron\\(tab\\)?\\'" . crontab-mode))
-;; (delete 'auto-mode-alist '("cron\\(tab\\)?\\."    . crontab-mode))
+(add-to-list 'auto-mode-alist '("cron\\(tab\\)?\\.[^el]+"    . crontab-mode))
 
 (server-start)
 ;; sudo-ext requires server
