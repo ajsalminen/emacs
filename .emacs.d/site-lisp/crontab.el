@@ -56,14 +56,15 @@ Otherwise, always ask crontab for the current entry (maybe).")
   "Function to allow the easy editing of crontab files."
 
   (interactive)
-  (crontab-get))
+  (crontab-load)
+  (crontab-mode))
 
 
 ;;; Function to retrieve the crontab entry.  The Function will
 ;;; retrieve the file (crontab-filename) first.  If the file does not
 ;;; exists, a crontab -l command will be executed.
 
-(defun crontab-get ()
+(defun crontab-load ()
    "Retrieve a crontab file either using crontab -l or from the variable
 crontab-filename"
    (message "Retrieving Crontab ... ")
