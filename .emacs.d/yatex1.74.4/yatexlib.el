@@ -2,8 +2,8 @@
 ;;; YaTeX and yahtml common libraries, general functions and definitions
 ;;; yatexlib.el
 ;;; (c)1994-2009 by HIROSE Yuuji.[yuuji@yatex.org]
-;;; Last modified Mon Sep 28 10:46:39 2009 on firestorm
-;;; $Id: yatexlib.el,v 1.74 2009/09/28 01:54:43 yuuji Rel $
+;;; Last modified Fri Feb 18 15:05:08 2011 on firestorm
+;;; $Id: yatexlib.el,v ab02213f5683 2011-02-18 15:32 +0900 yuuji $
 
 ;; General variables
 (defvar YaTeX-dos (memq system-type '(ms-dos windows-nt OS/2)))
@@ -465,13 +465,12 @@ corresponding real arguments ARGS."
 ;;;###autoload
 (defun rindex (string char)
   (let ((pos (1- (length string)))(index -1))
-    (while (>= pos 0)
-      (cond
-       ((= (aref string pos) char)
-	(setq index pos) (setq pos -1))
-       (t (setq pos (1- pos))))
-      )
-    index))
+    (catch 'rindex
+      (while (>= pos 0)
+	(cond
+	 ((= (aref string pos) char)
+	  (throw 'rindex pos))
+	 (t (setq pos (1- pos))))))))
 
 ;;;###autoload
 (defun point-beginning-of-line ()
@@ -665,6 +664,13 @@ See documentation of YaTeX-minibuffer-complete."
     (self-insert-command 1)
     (YaTeX-minibuffer-complete)))
 
+(defun YaTeX-yatex-buffer-list ()
+  (save-excursion
+    (delq nil (mapcar (function (lambda (buf)
+				  (set-buffer buf)
+				  (if (eq major-mode 'yatex-mode) buf)))
+		      (buffer-list)))))
+
 (defun foreach-buffers (pattern job)
   "For each buffer which matches with PATTERN, do JOB."
   (let ((list (buffer-list)))
@@ -821,6 +827,21 @@ NULL includes null string in a list."
   (or (featurep 'windows) (error "Why don't you use `windows.el'?"))
   (win-switch-to-window 1 (- last-command-char win:base-key)))
 
+;;;###autoload
+(defun YaTeX-command-to-string (cmd)
+  (if (fboundp 'shell-command-to-string)
+      (funcall 'shell-command-to-string cmd)
+    (let ((tbuf " *tmpout*"))
+      (if (get-buffer-create tbuf) (kill-buffer tbuf))
+      (let ((standard-output (get-buffer-create tbuf)))
+	(unwind-protect
+	    (save-excursion
+	      (call-process
+	       shell-file-name nil tbuf nil YaTeX-shell-command-option cmd)
+	      (set-buffer tbuf)
+	      (buffer-string))
+	  (kill-buffer tbuf))))))
+      
 ;;;###autoload
 (defun YaTeX-reindent (col)
   "Remove current indentation and reindento to COL column."
@@ -1015,28 +1036,31 @@ to most recent sectioning command."
 (defun YaTeX-mark-environment ()
   "Mark current position and move point to end of environment."
   (interactive)
+  (require 'yatexmth)
   (let ((curp (point)))
-    (if (and (YaTeX-on-begin-end-p) (match-beginning 1)) ;if on \\begin
-	(progn (goto-char (match-end 0)))
-      (if (= (char-after (point)) ?\\) nil	;if on \\end
-	(skip-chars-backward "^\n\\\\")
-	(or (bolp) (forward-char -1))))
-    (if (not (YaTeX-end-of-environment))   ;arg1 turns to match-beginning 1
-	(progn
-	  (goto-char curp)
-	  (error "Cannot found the end of current environment."))
-      (YaTeX-goto-corresponding-environment)
-      (beginning-of-line)		;for confirmation
-      (if (< curp (point))
+    (if (YaTeX-in-math-mode-p)
+	(YaTeX-mark-mathenv)
+      (if (and (YaTeX-on-begin-end-p) (match-beginning 1)) ;if on \\begin
+	  (progn (goto-char (match-end 0)))
+	(if (= (char-after (point)) ?\\) nil ;if on \\end
+	  (skip-chars-backward "^\n\\\\")
+	  (or (bolp) (forward-char -1))))
+      (if (not (YaTeX-end-of-environment)) ;arg1 turns to match-beginning 1
 	  (progn
-	    (message "Mark this environment?(y or n): ")
-	    (if (= (read-char) ?y) nil
-	      (goto-char curp)
-	      (error "Abort.  Please call again at more proper position."))))
-      (set-mark-command nil)
-      (YaTeX-goto-corresponding-environment)
-      (end-of-line)
-      (if (eobp) nil (forward-char 1)))))
+	    (goto-char curp)
+	    (error "Cannot found the end of current environment."))
+	(YaTeX-goto-corresponding-environment)
+	(beginning-of-line)		;for confirmation
+	(if (< curp (point))
+	    (progn
+	      (message "Mark this environment?(y or n): ")
+	      (if (= (read-char) ?y) nil
+		(goto-char curp)
+		(error "Abort.  Please call again at more proper position."))))
+	(set-mark-command nil)
+	(YaTeX-goto-corresponding-environment)
+	(end-of-line)
+	(if (eobp) nil (forward-char 1))))))
 
 (defun YaTeX-kill-buffer (buffer)
   "Make effort to show parent buffer after kill."
@@ -1048,6 +1072,37 @@ to most recent sectioning command."
     (and pf
 	 (get-file-buffer pf)
 	 (switch-to-buffer (get-file-buffer pf)))))
+
+(defun YaTeX-get-builtin (key)
+  "Read source built-in command of %# usage."
+  (catch 'builtin
+    (let ((bl (delq nil (list (current-buffer)
+			      (and YaTeX-parent-file
+				   (get-file-buffer YaTeX-parent-file)))))
+	  (leader (or (cdr-safe (assq major-mode
+				      '((yatex-mode . "%#")
+					(yahtml-mode . "<!-- #"))))
+		      "")))
+      (save-excursion
+	(while bl
+	  (set-buffer (car bl))
+	  (save-excursion
+	    (goto-char (point-min))
+	    (if (and (re-search-forward
+		      (concat "^" (regexp-quote (concat leader key))) nil t)
+		     (not (eolp)))
+		(throw 'builtin
+		       (YaTeX-buffer-substring
+			(progn
+			  (skip-chars-forward " \t" (point-end-of-line))
+			  (point))
+			(if (string< "" comment-end)
+			    (progn
+			      (search-forward
+			       comment-end (point-end-of-line) t)
+			      (match-beginning 0))
+			  (point-end-of-line))))))
+	  (setq bl (cdr bl)))))))
 
 ;;;VER2
 (defun YaTeX-insert-struc (what env)
@@ -1069,6 +1124,24 @@ to most recent sectioning command."
    ((fboundp 'truncate-string-to-width) (truncate-string-to-width str width))
    ((fboundp 'truncate-string) (truncate-string str width))
    (t (substring str 0 width))))
+
+(defun YaTeX-hex (str)
+  "Return int expressed by hexadecimal string STR."
+  (if (string< "20" emacs-version)
+      (string-to-number str 16)
+    (let ((md (match-data)))
+      (unwind-protect
+	  (if (string-match "[^0-9a-f]" str)
+	      (error "Non hexadecimal character in %s" str)
+	    (let ((i 0) d)
+	      (setq str (downcase str))
+	      (while (string< "" str)
+		(setq d (+ 0 (string-to-char str)) ; + 0 for XEmacs
+		      i (+ (* 16 i) (- d (if (<= d ?9) ?0 (- ?a 10))))
+		      str (substring str 1)))
+	      i))
+	(store-match-data md)))))
+
 
 ;;; Function for menu support
 (defun YaTeX-define-menu (keymap bindlist)

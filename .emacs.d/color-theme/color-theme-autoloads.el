@@ -14,10 +14,11 @@
 (provide 'color-theme-autoloads)
 ;;; Generated autoloads follow (made by autoload.el).
 
-;;;### (autoloads nil nil ("../../../../../.emacs.d/color-theme/color-theme-autoloads.el"
-;;;;;;  "../../../../../.emacs.d/color-theme/color-theme.el" "../../../../../.emacs.d/color-theme/themes/color-theme-example.el"
-;;;;;;  "../../../../../.emacs.d/color-theme/themes/color-theme-library.el")
-;;;;;;  (19860 30894 846555))
+;;;### (autoloads nil nil ("../../../../../../home/sb/.emacs.d/color-theme/color-theme-autoloads.el"
+;;;;;;  "../../../../../../home/sb/.emacs.d/color-theme/color-theme.el"
+;;;;;;  "../../../../../../home/sb/.emacs.d/color-theme/themes/color-theme-example.el"
+;;;;;;  "../../../../../../home/sb/.emacs.d/color-theme/themes/color-theme-library.el")
+;;;;;;  (19860 59512 257916))
 
 ;;;***
 
@@ -25,9 +26,9 @@
 ;;;;;;  color-theme-compare color-theme-make-snapshot color-theme-analyze-defun
 ;;;;;;  color-theme-print color-theme-install-at-point-for-current-frame
 ;;;;;;  color-theme-install-at-mouse color-theme-describe color-theme-select)
-;;;;;;  "color-theme" "../../../../../.emacs.d/color-theme/color-theme.el"
-;;;;;;  (19803 26999))
-;;; Generated autoloads from ../../../../../.emacs.d/color-theme/color-theme.el
+;;;;;;  "color-theme" "../../../../../../home/sb/.emacs.d/color-theme/color-theme.el"
+;;;;;;  (19813 4259))
+;;; Generated autoloads from ../../../../../../home/sb/.emacs.d/color-theme/color-theme.el
 
 (autoload 'color-theme-select "color-theme" "\
 Displays a special buffer for selecting and installing a color theme.

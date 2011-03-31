@@ -1,9 +1,9 @@
 ;;; -*- Emacs-Lisp -*-
-;;; (c) 1994-2009 by HIROSE Yuuji [yuuji@yatex.org]
-;;; Last modified Mon Sep 28 10:45:04 2009 on firestorm
-;;; $Id: yahtml.el,v 1.74 2009/09/28 01:54:43 yuuji Rel $
+;;; (c) 1994-2011 by HIROSE Yuuji [yuuji(@)yatex.org]
+;;; Last modified Mon Feb 14 12:48:22 2011 on firestorm
+;;; $Id: yahtml.el,v 2f183a28d798 2011-02-14 12:49 +0900 yuuji $
 
-(defconst yahtml-revision-number "1.72"
+(defconst yahtml-revision-number "1.74.2"
   "Revision number of running yahtml.el")
 
 ;;;[Installation]
@@ -14,8 +14,8 @@
 ;;; 	(setq auto-mode-alist
 ;;; 		(cons (cons "\\.html$" 'yahtml-mode) auto-mode-alist))
 ;;; 	(autoload 'yahtml-mode "yahtml" "Yet Another HTML mode" t)
-;;; 	(setq yahtml-www-browser "netscape")
-;;;      ;Write your favorite browser.  But netscape is advantageous.
+;;; 	(setq yahtml-www-browser "firefox")
+;;;      ;Write your favorite browser.  But firefox is advantageous.
 ;;; 	(setq yahtml-path-url-alist
 ;;; 	      '(("/home/yuuji/public_html" . "http://www.mynet/~yuuji")
 ;;; 		("/home/staff/yuuji/html" . "http://www.othernet/~yuuji")))
@@ -30,8 +30,8 @@
 ;;; 	(setq auto-mode-alist
 ;;; 		(cons (cons "\\.html$" 'yahtml-mode) auto-mode-alist))
 ;;; 	(autoload 'yahtml-mode "yahtml" "Yet Another HTML mode" t)
-;;; 	(setq yahtml-www-browser "netscape")
-;;;      ;お気に入りのブラウザを書いて下さい。netscapeが便利です。
+;;; 	(setq yahtml-www-browser "firefox")
+;;;      ;お気に入りのブラウザを書いて下さい。firefoxが便利です。
 ;;; 	(setq yahtml-path-url-alist
 ;;; 	      '(("/home/yuuji/public_html" . "http://www.mynet/~yuuji")
 ;;; 		("/home/staff/yuuji/html" . "http://www.othernet/~yuuji")))
@@ -43,10 +43,12 @@
 ;;;	AddType "text/html; charset=Shift_JIS"	.html	(SJISの場合)
 ;;;	AddType "text/html; charset=iso2022-jp"	.html	(JISの場合)
 ;;;	AddType "text/html; charset=EUC-JP"	.html	(EUCの場合)
+;;;	AddType "text/html; charset=utf-8"	.html	(UTF-8の場合)
 ;;; 
 ;;; .htaccess が作れない場合は
 ;;;	(setq yahtml-kanji-code 2)
-;;;	;HTMLファイルの漢字コードを変更する場合は 1=SJIS、2=JIS、3=EUC
+;;;	;HTMLファイルの漢字コードを変更する場合は
+;;;	;1=SJIS、2=JIS、3=EUC 4=UTF-8
 ;;;	;で設定して下さい。デフォルトは 2 です。
 ;;; 
 ;;; を適切に書き換えて ~/.emacs に足して下さい。
@@ -89,7 +91,7 @@
 ;;;  * [prefix] t p	View current html with WWW browser
 ;;; 			(To activate this, never fail to set the lisp
 ;;; 			 variable yahtml-www-browser.  Recommended value
-;;; 			 is "netscape")
+;;; 			 is "firefox")
 ;;;  * [prefix] a	YaTeX's accent mark's equivalent of yahtml.
 ;;;			This function can input $lt, $gt or so.
 ;;;  * [prefix] ;	Translate chars of `>', `<', `&', and `"' to 
@@ -139,12 +141,12 @@
 ;;;			参照しているリンクを補完機能を使いながら変更で
 ;;;			きます。
 ;;;  * [prefix] t j	カレントファイルに対して jweblint を呼び出しま
-;;;			す。
+;;;			す。ファイル先頭付近に
+;;; 			<!-- #lint コマンド -->
+;;; 			と書いておくとそのコマンドを呼びます。
 ;;;  * [prefix] t p	WWW ブラウザでカレントファイルを表示します。
 ;;;			(lisp変数 yahtml-www-browser の設定をお忘れな
-;;;			く。お推めは "netscape" で、ねすけの場合既にねす
-;;;			けが起動されていた場合そのねすけに Reload 命令を
-;;;			送るという芸当が出来ます)
+;;;			く。お推めは "firefox" です)
 ;;;  * [prefix] a	YaTeX のアクセント記号補完と同じです。
 ;;;			&lt; &gt; 等が入力できます。
 ;;;  * [prefix] ;	指定したリジョン中の > < & " をそれぞれ
@@ -152,6 +154,13 @@
 ;;;  * [prefix] :	指定したリジョン中で上と逆の変換をします。
 ;;;  * [prefix] #	指定したリジョン中で%エンコードの必要な文字が
 ;;;			あればそれらをエンコードします。
+;;;  * [prefix] }	リジョン内の特定文字区切りのレコードを <td> 並びに
+;;;			変換します。C-u (universal-argument) 付きで起動
+;;; 			するとtd以外の任意要素で括ります。thdを指定する
+;;; 			と最初の1つだけth，残りすべてをtdで括ります。
+;;;  * [prefix] ]	リジョン内のすべての行をフィールドごとにtdで括り，
+;;;    			さらに各行をtrで括ります。universal-argument を
+;;; 			付けるとフィールド括りをtd以外に指定できます。
 ;;;  * [prefix] ESC	yahtml-mode を抜け yahtml-mode に入る前に動作し
 ;;;			ていたメジャーモードに戻ります。
 ;;; 
@@ -168,7 +177,6 @@
 ;;; 
 
 
-;(require 'yatex)
 (require 'yatexlib)
 ;;; --- customizable variable starts here ---
 (defvar yahtml-prefix "\C-c"
@@ -235,7 +243,7 @@ Consult your site's WWW administrator.")
 
 (defvar yahtml-use-css t "*Use stylesheet or not")
 
-(defvar yahtml-image-inspection-bytes 50000 ;256
+(defvar yahtml-image-inspection-bytes 500000
   "*Number of bytes to inspect the image for geometry information")
 (defvar yahtml:img-default-alt-format "%xx%y(%sbytes)"
   "*Default format of img entity's ALT attributes.
@@ -357,8 +365,7 @@ normal and region mode.  To customize yahtml, user should use this function."
       (yahtml-define-begend-key "bS" "span" map)
       (yahtml-define-begend-key "bp" "pre" map)
       (YaTeX-define-key "b " 'yahtml-insert-begend map)
-      (YaTeX-define-key "B " 'yahtml-insert-begend-region map)
-      )
+      (YaTeX-define-key "B " 'yahtml-insert-begend-region map))
     (YaTeX-define-key "e" 'YaTeX-end-environment map)
     (YaTeX-define-key ">" 'yahtml-comment-region map)
     (YaTeX-define-key "<" 'yahtml-uncomment-region map)
@@ -371,9 +378,10 @@ normal and region mode.  To customize yahtml, user should use this function."
     (YaTeX-define-key ";" 'yahtml-translate-region map)
     (YaTeX-define-key ":" 'yahtml-translate-reverse-region map)
     (YaTeX-define-key "#" 'yahtml-escape-chars-region map)
+    (YaTeX-define-key "}" 'yahtml-td-region map)
+    (YaTeX-define-key "]" 'yahtml-tr-region map)
     ;;;;;(YaTeX-define-key "i" 'yahtml-fill-item map)
-    (YaTeX-define-key "\e" 'yahtml-quit map)
-    )
+    (YaTeX-define-key "\e" 'yahtml-quit map))
   (substitute-all-key-definition
    'fill-paragraph 'yahtml-fill-paragraph yahtml-mode-map)
   (substitute-all-key-definition
@@ -400,8 +408,8 @@ normal and region mode.  To customize yahtml, user should use this function."
 	(make-syntax-table (standard-syntax-table)))
   (modify-syntax-entry ?\< "(>" yahtml-syntax-table)
   (modify-syntax-entry ?\> ")<" yahtml-syntax-table)
-  (modify-syntax-entry ?\n " " yahtml-syntax-table)
-)
+  (modify-syntax-entry ?\n " " yahtml-syntax-table))
+
 (defvar yahtml-command-regexp "[A-Za-z0-9]+"
   "Regexp of constituent of html commands.")
 
@@ -420,7 +428,7 @@ normal and region mode.  To customize yahtml, user should use this function."
     ("DefinitionList" . "dl")
     ("Preformatted" . "pre")
     ("table") ("thead") ("tbody") ("tfoot") ("tr") ("th") ("td")
-    ("address") 
+    ("address") ("button")
     ("h1") ("h2") ("h3") ("h4") ("h5") ("h6")
     ;; ("p") ;This makes indentation screwed up!
     ("style") ("script") ("noscript") ("div") ("object") ("ins") ("del")
@@ -485,8 +493,6 @@ normal and region mode.  To customize yahtml, user should use this function."
 (defvar yahtml-current-completion-type nil
   "Has current completion type.  This may be used in yahtml addin functions.")
 
-;(defvar yahtml-struct-name-regexp
-;  "\\<\\(h[1-6]\\|[uod]l\\|html\\|body\\|title\\|head\\|table\\|t[rhd]\\|pre\\|a\\|form\\|select\\|center\\|blockquote\\)\\b")
 (defvar yahtml-struct-name-regexp
   (concat
    "\\<\\("
@@ -541,10 +547,8 @@ T for static indentation depth")
 	    (setq ldir dir
 		  dir (substring dir 0 (string-match "/$" dir))
 		  dir (file-name-directory dir))))
-      line
-      ))
-   (t nil))
-  )
+      line))
+   (t nil)))
 
 (defun yahtml-dir-default-charset ()
   (let*((fn (file-name-nondirectory (or buffer-file-name "")))
@@ -586,8 +590,7 @@ T for static indentation depth")
 		(setq index-list (cons (substring line 0 x) index-list)
 		      line (substring line (match-end 1)))
 	      (setq index-list (cons line index-list)
-		    line ""))
-	    )
+		    line "")))
 	  (or (nreverse index-list)
 	      (if (listp yahtml-directory-index)
 		  yahtml-directory-index
@@ -651,9 +654,7 @@ T for static indentation depth")
 	      ;;(font-lock-mode -1)
 	      (font-lock-mode 1) ;;Why should I fontify again???
 	      ;; in yatex-mode, there's no need to refontify...
-	      (font-lock-fontify-buffer)
-	      ))
-	))
+	      (font-lock-fontify-buffer)))))
   (set-syntax-table yahtml-syntax-table)
   (use-local-map yahtml-mode-map)
   (YaTeX-read-user-completion-table)
@@ -754,8 +755,7 @@ T for static indentation depth")
       (strong	"Strong" .
 	(lambda () (interactive) (yahtml-insert-tag nil "STRONG")))
       (VAR	"Variable notation" .
-	(lambda () (interactive) (yahtml-insert-tag nil "VAR")))
-      )))
+	(lambda () (interactive) (yahtml-insert-tag nil "VAR"))))))
   (setq yahtml-menu-map-typeface (make-sparse-keymap "typeface tags"))
   (YaTeX-define-menu
    'yahtml-menu-map-typeface
@@ -767,8 +767,7 @@ T for static indentation depth")
       (tt	"Typewriter" .
 	(lambda () (interactive) (yahtml-insert-tag nil "TT")))
       (u	"Underlined" .
-	(lambda () (interactive) (yahtml-insert-tag nil  "U")))
-      )))
+	(lambda () (interactive) (yahtml-insert-tag nil  "U"))))))
   (setq yahtml-menu-map-listing (make-sparse-keymap "listing"))
   (YaTeX-define-menu
    'yahtml-menu-map-listing
@@ -778,8 +777,7 @@ T for static indentation depth")
       (ol	"Ordered" .
 		(lambda () (interactive) (yahtml-insert-begend nil "OL")))
       (dl	"Definition" .
-		(lambda () (interactive) (yahtml-insert-begend nil "DL")))
-      )))
+		(lambda () (interactive) (yahtml-insert-begend nil "DL"))))))
   (setq yahtml-menu-map-item (make-sparse-keymap "item"))
   (YaTeX-define-menu
    'yahtml-menu-map-item
@@ -789,8 +787,7 @@ T for static indentation depth")
       (dt	"Define term" .
 		(lambda () (interactive) (yahtml-insert-single "dt")))
       (dd	"Description of term" .
-		(lambda () (interactive) (yahtml-insert-single "dd")))
-      )))
+		(lambda () (interactive) (yahtml-insert-single "dd"))))))
   (define-key yahtml-mode-map [menu-bar yahtml]
     (cons "yahtml" yahtml-menu-map))
   (YaTeX-define-menu
@@ -806,16 +803,14 @@ T for static indentation depth")
      (cons (list 'logi "Logical tags")
 	   (cons "logical" yahtml-menu-map-logical))
      (cons (list 'type "Typeface tags")
-	   (cons "typeface" yahtml-menu-map-typeface))
-     )))
+	   (cons "typeface" yahtml-menu-map-typeface)))))
   (if (featurep 'xemacs)
       (add-hook 'yahtml-mode-hook
 		'(lambda ()
 		   (or (assoc "yahtml" current-menubar)
 		       (progn
 			 (set-buffer-menubar (copy-sequence current-menubar))
-			 (add-submenu nil yahtml-menu-map))))))
-  ))
+			 (add-submenu nil yahtml-menu-map))))))))
 
 ;;; ----------- Completion ----------
 (defvar yahtml-last-begend "html")
@@ -896,6 +891,25 @@ T for static indentation depth")
 	"class(or class list delimited by \\[quoted-insert] SPC): "))
      nil YaTeX-minibuffer-completion-map nil)))
   
+(defvar yahtml-newpage-command "newpage.rb"
+  "*Command name to create new HTML file referring to index.html.
+This command should create new HTML file named argument 1 and
+output string like `<a href=\"newfile.html\">anchor tag</a>'.
+This program should take -o option to overwrite existing HTML file.")
+(defun yahtml-newpage (file ov)
+  "Create newpage via newpage script"
+  (interactive
+   (list
+    (let (insert-default-directory)
+      (read-file-name "New webpage file name: " ""))
+    current-prefix-arg))
+  (if (and (file-exists-p file) (not ov))
+      (error "%s already exists.  Call this with universal argument to force overwrite." file))
+  (insert (substring
+	   (YaTeX-command-to-string
+	    (concat yahtml-newpage-command " " (if ov "-o ") file))
+	   0 -1)))
+
 ;;; ---------- Add-in ----------
 (defun yahtml-addin (form)
   "Check add-in function's existence and call it if exists."
@@ -904,6 +918,7 @@ T for static indentation depth")
       (and (setq a (yahtml-css-get-element-completion-alist form))
 	   (not (equal last-command-char ?\C-j))
 	   (memq yahtml-current-completion-type '(multiline inline))
+	   (not (string-match "#" form))
 	   (yahtml-make-optional-argument ;should be made generic?
 	    "class" (yahtml-read-css a)))
       (if (and (intern-soft addin) (fboundp (intern-soft addin))
@@ -937,16 +952,14 @@ If optional argument FILE is specified collect labels in FILE."
 	      (setq list (cons
 			  (list (concat "#" (YaTeX-match-string 1)))
 			  list))))
-	list)))
-  )
+	list))))
 
 (defvar yahtml-url-completion-map nil "Key map used in URL completion buffer")
 (if yahtml-url-completion-map nil
   (setq yahtml-url-completion-map
 	(copy-keymap minibuffer-local-completion-map))
   (define-key yahtml-url-completion-map "\t"	'yahtml-complete-url)
-  (define-key yahtml-url-completion-map " "	'yahtml-complete-url)
-)
+  (define-key yahtml-url-completion-map " "	'yahtml-complete-url))
 
 (defun yahtml-complete-url ()
   "Complete external URL from history or local file name."
@@ -1049,6 +1062,21 @@ Not used yet.")
 	(setq str (substring str (1+ p))))
       (concat target str)))))
 
+(defun yahtml-unescape-string (str)
+  "Untranslate reserved URL-encoded string."
+  (let ((p 0) c (target "") (md (match-data)) (case-fold-search nil))
+    (unwind-protect
+	(progn
+	  (while (string-match "%\\([0-9a-f][0-9a-f]\\)" str p)
+	    (setq target (concat target
+				 (substring str p (1- (match-beginning 1))))
+		  p (match-end 0)
+		  c (YaTeX-hex (substring
+				str (match-beginning 1) (match-end 1)))
+		  target (concat target (format "%c" c))))
+	  (concat target (substring str p)))
+      (store-match-data md))))
+
 (defun yahtml-escape-chars-region (beg end)
   "Translate reserved chars to encoded string in the region."
   (interactive "r")
@@ -1094,8 +1122,7 @@ Not used yet.")
 	       (null (assoc href yahtml-urls-local)))
 	  (YaTeX-update-table
 	   (list href)
-	   'yahtml-urls-private 'yahtml-urls-private 'yahtml-urls-local))
-      )))
+	   'yahtml-urls-private 'yahtml-urls-private 'yahtml-urls-local)))))
 
 (defvar yahtml-parameters-completion-alist
   '(("align" ("top") ("middle") ("bottom") ("left") ("right") ("center"))
@@ -1135,6 +1162,10 @@ Not used yet.")
      ((eq alist 'file)
       (let ((insert-default-directory))
 	(read-file-name prompt "" default nil "")))
+     ((eq alist 'command)
+      (if (fboundp 'read-shell-command)
+	  (read-shell-command prompt)
+	(read-string prompt)))
      ((and alist (symbolp alist))
       (completing-read prompt (symbol-value alist) nil nil default))
      (alist
@@ -1340,8 +1371,7 @@ Returns list of '(WIDTH HEIGHT BYTES DEPTH COMMENTLIST)."
 		      height (yahtml-hex-value 22 4 t)))
 	       (t
 		(setq width (yahtml-hex-value 18 2 t)
-		      height (yahtml-hex-value 20 2 t)))))
-	     ))
+		      height (yahtml-hex-value 20 2 t)))))))
 	(message "")
 	(kill-buffer tmpbuf))
       (list width height bytes depth (nreverse comment)))))
@@ -1349,11 +1379,16 @@ Returns list of '(WIDTH HEIGHT BYTES DEPTH COMMENTLIST)."
 (defun yahtml:form ()
   "Add-in function `form' input format"
   (concat
-   " " (if yahtml-prefer-upcase-attributes "METHOD" "method") "="
+   " " (if yahtml-prefer-upcase-attributes "METHOD" "method") "=\""
    (completing-read "Method: " '(("POST") ("GET")) nil t)
+   "\""
+   (yahtml-make-optional-argument
+    (if yahtml-prefer-upcase-attributes "ENCTYPE" "enctype")
+    (completing-read
+     "Enctype: "
+     '(("application/x-www-form-urlencoded") ("multipart/form-data"))))
    " " (if yahtml-prefer-upcase-attributes "ACTION" "action") "=\""
-   (read-string "Action: ") "\""
-   ))
+   (read-string "Action: ") "\""))
 
 (defun yahtml:select ()
   "Add-in function for `select' input format"
@@ -1402,8 +1437,7 @@ Returns list of '(WIDTH HEIGHT BYTES DEPTH COMMENTLIST)."
      (yahtml-make-optional-argument "type" type)
      (yahtml-make-optional-argument "value" value)
      (yahtml-make-optional-argument "size" size)
-     (yahtml-make-optional-argument "maxlength" maxlength)
-    )))
+     (yahtml-make-optional-argument "maxlength" maxlength))))
 
 (defun yahtml:textarea ()
   "Add-in function for `textarea'"
@@ -1515,8 +1549,8 @@ Returns list of '(WIDTH HEIGHT BYTES DEPTH COMMENTLIST)."
        (yahtml-make-optional-argument
 	"type" (yahtml-read-parameter "type" "text/css"))
        (yahtml-make-optional-argument
-	"href" (read-from-minibuffer "href: " "" yahtml-url-completion-map))
-       )))))
+	"href"
+	(read-from-minibuffer "href: " "" yahtml-url-completion-map)))))))
 
 (defvar yahtml:meta-names
   '(("name" ("keywords")("author")("copyright")("date")("GENERATOR"))))
@@ -1577,15 +1611,23 @@ Returns list of '(WIDTH HEIGHT BYTES DEPTH COMMENTLIST)."
        (yahtml-make-optional-argument
 	"height" (yahtml-read-parameter "height"))
        (yahtml-make-optional-argument
-	"align" (yahtml-read-parameter "align"))
-       ))
+	"align" (yahtml-read-parameter "align"))))
      (t
-      ""
-      ))))
+      ""))))
 
 (defun yahtml:abbr ()
   "Add-in function for abbr."
   (yahtml-make-optional-argument "title" (yahtml-read-parameter "title")))
+
+(defun yahtml:button ()
+  (concat
+   (yahtml-make-optional-argument
+    "name" (yahtml-read-parameter "name"))
+   (yahtml-make-optional-argument
+    "type" (yahtml-read-parameter
+	    "type" "button" '(("submit")("reset")("button"))))
+   (yahtml-make-optional-argument
+    "value" (yahtml-read-parameter "value"))))
 
 ;;; ---------- Simple tag ----------
 (defun yahtml-insert-tag (region-mode &optional tag)
@@ -1619,7 +1661,6 @@ Returns list of '(WIDTH HEIGHT BYTES DEPTH COMMENTLIST)."
   "Call yahtml-insert-tag with region mode."
   (interactive)
   (yahtml-insert-tag t tag))
-
 
 (defvar yahtml-need-single-closer nil)	;for test
 (defun yahtml-insert-single (cmd)
@@ -1681,7 +1722,8 @@ Returns list of '(WIDTH HEIGHT BYTES DEPTH COMMENTLIST)."
     (format "%s=\"%s\"--" (if (string-match "/" file) "virtual" "file") file)))
 
 (defun yahtml:!--\#exec ()
-  (format "cmd=\"%s\"--" (yahtml-read-parameter "cmd" "" '(("cmd" . file)))))
+  (format "cmd=\"%s\"--"
+	  (yahtml-read-parameter "cmd" "" '(("cmd" . command)))))
 
 ;;; ---------- Jump ----------
 (defun yahtml-on-href-p ()
@@ -1701,8 +1743,7 @@ Returns list of '(WIDTH HEIGHT BYTES DEPTH COMMENTLIST)."
 	     (skip-chars-forward " \t\n")
 	     (looking-at "\"?\\([^\"> \t\n]+\\)\"?"))
 	   (< p (match-end 0))
-	   (YaTeX-match-string 1)
-	   ))))
+	   (yahtml-unescape-string (YaTeX-match-string 1))))))
 
 (defun yahtml-netscape-sentinel (proc mes)
   (cond
@@ -1813,8 +1854,7 @@ Returns list of '(WIDTH HEIGHT BYTES DEPTH COMMENTLIST)."
       (if (and (re-search-backward "<" nil t)
 	       (looking-at
 		;(concat "<\\(/?" yahtml-struct-name-regexp "\\)\\b")
-		"<\\(/?[A-Z][A-Z0-9]*\\)\\b"
-		)
+		"<\\(/?[A-Z][A-Z0-9]*\\)\\b")
 	       (condition-case nil
 		   (forward-list 1)
 		 (error nil))
@@ -1881,7 +1921,8 @@ Optional argument NOERR causes no error for unballanced tag."
   (let ((tag (yahtml-current-tag)) image (p (point)) (case-fold-search t))
     (if (and tag
 	     (string-match "img" tag)
-	     (setq image (yahtml-get-attrvalue "src")))
+	     (setq image
+		   (yahtml-unescape-string (yahtml-get-attrvalue "src"))))
 	(progn
 	  (message "Invoking %s %s..." yahtml-image-viewer image)
 	  (start-process
@@ -1895,7 +1936,7 @@ Optional argument NOERR causes no error for unballanced tag."
   (let ((env (yahtml-current-tag)) s (p (point)))
     (cond
      ((string-match "applet" env)
-      (if (setq s (yahtml-get-attrvalue "code"))
+      (if (setq s (yahtml-unescape-string (yahtml-get-attrvalue "code")))
 	  (progn
 	    (setq s (YaTeX-match-string 1)
 		  s (concat
@@ -1947,8 +1988,7 @@ Optional argument NOERR causes no error for unballanced tag."
    ((yahtml-goto-corresponding-img))
    ((yahtml-goto-corresponding-source other))
    ((yahtml-goto-corresponding-begend))
-   (t (message "I don't know where to go."))
-   ))
+   (t (message "I don't know where to go."))))
 
 (defun yahtml-goto-corresponding-*-other-window ()
   "Go to corresponding object."
@@ -2012,8 +2052,7 @@ Optional argument NOERR causes no error for unballanced tag."
   "Kill current position's HTML tag (set)."
   (interactive "P")
   (cond
-   ((yahtml-kill-begend whole))
-   ))
+   ((yahtml-kill-begend whole))))
 
 
 ;;; ---------- changing ----------
@@ -2161,8 +2200,7 @@ This function should be able to treat white spaces in value, but not yet."
   (interactive)
   (cond
    ((yahtml-change-begend))
-   ((yahtml-change-command))
-  ))
+   ((yahtml-change-command))))
 
 ;;; ---------- commenting ----------
 
@@ -2184,7 +2222,7 @@ This function should be able to treat white spaces in value, but not yet."
 	    (beginning-of-line)
 	  (forward-line 1))
 	(set-marker e (point))
-	;(comment-region beg (point) (if uncom (list 4)))
+	;(comment-region beg (point) (if uncom (list 4)))))
 	))
      (t ;(comment-region (region-beginning) (region-end) (if uncom (list 4)))
       (setq beg (region-beginning))
@@ -2277,6 +2315,92 @@ This function should be able to treat white spaces in value, but not yet."
 	(goto-char (get 'YaTeX-inner-environment 'point))))
     e))
 
+(defun yahtml-untranslate-string (str)
+  "Untranslate entity reference."
+  (let ((md (match-data)) (left "") (right str) b0 ch
+	(ct (append yahtml-entity-reference-chars-alist
+		    yahtml-entity-reference-chars-alist-default))
+	(revrex yahtml-entity-reference-chars-reverse-regexp))
+    (unwind-protect
+	(progn
+	  (while (string< "" right)
+	    (cond
+	     ((string-match revrex right)
+	      (setq ch (YaTeX-rassoc
+			(substring right (match-beginning 1) (match-end 1)))
+		    b0 (substring right 0 (match-beginning 0))
+		    right (substring right (match-end 0))
+		    left (concat left
+				 (substring right 0 (match-beginning 0))
+				 (char-to-string ch))))
+	     ((string-match "\\&#\\(x\\)?\\([0-9a-f]+\\);" right)
+	      (setq ch (substring right (match-beginning 2) (match-end 2))
+		    b0 (substring right 0 (match-beginning 0))
+		    right (substring right (match-end 0))
+		    left (concat left
+				 b0
+				 (char-to-string
+				  (if (match-beginning 1)
+				      (YaTeX-hex ch)
+				    (string-to-number ch))))))
+	     (t (setq left (concat left right)
+		      right ""))))
+	  left)
+      (store-match-data md))))
+
+;;; ---------- table-ize region ----------
+(defun yahtml-td-region (e delim beg end)
+  "Enclose each item in a region with <td>..</td>.
+Interactive prefix argument consults enclosing element other than td."
+  (interactive "P\nsDelimiter(s): \nr")
+  (let ((e (cond
+	    ((null e) "td")
+	    ((stringp e) e)
+	    (t (read-string "Enclose with(`thd' means th td td..): " "th"))))
+	(ws "[ \t]")
+	elm p i)
+    (if (string= delim "") (setq delim " \t\n"))
+    (setq delim (concat "[" delim "]+")
+	  elm (if (string= "thd" e)
+		  (cons "th" "td")
+		(cons e e)))
+    (save-excursion
+      (save-restriction
+	(narrow-to-region beg end)
+	(goto-char (setq p (point-min)))
+	(setq i 0 e (car elm))
+	(while (re-search-forward delim nil t)
+	  (setq e (if (= (setq i (1+ i)) 1) (car elm) (cdr elm)))
+	  (goto-char (match-beginning 0))
+	  (insert "</" e ">")
+	  (save-excursion
+	    (goto-char p)
+	    (insert "<" e ">"))
+	  (setq p (point))
+	  (while (and (not (eobp)) (looking-at ws))
+	    (delete-char 1))
+	  (if (looking-at delim) (delete-char 1)))
+	(insert "<" e ">")
+	(goto-char (point-max))
+	(insert "</" e ">")))))
+
+(defun yahtml-tr-region (e delim beg end)
+  "Enclose lines in a form tab-sv/csv with <tr><td>..</td></tr>."
+  (interactive "P\nsDelimiter(s): \nr")
+  (setq e (if (and e (listp e))
+	      (read-string "Enclose with(td or th, `thd' -> th td td td...: "
+			   "th")))
+  (save-excursion
+    (save-restriction
+      (narrow-to-region (point) (mark))
+      (goto-char (point-min))
+      (while (not (eobp))
+	(insert "<tr>")
+	(yahtml-td-region e delim (point) (point-end-of-line))
+	(end-of-line)
+	(insert "</tr>")
+	(forward-line 1)))))
+	
 ;;; ---------- filling ----------
 (defvar yahtml-saved-move-to-column (symbol-function 'move-to-column))
 (defun yahtml-move-to-column (col &optional force)
@@ -2483,9 +2607,9 @@ This function should be able to treat white spaces in value, but not yet."
 ;;; ---------- Lint and Browsing ----------
 ;;; 
 (defun yahtml-browse-menu ()
-  "Browsing menu"
+  "Browsing or other external process invokation menu."
   (interactive)
-  (message "J)weblint p)Browse R)eload...")
+  (message "J)weblint p)Browse R)eload N)ewpage...")
   (let ((c (char-to-string (read-char))))
     (cond
      ((string-match "j" c)
@@ -2493,7 +2617,9 @@ This function should be able to treat white spaces in value, but not yet."
      ((string-match "[bp]" c)
       (yahtml-browse-current-file))
      ((string-match "r" c)
-      (yahtml-browse-reload)))))
+      (yahtml-browse-reload))
+     ((string-match "n" c)
+      (call-interactively 'yahtml-newpage)))))
 
 (if (fboundp 'wrap-function-to-control-ime)
     (wrap-function-to-control-ime 'yahtml-browse-menu t nil))
@@ -2506,10 +2632,12 @@ This function should be able to treat white spaces in value, but not yet."
   (interactive "bCall lint on buffer: ")
   (setq buf (get-buffer buf))
   (YaTeX-save-buffers)
-  (YaTeX-typeset
-   (concat yahtml-lint-program " "
-	   (file-name-nondirectory (buffer-file-name buf)))
-   yahtml-lint-buffer  "lint" "lint"))
+  (let ((bcmd (YaTeX-get-builtin "lint")))
+    (and bcmd (setq bcmd (yahtml-untranslate-string bcmd)))
+    (YaTeX-typeset
+     (concat (or bcmd yahtml-lint-program)
+	     " " (file-name-nondirectory (buffer-file-name buf)))
+     yahtml-lint-buffer  "lint" "lint")))
 
 (defun yahtml-file-to-url (file)
   "Convert local unix file name to URL.
@@ -2572,7 +2700,7 @@ If no matches found in yahtml-path-url-alist, return raw file name."
   (yahtml-browse-html (yahtml-file-to-url (buffer-file-name))))
 
 (defun yahtml-browse-reload ()
-  "Send `reload' event to netzscape."
+  "Send `reload' event to netscape."
   (let ((pb "* WWW Browser *") (cb (current-buffer)))
     (cond
      ((string-match "[Nn]etscape" yahtml-www-browser)
@@ -2632,7 +2760,8 @@ If no matches found in yahtml-path-url-alist, return raw file name."
 	  (yahtml-insert-single "dt")
 	  (or yahtml-always-/dt yahtml-faithful-to-htmllint (insert " "))
 	  (setq yahtml-last-single-cmd "dd")))
-      (insert (if yahtml-prefer-upcases "<DT> " "<dt> "))
+      (yahtml-insert-single "dt")
+      (or yahtml-always-/li yahtml-faithful-to-htmllint (insert " "))
       (setq yahtml-last-single-cmd "dd"))
     (yahtml-indent-line)
     (and (string-match yahtml-p-prefered-env-regexp "dl")
@@ -2714,7 +2843,7 @@ If no matches found in yahtml-path-url-alist, return raw file name."
       (cond
        ((and (> cols 0)
 	     (memq (read-char) '(?d ?D))) ;Duplication mode
-	(setq line (YaTeX-buffer-substring (point) cp)))
+	(setq line (YaTeX-buffer-substring (point) (1- cp))))
        (t				;empty cells
 	(setq line "<tr>" i 0)
 	(if (> cols 0)
@@ -2986,17 +3115,6 @@ If no matches found in yahtml-path-url-alist, return raw file name."
   (interactive "P")
   (font-lock-mode -1)			;is stupid, but sure.
   (font-lock-mode 1))
-
-;; (defun yahtml-fontify-to-tagend (lim)
-;;   "*Fontify any tag including < and >.
-;; This is invalid use of font-lock function.  Therefore
-;; this fontifying will loose effectiveness soon or later."
-;;   (let ((start (match-beginning 0))
-;; 	(end (progn (skip-chars-forward "^>") (1+ (point)))))
-;;     (or nil; (font-lock-any-faces-p start end)
-;; 	(font-lock-fillin-text-property
-;; 	 start end 'face 'font-lock font-lock-keyword-face)))
-;;   nil)
 
 (run-hooks 'yahtml-load-hook)
 (provide 'yahtml)

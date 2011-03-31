@@ -3,7 +3,7 @@
 ;;; yatexenv.el
 ;;; (c) 1994-2006 by HIROSE Yuuji.[yuuji@yatex.org]
 ;;; Last modified Sat Jun 24 08:14:11 2006 on firestorm
-;;; $Id: yatexenv.el,v 1.73 2006/12/24 06:17:15 yuuji Rel $
+;;; $Id: yatexenv.el,v 9b4354af748c 2006/12/24 06:16:29 yuuji $
 
 ;;;
 ;; Functions for tabular environment
