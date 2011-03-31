@@ -17,7 +17,7 @@
 ;;;### (autoloads nil nil ("../../../../../.emacs.d/color-theme/color-theme-autoloads.el"
 ;;;;;;  "../../../../../.emacs.d/color-theme/color-theme.el" "../../../../../.emacs.d/color-theme/themes/color-theme-example.el"
 ;;;;;;  "../../../../../.emacs.d/color-theme/themes/color-theme-library.el")
-;;;;;;  (19840 3020 427063))
+;;;;;;  (19860 30894 846555))
 
 ;;;***
 
