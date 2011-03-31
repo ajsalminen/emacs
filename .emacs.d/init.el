@@ -11,7 +11,10 @@
 ;; the mother of all load paths
 (setq more-load-paths '("~/.emacs.d/auctex-11.86"
                         "~/.emacs.d/auctex-11.86/preview"
+                        "~/.emacs.d/bbdb-2.35/lisp/"
                         "~/.emacs.d/color-theme"
+                        "~/.emacs.d/el-get/bbdb/lisp/"
+                        "~/.emacs.d/el-get/bbdb-vcard/"
                         "~/.emacs.d/el-get/el-get"
 			"~/.emacs.d/el-get/google-weather"
                         "~/.emacs.d/elib-1.0"
@@ -225,6 +228,7 @@
 ;; (setq el-get-sources nil)
 (setq el-get-sources
       '(google-weather
+        bbdb-vcard
         (:name tail
                :after (lambda ()
                         (autoload 'tail-file "tail.el" nil t)))
