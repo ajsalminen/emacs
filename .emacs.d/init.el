@@ -1446,7 +1446,18 @@ directory, select directory. Lastly the file is opened."
 
 (setq org-agenda-custom-commands
       '(("w" tags "work")
-        ("W" tags-todo "work")))
+        ("W" tags-todo "work")
+        ("o" "Agenda and Office-related tasks"
+         ((agenda)
+          (tags-todo "work")))
+        ("U" tags "work"
+         ((org-show-following-heading nil)
+          (org-show-hierarchy-above nil)))
+        ("c" agenda "work"
+         ((org-agenda-ndays 1)
+          (org-scheduled-past-days 0)
+          (org-deadline-warning-days 0)
+          (org-agenda-filter-preset '("+work"))))))
 
 (setq org-icalendar-use-scheduled '(todo-start event-if-todo))
 
