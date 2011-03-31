@@ -189,7 +189,7 @@ This is used when `offlineimap-mode-line-style' is set to 'symbol."
   "Update mode line information about OfflineIMAP PROCESS."
   (setq offlineimap-mode-line-string
         (propertize
-         (concat " [OfflineIMAP: "
+         (concat " ["
                  (let ((status (process-status process)))
                    (if (eq status 'run)
                        (let ((msg-type (process-get process :last-msg-type))

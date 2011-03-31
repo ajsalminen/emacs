@@ -369,6 +369,7 @@
                                     (flyspell-mode t)
                                     (define-key wl-draft-mode-map (kbd "<tab>") 'bbdb-complete-name)))
                         (require 'offlineimap)
+                        (setq offlineimap-enable-mode-line-p t)
                         (defun kill-offlineimap ()
                           (interactive)
                           (ignore-errors
