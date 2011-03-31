@@ -1444,6 +1444,9 @@ directory, select directory. Lastly the file is opened."
                                 (if (not org-timer-current-timer)
                                     (org-timer-set-timer '(16)))))
 
+(setq org-agenda-custom-commands
+      '(("w" tags "work")
+        ("W" tags-todo "work")))
 
 (setq org-icalendar-use-scheduled '(todo-start event-if-todo))
 
