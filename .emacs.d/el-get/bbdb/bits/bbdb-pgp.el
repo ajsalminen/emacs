@@ -5,7 +5,6 @@
 ;; Author: Kevin Davidson tkld@quadstone.com
 ;; Maintainer: Kevin Davidson tkld@quadstone.com
 ;; Created: 10 Nov 1997
-;; Version: $Revision: 1.6 $
 ;; Keywords: PGP BBDB message mailcrypt
 
 
@@ -27,7 +26,7 @@
 ;; LCD Archive Entry:
 ;; bbdb-pgp|Kevin Davidson|tkld@quadstone.com
 ;; |Use BBDB to store PGP preferences
-;; |$Date: 2003/08/11 08:54:35 $|$Revision: 1.6 $|~/packages/bbdb-pgp.el
+;; |Date|Revision|~/packages/bbdb-pgp.el
 
 ;;; Commentary:
 ;;
@@ -73,11 +72,6 @@
 (require 'message)
 (require 'bbdb)
 (condition-case nil (require 'mailcrypt) (error nil))
-
-(defconst bbdb/pgp-version (substring "$Revision: 1.6 $" 11 -2)
-  "$Id: bbdb-pgp.el,v 1.6 2003/08/11 08:54:35 waider Exp $
-
-Report bugs to: Kevin Davidson tkld@quadstone.com")
 
 ;;;###autoload
 (defgroup bbdb-utilities-pgp nil

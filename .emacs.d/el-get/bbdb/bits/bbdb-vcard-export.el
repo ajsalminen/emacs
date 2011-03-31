@@ -19,7 +19,6 @@
 ;;
 ;; Author: Jim Hourihan <jimh@panix.com>
 ;; Created: 2002-08-08
-;; Version: $Id: bbdb-vcard-export.el,v 1.3 2006/03/14 00:00:00 malcolmp Exp $
 ;; Keywords: vcard ipod
 
 ;;; Commentary

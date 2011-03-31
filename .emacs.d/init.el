@@ -379,7 +379,7 @@
                             (offlineimap)))
 
                         (add-hook 'wl-init-hook 'offlineimap)
-                        (add-hook 'wl-exit-hook 'offlineimap-resync)
+                        ;; (add-hook 'wl-exit-hook 'offlineimap-resync)
                         ))
         ))
 (el-get 'sync)
@@ -2711,7 +2711,7 @@ FORMAT-STRING is like `format', but it can have multiple %-sequences."
 
     (require 'zlc)
     (setq zlc-select-completion-immediately t)
-    (setq delete-by-moving-to-trash t))))
+    (setq delete-by-moving-to-trash nil))))
 
 (require 'savekill)
 

@@ -2,9 +2,6 @@
 #
 # Author: Christopher Kline <ckline@media.mit.edu>
 #
-# $Id: bbdb-unlazy-lock.pl,v 1.1 1997/10/06 00:56:14 simmonmt Exp $
-#
-# $Log: bbdb-unlazy-lock.pl,v $
 # Revision 1.1  1997/10/06 00:56:14  simmonmt
 # Initial revision
 #

@@ -61,7 +61,6 @@
 ;(310) 822-1511            University of Southern California
 ;http://www.isi.edu/div7/people/cengiz.home
 
-;$Modified: Fri Nov 20 11:41:56 1998 by ville@isr.umd.edu $
 ; GV: - always expand filename to avoid duplicate similar path
 ;     - use abbreviation alist for home directory (comes from mode-line)
 
