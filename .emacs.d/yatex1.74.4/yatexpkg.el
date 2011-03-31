@@ -1,9 +1,9 @@
 ;;; -*- Emacs-Lisp -*-
 ;;; YaTeX package manager
 ;;; yatexpkg.el
-;;; (c)2003-2006 by HIROSE, Yuuji [yuuji@yatex.org]
-;;; Last modified Sun Dec 24 15:13:29 2006 on firestorm
-;;; $Id: yatexpkg.el,v 1.73 2006/12/24 06:17:15 yuuji Rel $
+;;; (c)2003-2010 by HIROSE, Yuuji [yuuji@yatex.org]
+;;; Last modified Sat Sep 11 15:50:40 2010 on firestorm
+;;; $Id: yatexpkg.el,v 53ff0560fc7d 2010-09-11 16:02 +0900 yuuji $
 
 (defvar YaTeX-package-ams-envs
   (mapcar 'car YaTeX-ams-env-table))
@@ -31,6 +31,9 @@
     ("supertabular" (env "supertabular"))
     ("amsmath"	(env . YaTeX-package-ams-envs)
      		(section "tag" "tag*"))
+    ("amssymb"	(maketitle "leqq" "geqq" "mathbb" "mathfrak"
+			   "fallingdotseq"
+			   "lll" "ggg")) ;very few.  Please tell us!
     ("graphicx" (section "includegraphics"
 			 "rotatebox" "scalebox" "resizebox" "reflectbox")
      		(option . YaTeX-package-graphics-driver-alist))
@@ -192,6 +195,7 @@ Search the usepackage for MACRO of the TYPE."
 		   (format "%s{%s}\t%% required for `\\%s' (yatex added)\n"
 			   option pkg macro))
 		  (funcall register))
+	      (funcall register)
 	      (message "Don't forget to put \\usepackage{%s} yourself later"
 		       (car (car pkglist)))) ;doing car car is negligence...
     ))))))

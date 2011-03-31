@@ -30,7 +30,7 @@
                         "~/.emacs.d/twittering"
                         "~/.emacs.d/vim"
                         "~/.emacs.d/yasnippet"
-                        "~/.emacs.d/yatex1.74"))
+                        "~/.emacs.d/yatex1.74.4"))
 
 (setq load-path (append load-path more-load-paths))
 

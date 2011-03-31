@@ -3,7 +3,7 @@
 ;;; yatexhie.el
 ;;; (c)1995 by HIROSE Yuuji [yuuji@yatex.org]
 ;;; Last modified Fri Jun 27 12:09:49 2003 on firestorm
-;;; $Id: yatexhie.el,v 1.72 2003/12/25 04:10:54 yuuji Rel $
+;;; $Id: yatexhie.el,v 0734be649cb8 2003/12/25 04:10:10 yuuji $
 
 ;; ----- Customizable variables -----
 (defvar YaTeX-hierarchy-ignore-heading-regexp

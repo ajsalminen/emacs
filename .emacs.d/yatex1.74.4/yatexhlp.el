@@ -3,7 +3,7 @@
 ;;; yatexhlp.el
 ;;; (c)1994,1998,2004 by HIROSE Yuuji.[yuuji@yatex.org]
 ;;; Last modified Tue Oct 19 01:13:21 2004 on firestorm
-;;; $Id: yatexhlp.el,v 1.73 2006/12/24 06:17:15 yuuji Rel $
+;;; $Id: yatexhlp.el,v 9b4354af748c 2006/12/24 06:16:29 yuuji $
 
 (let ((help-file (concat "YATEXHLP."
 			 (cond (YaTeX-japan "jp")

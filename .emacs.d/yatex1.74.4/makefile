@@ -9,8 +9,8 @@ PREFIX	= /usr/local
 #EMACS	= mule
 #EMACSDIR= ${PREFIX}/lib/${EMACS}
 ## emacs20
-#EMACS	= emacs
-#EMACSDIR= ${PREFIX}/share/${EMACS}
+EMACS	= emacs
+EMACSDIR= ${PREFIX}/share/${EMACS}
 ## XEmacs
 #EMACS	= xemacs
 #EMACSDIR= ${PREFIX}/lib/${EMACS}
@@ -18,9 +18,9 @@ PREFIX	= /usr/local
 #EMACS	= meadow
 #EMACSDIR = c:/usr/local/meadow
 ## CarbonEmacs on Darwin (Sample)
-EMACS	= /Applications/Emacs.app/Contents/MacOS/Emacs
-PREFIX	= /Applications/Emacs.app/Contents/Resources
-EMACSDIR = ${PREFIX}
+#EMACS	= /Applications/Emacs.app/Contents/MacOS/Emacs
+#PREFIX	= /Applications/Emacs.app/Contents/Resources
+#EMACSDIR = ${PREFIX}
 
 LISPDIR	= ${EMACSDIR}/site-lisp/yatex
 # LISPDIR	= ${EMACSDIR}/site-packages/lisp/yatex
@@ -49,7 +49,7 @@ GEO	= -geometry 80x20+0+0
 # make clean		to delete all producted files
 # make ci		to check in all
 # make co		to check out all
-MVER	= 1.72
+MVER	= 1.74
 LISP	= ${LISP18} ${LISP19}
 YAHTML	= yahtml.el
 COMMON	= yatexlib.el yatexprc.el
@@ -206,9 +206,9 @@ gohome:
 	-x '*RCS/*' -x 'texinfo/*'
 
 RSYNCDIR	= ${HOME}/http/yatex/rsync/yatex
-sync:	
-	@-mkdir ${PACKDIR}
-	@tar cf - ${PACK} | (cd ${PACKDIR}; tar xf -)
-	syncdir -A -x CVS ${PACKDIR} ${RSYNCDIR}
-	(cd ${RSYNCDIR}; cvs ci -m '')
-	rm -rf ${PACKDIR} 
+#sync:	
+#	@-mkdir ${PACKDIR}
+#	@tar cf - ${PACK} | (cd ${PACKDIR}; tar xf -)
+#	syncdir -A -x CVS ${PACKDIR} ${RSYNCDIR}
+#	(cd ${RSYNCDIR}; cvs ci -m '')
+#	rm -rf ${PACKDIR} 
