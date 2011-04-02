@@ -1528,12 +1528,16 @@ directory, select directory. Lastly the file is opened."
 (defadvice org-save-all-org-buffers (after sync-all-mobile-org-after-saving-in-agenda last)
   (org-sync-mobile-after-save))
 
-(ad-deactivate 'org-save-all-org-buffers)
-(ad-activate 'org-save-all-org-buffers)
+(defadvice  org-agenda-exit (after sync-all-mobile-org-after-saving-in-agenda-exit activate)
+  (org-sync-mobile-after-save))
+
+;; (ad-deactivate 'org-save-all-org-buffers)
+;; (ad-activate 'org-save-all-org-buffers)
+;; (ad-deactivate 'org-agenda-exit)
+;; (ad-activate 'org-agenda-exit)
 
 (require 'deferred)
-
-;; (run-at-time t 3600 (lambda () (deferred:call(org-mobile-pullpush))))
+(run-at-time t 3600 (lambda () (deferred:call(org-mobile-pullpush))))
 
 (setq org-default-notes-file (concat org-directory "memo.org"))
 (define-key global-map "\C-cc" 'org-capture)
