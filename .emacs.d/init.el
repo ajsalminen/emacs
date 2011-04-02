@@ -386,6 +386,9 @@
 
                         (add-hook 'wl-init-hook 'offlineimap)
                         ;; (add-hook 'wl-exit-hook 'offlineimap-resync)
+                        (add-hook 'wl-summary-prepared-hook '(lambda ()
+                                                               (wl-summary-rescan "date" t )
+                                                               (beginning-of-buffer)))
                         ))
         ))
 (el-get 'sync)
