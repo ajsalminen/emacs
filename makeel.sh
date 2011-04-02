@@ -36,17 +36,17 @@ make clean
 make $install_string
 make install $install_string
 
-cd ../flim
+cd $eed/flim
 make clean
 make $install_string
 make install $install_string
 
-cd ../semi
+cd $eed/semi
 make clean
 make $install_string
 make install $install_string
 
-cd ../wanderlust
+cd $eed/wanderlust
 make clean
 make $install_string
 make install $install_string
@@ -56,8 +56,10 @@ make clean
 make $install_string
 make install $install_string
 
-
-
+cd $eed/muse-3.20
+make clean
+make $install_string
+make install $install_string
 
 for i in `ls $eed`; do cd $eed/$i && make; done;
 find $eed/site-lisp -type f -name *.el -print0 | xargs -0 emacs -batch -f batch-byte-compile

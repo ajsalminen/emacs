@@ -28,3 +28,4 @@ ac-comphist.dat
 .emacs.d/nxhtml/etc/schema/xhtml-loader.rnc
 .emacs.d/jabber/elc-temp
 .yaoddmuse
+.emacs.d/yatex1.74.4/lp.el

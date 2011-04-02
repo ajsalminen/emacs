@@ -22,6 +22,7 @@
                         "~/.emacs.d/ess-5.11/lisp"
                         "~/.emacs.d/jdee-2.4.0.1/lisp"
                         "~/.emacs.d/magit"
+                        "~/.emacs.d/muse-3.20/lisp"
                         "~/.emacs.d/org-mode/contrib/lisp"
                         "~/.emacs.d/org-mode/lisp"
                         "~/.emacs.d/reftex-4.34a/lisp"
@@ -1365,6 +1366,30 @@ directory, select directory. Lastly the file is opened."
 
 (require 'todochiku)
 
+;;copied straight from org, don't redisplay frames after push
+(defun org-mobile-push-unobtrusive ()
+  (interactive)
+  (let ((a-buffer (get-buffer org-agenda-buffer-name)))
+    (let ((org-agenda-buffer-name "*SUMO*")
+	  (org-agenda-filter org-agenda-filter)
+	  (org-agenda-redo-command org-agenda-redo-command))
+      (save-window-excursion
+        (org-mobile-check-setup)
+        (org-mobile-prepare-file-lists)
+        (run-hooks 'org-mobile-pre-push-hook)
+        (message "Creating agendas...")
+        (let ((inhibit-redisplay t)) (org-mobile-create-sumo-agenda))
+        (message "Creating agendas...done")
+        (org-save-all-org-buffers) ; to save any IDs created by this process
+        (message "Copying files...")
+        (org-mobile-copy-agenda-files)
+        (message "Writing index file...")
+        (org-mobile-create-index-file)
+        (message "Writing checksums...")
+        (org-mobile-write-checksums)
+        (run-hooks 'org-mobile-post-push-hook)))
+  (message "Files for mobile viewer staged")))
+
 (setq todochiku-icons-directory "~/.emacs.d/todochiku-icons")
 (setq org-timer-default-timer 25)
 (setq org-clock-string-limit 35)
@@ -1487,13 +1512,28 @@ directory, select directory. Lastly the file is opened."
 
 (defun org-mobile-pullpush ()
   (interactive)
-  (progn
-    (org-mobile-pull)
-    (org-mobile-push)))
+  (save-excursion
+    (progn
+      (org-mobile-pull)
+      (org-mobile-push-unobtrusive)
+      (todochiku-message "org" "all files pushed" (todochiku-icon 'terminail)))))
+
+(defun org-sync-mobile-after-save (&optional force)
+  (interactive)
+  (when (and (eq major-mode 'org-mode)
+             (member buffer-file-name org-agenda-files))
+    (save-excursion
+      (org-mobile-pullpush))))
+
+(defadvice org-save-all-org-buffers (after sync-all-mobile-org-after-saving-in-agenda last)
+  (org-sync-mobile-after-save))
+
+(ad-deactivate 'org-save-all-org-buffers)
+(ad-activate 'org-save-all-org-buffers)
 
 (require 'deferred)
 
-(run-at-time t 3600 (lambda () (deferred:call(org-mobile-pullpush))))
+;; (run-at-time t 3600 (lambda () (deferred:call(org-mobile-pullpush))))
 
 (setq org-default-notes-file (concat org-directory "memo.org"))
 (define-key global-map "\C-cc" 'org-capture)
@@ -1507,10 +1547,11 @@ directory, select directory. Lastly the file is opened."
       '(("i" "Inbox" entry (file+headline "~/org/todo.org" "Inbox") "** TODO %? \n %i :inbox: %a \n SCHEDULED: %T \n %U")
         ("r" "Research" entry (file+headline "~/org/diss.org" "Research") "** TODO %?  :research: \n %a")
         ("t" "Writing" entry (file+headline "~/org/write.org" "Writing") "** TODO %? :write: \n %a")
-        ("w" "Work" entry (file+headline "~/org/work.org" "Work") "** TODO %? :work: \n %a")
+        ("w" "Work" entry (file+headline "~/org/work.org" "Work") "** TODO %? :work: \n SCHEDULED: %t \n %a")
         ("l" "RIL" entry (file+headline "~/org/ril.org" "Ril") "** TODO %? :ril: \n %a")
         ("d" "Dev" entry (file+headline "~/org/dev.org" "Dev") "** TODO %? :dev: %i %a")
         ("h" "HJ" entry (file+headline "~/org/hj.org" "HJ") "* TODO %? :hj: \n \n Entered on %U\n  %i\n  %a")
+        ("a" "Activity" entry (file+headline "~/org/activity.org" "Activity") "** TODO %?  :activity: \n %a")
         ("p" "Personal" entry (file+headline "~/org/personal.org" "Personal") "* TODO %? :personal: \n SCHEDULED: %t \n \nEntered on %U\n  %i\n  %a")))
 
 (setq org-todo-keyword-faces
@@ -3000,8 +3041,33 @@ FORMAT-STRING is like `format', but it can have multiple %-sequences."
           (lambda()
             (setq TeX-base-mode-name "lx")))
 
+(require 'muse-mode)
+(require 'muse-html)
+(require 'muse-latex)
+(require 'muse-texinfo)
+(require 'muse-docbook)
+(require 'muse-project)
+(require 'muse-journal )
+
+(setq muse-project-alist
+      '(("Journal" ("~/journal/"
+                    :default "journal"))))
+
+(defun date (arg)
+  (interactive "P")
+  (insert (if arg
+              (format-time-string "%d.%m.%Y")
+            (format-time-string "%Y-%m-%d"))))
+
+(defun timestamp ()
+  (interactive)
+  (insert (format-time-string "%Y-%m-%d %H:%M:%S")))
+
+
+;; delete this after the power crisis
 (require 'tepco-power-status)
 (require 'yasima)
 (yasima-mode)
+
 
 (message "********** successfully initialized **********")
