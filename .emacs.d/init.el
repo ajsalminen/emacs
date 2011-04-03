@@ -853,7 +853,8 @@
   (add-hook 'after-init-hook 'set-mac-input)
 
   (if (fboundp 'ns-toggle-fullscreen)
-      (global-set-key "\M-\r" 'ns-toggle-fullscreen)))
+      ;; (global-set-key "\M-\r" 'ns-toggle-fullscreen)
+    ))
 
 
 
@@ -875,7 +876,8 @@
 ;; Ubuntu related settings
 (when (and (= emacs-major-version 23) (eq window-system 'x))
   ;; (add-hook 'after-init-hook (lambda () (toggle-fullscreen)))
-  (global-set-key "\M-\r" 'toggle-fullscreen)
+
+  ;; (global-set-key "\M-\r" 'toggle-fullscreen)
   (add-hook 'after-make-frame-functions 'toggle-fullscreen)
   (setq x-super-keysym 'meta)
   (setq x-alt-keysym 'meta)
