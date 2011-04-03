@@ -22,6 +22,7 @@
                         "~/.emacs.d/ess-5.11/lisp"
                         "~/.emacs.d/jdee-2.4.0.1/lisp"
                         "~/.emacs.d/magit"
+                        "~/.emacs.d/mu-cite"
                         "~/.emacs.d/muse-3.20/lisp"
                         "~/.emacs.d/org-mode/contrib/lisp"
                         "~/.emacs.d/org-mode/lisp"
@@ -394,6 +395,11 @@
                         (setq gnus-gravatar-directory "~/.emacs-gravatar/")
                         (setq gravatar-unregistered-icon 'identicon)
                         (setq wl-gravatar-retrieve-once t)
+
+                        (autoload 'mu-cite-original "mu-cite" nil t)
+                        (setq mu-cite-prefix-format '("> "))
+                        (setq mu-cite-top-format '("\n\n" full-name "'s message :\n\n"))
+                        (add-hook 'mail-citation-hook (function mu-cite-original))
                         ))
         ))
 (el-get 'sync)
@@ -3075,6 +3081,7 @@ FORMAT-STRING is like `format', but it can have multiple %-sequences."
   (interactive)
   (insert (format-time-string "%Y-%m-%d %H:%M:%S")))
 
+(require 'load-directory)
 
 ;; delete this after the power crisis
 (require 'tepco-power-status)
