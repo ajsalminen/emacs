@@ -880,6 +880,11 @@
   (setq x-super-keysym 'meta)
   (setq x-alt-keysym 'meta)
 
+  (defun swapcaps ()
+    (interactive)
+    (shell-command "setxkbmap -option \"ctrl:swapcaps\""))
+
+  (global-set-key (kbd "<menu>") 'smex-with-toggle)
 
   (defun setup-scim ()
     (interactive)
