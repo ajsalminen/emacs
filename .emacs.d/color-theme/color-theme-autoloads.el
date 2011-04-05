@@ -18,7 +18,7 @@
 ;;;;;;  "../../../../../../home/sb/.emacs.d/color-theme/color-theme.el"
 ;;;;;;  "../../../../../../home/sb/.emacs.d/color-theme/themes/color-theme-example.el"
 ;;;;;;  "../../../../../../home/sb/.emacs.d/color-theme/themes/color-theme-library.el")
-;;;;;;  (19860 59512 257916))
+;;;;;;  (19861 43659 292774))
 
 ;;;***
 
