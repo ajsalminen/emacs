@@ -29,6 +29,7 @@
                         "~/.emacs.d/reftex-4.34a/lisp"
                         "~/.emacs.d/rhtml"
                         "~/.emacs.d/site-lisp"
+                        "~/.emacs.d/skype"
                         "~/.emacs.d/twittering"
                         "~/.emacs.d/vim"
                         "~/.emacs.d/yasnippet"
@@ -842,6 +843,9 @@
    'katakana-jisx0201
    "-apple-hiragino_kaku_gothic_pro-medium-normal-normal-*-14-*-iso10646-1")
 
+  ;; (if (fboundp 'ns-toggle-fullscreen)
+  ;;     (global-set-key "\M-\r" 'ns-toggle-fullscreen))
+
   ;; apologetic hack to make sure my mac input is used
   (defun set-mac-input ()
     (interactive)
@@ -850,13 +854,7 @@
       (set-input-method "MacOSX")
       (toggle-input-method)))
 
-  (add-hook 'after-init-hook 'set-mac-input)
-
-  (if (fboundp 'ns-toggle-fullscreen)
-      ;; (global-set-key "\M-\r" 'ns-toggle-fullscreen)
-    ))
-
-
+  (add-hook 'after-init-hook 'set-mac-input))
 
 (when (and (< emacs-major-version 23)  (eq window-system 'mac))
   (set-face-attribute 'default nil
@@ -3090,5 +3088,8 @@ FORMAT-STRING is like `format', but it can have multiple %-sequences."
 (require 'yasima)
 (yasima-mode)
 
+(defadvice save-buffers-kill-emacs (around no-query-kill-emacs activate)
+  "Prevent annoying \"Active processes exist\" query when you quit Emacs."
+  (flet ((process-list ())) ad-do-it))
 
 (message "********** successfully initialized **********")
