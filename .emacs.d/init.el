@@ -1489,19 +1489,29 @@ directory, select directory. Lastly the file is opened."
                                     (org-timer-set-timer '(16)))))
 
 (setq org-agenda-custom-commands
-      '(("w" tags "work")
-        ("W" tags-todo "work")
+      '(("W" tags "work")
+        ("w" tags-todo "work")
+        ("h" agenda ""
+         ((org-agenda-show-all-dates nil)))
         ("o" "Agenda and Office-related tasks"
          ((agenda)
           (tags-todo "work")))
         ("U" tags "work"
          ((org-show-following-heading nil)
           (org-show-hierarchy-above nil)))
+        ("f" tags ""
+         ((org-agenda-files
+           '("~/org/flagged.org"))))
+        ("N" search " "
+         ((org-agenda-files
+           '("~/org/flagged.org"))
+          (org-agenda-text-search-extra-files nil)))
         ("c" agenda "work"
          ((org-agenda-ndays 1)
           (org-scheduled-past-days 0)
           (org-deadline-warning-days 0)
-          (org-agenda-filter-preset '("+work"))))))
+          (org-agenda-filter-preset
+           '("+work"))))))
 
 (setq org-icalendar-use-scheduled '(todo-start event-if-todo))
 
