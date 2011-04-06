@@ -12,18 +12,16 @@ elif [[ "$unamestr" == 'Darwin' ]]; then
     platform='freebsd'
     install_string='EMACS=/Applications/Emacs.app/Contents/MacOS/Emacs LISPDIR=/Applications/Emacs.app/Contents/Resources/site-lisp'
     emacs_string='--with-emacs=/Applications/Emacs.app/Contents/MacOS/Emacs'
-    prefix=/Applications
+    prefix='/Applications'
     lispdir = $(prefix)/Emacs.app/Contents/Resources/site-lisp
     infodir = $(prefix)/Emacs.app/Contents/Resources/info
-    org_make_string="-f $eed/orgmakefile_mac"
 fi
-
-echo $org_make_string
 
 cd $eed/org-mode
 make clean
-make $org_make_string
-make install
+make --makefile=$eed/orgmakefile_mac
+make install --makefile=$eed/orgmakefile_mac
+
 
 cd $eed/el-get/bbdb
 make clean
@@ -68,7 +66,7 @@ find $eed/haskell-mode/ -type f -name *.el -print0 | xargs -0 emacs -batch -f ba
 find $eed/reftex*/lisp -type f -name *.el -print0 | xargs -0 emacs -batch -f batch-byte-compile
 find $eed/elib* -type f -name *.el -print0 | xargs -0 emacs -batch -f batch-byte-compile
 find $eed/jdee-*/lisp -type f -name *.el -print0 | xargs -0 emacs -batch -f batch-byte-compile
-cd $eed/yatex* && make elc
 for i in `find $eed/* -type f -name *.el`; do emacs -batch -f batch-byte-compile $i; done;
 #cd $eed/bbdb-* && make
 #cd $eed/bbdb-*/lisp && make
+cd $eed/yatex* && make elc
