@@ -1499,13 +1499,13 @@ directory, select directory. Lastly the file is opened."
         ("U" tags "work"
          ((org-show-following-heading nil)
           (org-show-hierarchy-above nil)))
-        ("f" tags ""
+        ("f"  "flagged" tags ""
          ((org-agenda-files
            '("~/org/flagged.org"))))
-        ("N" search " "
-         ((org-agenda-files
-           '("~/org/flagged.org"))
-          (org-agenda-text-search-extra-files nil)))
+        ("z" "Agenda and Office-related tasks"
+         ((agenda)
+          (org-agenda-files
+           '("~/org/flagged.org"))))
         ("c" agenda "work"
          ((org-agenda-ndays 1)
           (org-scheduled-past-days 0)
