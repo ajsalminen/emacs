@@ -313,7 +313,7 @@
      (org-latex-and-export-specials ((t (:foreground "burlywood"))))
      (org-level-1 ((t (:bold t :foreground "LightSkyBlue" :height 1.7))))
      (org-level-2 ((t (:bold nil :foreground "LightGoldenrod" :height 1.5))))
-     (org-level-3 ((t (:bold t :foreground "Cyan1" :height 1.2))))
+     (org-level-3 ((t (:bold t :foreground "light slate blue" :height 1.2))))
      (org-level-4 ((t (:bold nil :foreground "chocolate1" :height 1.1))))
      (org-level-5 ((t (:foreground "PaleGreen"))))
      (org-level-6 ((t (:foreground "Aquamarine"))))

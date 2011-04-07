@@ -1491,6 +1491,9 @@ directory, select directory. Lastly the file is opened."
 (setq org-agenda-custom-commands
       '(("W" tags "work")
         ("w" tags-todo "work")
+        ("j" todo "WAIT"
+         (tags-todo "work"))
+        ("J" todo-tree "WAIT")
         ("h" agenda ""
          ((org-agenda-show-all-dates nil)))
         ("o" "Agenda and Office-related tasks"
@@ -1508,7 +1511,7 @@ directory, select directory. Lastly the file is opened."
            '("~/org/flagged.org"))))
         ("c" agenda "work"
          ((org-agenda-ndays 1)
-          (org-scheduled-past-days 0)
+          (org-scheduled-past-days 900)
           (org-deadline-warning-days 0)
           (org-agenda-filter-preset
            '("+work"))))))
@@ -2010,7 +2013,7 @@ post command hook に機能追加"
 (setq twittering-use-master-password t)
 (setq twittering-url-show-status nil)
 (setq twittering-number-of-tweets-on-retrieval 200)
-(twittering-icon-mode t)
+(setq twittering-icon-mode nil)
 (setq twittering-timer-interval 900)
 
 (if (and (boundp 'jmp-api-key) (boundp 'jmp-user-name))
