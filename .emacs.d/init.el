@@ -3108,4 +3108,45 @@ FORMAT-STRING is like `format', but it can have multiple %-sequences."
   "Prevent annoying \"Active processes exist\" query when you quit Emacs."
   (flet ((process-list ())) ad-do-it))
 
+(autoload 'sql-mode "sql-mode" "SQL Editing Mode" t)
+(setq auto-mode-alist
+      (append '(("\\.sql$" . sql-mode)
+                ("\\.tbl$" . sql-mode)
+                ("\\.sp$"  . sql-mode))
+              auto-mode-alist))
+
+(eval-after-load "sql"
+  '(lambda () (progn
+                (require 'sql-indent)
+                (require  'sql-transform)
+                (add-hook 'sql-mode-hook
+                         (function (lambda ()
+                                     (local-set-key "\C-cu" 'sql-to-update)))))))
+
+(defadvice sql-send-region (after sql-store-in-history)
+  "The region sent to the SQLi process is also stored in the history."
+  (let ((history (buffer-substring-no-properties start end)))
+    (save-excursion
+      (set-buffer sql-buffer)
+      (message history)
+      (if (and (funcall comint-input-filter history)
+               (or (null comint-input-ignoredups)
+                   (not (ring-p comint-input-ring))
+                   (ring-empty-p comint-input-ring)
+                   (not (string-equal (ring-ref comint-input-ring 0)
+                                      history))))
+          (ring-insert comint-input-ring history))
+      (setq comint-save-input-ring-index comint-input-ring-index)
+      (setq comint-input-ring-index nil))))
+
+(ad-activate 'sql-send-region)
+
+(defun my-sqli-setup ()
+  "Set the input ring file name based on the product name."
+  (setq sql-input-ring-file-name
+        (concat "~/." (symbol-name sql-product) "_history"))
+  (setq sql-input-ring-separator "\n"))
+
+(add-hook 'sql-interactive-mode-hook 'my-sqli-setup)
+
 (message "********** successfully initialized **********")
