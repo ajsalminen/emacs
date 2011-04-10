@@ -1658,11 +1658,14 @@ directory, select directory. Lastly the file is opened."
 
 ;; ロード
 (require 'auto-complete-config)
-(add-to-list 'ac-dictionary-directories "~/.emacs.d///ac-dict")
+(add-to-list 'ac-dictionary-directories "~/.emacs.d/ac-dict")
 (ac-config-default)
 (require 'ac-company)
 ;; 対象の全てで補完を有効にする
 (global-auto-complete-mode t)
+
+;; (require 'auto-complete-clang)
+;; (setq clang-completion-suppress-error 't)
 
 ;; ac-company で company-xcode を有効にする
 (ac-company-define-source ac-source-company-xcode company-xcode)
@@ -1829,8 +1832,13 @@ post command hook に機能追加"
             (define-key objc-mode-map (kbd "C-c C-r") 'xcode:buildandrun)))
 
 (require 'xcode-document-viewer)
-(setq xcdoc:document-path "/Developer/Platforms/iPhoneOS.platform/Developer/Documentation/DocSets/com.apple.adc.documentation.AppleiOS4_2.iOSLibrary.docset")
+(setq xcdoc:document-path "/Developer/Platforms/iPhoneOS.platform/Developer/Documentation/DocSets/com.apple.adc.documentation.AppleiOS4_3.iOSLibrary.docset")
 (setq xcdoc:open-w3m-other-buffer t)
+
+(require 'anything-apple-docset)
+(setq anything-apple-docset-path "/Developer/Platforms/iPhoneOS.platform/Developer/Documentation/DocSets/com.apple.adc.documentation.AppleiOS4_2.iOSLibrary.docset")
+(anything-apple-docset-init)
+
 ;; hook の設定
 (add-hook 'objc-mode-hook
           (lambda ()
