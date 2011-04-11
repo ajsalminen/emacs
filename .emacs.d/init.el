@@ -1524,6 +1524,9 @@ directory, select directory. Lastly the file is opened."
 (global-set-key "\C-ca" 'org-agenda)
 (global-set-key "\C-cb" 'org-iswitchb)
 (add-hook 'org-mode-hook 'turn-on-font-lock) ; Org buffers only
+(add-hook 'org-mode-hook
+          (lambda ()
+            (define-key org-mode-map (kbd "C-'") 'smex-with-toggle)))
 ;;(add-hook 'org-mode-hook 'smart-tab-mode-off)
 
 (setq org-startup-truncated nil)
