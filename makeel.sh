@@ -1,4 +1,5 @@
 platform='unknown'
+
 unamestr=`uname`
 install_string=''
 emacs_string''
@@ -13,8 +14,10 @@ elif [[ "$unamestr" == 'Darwin' ]]; then
     install_string='EMACS=/Applications/Emacs.app/Contents/MacOS/Emacs LISPDIR=/Applications/Emacs.app/Contents/Resources/site-lisp'
     emacs_string='--with-emacs=/Applications/Emacs.app/Contents/MacOS/Emacs'
     prefix='/Applications'
-    lispdir = $(prefix)/Emacs.app/Contents/Resources/site-lisp
-    infodir = $(prefix)/Emacs.app/Contents/Resources/info
+    lispdir=$prefix'/Emacs.app/Contents/Resources/site-lisp'
+    infodir=$prefix'/Emacs.app/Contents/Resources/info'
+    lisp_string='--with-lispdir='$lispdir
+    lisplocal_string='--with-lispdir=~/emacs.d/site-lisp'
 fi
 
 cd $eed/org-mode
@@ -22,6 +25,23 @@ make clean
 make --makefile=$eed/orgmakefile_mac
 make install --makefile=$eed/orgmakefile_mac
 
+cd $eed/emacs-w3m
+autoconf
+make clean
+
+if [[ "$unamestr" == 'Linux' ]]; then
+    ./configure
+    make
+    make install
+elif [[ "$unamestr" == 'Darwin' ]]; then
+    ./configure $emacs_string $lisp_string
+    make
+    make install
+    make clean
+    ./configure $emacs_string $lisplocal_string
+    make
+    make install
+fi
 
 cd $eed/el-get/bbdb
 make clean

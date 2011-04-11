@@ -3158,4 +3158,6 @@ FORMAT-STRING is like `format', but it can have multiple %-sequences."
 
 (add-hook 'sql-interactive-mode-hook 'my-sqli-setup)
 
+(require 'pydoc-info)
+
 (message "********** successfully initialized **********")
