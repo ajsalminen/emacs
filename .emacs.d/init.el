@@ -1831,18 +1831,19 @@ post command hook に機能追加"
           (lambda ()
             (define-key objc-mode-map (kbd "C-c C-r") 'xcode:buildandrun)))
 
-(require 'xcode-document-viewer)
-(setq xcdoc:document-path "/Developer/Platforms/iPhoneOS.platform/Developer/Documentation/DocSets/com.apple.adc.documentation.AppleiOS4_3.iOSLibrary.docset")
-(setq xcdoc:open-w3m-other-buffer t)
+(when (or (eq window-system 'ns) (featurep 'carbon-emacs-package))
+  (require 'xcode-document-viewer)
+  (setq xcdoc:document-path "/Developer/Platforms/iPhoneOS.platform/Developer/Documentation/DocSets/com.apple.adc.documentation.AppleiOS4_3.iOSLibrary.docset")
+  (setq xcdoc:open-w3m-other-buffer t)
 
-(require 'anything-apple-docset)
-(setq anything-apple-docset-path "/Developer/Platforms/iPhoneOS.platform/Developer/Documentation/DocSets/com.apple.adc.documentation.AppleiOS4_2.iOSLibrary.docset")
-(anything-apple-docset-init)
+  (require 'anything-apple-docset)
+  (setq anything-apple-docset-path "/Developer/Platforms/iPhoneOS.platform/Developer/Documentation/DocSets/com.apple.adc.documentation.AppleiOS4_2.iOSLibrary.docset")
+  (anything-apple-docset-init)
 
-;; hook の設定
-(add-hook 'objc-mode-hook
-          (lambda ()
-            (define-key objc-mode-map (kbd "C-c w") 'xcdoc:ask-search)))
+  ;; hook の設定
+  (add-hook 'objc-mode-hook
+            (lambda ()
+              (define-key objc-mode-map (kbd "C-c w") 'xcdoc:ask-search))))
 
 ;; end of iphone-related settings
 
