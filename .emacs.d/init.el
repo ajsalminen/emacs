@@ -3165,4 +3165,30 @@ FORMAT-STRING is like `format', but it can have multiple %-sequences."
 
 (require 'pydoc-info)
 
+
+(require 'cedet-load)
+
+(autoload 'php-mode "php-mode")
+(setq auto-mode-alist
+      (cons '("\\.php\\'" . php-mode) auto-mode-alist))
+(setq php-mode-force-pear t)
+(add-hook 'php-mode-user-hook
+          '(lambda ()
+             (setq php-manual-path "~/Dropbox/php_manual/")))
+
+(require 'php-doc nil t)
+(setq php-doc-directory "~/Dropbox/php_manual/")
+(add-hook 'php-mode-hook
+          (lambda ()
+            (local-set-key "\t" 'php-doc-complete-function)
+            (local-set-key (kbd "\C-c h") 'php-doc)
+            (set (make-local-variable 'eldoc-documentation-function)
+                 'php-doc-eldoc-function)
+            (eldoc-mode 1)))
+
+(autoload 'css-mode "css-mode")
+(setq auto-mode-alist
+      (cons '("\\.css\\'" . css-mode) auto-mode-alist))
+(setq cssm-indent-function #'cssm-c-style-indenter)
+
 (message "********** successfully initialized **********")
