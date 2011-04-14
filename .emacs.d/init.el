@@ -976,7 +976,8 @@
 ;;(global-set-key "\C-x\ \C-r" 'recentf-open-files)
 
 (transient-mark-mode 1)
-(setq gc-cons-threshold (* 10 gc-cons-threshold))
+(setq gc-cons-threshold 4000)
+(setq gc-cons-percentage 0.05)
 (setq use-dialog-box nil)
 (defalias 'message-box 'message)
 (setq echo-keystrokes 0.1)
