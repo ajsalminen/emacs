@@ -12,7 +12,7 @@
 (setq more-load-paths '("~/.emacs.d/auctex-11.86"
                         "~/.emacs.d/auctex-11.86/preview"
                         "~/.emacs.d/bbdb-2.35/lisp/"
-                        "~/.emacs.d/cedet-1.0/"
+                        "~/.emacs.d/cedet-1.0/common/"
                         "~/.emacs.d/color-theme"
                         "~/.emacs.d/el-get/bbdb/lisp/"
                         "~/.emacs.d/el-get/bbdb-vcard/"
@@ -3166,7 +3166,7 @@ FORMAT-STRING is like `format', but it can have multiple %-sequences."
 (require 'pydoc-info)
 
 
-(require 'cedet-load)
+(require 'cedet)
 
 (autoload 'php-mode "php-mode")
 (setq auto-mode-alist

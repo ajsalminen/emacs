@@ -2,8 +2,8 @@
 
 ;; Copyright (C) 2008 Free Software Foundation
 
-;; Author: sb <sb@sb-dm>
-;; Created: 2011-04-12 10:33:26+0900
+;; Author: baron <baron@richstyles.local>
+;; Created: 2011-04-14 22:52:41+0900
 ;; Keywords: syntax
 ;; X-RCS: $Id$
 

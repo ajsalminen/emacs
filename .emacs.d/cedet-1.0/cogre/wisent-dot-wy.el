@@ -2,8 +2,8 @@
 
 ;; Copyright (C) 2003, 2004, 2009 Eric M. Ludlam
 
-;; Author: sb <sb@sb-dm>
-;; Created: 2011-04-12 10:33:17+0900
+;; Author: baron <baron@richstyles.local>
+;; Created: 2011-04-14 22:52:23+0900
 ;; Keywords: syntax
 ;; X-RCS: $Id$
 

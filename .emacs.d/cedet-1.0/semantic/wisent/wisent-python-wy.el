@@ -2,8 +2,8 @@
 
 ;; Copyright (C) 2002, 2003, 2004, 2007 Richard Kim
 
-;; Author: sb <sb@sb-dm>
-;; Created: 2011-04-12 10:32:56+0900
+;; Author: baron <baron@richstyles.local>
+;; Created: 2011-04-14 22:51:31+0900
 ;; Keywords: syntax
 ;; X-RCS: $Id$
 

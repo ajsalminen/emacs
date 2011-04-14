@@ -2,8 +2,8 @@
 
 ;; Copyright (C) 2005 Joakim Verona, Eric Ludlam
 
-;; Author: sb <sb@sb-dm>
-;; Created: 2011-04-12 10:32:57+0900
+;; Author: baron <baron@richstyles.local>
+;; Created: 2011-04-14 22:51:33+0900
 ;; Keywords: syntax
 ;; X-RCS: $Id$
 

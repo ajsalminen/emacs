@@ -25,6 +25,10 @@ make clean
 make --makefile=$eed/orgmakefile_mac
 make install --makefile=$eed/orgmakefile_mac
 
+cd $eed/cedet-1.0
+make clean
+make 
+
 cd $eed/emacs-w3m
 autoconf
 make clean

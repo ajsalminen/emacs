@@ -2,8 +2,8 @@
 
 ;; Copyright (C) 2002, 2003 Vladimir G. Sekissov
 
-;; Author: sb <sb@sb-dm>
-;; Created: 2011-04-12 10:33:03+0900
+;; Author: baron <baron@richstyles.local>
+;; Created: 2011-04-14 22:51:57+0900
 ;; Keywords: syntax
 ;; X-RCS: $Id$
 

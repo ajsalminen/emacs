@@ -2,8 +2,8 @@
 
 ;; Copyright (C) 2002 David Ponce
 
-;; Author: sb <sb@sb-dm>
-;; Created: 2011-04-12 10:32:49+0900
+;; Author: baron <baron@richstyles.local>
+;; Created: 2011-04-14 22:51:14+0900
 ;; Keywords: syntax
 ;; X-RCS: $Id$
 
