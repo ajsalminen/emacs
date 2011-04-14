@@ -12,6 +12,7 @@
 (setq more-load-paths '("~/.emacs.d/auctex-11.86"
                         "~/.emacs.d/auctex-11.86/preview"
                         "~/.emacs.d/bbdb-2.35/lisp/"
+                        "~/.emacs.d/cedet-1.0/"
                         "~/.emacs.d/color-theme"
                         "~/.emacs.d/el-get/bbdb/lisp/"
                         "~/.emacs.d/el-get/bbdb-vcard/"
