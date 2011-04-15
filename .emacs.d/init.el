@@ -3165,7 +3165,6 @@ FORMAT-STRING is like `format', but it can have multiple %-sequences."
 
 (require 'pydoc-info)
 
-
 (require 'cedet)
 
 (autoload 'php-mode "php-mode")
@@ -3196,5 +3195,7 @@ FORMAT-STRING is like `format', but it can have multiple %-sequences."
 (setq auto-mode-alist
       (cons '("\\.css\\'" . css-mode) auto-mode-alist))
 (setq cssm-indent-function #'cssm-c-style-indenter)
+
+(require 'wide-n)
 
 (message "********** successfully initialized **********")
