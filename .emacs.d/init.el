@@ -1842,7 +1842,7 @@ post command hook に機能追加"
   (setq xcdoc:open-w3m-other-buffer t)
 
   (require 'anything-apple-docset)
-  (setq anything-apple-docset-path "/Developer/Platforms/iPhoneOS.platform/Developer/Documentation/DocSets/com.apple.adc.documentation.AppleiOS4_2.iOSLibrary.docset")
+  (setq anything-apple-docset-path "/Developer/Platforms/iPhoneOS.platform/Developer/Documentation/DocSets/com.apple.adc.documentation.AppleiOS4_3.iOSLibrary.docset")
   (anything-apple-docset-init)
 
   ;; hook の設定
