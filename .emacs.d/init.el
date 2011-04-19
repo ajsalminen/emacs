@@ -3198,4 +3198,10 @@ FORMAT-STRING is like `format', but it can have multiple %-sequences."
 
 (require 'wide-n)
 
+(defun machine-ip-address (dev)
+  "Return IP address of a network device."
+  (let ((info (network-interface-info dev)))
+    (if info
+        (format-network-address (car info) t))))
+
 (message "********** successfully initialized **********")
