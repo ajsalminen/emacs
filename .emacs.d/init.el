@@ -2548,11 +2548,12 @@ If existing, the current prompt will be deleted."
 
 (autoload 'espresso-mode "espresso" "Javascript mode" t)
 (autoload 'js2-mode "js2-mode" nil t)
-(add-to-list 'auto-mode-alist '("\\.js$" . espresso-mode))
+(add-to-list 'auto-mode-alist '("\\.js" . espresso-mode))
 
 (autoload 'moz-minor-mode "moz" "Mozilla Minor and Inferior Mozilla Modes" t)
 
 (defun espresso-custom-setup ()
+  (setq tab-width 4)
   (moz-minor-mode 1))
 
 (add-hook 'espresso-mode-hook 'espresso-custom-setup)
