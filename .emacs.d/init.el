@@ -3205,4 +3205,6 @@ FORMAT-STRING is like `format', but it can have multiple %-sequences."
     (if info
         (format-network-address (car info) t))))
 
+(require 'change-case)
+
 (message "********** successfully initialized **********")
