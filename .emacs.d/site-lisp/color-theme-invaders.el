@@ -259,6 +259,8 @@
      (mode-line-highlight ((t (:background "White" :box (:line-width 2 :color "grey40" :style released-button)))))
      (mode-line-inactive ((t (:background "chocolate3" :foreground "White"))))
      (mouse ((t (:background "#8ae234"))))
+     (mumamo-background-chunk-major ((t (:background nil))))
+     (mumamo-background-chunk-submode1 ((t (:background nil))))
      (my-gnus-direct-fup-face ((t (:bold t :background "NavyBlue" :foreground "#70fc70" :weight bold))))
      (my-gnus-indirect-fup-face ((t (:bold t :background "#092109" :foreground "#7fff7f" :weight bold))))
      (my-gnus-own-posting-face ((t (:bold t :background "#210909" :foreground "chartreuse3" :weight bold))))

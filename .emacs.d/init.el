@@ -2643,6 +2643,7 @@ the mode-line."
 
 
 (load "~/.emacs.d/nxhtml/autostart.el")
+(setq mumamo-chunk-coloring 'no-chunks-colored)
 
 ;; numbering rects usage:
 ;; http://d.hatena.ne.jp/rubikitch/20110221/seq
