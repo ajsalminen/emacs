@@ -1021,6 +1021,7 @@
 (push '("*Process List*" :height 10) popwin:special-display-config)
 (push '("*Locate*" :height 10 :noselect t) popwin:special-display-config)
 (push '("*Moccur*" :height 20 :position bottom) popwin:special-display-config)
+(push '("*wget.*" :regexp t :height 10 :position bottom) popwin:special-display-config)
 (push '(" *auto-async-byte-compile*" :height 10) popwin:special-display-config)
 (push '("\*grep\*.*" :regexp t :height 20) popwin:special-display-config)
 (push '("function\-in\-.*" :regexp t) popwin:special-display-config)
@@ -1910,10 +1911,12 @@ post command hook に機能追加"
 ;;(add-hook 'w3m-mode-hook 'w3m-link-numbering-mode)
 (setq w3m-use-cookies t)
 
-(defun sane-w3m-rename-buffer (url)
-  (rename-buffer (format "*w3m %s (%s)*"
-                         (or w3m-current-title "")
-                         (or w3m-current-url "")) t))
+(autoload 'wget "wget" "wget interface for Emacs." t)
+(autoload 'wget-web-page "wget" "wget interface to download whole web page." t)
+(setq wget-download-directory "~/Downloads")
+
+(require 'w3m-wget)
+(define-key w3m-mode-map (kbd "w") 'w3m-wget)
 
 (add-hook 'w3m-display-hook 'sane-w3m-rename-buffer)
 
