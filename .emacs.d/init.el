@@ -1043,7 +1043,7 @@
 ;; (popwin:define-advice 'auto-async-byte-compile "*auto-async-byte-compile*")
 ;; (popwin:define-advice 'text-translator-all "*translated*")
 
-
+(setq warning-suppress-types '(undo discard-info))
 
 (defvar prev-buffer-input-method nil "save previously set inputmethod")
 (make-variable-buffer-local 'prev-buffer-input-method)
