@@ -1914,6 +1914,7 @@ post command hook に機能追加"
 (autoload 'wget "wget" "wget interface for Emacs." t)
 (autoload 'wget-web-page "wget" "wget interface to download whole web page." t)
 (setq wget-download-directory "~/Downloads")
+(setq wget-max-window-height 10)
 
 (require 'w3m-wget)
 (define-key w3m-mode-map (kbd "w") 'w3m-wget)
