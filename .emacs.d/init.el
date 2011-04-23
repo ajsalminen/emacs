@@ -1911,6 +1911,9 @@ post command hook に機能追加"
 ;;(add-hook 'w3m-mode-hook 'w3m-link-numbering-mode)
 (setq w3m-use-cookies t)
 
+(setq w3m-session-load-last-sessions t)
+(setq w3m-session-load-crashed-sessions t)
+
 (autoload 'wget "wget" "wget interface for Emacs." t)
 (autoload 'wget-web-page "wget" "wget interface to download whole web page." t)
 (setq wget-download-directory "~/Downloads")
