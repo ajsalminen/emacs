@@ -3214,4 +3214,6 @@ FORMAT-STRING is like `format', but it can have multiple %-sequences."
 
 (require 'change-case)
 
+(global-auto-revert-mode 1)
+
 (message "********** successfully initialized **********")
