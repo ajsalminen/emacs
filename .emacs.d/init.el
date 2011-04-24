@@ -1922,7 +1922,14 @@ post command hook に機能追加"
 (require 'w3m-wget)
 (define-key w3m-mode-map (kbd "w") 'w3m-wget)
 
-(add-hook 'w3m-display-hook 'sane-w3m-rename-buffer)
+(defun w3m-sane-rename-buffer (url)
+  (rename-buffer (format "*w3m %s (%s)*"
+                         (or w3m-current-title "")
+                         (or w3m-current-url "")) t))
+
+(remove-hook 'w3m-display-hook 'w3m-sane-rename-buffer)
+
+(setq w3m-use-title-buffer-name t)g
 
 (setq w3m-verbose t)
 (setq w3m-message-silent nil)
@@ -3122,9 +3129,9 @@ FORMAT-STRING is like `format', but it can have multiple %-sequences."
 (require 'load-directory)
 
 ;; delete this after the power crisis
-(require 'tepco-power-status)
-(require 'yasima)
-(yasima-mode)
+;; (require 'tepco-power-status)
+;; (require 'yasima)
+;; (yasima-mode)
 
 (defadvice save-buffers-kill-emacs (around no-query-kill-emacs activate)
   "Prevent annoying \"Active processes exist\" query when you quit Emacs."
