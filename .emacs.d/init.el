@@ -1929,7 +1929,7 @@ post command hook に機能追加"
 
 (remove-hook 'w3m-display-hook 'w3m-sane-rename-buffer)
 
-(setq w3m-use-title-buffer-name t)g
+(setq w3m-use-title-buffer-name t)
 
 (setq w3m-verbose t)
 (setq w3m-message-silent nil)
