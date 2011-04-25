@@ -1021,6 +1021,7 @@
 (push '("*Process List*" :height 10) popwin:special-display-config)
 (push '("*Locate*" :height 10 :noselect t) popwin:special-display-config)
 (push '("*Moccur*" :height 20 :position bottom) popwin:special-display-config)
+(push '("*wget.*" :regexp t :height 10 :position bottom) popwin:special-display-config)
 (push '(" *auto-async-byte-compile*" :height 10) popwin:special-display-config)
 (push '("\*grep\*.*" :regexp t :height 20) popwin:special-display-config)
 (push '("function\-in\-.*" :regexp t) popwin:special-display-config)
@@ -1042,7 +1043,7 @@
 ;; (popwin:define-advice 'auto-async-byte-compile "*auto-async-byte-compile*")
 ;; (popwin:define-advice 'text-translator-all "*translated*")
 
-
+(setq warning-suppress-types '(undo discard-info))
 
 (defvar prev-buffer-input-method nil "save previously set inputmethod")
 (make-variable-buffer-local 'prev-buffer-input-method)
@@ -1910,12 +1911,25 @@ post command hook に機能追加"
 ;;(add-hook 'w3m-mode-hook 'w3m-link-numbering-mode)
 (setq w3m-use-cookies t)
 
-(defun sane-w3m-rename-buffer (url)
+(setq w3m-session-load-last-sessions t)
+(setq w3m-session-load-crashed-sessions t)
+
+(autoload 'wget "wget" "wget interface for Emacs." t)
+(autoload 'wget-web-page "wget" "wget interface to download whole web page." t)
+(setq wget-download-directory "~/Downloads")
+(setq wget-max-window-height 10)
+
+(require 'w3m-wget)
+(define-key w3m-mode-map (kbd "w") 'w3m-wget)
+
+(defun w3m-sane-rename-buffer (url)
   (rename-buffer (format "*w3m %s (%s)*"
                          (or w3m-current-title "")
                          (or w3m-current-url "")) t))
 
-(add-hook 'w3m-display-hook 'sane-w3m-rename-buffer)
+(remove-hook 'w3m-display-hook 'w3m-sane-rename-buffer)
+
+(setq w3m-use-title-buffer-name t)g
 
 (setq w3m-verbose t)
 (setq w3m-message-silent nil)
@@ -3116,9 +3130,9 @@ FORMAT-STRING is like `format', but it can have multiple %-sequences."
 (require 'load-directory)
 
 ;; delete this after the power crisis
-(require 'tepco-power-status)
-(require 'yasima)
-(yasima-mode)
+;; (require 'tepco-power-status)
+;; (require 'yasima)
+;; (yasima-mode)
 
 (defadvice save-buffers-kill-emacs (around no-query-kill-emacs activate)
   "Prevent annoying \"Active processes exist\" query when you quit Emacs."
@@ -3207,5 +3221,7 @@ FORMAT-STRING is like `format', but it can have multiple %-sequences."
         (format-network-address (car info) t))))
 
 (require 'change-case)
+
+(global-auto-revert-mode 1)
 
 (message "********** successfully initialized **********")
