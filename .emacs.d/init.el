@@ -3191,7 +3191,7 @@ FORMAT-STRING is like `format', but it can have multiple %-sequences."
           '(lambda ()
              (setq php-manual-path "~/Dropbox/php_manual/")))
 
-(require 'drupal)
+(require 'drupal-mode)
 (autoload 'drupal-mode "drupal-mode" "Major mode for editing drupal php " t)
 
 (add-to-list 'auto-mode-alist '("\\.\\(module\\|test\\|install\\|theme\\)$" . drupal-mode))
