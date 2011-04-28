@@ -591,6 +591,7 @@
 ;;(add-to-list 'pabbrev-global-mode-excluded-modes 'org-mode)
 ;;(add-hook 'text-mode-hook 'pabbrev-mode)
 
+(require 'flyspell)
 (setq flyspell-issue-welcome-flag nil)
 
 (require 'reftex)
@@ -3192,6 +3193,8 @@ FORMAT-STRING is like `format', but it can have multiple %-sequences."
 (add-hook 'php-mode-user-hook
           '(lambda ()
              (setq php-manual-path "~/Dropbox/php_manual/")))
+
+(require 'php-repl)
 
 (require 'drupal-mode)
 (autoload 'drupal-mode "drupal-mode" "Major mode for editing drupal php " t)
