@@ -3227,4 +3227,6 @@ FORMAT-STRING is like `format', but it can have multiple %-sequences."
 
 (global-auto-revert-mode 1)
 
+(require 'delicious)
+
 (message "********** successfully initialized **********")
