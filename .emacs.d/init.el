@@ -1923,16 +1923,11 @@ post command hook に機能追加"
 (require 'w3m-wget)
 (define-key w3m-mode-map (kbd "w") 'w3m-wget)
 
-(defun w3m-sane-rename-buffer (url)
-  (rename-buffer (format "*w3m %s (%s)*"
-                         (or w3m-current-title "")
-                         (or w3m-current-url "")) t))
-
-(remove-hook 'w3m-display-hook 'w3m-sane-rename-buffer)
-
-;; should look into it later
-(when (or (eq window-system 'mac) (eq window-system 'ns))
-  (setq w3m-use-title-buffer-name t))
+(add-hook 'w3m-display-hook
+          (lambda (url)
+            (rename-buffer
+             (format "*w3m: %s*" (or w3m-current-title
+                                     w3m-current-url)) t)))
 
 (setq w3m-verbose t)
 (setq w3m-message-silent nil)
