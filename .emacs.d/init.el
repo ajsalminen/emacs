@@ -64,11 +64,12 @@
   (setq mac-command-modifier 'meta)
   (setq mac-option-modifier nil)
 
-  (mac-set-input-method-parameter `japanese `cursor-color "yellow")
-  (mac-set-input-method-parameter "com.google.inputmethod.Japanese.base" `cursor-color "yellow")
+  (when (not (featurep 'aquamacs))
+    (mac-set-input-method-parameter `japanese `cursor-color "yellow")
+    (mac-set-input-method-parameter "com.google.inputmethod.Japanese.base" `cursor-color "yellow")
 
   ;; really important when typing commasand such
-  (mac-add-key-passed-to-system 'shift))
+    (mac-add-key-passed-to-system 'shift)))
 
 (when (and (= emacs-major-version 23) (or (eq window-system 'ns) (eq window-system 'x)))
   (setenv "PATH" (shell-command-to-string "source ~/.bashrc; echo -n $PATH"))
