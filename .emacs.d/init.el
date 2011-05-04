@@ -1965,6 +1965,16 @@ post command hook に機能追加"
 (define-key w3m-mode-map (kbd "n") 'w3m-next-buffer)
 (define-key w3m-mode-map (kbd "y") 'w3m-delete-buffer)
 
+(defun w3m-view-this-url-background-session ()
+  (interactive)
+  (save-window-excursion
+    (let ((in-background-state w3m-new-session-in-background))
+      (setq w3m-new-session-in-background t)
+      (w3m-view-this-url-new-session)
+      (setq w3m-new-session-in-background in-background-state))))
+
+(define-key w3m-mode-map (kbd "C-;") 'w3m-view-this-url-background-session)
+
 ;; (defalias 'wws 'w3m-search-google-web-en)
 (defalias 'wwe 'w3m-search-emacswiki)
 (defalias 'wwso 'w3m-search-stack-overflow)
@@ -2391,7 +2401,7 @@ post command hook に機能追加"
 (autoload 'ange-ftp "ange-ftp" nil t)
 ;;(add-hook 'ange-ftp-process-startup-hook 'ecb-deactivate)
 (autoload 'tramp "tramp" nil t)
-(setq tramp-shell-prompt-pattern "^[^$>\n]*[#$%>] *\\(\[[0-9;]*[a-zA-Z] *\\)*")
+(setq tramp-shell-prompt-pattern "^[^$>\n]*[#$%>] *\\(\[[0-9;]*[a-zA-Z] *\\)*") ;
 (setq tramp-persistency-file-name nil)
 
 (setq-default line-spacing 0)
