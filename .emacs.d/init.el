@@ -1682,6 +1682,7 @@ directory, select directory. Lastly the file is opened."
 ;; hook
 (add-hook 'objc-mode-hook
           (lambda ()
+            (setq tab-width 2)
             (define-key objc-mode-map (kbd "\t") 'ac-complete)
             ;; XCode を利用した補完を有効にする
             (push 'ac-source-company-xcode ac-sources)
@@ -1758,16 +1759,40 @@ directory, select directory. Lastly the file is opened."
 (add-hook 'c-mode-common-hook 'smartchr-custom-keybindings)
 (add-hook 'objc-mode-hook 'smartchr-custom-keybindings-objc)
 
+(require 'find-file)
+(add-to-list 'ff-other-file-alist '("\\.mm?$" (".h")))
+(add-to-list 'ff-other-file-alist '("\\.h$"   (".c" ".cc" ".C" ".CC" ".cxx" ".cpp" ".m" ".mm")))
+
+(setq ff-other-file-alist
+      '(("\\.mm?$" (".h"))
+        ("\\.cc$"  (".hh" ".h"))
+        ("\\.hh$"  (".cc" ".C"))
+
+        ("\\.c$"   (".h"))
+        ("\\.h$"   (".c" ".cc" ".C" ".CC" ".cxx" ".cpp" ".m" ".mm"))
+
+        ("\\.C$"   (".H"  ".hh" ".h"))
+        ("\\.H$"   (".C"  ".CC"))
+
+        ("\\.CC$"  (".HH" ".H"  ".hh" ".h"))
+        ("\\.HH$"  (".CC"))
+
+        ("\\.cxx$" (".hh" ".h"))
+        ("\\.cpp$" (".hpp" ".hh" ".h"))
+
+        ("\\.hpp$" (".cpp" ".c"))))
 
 (require 'flymake)
 (defvar xcode:gccver "4.2")
-(defvar xcode:sdkver "4.2")
+(defvar xcode:sdkver "4.3")
 (defvar xcode:sdkpath "/Developer/Platforms/iPhoneSimulator.platform/Developer")
 (defvar xcode:sdk (concat xcode:sdkpath "/SDKs/iPhoneSimulator" xcode:sdkver ".sdk"))
 (defvar flymake-objc-compiler (concat xcode:sdkpath "/usr/bin/gcc-" xcode:gccver))
 (defvar flymake-objc-compile-default-options (list "-Wall" "-Wextra" "-fsyntax-only" "-ObjC" "-std=c99" "-isysroot" xcode:sdk))
 (defvar flymake-last-position nil)
 (defvar flymake-objc-compile-options '("-I."))
+
+;; this really doesn't work, there's just no way
 (defun flymake-objc-init ()
   (let* ((temp-file (flymake-init-create-temp-buffer-copy
                      'flymake-create-temp-inplace))
@@ -1776,44 +1801,93 @@ directory, select directory. Lastly the file is opened."
                       (file-name-directory buffer-file-name))))
     (list flymake-objc-compiler (append flymake-objc-compile-default-options flymake-objc-compile-options (list local-file)))))
 
-;; Flymake is unusable for Obj-c right now
 ;; (add-hook 'objc-mode-hook
 ;;           (lambda ()
-
 ;;             (push '("\\.m$" flymake-objc-init) flymake-allowed-file-name-masks)
 ;;             (push '("\\.h$" flymake-objc-init) flymake-allowed-file-name-masks)
-
 ;;             (if (and (not (null buffer-file-name)) (file-writable-p buffer-file-name))
 ;;                 (flymake-mode t))))
 
-(defun flymake-display-err-minibuffer ()
-  "現在行の error や warinig minibuffer に表示する"
+;; (defun flymake-display-err-minibuffer ()
+;;   "現在行の error や warinig minibuffer に表示する"
+;;   (interactive)
+;;   (let* ((line-no (flymake-current-line-no))
+;;          (line-err-info-list (nth 0 (flymake-find-err-info flymake-err-info line-no)))
+;;          (count (length line-err-info-list)))
+;;     (while (> count 0)
+;;       (when line-err-info-list
+;;         (let* ((file (flymake-ler-file (nth (1- count) line-err-info-list)))
+;;                (full-file (flymake-ler-full-file (nth (1- count) line-err-info-list)))
+;;                (text (flymake-ler-text (nth (1- count) line-err-info-list)))
+;;                (line (flymake-ler-line (nth (1- count) line-err-info-list))))
+;;           (message "[%s] %s" line text)))
+;;       (setq count (1- count)))))
+
+;; (defadvice flymake-goto-next-error (after display-message activate compile)
+;;   "次のエラーへ進む"
+;;   (flymake-display-err-minibuffer))
+
+;; (defadvice flymake-goto-prev-error (after display-message activate compile)
+;;   "前のエラーへ戻る"
+;;   (flymake-display-err-minibuffer))
+
+;; (defadvice flymake-mode (before post-command-stuff activate compile)
+;;   "エラー行にカーソルが当ったら自動的にエラーが minibuffer に表示されるように
+;; post command hook に機能追加"
+;;   (set (make-local-variable 'post-command-hook)
+;;        (add-hook 'post-command-hook 'flymake-display-err-minibuffer)))
+
+(defvar *xcode-project-root* nil)
+
+(defun xcode--project-root ()
+  (or *xcode-project-root*
+      (setq *xcode-project-root* (xcode--project-lookup))))
+
+(defun xcode--project-lookup (&optional current-directory)
+  (when (null current-directory) (setq current-directory default-directory))
+  (cond ((xcode--project-for-directory (directory-files current-directory)) (expand-file-name current-directory))
+        ((equal (expand-file-name current-directory) "/") nil)
+        (t (xcode--project-lookup (concat (file-name-as-directory current-directory) "..")))))
+
+(defun xcode--project-for-directory (files)
+  (let ((project-file nil))
+    (dolist (file files project-file)
+      (if (> (length file) 10)
+          (when (string-equal (substring file -10) ".xcodeproj") (setq project-file file))))))
+
+(defun xcode--project-command (options)
+  (concat "cd " (xcode--project-root) "; " options))
+
+(defun xcode/build-compile ()
   (interactive)
-  (let* ((line-no (flymake-current-line-no))
-         (line-err-info-list (nth 0 (flymake-find-err-info flymake-err-info line-no)))
-         (count (length line-err-info-list)))
-    (while (> count 0)
-      (when line-err-info-list
-        (let* ((file (flymake-ler-file (nth (1- count) line-err-info-list)))
-               (full-file (flymake-ler-full-file (nth (1- count) line-err-info-list)))
-               (text (flymake-ler-text (nth (1- count) line-err-info-list)))
-               (line (flymake-ler-line (nth (1- count) line-err-info-list))))
-          (message "[%s] %s" line text)))
-      (setq count (1- count)))))
+  (compile (xcode--project-command (xcode--build-command))))
 
-(defadvice flymake-goto-next-error (after display-message activate compile)
-  "次のエラーへ進む"
-  (flymake-display-err-minibuffer))
+(defun xcode/build-list-sdks ()
+  (interactive)
+  (message (shell-command-to-string (xcode--project-command "xcodebuild -showsdks"))))
 
-(defadvice flymake-goto-prev-error (after display-message activate compile)
-  "前のエラーへ戻る"
-  (flymake-display-err-minibuffer))
+(defun xcode--build-command (&optional target configuration sdk)
+  (let ((build-command "xcodebuild"))
+    (if (not target)
+        (setq build-command (concat build-command " "))
+      (setq build-command (concat build-command " -target " target)))
+    (if (not configuration)
+        (setq build-command (concat build-command " "))
+      (setq build-command (concat build-command " -configuration " configuration)))
+    (when sdk (setq build-command (concat build-command " -sdk " sdk)))
+    build-command))
 
-(defadvice flymake-mode (before post-command-stuff activate compile)
-  "エラー行にカーソルが当ったら自動的にエラーが minibuffer に表示されるように
-post command hook に機能追加"
-  (set (make-local-variable 'post-command-hook)
-       (add-hook 'post-command-hook 'flymake-display-err-minibuffer)))
+;; yeah, I should set a variable somewhere
+(defun xcode/build ()
+  (interactive)
+  (compile (xcode--project-command (xcode--build-command nil nil "iphonesimulator4.3"))))
+
+(setq compilation-scroll-output t)
+
+;; helps catch xcodebuild bug for jumpy jumpy
+(add-to-list 'compilation-error-regexp-alist '("\\(.*?\\):\\([0-9]+\\): error.*$" 1 2))
+
+
 
 ;; 自動的な表示に不都合がある場合は以下を設定してください
 ;; post-command-hook は anything.el の動作に影響する場合があります
@@ -1833,7 +1907,6 @@ post command hook に機能追加"
      "          key code 36 using {command down} \r"
      "    end tell \r"
      "end tell \r" ))))
-
 
 (add-hook 'objc-mode-hook
           (lambda ()
@@ -3237,5 +3310,8 @@ FORMAT-STRING is like `format', but it can have multiple %-sequences."
 (global-auto-revert-mode 1)
 
 (require 'delicious)
+
+(require 'whitespace)
+(setq whitespace-display-mappings '((space-mark ?\  [?\u00B7]) (newline-mark ?\n [?$ ?\n]) (tab-mark ?\t [?\u00BB ?\t])))
 
 (message "********** successfully initialized **********")
