@@ -11,6 +11,7 @@
 ;; the mother of all load paths
 (setq more-load-paths '("~/.emacs.d/auctex-11.86"
                         "~/.emacs.d/auctex-11.86/preview"
+                        "~/.emacs.d/auto-complete-1.3.1"
                         "~/.emacs.d/bbdb-2.35/lisp/"
                         "~/.emacs.d/cedet-1.0/common/"
                         "~/.emacs.d/color-theme"
@@ -1667,13 +1668,17 @@ directory, select directory. Lastly the file is opened."
 ;; ロード
 (require 'auto-complete-config)
 (add-to-list 'ac-dictionary-directories "~/.emacs.d/ac-dict")
-(ac-config-default)
+;; (ac-config-default)
 (require 'ac-company)
 ;; 対象の全てで補完を有効にする
 (global-auto-complete-mode t)
+(ac-company-define-source ac-source-company-xcode company-xcode)
+;; objc-mode で補完候補を設定
+(setq ac-modes (append ac-modes '(objc-mode)))
 
-;; (require 'auto-complete-clang)
-;; (setq clang-completion-suppress-error 't)
+(require 'auto-complete-clang)
+(setq clang-completion-suppress-error 't)
+(setq clang-completion-flags '("-Wall" "-Wextra" "-fsyntax-only" "-ObjC" "-std=c99" "-isysroot" "/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator4.3.sdk" "-I."  "-D__IPHONE_OS_VERSION_MIN_REQUIRED=30200"))
 
 ;; ac-company で company-xcode を有効にする
 (ac-company-define-source ac-source-company-xcode company-xcode)
@@ -1685,9 +1690,9 @@ directory, select directory. Lastly the file is opened."
             (setq tab-width 2)
             (define-key objc-mode-map (kbd "\t") 'ac-complete)
             ;; XCode を利用した補完を有効にする
-            (push 'ac-source-company-xcode ac-sources)
-            ;; C++ のキーワード補完をする Objective-C++ を利用する人だけ設定してください
-            (push 'ac-source-c++-keywords ac-sources)))
+            (push 'ac-source-clang-complete ac-sources)
+            (push 'ac-source-company-xcode ac-sources)))
+
 ;; 補完ウィンドウ内でのキー定義
 (define-key ac-completing-map (kbd "C-n") 'ac-next)
 (define-key ac-completing-map (kbd "C-p") 'ac-previous)
@@ -1914,7 +1919,7 @@ directory, select directory. Lastly the file is opened."
 
 (when (or (eq window-system 'ns) (featurep 'carbon-emacs-package))
   (require 'xcode-document-viewer)
-  (setq xcdoc:document-path "/Developer/Platforms/iPhoneOS.platform/Developer/Documentation/DocSets/com.apple.adc.documentation.AppleiOS4_3.iOSLibrary.docset")
+  (setq xcdoc:document-path "/Developer/Platforms/iPhoneOS.platform/Developer/Documentation/DocSets/com.apple.adc.documentation.AppleiOS4_3.iOSLibrary.docset/")
   (setq xcdoc:open-w3m-other-buffer t)
 
   (require 'anything-apple-docset)

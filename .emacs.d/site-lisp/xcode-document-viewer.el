@@ -122,14 +122,13 @@
       (error "cant find text like URL!!")))))
 
 ;;(w3m-browse-url (xcdoc:extract-html" Objective-C/cl/-/UIView   documentation/UIKit/Reference/UIView_Class/UIView/UIView.html#//apple_ref/occ/cl/UIView"))
-(defun xcdoc:open-w3m (url &optional new-session)
-  (cond
-   (xcdoc:open-w3m-other-buffer
-    (let ((b (save-window-excursion (w3m-browse-url (xcdoc:extract-html url) new-session) (get-buffer "*w3m*"))))
-      (ignore-errors (save-selected-window (pop-to-buffer "*w3m*")))))
-   (t
-    (w3m-browse-url (xcdoc:extract-html url) new-session))))
-
+(defun xcdoc:open-w3m (url &optional new-session query)
+  (let ((b (buffer-name (w3m-browse-url (xcdoc:extract-html url) new-session))))
+    (if xcdoc:open-w3m-other-buffer
+        (progn
+          (switch-to-buffer b)
+          (goto-char (point-min))
+          (search-forward query)))))
 
 (defun xcdoc:search-source ()
   `((name . ,(xcdoc:document-path))
@@ -155,8 +154,8 @@
 (defun xcdoc:search-at-point-source (&optional query)
   `((name . ,(xcdoc:document-path))
     (candidates . (lambda () (xcdoc:search-at-point-source-candidates ,query)))
-    (action . (("w3m" . xcdoc:open-w3m)
-               ("w3m new-session" . (lambda (c) (xcdoc:open-w3m c t)))))))
+    (action . (("w3m" . (lambda (c) (xcdoc:open-w3m c nil ,query)))
+               ("w3m new-session" . (lambda (c) (xcdoc:open-w3m c t ,query)))))))
 
 (defun xcdoc:search ()
   (interactive)
@@ -170,10 +169,8 @@
 
 (defun xcdoc:search-at-point ()
   (interactive)
-  (if (thing-at-point 'symbol)
-      (let ((anything-quit-if-no-candidate (lambda () (message "no document for %s" (or (thing-at-point 'symbol) "")))))
-        (anything (list (xcdoc:search-at-point-source))))
-    (xcdoc:search)))
+  (let ((anything-quit-if-no-candidate (lambda () (message "no document for %s" (or (thing-at-point 'symbol) "")))))
+    (anything (list (xcdoc:search-at-point-source)))))
 
 (provide 'xcode-document-viewer)
 ;; xcode-document-viewer.el ends here.
