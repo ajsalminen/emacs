@@ -927,6 +927,12 @@
   ;; (set-default-font "Bitstream Vera Sans Mono-11")
   )
 
+(defun font-existsp (font)
+  "Check that a font exists: http://www.emacswiki.org/emacs/SetFonts#toc8"
+  (and (window-system)
+       (fboundp 'x-list-fonts)
+       (x-list-fonts font)))
+
 (defun set-ubuntu-fonts ()
   (interactive)
   (if (eq window-system 'x)
@@ -948,9 +954,13 @@
       ;;                     )
       ;;   )
 
+
+
       (progn
         (set-face-attribute 'default nil
-                            :family "Droid Sans Mono"
+                            :family (if (font-existsp "Droid Sans Mono Slashed")
+                                        "Droid Sans Mono Slashed"
+                                      "Droid Sans Mono")
                             :height 110)
         (set-fontset-font "fontset-default"
                           'japanese-jisx0208
