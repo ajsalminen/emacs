@@ -2012,7 +2012,21 @@ directory, select directory. Lastly the file is opened."
 (setq wget-max-window-height 10)
 
 (require 'w3m-wget)
+
+(defun w3m-wget-images (&optional buffer-position)
+  (interactive)
+  (let ((pos (or buffer-position (point))))
+    (progn
+      (w3m-next-image)
+      (when (< pos (point))
+        (let ((link (w3m-anchor)))
+          (if link
+              (progn
+                (wget (w3m-anchor))
+                (w3m-wget-images pos))))))))
+
 (define-key w3m-mode-map (kbd "w") 'w3m-wget)
+(define-key w3m-mode-map (kbd "W") 'w3m-wget-images)
 
 (add-hook 'w3m-display-hook
           (lambda (url)
