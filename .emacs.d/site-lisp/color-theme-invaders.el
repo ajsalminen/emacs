@@ -289,6 +289,7 @@
      (my-group-news-unread-mod-4 ((t (:bold t :foreground "#B3D4FF" :weight bold))))
      (my-group-news-unread-mod-5 ((t (:foreground "#B3D9FF" :weight normal))))
      (my-group-news-unread-mod-6 ((t (:foreground "#B3DEFF" :weight normal))))
+     (navi2ch-article-url-face ((t (:foreground "#B3DEFF" :weight normal))))
      (next-error ((t (:background "#610d00"))))
      (nobreak-space ((t (:foreground "PaleTurquoise1" :underline t))))
      (ns-marked-text-face ((t (:underline t))))
