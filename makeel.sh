@@ -87,6 +87,10 @@ cd $eed/auto-complete-1.3.1
 make clean
 make $install_string
 
+cd $eed/scala
+make clean
+make
+
 for i in `ls $eed`; do cd $eed/$i && make; done;
 find $eed/site-lisp -type f -name *.el -print0 | xargs -0 emacs -batch -f batch-byte-compile
 find $eed/elpa/ -type f -name *.el -print0 | xargs -0 emacs -batch -f batch-byte-compile
@@ -94,6 +98,7 @@ find $eed/haskell-mode/ -type f -name *.el -print0 | xargs -0 emacs -batch -f ba
 find $eed/reftex*/lisp -type f -name *.el -print0 | xargs -0 emacs -batch -f batch-byte-compile
 find $eed/elib* -type f -name *.el -print0 | xargs -0 emacs -batch -f batch-byte-compile
 find $eed/jdee-*/lisp -type f -name *.el -print0 | xargs -0 emacs -batch -f batch-byte-compile
+find $eed/ensime*/elisp -type f -name *.el -print0 | xargs -0 emacs -batch -f batch-byte-compile
 for i in `find $eed/* -type f -name *.el`; do emacs -batch -f batch-byte-compile $i; done;
 #cd $eed/bbdb-* && make
 #cd $eed/bbdb-*/lisp && make

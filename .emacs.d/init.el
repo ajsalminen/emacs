@@ -20,7 +20,7 @@
                         "~/.emacs.d/el-get/el-get"
 			"~/.emacs.d/el-get/google-weather"
                         "~/.emacs.d/elib-1.0"
-                        "~/.emacs.d/ensime_2.8.1-0.4.2/elisp"
+                        "~/.emacs.d/ensime_2.8.1-0.5.0/elisp"
                         "~/.emacs.d/ess-5.11/lisp"
                         "~/.emacs.d/jdee-2.4.0.1/lisp"
                         "~/.emacs.d/magit"
@@ -75,7 +75,7 @@
     (mac-add-key-passed-to-system 'shift)))
 
 (when (and (= emacs-major-version 23) (or (eq window-system 'ns) (eq window-system 'x)))
-  (setenv "PATH" (shell-command-to-string "source ~/.bashrc; echo -n $PATH"))
+  (setenv "PATH" (shell-command-to-string "source ~/.bashrc; echo -n $PATH")) ;
   (when (eq window-system 'x)
     (setenv "PATH" (concat "/usr/local/texlive/2010/bin/i386-linux:" (getenv "PATH"))))
   ;; Update exec-path with the contents of $PATH
