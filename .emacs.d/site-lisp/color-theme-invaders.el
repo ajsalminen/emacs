@@ -70,6 +70,7 @@
      (eshell-ls-missing-face ((t (:bold t :foreground "black" :weight bold))))
      (eshell-ls-special-face ((t (:bold t :foreground "Gold" :weight bold))))
      (eshell-ls-symlink-face ((t (:bold t :foreground "White" :weight bold))))
+     (eshell-prompt ((t (:bold t :foreground "red3" :weight bold))))
      (ess-jb-comment-face ((t (:italic t :background "#2e3436" :foreground "firebrick" :slant italic))))
      (ess-jb-h1-face ((t (:foreground "dodger blue" :slant normal :height 1.6))))
      (ess-jb-h2-face ((t (:foreground "#6ac214" :slant normal :height 1.4))))
