@@ -1405,6 +1405,8 @@ directory, select directory. Lastly the file is opened."
 
 (require 'todochiku)
 
+(setq org-export-with-sub-superscripts nil)
+
 ;;copied straight from org, don't redisplay frames after push
 (defun org-mobile-push-unobtrusive ()
   (interactive)
@@ -2151,6 +2153,9 @@ directory, select directory. Lastly the file is opened."
 (autoload 'twittering-numbering "twittering-numbering" nil t)
 (add-hook 'twittering-mode-hook 'twittering-numbering)
 
+(setq twittering-connection-type-order
+  '(wget curl urllib-http native urllib-https))
+
 (setq twittering-use-master-password t)
 (setq twittering-url-show-status nil)
 (setq twittering-number-of-tweets-on-retrieval 200)
@@ -2414,7 +2419,9 @@ directory, select directory. Lastly the file is opened."
 (require 'rhtml-mode)
 (require 'ruby-electric)
 (require 'textmate)
+(textmate-mode)
 (define-key *textmate-mode-map* (kbd "M-;") 'comment-or-uncomment-region-or-line)
+(global-set-key "\M-T" 'transpose-words)
 
 (defun is-rails-project ()
   (when (textmate-project-root)
