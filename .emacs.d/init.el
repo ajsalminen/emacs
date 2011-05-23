@@ -1936,18 +1936,27 @@ directory, select directory. Lastly the file is opened."
             (define-key objc-mode-map (kbd "C-c C-r") 'xcode:buildandrun)))
 
 (when (or (eq window-system 'ns) (featurep 'carbon-emacs-package))
+
+
   (require 'xcode-document-viewer)
   (setq xcdoc:document-path "/Developer/Platforms/iPhoneOS.platform/Developer/Documentation/DocSets/com.apple.adc.documentation.AppleiOS4_3.iOSLibrary.docset/")
   (setq xcdoc:open-w3m-other-buffer t)
 
   (require 'anything-apple-docset)
-  (setq anything-apple-docset-path "/Developer/Platforms/iPhoneOS.platform/Developer/Documentation/DocSets/com.apple.adc.documentation.AppleiOS4_3.iOSLibrary.docset")
+  (setq anything-apple-docset-path xcdoc:document-path)
   (anything-apple-docset-init)
+
+  (require 'apple-reference-browser)
+  (setq arb:docset-path xcdoc:document-path)
+  (setq arb:open-w3m-other-buffer t)
+  (define-key global-map "\C-cd" 'arb:search)
+
 
   ;; hook の設定
   (add-hook 'objc-mode-hook
             (lambda ()
-              (define-key objc-mode-map (kbd "C-c w") 'xcdoc:ask-search))))
+              (define-key objc-mode-map (kbd "C-c w") 'arb:search)
+              (define-key objc-mode-map (kbd "C-c h") 'xcdoc:ask-search))))
 
 ;; end of iphone-related settings
 
