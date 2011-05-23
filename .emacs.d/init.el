@@ -34,6 +34,7 @@
                         "~/.emacs.d/rinari"
                         "~/.emacs.d/site-lisp"
                         "~/.emacs.d/skype"
+                        "~/.emacs.d/tramp-2.2.1/lisp"
                         "~/.emacs.d/twittering"
                         "~/.emacs.d/vim"
                         "~/.emacs.d/yasnippet"
@@ -100,9 +101,10 @@
       '("orange1" "yellow1" "greenyellow" "green1"
         "springgreen1" "cyan1" "slateblue1" "magenta1" "purple"))
 
-(add-hook 'clojure-mode-hook (lambda () (highlight-parentheses-mode t) (paredit-mode t)))
-(add-hook 'emacs-lisp-mode-hook (lambda () (highlight-parentheses-mode t) (paredit-mode t)))
-(add-hook 'slime-repl-mode-hook (lambda () (highlight-parentheses-mode t) (paredit-mode t)))
+(require 'rainbow-delimiters)
+(add-hook 'clojure-mode-hook (lambda () (rainbow-delimiters-mode t) (paredit-mode t)))
+(add-hook 'emacs-lisp-mode-hook (lambda () (rainbow-delimiters-mode t) (paredit-mode t)))
+(add-hook 'slime-repl-mode-hook (lambda () (rainbow-delimiters-mode t) (paredit-mode t)))
 
 (require 'bookmark)
 (require 'anything-config)
@@ -3261,6 +3263,7 @@ FORMAT-STRING is like `format', but it can have multiple %-sequences."
 (diminish 'eldoc-mode)
 (diminish 'flyspell-mode "f")
 (diminish 'highlight-parentheses-mode)
+(diminish 'rainbow-delimiters-mode)
 (diminish 'icicle-mode)
 (diminish 'paredit-mode "PE")
 (diminish 'reftex-mode)
