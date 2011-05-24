@@ -3422,4 +3422,7 @@ FORMAT-STRING is like `format', but it can have multiple %-sequences."
 (global-set-key (kbd "C-c ;") 'fastnav-jump-to-char-forward)
 (global-set-key (kbd "C-c ,") 'fastnav-jump-to-char-backward)
 
+(require 'android-mode)
+(setq android-mode-sdk-dir "~/android-sdk")
+
 (message "********** successfully initialized **********")
