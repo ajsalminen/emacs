@@ -735,14 +735,11 @@
 
 (setq default-directory "~/projects/ghub")
 
-;; yasnippet
-(require 'yasnippet) ;; not yasnippet-bundle
-
-
-(yas/initialize)
+(require 'yasnippet)
 (yas/load-directory "~/.emacs.d/yasnippet/snippets")
 ;; Develop and keep personal snippets under ~/emacs.d/mysnippets
 (setq yas/root-directory "~/.emacs.d/mysnippets")
+(yas/initialize)
 
 (defun yas/ido-prompt-fix (prompt choices &optional display-fn)
   (when (featurep 'ido)
@@ -2589,6 +2586,11 @@ directory, select directory. Lastly the file is opened."
 (require 'yaoddmuse)
 (setq yaoddmuse-username "baron")
 ;; (yaoddmuse-update-pagename nil)
+
+;; trouble with zsh in emacs
+(setq shell-file-name (executable-find "bash"))
+(setenv "SHELL" shell-file-name)
+(setq explicit-shell-file-name shell-file-name)
 
 (require 'eshell)
 (require 'shell-pop)
