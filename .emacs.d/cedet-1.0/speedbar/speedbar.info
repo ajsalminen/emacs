@@ -1,5 +1,5 @@
-This is speedbar.info, produced by makeinfo version 4.9 from
-speedbar.texi.
+これは speedbar.info、speedbar.texi より makeinfo バージョン
+4.8 によって作成されました。
 
 INFO-DIR-SECTION Emacs
 START-INFO-DIR-ENTRY
@@ -1056,7 +1056,7 @@ returns non-`nil' if it displays a message.  They are:
    If your major mode is running slowly, you may need to add a set of
 stealthy update functions.
 
- -- Variable: speedbar-stealthy-function-list
+ -- 変数: speedbar-stealthy-function-list
      List of functions to periodically call stealthily.  Each function
      must return `nil' if interrupted, or `t' if completed.  Stealthy
      functions which have a single operation should always return `t'.
@@ -1084,7 +1084,7 @@ It is possible to create new methods for tagging files in speedbar.  To
 do this, you need two basic functions, one function to fetch the tags
 from a buffer, the other to insert them below the filename.
 
- -- Function: my-fetch-dynamic-tags file
+ -- 機能: my-fetch-dynamic-tags file
      Parse FILE for a list of tags.  Return the list, or `t' if there
      was an error.  FILE is not necessarily available as an buffer when
      your function is called.  Be sure to load it if it is needed with
@@ -1098,7 +1098,7 @@ from a buffer, the other to insert them below the filename.
    The non-error return value can be anything, as long as it can be
 inserted by its paired function:
 
- -- Function: my-insert-tag-list level lst
+ -- 機能: my-insert-tag-list level lst
      Insert a list of tags LST started at indentation level LEVEL.
      Creates buttons for each tag, and provides any other display
      information required.
@@ -1113,7 +1113,7 @@ beginning, like this:
      (add-to-list 'speedbar-dynamic-tags-function-list
                   '(my-fetch-dynamic-tags  . my-insert-tag-list))
 
- -- Variable: speedbar-dynamic-tags-function-list
+ -- 変数: speedbar-dynamic-tags-function-list
      A list of functions which will return and insert a list of tags.
      Each element is of the form ( FETCH .  INSERT ) where FETCH is a
      function which takes one parameter (the file to tag) and returns a
@@ -1171,7 +1171,7 @@ While it is certainly possible to insert your own text and add
 decorations to it, it is preferable to use the speedbar button creation
 API instead.
 
- -- Function: speedbar-insert-button text face mouse function &optional
+ -- 機能: speedbar-insert-button text face mouse function &optional
           token prevline
      This function inserts one button into the current location.  TEXT
      is the text to insert.  FACE is the face in which it will be
@@ -1194,7 +1194,7 @@ button followed by clickable text, it is preferable to create a
 tag-line.  Tag lines should be used to represent typical data a user
 will interact with.
 
- -- Function: speedbar-make-tag-line exp-button-type exp-button-char
+ -- 機能: speedbar-make-tag-line exp-button-type exp-button-char
           exp-button-function exp-button-data tag-button
           tag-button-function tag-button-data tag-button-face depth
      Create a tag line with EXP-BUTTON-TYPE for the small expansion
@@ -1235,8 +1235,7 @@ data extracted from inside a file, and they are marked with tag markers.
    Tags stored in this format can then be manipulated by the tag
 hierarchy methods described earlier in this manual.
 
- -- Function: speedbar-insert-generic-list level list expand-fun
-          find-fun
+ -- 機能: speedbar-insert-generic-list level list expand-fun find-fun
      At LEVEL, (the current indentation level desired) insert a generic
      multi-level alist LIST.  Associations with lists get `{+}' tags
      (to expand into more nodes) and those with positions or other data
@@ -1260,13 +1259,13 @@ hierarchy methods described earlier in this manual.
      most obvious is `speedbar-tag-hierarchy-method'.  *Note Tag
      Hierarchy Methods::.
 
-      -- Variable: speedbar-generic-list-group-expand-button-type
+      -- 変数: speedbar-generic-list-group-expand-button-type
           This is the button type used for groups of tags, whether
           expanded or added in via a hierarchy method.  Two good values
           are `'curly' and `'expandtag'.  Curly is the default button,
           and `'expandtag' is useful if the groups also has a position.
 
-      -- Variable: speedbar-generic-list-tag-button-type
+      -- 変数: speedbar-generic-list-tag-button-type
           This is the button type used for a single tag.  Two good
           values are `nil' and `'statictag'.  `nil' is the default, and
           `'statictag' has the same width as `'expandtag'.
@@ -1308,7 +1307,7 @@ to do.  For example:
    When expanding or contracting, you will need to change the `+' or
 `-' into the opposite symbol.  You can do that with
 
- -- Function: speedbar-change-expand-button-char char
+ -- 機能: speedbar-change-expand-button-char char
      Change the expansion button character to CHAR for the current line.
 
    Our sample would then look like this:
@@ -1327,7 +1326,7 @@ initial button insertion function runs while the buffer is writable,
 but an expand function will need to change that.  The best way is to use
 `speedbar-with-writable'.
 
- -- Function: speedbar-with-writable &rest forms
+ -- 機能: speedbar-with-writable &rest forms
      Allow the speedbar buffer to be writable and evaluate FORMS.
 
    Once the buffer is writable, then you can insert more information
@@ -1348,7 +1347,7 @@ this:
    Contracting a node is a bit easier.  You can just use this built in
 function to do the work:
 
- -- Function: speedbar-delete-subblock indent
+ -- 機能: speedbar-delete-subblock indent
      Delete text from point to indentation level INDENT or greater.
      Handles end-of-sublist smartly.
 
@@ -1376,7 +1375,7 @@ function to do the work:
 to appear in speedbar which would be useful to force onto the screen.
 You can then recenter using this function:
 
- -- Function: speedbar-center-buffer-smartly
+ -- 機能: speedbar-center-buffer-smartly
      Recenter a speedbar buffer so the current indentation level is all
      visible.  This assumes that the cursor is on a file, or tag of a
      file which the user is interested in.
@@ -1442,7 +1441,7 @@ Concept Index
 * speedbar-get-focus:                    Introduction.        (line  28)
 * speedbar-highlight-face:               Frames and Faces.    (line  26)
 * speedbar-insert-button:                Creating Buttons.    (line  12)
-* speedbar-insert-generic-list:          Generic Tag Lists.   (line  18)
+* speedbar-insert-generic-list:          Generic Tag Lists.   (line  17)
 * speedbar-item-info:                    Major Display Modes. (line  87)
 * speedbar-item-info-file-helper:        Major Display Modes. (line  95)
 * speedbar-item-info-tag-helper:         Major Display Modes. (line  98)
@@ -1493,41 +1492,41 @@ Concept Index
 
 
 Tag Table:
-Node: Top1466
-Node: Introduction3242
-Node: Basic Navigation4806
-Node: Basic Key Bindings5251
-Node: Basic Visuals7392
-Node: Mouse Bindings11347
-Node: Displays Submenu12972
-Node: File Mode13652
-Node: Directory Display14259
-Node: Hidden Files17299
-Node: File Key Bindings18746
-Node: Buffer Mode20180
-Node: Minor Modes21295
-Node: RMAIL22151
-Node: Info23049
-Node: GDB23656
-Node: Customizing24323
-Node: Frames and Faces25134
-Node: Tag Hierarchy Methods26472
-Node: Version Control28698
-Node: Hooks30045
-Node: Extending31301
-Node: Minor Display Modes32347
-Node: Major Display Modes34338
-Ref: speedbar-stealthy-function-list39277
-Node: Tagging Extensions40186
-Ref: speedbar-dynamic-tags-function-list41678
-Node: Creating a display42458
-Node: Creating Buttons43623
-Node: Generic Tag Lists46264
-Node: Expand Buttons48527
-Ref: speedbar-change-expand-button-char49842
-Ref: speedbar-with-writable50606
-Ref: speedbar-delete-subblock51393
-Ref: speedbar-center-buffer-smartly52455
-Node: Index52641
+Node: Top1503
+Node: Introduction3279
+Node: Basic Navigation4843
+Node: Basic Key Bindings5288
+Node: Basic Visuals7429
+Node: Mouse Bindings11384
+Node: Displays Submenu13009
+Node: File Mode13689
+Node: Directory Display14296
+Node: Hidden Files17336
+Node: File Key Bindings18783
+Node: Buffer Mode20217
+Node: Minor Modes21332
+Node: RMAIL22188
+Node: Info23086
+Node: GDB23693
+Node: Customizing24360
+Node: Frames and Faces25171
+Node: Tag Hierarchy Methods26509
+Node: Version Control28735
+Node: Hooks30082
+Node: Extending31338
+Node: Minor Display Modes32384
+Node: Major Display Modes34375
+Ref: speedbar-stealthy-function-list39312
+Node: Tagging Extensions40221
+Ref: speedbar-dynamic-tags-function-list41707
+Node: Creating a display42487
+Node: Creating Buttons43652
+Node: Generic Tag Lists46289
+Node: Expand Buttons48536
+Ref: speedbar-change-expand-button-char49849
+Ref: speedbar-with-writable50611
+Ref: speedbar-delete-subblock51396
+Ref: speedbar-center-buffer-smartly52456
+Node: Index52642
 
 End Tag Table

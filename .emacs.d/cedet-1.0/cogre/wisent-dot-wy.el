@@ -3,7 +3,7 @@
 ;; Copyright (C) 2003, 2004, 2009 Eric M. Ludlam
 
 ;; Author: baron <baron@richstyles.local>
-;; Created: 2011-04-14 22:52:23+0900
+;; Created: 2011-05-29 12:31:48+0900
 ;; Keywords: syntax
 ;; X-RCS: $Id$
 

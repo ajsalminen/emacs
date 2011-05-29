@@ -3,7 +3,7 @@
 ;;; Copyright (C) 2007 Daniel Debertin (debertin@gmail.com)
 
 ;; Author: baron <baron@richstyles.local>
-;; Created: 2011-04-14 22:52:39+0900
+;; Created: 2011-05-29 12:31:54+0900
 ;; Keywords: syntax
 ;; X-RCS: $Id$
 

@@ -1,4 +1,5 @@
-This is bovine.info, produced by makeinfo version 4.9 from bovine.texi.
+これは bovine.info、bovine.texi より makeinfo バージョン 4.8
+によって作成されました。
 
    This manual documents Bovine parser development in Semantic
 
@@ -754,15 +755,15 @@ Index
 
 
 Tag Table:
-Node: Top1104
-Node: Starting Rules2080
-Node: Bovine Grammar Rules3072
-Node: How Lexical Tokens Match4572
-Node: Grammar-to-Lisp Details6069
-Node: Order of components in rules7230
-Node: Optional Lambda Expression7772
-Node: Bovine Examples11416
-Node: GNU Free Documentation License12344
-Node: Index32081
+Node: Top1141
+Node: Starting Rules2117
+Node: Bovine Grammar Rules3109
+Node: How Lexical Tokens Match4609
+Node: Grammar-to-Lisp Details6106
+Node: Order of components in rules7267
+Node: Optional Lambda Expression7809
+Node: Bovine Examples11453
+Node: GNU Free Documentation License12381
+Node: Index32118
 
 End Tag Table

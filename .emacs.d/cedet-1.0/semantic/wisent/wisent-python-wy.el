@@ -3,7 +3,7 @@
 ;; Copyright (C) 2002, 2003, 2004, 2007 Richard Kim
 
 ;; Author: baron <baron@richstyles.local>
-;; Created: 2011-04-14 22:51:31+0900
+;; Created: 2011-05-29 12:31:32+0900
 ;; Keywords: syntax
 ;; X-RCS: $Id$
 

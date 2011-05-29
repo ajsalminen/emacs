@@ -24,6 +24,7 @@
                         "~/.emacs.d/ess-5.11/lisp"
                         "~/.emacs.d/jdee-2.4.0.1/lisp"
                         "~/.emacs.d/magit"
+                        "~/.emacs.d/malabar-1.5-SNAPSHOT/lisp"
                         "~/.emacs.d/mu-cite"
                         "~/.emacs.d/muse-3.20/lisp"
                         "~/.emacs.d/navi2ch"
@@ -2535,8 +2536,8 @@ directory, select directory. Lastly the file is opened."
 (require 'grep-edit)
 
 ;; (require 'jde)
-(autoload 'jde-mode "jde" "JDE mode." t)
-(add-to-list 'auto-mode-alist '("\\java\\'" . jde-mode))
+;; (autoload 'jde-mode "jde" "JDE mode." t)
+;; (add-to-list 'auto-mode-alist '("\\java\\'" . jde-mode))
 
 (load-file "~/.emacs.d/site-lisp/mvn.el")
 
@@ -3369,6 +3370,10 @@ FORMAT-STRING is like `format', but it can have multiple %-sequences."
 (require 'pydoc-info)
 
 (require 'cedet)
+;; (semantic-load-enable-minimum-features)
+(require 'malabar-mode)
+(setq malabar-groovy-lib-dir "~/emacs.d/malabar-1.5-SNAPSHOT/lib")
+(add-to-list 'auto-mode-alist '("\\.java\\'" . malabar-mode))
 
 (autoload 'php-mode "php-mode")
 (setq auto-mode-alist
