@@ -2571,6 +2571,12 @@ directory, select directory. Lastly the file is opened."
 
 (require 'sr-speedbar)
 
+
+(setq tramp-bkup-backup-directory-info nil)
+(require 'backup-dir)
+(add-to-list 'bkup-backup-directory-info
+             (list tramp-file-name-regexp ""))
+
 (autoload 'ange-ftp "ange-ftp" nil t)
 ;;(add-hook 'ange-ftp-process-startup-hook 'ecb-deactivate)
 (autoload 'tramp "tramp" nil t)
