@@ -111,6 +111,8 @@
 
 ;; (require 'anything-startup)
 (global-set-key (kbd "C-z") 'anything)
+(global-set-key (kbd "C-h h") 'anything)
+
 (setq anything-idle-delay 0.3)
 (setq anything-input-idle-delay 0.2)
 (setq anything-candidate-number-limit 100)
