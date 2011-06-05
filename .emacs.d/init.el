@@ -22,7 +22,7 @@
                         "~/.emacs.d/elib-1.0"
                         "~/.emacs.d/ensime_2.8.1-0.5.0/elisp"
                         "~/.emacs.d/ess-5.11/lisp"
-                        "~/.emacs.d/jdee-2.4.0.1/lisp"
+                        "~/.emacs.d/jdee/dist/jdee-2.4.1/lisp"
                         "~/.emacs.d/magit"
                         "~/.emacs.d/malabar-1.5-SNAPSHOT/lisp"
                         "~/.emacs.d/mu-cite"
@@ -2538,11 +2538,19 @@ directory, select directory. Lastly the file is opened."
 
 (require 'grep-edit)
 
+(require 'cedet)
 ;; (require 'jde)
-;; (autoload 'jde-mode "jde" "JDE mode." t)
+(autoload 'jde-mode "jde" "JDE mode." t)
 ;; (add-to-list 'auto-mode-alist '("\\java\\'" . jde-mode))
 
-(load-file "~/.emacs.d/site-lisp/mvn.el")
+;; (semantic-load-enable-minimum-features)
+;; (require 'malabar-mode)
+;; (setq malabar-groovy-lib-dir "~/emacs.d/malabar-1.5-SNAPSHOT/lib")
+;; (add-to-list 'auto-mode-alist '("\\.java\\'" . malabar-mode))
+
+
+
+;; (load-file "~/.emacs.d/site-lisp/mvn.el")
 
 (require 'undo-tree)
 (global-undo-tree-mode)
@@ -2573,6 +2581,12 @@ directory, select directory. Lastly the file is opened."
 (setq switch-window-timeout 3)
 
 (require 'sr-speedbar)
+
+
+(setq tramp-bkup-backup-directory-info nil)
+(require 'backup-dir)
+(add-to-list 'bkup-backup-directory-info
+             (list tramp-file-name-regexp ""))
 
 (autoload 'ange-ftp "ange-ftp" nil t)
 ;;(add-hook 'ange-ftp-process-startup-hook 'ecb-deactivate)
@@ -3377,12 +3391,6 @@ FORMAT-STRING is like `format', but it can have multiple %-sequences."
 
 (require 'pydoc-info)
 
-(require 'cedet)
-;; (semantic-load-enable-minimum-features)
-(require 'malabar-mode)
-(setq malabar-groovy-lib-dir "~/emacs.d/malabar-1.5-SNAPSHOT/lib")
-(add-to-list 'auto-mode-alist '("\\.java\\'" . malabar-mode))
-
 (autoload 'php-mode "php-mode")
 (setq auto-mode-alist
       (cons '("\\.php\\'" . php-mode) auto-mode-alist))
@@ -3439,6 +3447,22 @@ FORMAT-STRING is like `format', but it can have multiple %-sequences."
 
 (require 'android-mode)
 (setq android-mode-sdk-dir "~/android-sdk")
+
+(autoload 'ack-same "full-ack" nil t)
+(autoload 'ack "full-ack" nil t)
+(autoload 'ack-find-same-file "full-ack" nil t)
+(autoload 'ack-find-file "full-ack" nil t)
+(setq ack-executable (executable-find "ack-grep"))
+(setq ack-and-a-half-executable ack-executable)
+
+(autoload 'ack-and-a-half-same "ack-and-a-half" nil t)
+(autoload 'ack-and-a-half "ack-and-a-half" nil t)
+(autoload 'ack-and-a-half-find-file-samee "ack-and-a-half" nil t)
+(autoload 'ack-and-a-half-find-file "ack-and-a-half" nil t)
+(defalias 'ack 'ack-and-a-half)
+(defalias 'ack-same 'ack-and-a-half-same)
+(defalias 'ack-find-file 'ack-and-a-half-find-file)
+(defalias 'ack-find-file-same 'ack-and-a-half-find-file-same)
 
 (require 'elscreen)
 (require 'elscreen-w3m)
