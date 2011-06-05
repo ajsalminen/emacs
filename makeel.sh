@@ -91,6 +91,16 @@ cd $eed/scala
 make clean
 make
 
+rm -rf $eed/tramp-2.2.1
+tar xzvf $eed/tramp-2.2.1.tar.gz
+cd $eed/tramp-2.2.1
+make clean
+./configure --with-contrib
+make $install_string
+sudo make install
+cd $eed
+rm -rf tramp-2.2.1
+
 for i in `ls $eed`; do cd $eed/$i && make; done;
 find $eed/site-lisp -type f -name *.el -print0 | xargs -0 emacs -batch -f batch-byte-compile
 find $eed/elpa/ -type f -name *.el -print0 | xargs -0 emacs -batch -f batch-byte-compile

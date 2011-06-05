@@ -35,7 +35,6 @@
                         "~/.emacs.d/rinari"
                         "~/.emacs.d/site-lisp"
                         "~/.emacs.d/skype"
-                        "~/.emacs.d/tramp-2.2.1/lisp"
                         "~/.emacs.d/twittering"
                         "~/.emacs.d/vim"
                         "~/.emacs.d/yasnippet"
@@ -2303,6 +2302,10 @@ directory, select directory. Lastly the file is opened."
   (let ((fill-column (point-max)))
     (fill-region start end nil)))
 
+(add-to-list 'bkup-backup-directory-info
+             (list tramp-file-name-regexp ""))
+(setq tramp-bkup-backup-directory-info bkup-backup-directory-info)
+
 
 (require 'weblogger)
 (require 'zencoding-mode)
@@ -2576,6 +2579,11 @@ directory, select directory. Lastly the file is opened."
 (autoload 'tramp "tramp" nil t)
 (setq tramp-shell-prompt-pattern "^[^$>\n]*[#$%>] *\\(\[[0-9;]*[a-zA-Z] *\\)*") ;
 (setq tramp-persistency-file-name nil)
+
+(setq vc-ignore-dir-regexp
+      (format "\\(%s\\)\\|\\(%s\\)"
+	      vc-ignore-dir-regexp
+	      tramp-file-name-regexp))
 
 (setq-default line-spacing 0)
 
@@ -3021,7 +3029,7 @@ FORMAT-STRING is like `format', but it can have multiple %-sequences."
     (set-clipboard-coding-system 'utf-8)
 
     (require 'zlc)
-    (setq zlc-select-completion-immediately t)
+    (setq zlc-select-completion-immediately nil)
     (setq delete-by-moving-to-trash nil))))
 
 (require 'savekill)
@@ -3431,5 +3439,12 @@ FORMAT-STRING is like `format', but it can have multiple %-sequences."
 
 (require 'android-mode)
 (setq android-mode-sdk-dir "~/android-sdk")
+
+(require 'elscreen)
+(require 'elscreen-w3m)
+(require 'elscreen-color-theme)
+(require 'elscreen-server)
+(require 'elscreen-wl)
+(require 'elscreen-dired)
 
 (message "********** successfully initialized **********")
