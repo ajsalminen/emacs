@@ -3466,11 +3466,48 @@ FORMAT-STRING is like `format', but it can have multiple %-sequences."
 (defalias 'ack-find-file 'ack-and-a-half-find-file)
 (defalias 'ack-find-file-same 'ack-and-a-half-find-file-same)
 
+(require 'gtags)
+(defun gtags-root-dir ()
+  "Returns GTAGS root directory or nil if doesn't exist."
+  (with-temp-buffer
+    (if (zerop (call-process "global" nil t nil "-pr"))
+        (buffer-substring (point-min) (1- (point-max)))
+      nil)))
+
+(defun gtags-update ()
+  "Make GTAGS incremental update"
+  (call-process "global" nil nil nil "-u"))
+
+(defun gtags-update-hook ()
+  (when (gtags-root-dir)
+    (gtags-update)))
+
+(add-hook 'after-save-hook #'gtags-update-hook)
+
+(defun ww-next-gtag ()
+  "Find next matching tag, for GTAGS."
+  (interactive)
+  (let ((latest-gtags-buffer
+         (car (delq nil  (mapcar (lambda (x) (and (string-match "GTAGS SELECT" (buffer-name x)) (buffer-name x)) )
+                                 (buffer-list)) ))))
+    (cond (latest-gtags-buffer
+           (switch-to-buffer latest-gtags-buffer)
+           (next-line)
+           (gtags-select-it nil)))))
+
+
+(add-hook 'gtags-mode-hook
+          (lambda()
+            (local-set-key [(control meta ,)] 'ww-next-gtag)
+            (local-set-key (kbd "M-.") 'gtags-find-tag)   ; find a tag, also M-.
+            (local-set-key (kbd "M-,") 'gtags-find-rtag)))  ; reverse tag
+
 (require 'elscreen)
 (require 'elscreen-w3m)
 (require 'elscreen-color-theme)
 (require 'elscreen-server)
 (require 'elscreen-wl)
 (require 'elscreen-dired)
+(require 'elscreen-gf)
 
 (message "********** successfully initialized **********")
