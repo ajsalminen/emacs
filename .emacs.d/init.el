@@ -63,10 +63,11 @@
 
 (eval-when-compile (require 'cl))
 (when (and (= emacs-major-version 23) (eq window-system 'ns))
-  (setq mac-option-key-is-meta t)
+  (setq mac-option-key-is-meta nil)
   (setq mac-command-key-is-meta t)
   (setq mac-command-modifier 'meta)
   (setq mac-option-modifier nil)
+  (setq mac-option-modifier 'super)
 
   (when (not (featurep 'aquamacs))
     (mac-set-input-method-parameter `japanese `cursor-color "yellow")
