@@ -3,7 +3,7 @@
 ;; Copyright (C) 1996,1997 MORIOKA Tomohiko
 
 ;; Author: MORIOKA Tomohiko <morioka@jaist.ac.jp>
-;; Version: $Id$
+;; Version: $Id: filename.el,v 2.1 1997/11/06 15:50:53 morioka Exp $
 ;; Keywords: file name, string
 
 ;; This file is part of APEL (A Portable Emacs Library).

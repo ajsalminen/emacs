@@ -203,6 +203,12 @@
 
 (setq emerge-diff-options "--ignore-all-space")
 
+(defun machine-ip-address (dev)
+  "Return IP address of a network device."
+  (let ((info (network-interface-info dev)))
+    (if info
+        (format-network-address (car info) t))))
+
 ;; emergency settings end here
 
 ;;; This was installed by package-install.el.
@@ -215,9 +221,6 @@
      (expand-file-name "~/.emacs.d/elpa/package.el"))
   (package-initialize))
 
-;; separate el-get stuff into its own file
-(require 'el-get)
-
 ;; user the snippent below to bootstrap el-get
 ;; don't leave uncommented unless you like pain
 ;; (url-retrieve
@@ -225,6 +228,13 @@
 ;;  (lambda (s)
 ;;    (end-of-buffer)
 ;;    (eval-print-last-sexp)))
+
+;; separate el-get stuff into its own file
+(require 'el-get)
+
+(defun el-get-can-exit-p ()
+  (or (not (get 'el-get-standard-packages 'customized-value))
+      (customize-save-variable 'el-get-standard-packages el-get-standard-packages)))
 
 (defun force-git-add-after-el-get (package-path)
   (let* ((git-executable (el-get-executable-find "git"))
@@ -241,65 +251,76 @@
 ;; (setq el-get-sources nil)
 (setq el-get-sources
       '(google-weather
-        bbdb-vcard
+	;; (:name ecb
+	;;        :depends (cedet)
+	;;        :type cvs
+	;;        :module "ecb"
+	;;        :url ":pserver:anonymous@ecb.cvs.sourceforge.net:/cvsroot/ecb"
+	;;        :build ((concat  "make CEDET=" " EMACS=" el-get-emacs))
+	;;        )
+	(:name bbdb-vcard
+	       :depends (bbdb)
+	       :type git
+	       :url "https://github.com/trebb/bbdb-vcard.git"
+	       :features bbdb-vcard)
         (:name tail
                :after (lambda ()
                         (autoload 'tail-file "tail.el" nil t)))
-        (:name ecb
-               :after (lambda ()
-                        (setq ecb-layout-name "left8")
-                        ;;(setq ecb-auto-activate t)
-                        (setq ecb-tip-of-the-day nil)
-                        (setq ecb-fix-window-size (quote width))
-                        (setq ecb-compile-window-width (quote edit-window))
-                        (setq ecb-major-modes-deactivate '(wl-mode tramp-mode))
-                        ;;(setq ecb-major-modes-activate '(text-mode LaTeX-mode latex-mode))
-                        (setq ecb-windows-width 25)))
-        (:name apel
-               :type git
-               :module "apel"
-               :url "https://github.com/wanderlust/apel.git"
-               :build
-               (mapcar
-                (lambda (target)
-                  (list el-get-emacs
-                        (split-string "-batch -q -no-site-file -l APEL-MK -f")
-                        target
-                        "prefix" "site-lisp" "site-lisp"))
-                '("compile-apel" "install-apel"))
-               :load-path ("site-lisp/apel" "site-lisp/emu"))
-        (:name flim
-               :type git
-               :module "flim"
-               :url "https://github.com/wanderlust/flim.git"
-               :build
-               (mapcar
-                (lambda (target)
-                  (list el-get-emacs
-                        (mapcar (lambda (pkg)
-                                  (mapcar (lambda (d) `("-L" ,d)) (el-get-load-path pkg)))
-                                '("apel"))
+        ;; (:name ecb
+        ;;        :after (lambda ()
+        ;;                 (setq ecb-layout-name "left8")
+        ;;                 ;;(setq ecb-auto-activate t)
+        ;;                 (setq ecb-tip-of-the-day nil)
+        ;;                 (setq ecb-fix-window-size (quote width))
+        ;;                 (setq ecb-compile-window-width (quote edit-window))
+        ;;                 (setq ecb-major-modes-deactivate '(wl-mode tramp-mode))
+        ;;                 ;;(setq ecb-major-modes-activate '(text-mode LaTeX-mode latex-mode))
+        ;;                 (setq ecb-windows-width 25)))
+        ;; (:name apel
+        ;;        :type git
+        ;;        :module "apel"
+        ;;        :url "https://github.com/wanderlust/apel.git"
+        ;;        :build
+        ;;        (mapcar
+        ;;         (lambda (target)
+        ;;           (list el-get-emacs
+        ;;                 (split-string "-batch -q -no-site-file -l APEL-MK -f")
+        ;;                 target
+        ;;                 "prefix" "site-lisp" "site-lisp"))
+        ;;         '("compile-apel" "install-apel"))
+        ;;        :load-path ("site-lisp/apel" "site-lisp/emu"))
+        ;; (:name flim
+        ;;        :type git
+        ;;        :module "flim"
+        ;;        :url "https://github.com/wanderlust/flim.git"
+        ;;        :build
+        ;;        (mapcar
+        ;;         (lambda (target)
+        ;;           (list el-get-emacs
+        ;;                 (mapcar (lambda (pkg)
+        ;;                           (mapcar (lambda (d) `("-L" ,d)) (el-get-load-path pkg)))
+        ;;                         '("apel"))
 
-                        (split-string "-batch -q -no-site-file -l FLIM-MK -f")
-                        target
-                        "prefix" "site-lisp" "site-lisp"))
-                '("compile-flim" "install-flim"))
-               :load-path ("site-lisp/flim"))
-        (:name semi
-               :type git
-               :module "semi"
-               :url "https://github.com/wanderlust/semi.git"
-               :build
-               (mapcar
-                (lambda (target)
-                  (list el-get-emacs
-                        (mapcar (lambda (pkg)
-                                  (mapcar (lambda (d) `("-L" ,d)) (el-get-load-path pkg)))
-                                '("apel" "flim"))
-                        (split-string "-batch -q -no-site-file -l SEMI-MK -f")
-                        target
-                        "prefix" "NONE" "NONE"))
-                '("compile-semi" "install-semi")))
+        ;;                 (split-string "-batch -q -no-site-file -l FLIM-MK -f")
+        ;;                 target
+        ;;                 "prefix" "site-lisp" "site-lisp"))
+        ;;         '("compile-flim" "install-flim"))
+        ;;        :load-path ("site-lisp/flim"))
+        ;; (:name semi
+        ;;        :type git
+        ;;        :module "semi"
+        ;;        :url "https://github.com/wanderlust/semi.git"
+        ;;        :build
+        ;;        (mapcar
+        ;;         (lambda (target)
+        ;;           (list el-get-emacs
+        ;;                 (mapcar (lambda (pkg)
+        ;;                           (mapcar (lambda (d) `("-L" ,d)) (el-get-load-path pkg)))
+        ;;                         '("apel" "flim"))
+        ;;                 (split-string "-batch -q -no-site-file -l SEMI-MK -f")
+        ;;                 target
+        ;;                 "prefix" "NONE" "NONE"))
+        ;;         '("compile-semi" "install-semi")))
         (:name bbdb
                :type git
                :url "https://github.com/barak/BBDB.git"
@@ -310,6 +331,15 @@
                :autoloads nil
                :post-init (lambda () (bbdb-initialize))
                :info "texinfo"
+	       ;; :type git
+	       ;; :url "git://git.savannah.nongnu.org/bbdb.git"
+	       ;; :load-path ("./lisp")
+	       ;; :build `(,(concat "make EMACS=" el-get-emacs "-C lisp"))
+	       ;; :features bbdb
+	       ;; :autoloads nil
+	       ;; :post-init (lambda () (bbdb-initialize))
+               ;; :info "texinfo"
+
                :after (lambda ()
                         (setq
                          bbdb-offer-save 1             ;; 1 means save-without-asking
@@ -340,6 +370,7 @@
         (:name wanderlust
                :type git
                :module "wanderlust"
+	       :depends (apel flim semi)
                :url "https://github.com/wanderlust/wanderlust.git"
                :build (mapcar
                        (lambda (target-and-dirs)
@@ -401,6 +432,7 @@
                         (add-hook 'wl-summary-prepared-hook '(lambda ()
                                                                (wl-summary-rescan "date" t )
                                                                (beginning-of-buffer)))
+                        (setq wl-icon-directory "~/.emacs.d/el-get/wanderlust/icons")
                         (require 'wl-gravatar)
                         (setq wl-highlight-x-face-function 'wl-gravatar-insert)
                         (setq gnus-gravatar-directory "~/.emacs-gravatar/")
@@ -448,19 +480,16 @@
      (expand-file-name "~/.emacs.d/elpa/package.el"))
   (package-initialize))
 (custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
-
- '(warning-suppress-types (quote ((undo discard-info))))
- '(inhibit-startup-screen t)
- '(inhibit-startup-message t))
+  ;; custom-set-variables was added by Custom.
+  ;; If you edit it by hand, you could mess it up, so be careful.
+  ;; Your init file should contain only one such instance.
+  ;; If there is more than one, they won't work right.
+ '(el-get-standard-packages (quote ("bbdb" "semi" "flim" "apel" "el-get" "google-weather" "bbdb-vcard" "tail" "wanderlust"))))
 (custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
+  ;; custom-set-faces was added by Custom.
+  ;; If you edit it by hand, you could mess it up, so be careful.
+  ;; Your init file should contain only one such instance.
+  ;; If there is more than one, they won't work right.
  )
 
 (setq initial-scratch-message nil)
@@ -3423,12 +3452,6 @@ FORMAT-STRING is like `format', but it can have multiple %-sequences."
             (eldoc-mode 1)))
 
 (require 'wide-n)
-
-(defun machine-ip-address (dev)
-  "Return IP address of a network device."
-  (let ((info (network-interface-info dev)))
-    (if info
-        (format-network-address (car info) t))))
 
 (require 'change-case)
 
