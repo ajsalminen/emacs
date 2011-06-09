@@ -2482,6 +2482,7 @@ directory, select directory. Lastly the file is opened."
       (cons '("\\.css\\'" . css-mode) auto-mode-alist))
 (setq cssm-indent-function #'cssm-c-style-indenter)
 (add-hook 'css-mode-hook '(lambda ()
+                            (require 'css-complete)
                             (setq css-indent-level 2)
                             (setq css-indent-offset 2)))
 
@@ -3509,5 +3510,16 @@ FORMAT-STRING is like `format', but it can have multiple %-sequences."
 (require 'elscreen-wl)
 (require 'elscreen-dired)
 (require 'elscreen-gf)
+
+(require 'multiple-line-edit)
+(global-set-key "\C-c<" 'mulled/edit-trailing-edges)
+(global-set-key "\C-c>" 'mulled/edit-leading-edges)
+
+(require 'auto-indent-mode)
+(auto-indent-global-mode)
+
+(add-hook 'comint-output-filter-functions 'comint-watch-for-password-prompt)
+
+(require 'rfringe)
 
 (message "********** successfully initialized **********")
