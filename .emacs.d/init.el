@@ -157,7 +157,7 @@
     (activate-input-method (if (boundp 'prev-minibuffer-input-method)
                                prev-minibuffer-input-method
                              current-input-method))))
-(add-hook 'minibuffer-exit-hook 'toggle-back-minibuffer-input)
+;; (add-hook 'minibuffer-exit-hook 'toggle-back-minibuffer-input)
 
 (defun enter-minibuf-with-toggle-input-method (f)
   (interactive)
@@ -170,7 +170,8 @@
   (interactive)
   (enter-minibuf-with-toggle-input-method 'smex))
 
-(global-set-key (kbd "C-'") 'smex-with-toggle)
+;; (global-set-key (kbd "C-'") 'smex-with-toggle)
+(global-set-key (kbd "C-'") 'smex)
 
 (defun smex-hack ()
   (interactive)
@@ -179,7 +180,8 @@
     (keyboard-quit)
     (smex)))
 
-(global-set-key (kbd "M-x") 'smex-hack)
+;; (global-set-key (kbd "M-x") 'smex-hack)
+(global-set-key (kbd "M-x") 'smex)
 (global-set-key (kbd "M-X") 'smex-major-mode-commands)
 ;; This is your old M-x.
 (global-set-key (kbd "C-c C-c M-x") 'execute-extended-command)
@@ -1614,8 +1616,8 @@ directory, select directory. Lastly the file is opened."
 ;; (ad-deactivate 'org-agenda-exit)
 ;; (ad-activate 'org-agenda-exit)
 
-(require 'deferred)
-(run-at-time t 3600 (lambda () (deferred:call(org-mobile-pullpush))))
+;; (require 'deferred)
+;; (run-at-time t 3600 (lambda () (deferred:call(org-mobile-pullpush))))
 
 (setq org-default-notes-file (concat org-directory "memo.org"))
 (define-key global-map "\C-cc" 'org-capture)
@@ -2192,7 +2194,7 @@ directory, select directory. Lastly the file is opened."
 (setq twittering-url-show-status nil)
 (setq twittering-number-of-tweets-on-retrieval 200)
 (setq twittering-icon-mode nil)
-(setq twittering-timer-interval 900)
+;; (setq twittering-timer-interval 900)
 
 (if (and (boundp 'jmp-api-key) (boundp 'jmp-user-name))
     (progn (defvar jmp-api-url
