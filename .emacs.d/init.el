@@ -3540,4 +3540,6 @@ FORMAT-STRING is like `format', but it can have multiple %-sequences."
 
 (require 'rfringe)
 
+(require 'org2blog-autoloads)
+
 (message "********** successfully initialized **********")
