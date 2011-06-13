@@ -8,7 +8,7 @@ INSTALL_DATA = ${INSTALL} -m 644
 RM   = /bin/rm -f
 LN_S = ln -s
 
-EMACS_PROG = /usr/bin/emacs -no-site-file -no-init-file
+EMACS_PROG = /Applications/Emacs.app/Contents/MacOS/Emacs -no-site-file -no-init-file
 EMACS_FLAVOR = emacs
 
 GNUSDIR = 
