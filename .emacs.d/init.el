@@ -1511,6 +1511,15 @@ directory, select directory. Lastly the file is opened."
 
 (setq org-google-weather-format "[ %i %c, %L [%l,%h] %s ]")
 
+(defun org-clock-in-out-later (start end)
+  "…"
+  (interactive "nEnter start:
+nEnd:")
+  (message "Name is: %d, Age is: %d" start end)
+  (org-clock-in nil start)
+  (org-clock-out nil end))
+
+
 ;;   "String to return to describe the weather.
 ;; Valid %-sequences are:
 ;;   - %i the icon
@@ -1643,6 +1652,16 @@ directory, select directory. Lastly the file is opened."
         ("DEFERRED"  . shadow)
         ("CANCELED"  . (:foreground "blue" :weight bold))))
 
+(defun org-read-date-and-adjust-timezone ()
+  (date-to-time (format "%s %s"  (org-read-date t) (car (cdr (current-time-zone))))))
+
+(defun org-clock-in-and-out ()
+  (interactive)
+  (progn
+    (org-clock-in nil (org-read-date-and-adjust-timezone))
+    (org-clock-out nil (org-read-date-and-adjust-timezone))))
+
+(define-key org-mode-map (kbd "\C-c i") 'org-clock-in-and-out)
 
 ;;(setq org-refile-targets (quote ((org-agenda-files :regexp . "*"))))
 (setq org-refile-targets (quote ((org-agenda-files :level . 1))))
