@@ -2,6 +2,7 @@
 (setq debug-on-error t)
 (setq eval-expression-debug-on-error t)
 (setq lang "en_US")
+(setq inhibit-splash-screen t)
 
 ;; workaround for cocoa emacs byte-compiling
 (when (eq window-system 'ns)
