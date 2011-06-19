@@ -1,7 +1,7 @@
-This is emacs-w3m.info, produced by makeinfo version 4.13 from
+This is emacs-w3m.info, produced by makeinfo version 4.8 from
 emacs-w3m.texi.
 
-Copyright (C) 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008,
+   Copyright (C) 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008,
 2009 TSUCHIYA Masatoshi
 
      Permission is granted to copy, distribute and/or modify this
@@ -227,7 +227,7 @@ You can run emacs-w3m in various versions of Emacsen listed below:
 
    If you use the development version of GNU Emacs, perhaps you should
 run the CVS version of emacs-w3m on it.  In that case, it is strongly
-recommended that you join the *note Mailing List::.
+recommended that you join the *Note Mailing List::.
 
 
 File: emacs-w3m.info,  Node: You Need w3m,  Next: Other Requirements,  Prev: Required Emacs Version,  Up: Getting Started
@@ -478,7 +478,7 @@ File: emacs-w3m.info,  Node: Minimal Settings,  Prev: Non-UNIX-like systems,  Up
 
 This section mentions some fundamental settings for emacs-w3m.  If you
 want to fine-tune your installation, you'll find many customizable
-variables in *note Customizable Variables::.
+variables in *Note Customizable Variables::.
 
 `Autoloads'
      You don't need this if you've installed emacs-w3m as an XEmacs
@@ -610,8 +610,8 @@ probably notice, the major mode for an emacs-w3m buffer is `w3m-mode',
 there are also minor modes (*note Managing Bookmarks::).
 
    This section explains the most fundamental usage of these commands,
-see *note Emacs-w3m Functions:: for more information on them.  See also
-*note Customizable Variables:: for variables you can use to customize
+see *Note Emacs-w3m Functions:: for more information on them.  See also
+*Note Customizable Variables:: for variables you can use to customize
 emacs-w3m's behavior.
 
 `w3m'
@@ -657,7 +657,7 @@ be displayed (*note Customizable Variables::).
 
      The exact behavior of this command depends on the properties of
      the link under point, and on whether you give it a prefix argument
-     or not.  See *note Emacs-w3m Functions:: for details.
+     or not.  See *Note Emacs-w3m Functions:: for details.
 
    As mentioned above, you can be prompted for a URL when you use the
 command `M-x w3m', by setting the `w3m-quick-start' variable to `nil'.
@@ -670,7 +670,7 @@ pages by entering their URLs, see below.
      hitting `<RET>' after moving the point to the URL displayed in the
      `header-line'.  This feature will feel familiar to you if you are
      used to GUI-based web browsers like Mozilla.  Detailed explanations
-     about this can be found in *note Emacs-w3m Functions::
+     about this can be found in *Note Emacs-w3m Functions::
      (`w3m-view-this-url').
 
 `g'
@@ -685,7 +685,7 @@ pages by entering their URLs, see below.
      except that it opens a new session.  Unless you are using
      emacs-w3m on the character terminal, opening a new session means
      displaying the page in a new tab.  For more information about
-     tabs, please refer to *note Using Tabs::
+     tabs, please refer to *Note Using Tabs::
      (`w3m-goto-url-new-session').
 
 `c' (Lynx-like keymap)
@@ -817,12 +817,12 @@ File: emacs-w3m.info,  Node: Moving over pages,  Next: Browsing with Mouse Opera
 
 This section explains how to move from page to page, but not by
 following links or inputing URLs (these ways of moving are explained in
-*note Launching and Jumping::).
+*Note Launching and Jumping::).
 
    This includes commands to move backwards and forwards in history (the
 familiar "Back" and "Forward" from other browsers), and the obligatory
 "Go to the home page" feature.  You will probably understand this
-better after reading the *note Tracing History:: section.
+better after reading the *Note Tracing History:: section.
 
 `B' (Lynx-like keymap)
 `<left>' (Lynx-like keymap)
@@ -1016,7 +1016,7 @@ its value from `nil' to `t'.  *Note Customizable Variables::.
 
    Emacs-w3m also comes with nifty features that let you zoom an image
 in or out, save it to a file, or view it in a external viewer.  See also
-*note Moving in a page:: for instructions on how to move from image to
+*Note Moving in a page:: for instructions on how to move from image to
 image in an emacs-w3m buffer.
 
 `T' (Lynx-like keymap)
@@ -1160,7 +1160,7 @@ number of URLs showed in this page is customizable, see the
 links, you can go to any of the pages you visited previously just like
 if you were visiting a regular page, by following the link.
 
-   Also see the *note Moving over pages:: section, it explains how to
+   Also see the *Note Moving over pages:: section, it explains how to
 move in the history with simple keybindings, i.e. the "Back" and "Next"
 features.
 
@@ -1664,11 +1664,11 @@ are accessible through three interfaces:
    * The regular search interface, invoked by the `S' key (the `s' key
      for the `Info-like' keymap) in any emacs-w3m buffer.  It is a
      simple interactive way to choose which search engine to use and
-     input a search term; see *note The Search Interface::.
+     input a search term; see *Note The Search Interface::.
 
    * The Quicksearch interface: it is a faster (yet more complicated)
      way to use search engines, by going to specially crafted URLs.
-     For more information about this feature, see *note Quick
+     For more information about this feature, see *Note Quick
      Searching::.
 
    * The "I'm feeling lucky" feature: if it's enabled
@@ -1700,7 +1700,7 @@ if you had used the normal web based entry point to the engine.
    You probably noticed that you have not been given a chance to choose
 which engine you want to search with.  By default, emacs-w3m will use
 the Google search engine, you can change this behavior by customizing
-the `w3m-search-default-engine' variable (see *note Customizable
+the `w3m-search-default-engine' variable (see *Note Customizable
 Variables::), or you can specify the search engine each time you use the
 command.
 
@@ -1809,7 +1809,7 @@ engines, and it's quite easy:
   3. You can now use this engine to search, using the normal `S' key
      (the `s' key for the `Info-like' keymap) in emacs-w3m.  If you use
      this engine often, you can also add it to the Quicksearch (see
-     *note Quick Searching::) engines and give it a small prefix, by
+     *Note Quick Searching::) engines and give it a small prefix, by
      adding this to your `~/.emacs-w3m' file instead:
 
           (eval-after-load "w3m-search"
@@ -1846,7 +1846,7 @@ example, suppose you want to visit the GNU Project's homepage,
 
    Since this syntax can be quite hard to use on a daily basis, this
 feature will be most useful when used with very short URLs (Quicksearch
-URLs for example, see *note Quick Searching::); or in non-interactive
+URLs for example, see *Note Quick Searching::); or in non-interactive
 contexts.
 
 
@@ -3466,7 +3466,7 @@ try emacs-w3m to render HTML articles, this section is just for you.
      You can change the key `vi' into something another.  Also *note
      Summary Buffer: (gnus)Summary Buffer.
 
-See also *note Nnshimbun::.
+See also *Note Nnshimbun::.
 
 
 File: emacs-w3m.info,  Node: Mew,  Next: SEMI MUAs,  Prev: Gnus,  Up: Hooking into MUAs
@@ -3523,7 +3523,7 @@ There are some customizable variables related to Mew:
      A hook run just after retrieving a `cid:' URL.  The default value
      is `nil'.
 
-See also *note Mew Shimbun::.
+See also *Note Mew Shimbun::.
 
 
 File: emacs-w3m.info,  Node: SEMI MUAs,  Next: VM,  Prev: Mew,  Up: Hooking into MUAs
@@ -3566,7 +3566,7 @@ module:
 `mime-w3m-safe-url-regexp'
      Regexp matching URLs which are considered to be safe.  The default
      value is `"\\`cid:"' which means we consider that images included
-     in a mail with the `cid:' URLs are safe.  See also *note Gnus::
+     in a mail with the `cid:' URLs are safe.  See also *Note Gnus::
      about rogue attacks.
 
 `mime-w3m-setup-hook'
@@ -3622,7 +3622,7 @@ File: emacs-w3m.info,  Node: General FAQ,  Next: Trouble FAQ,  Up: Frequently As
    * Q. What's emacs-w3m?
 
      It is an interface program on Emacs which controls w3m.  For more
-     information, see *note Introduction::.
+     information, see *Note Introduction::.
 
    * Q. Which emacs versions are supported?
 
@@ -3639,7 +3639,7 @@ File: emacs-w3m.info,  Node: General FAQ,  Next: Trouble FAQ,  Up: Frequently As
         * Meadow
 
      Note that you're required to use APEL if you'd like to run
-     emacs-w3m under XEmacs.  For more information, see *note Other
+     emacs-w3m under XEmacs.  For more information, see *Note Other
      Requirements::.
 
    * Q. Which w3m versions are supported?
@@ -3664,7 +3664,7 @@ File: emacs-w3m.info,  Node: General FAQ,  Next: Trouble FAQ,  Up: Frequently As
      you can use `apel-1.23-pkg.tar.gz' or later for both XEmacs with
      Mule and non-Mule XEmacs if you don't use FLIM for the `shimbun'
      features, we recommend you replace it or newly install the
-     original APEL package.  See *note Other Requirements:: where to
+     original APEL package.  See *Note Other Requirements:: where to
      get it from.
 
    * Q. I've gotten the developing version of emacs-w3m with CVS,
@@ -3965,7 +3965,7 @@ them using `report-emacs-w3m-bug' (*note Mailing List::).
    `Shimbun' library currently supports Asahi Shimbun, Yomiuri On-line,
 many mailing list archives such as Emacs Devel, XEmacs Beta, Gnus, Mew,
 and Wanderlust, Slashdot, Slashdot Japan, and a lot of others.  For
-more detail, see *note Shimbun Sites::.
+more detail, see *Note Shimbun Sites::.
 
    By the way, you have to pay attention to copyright when using
 `Shimbun' library.  Copyrights of articles generated with `Shimbun'
@@ -4013,7 +4013,7 @@ subscribed to the list.  You can also read submissions in bulletin
 boards, etc...  Note that if you want to followup, you still need to use
 emacs-w3m as Gnus can't post via the web with `nnshimbun'.
 
-   See also *note Gnus:: for rendering HTML messages with emacs-w3m if
+   See also *Note Gnus:: for rendering HTML messages with emacs-w3m if
 you use Gnus.
 
    The easiest way to get started with `nnshimbun' is to use something
@@ -4298,7 +4298,7 @@ and Mew (version 2.1 and later).  The `mew-shimbun' module will be
 installed together with emacs-w3m if Mew, APEL, and FLIM are also
 installed.
 
-   We recommend you also see *note Mew::.
+   We recommend you also see *Note Mew::.
 
   1. Setting things up
 
@@ -5880,7 +5880,7 @@ file as follows:
 For more details see `shimbun-make-contents' in the `sb-ibm-dev.el'
 file.
 
-   I said in the subsection of *note Getting web page and header
+   I said in the subsection of *Note Getting web page and header
 information:: that if each article doesn't have a each unique URLs you
 have to ask Emacs to remember body of an article when gathering headers
 information,  In such case you don't have to get a web page from URL of
@@ -6115,7 +6115,7 @@ Here are some handy tips to use emacs-w3m with other Emacs facilities.
    * Gnus
 
      You've mistaken the entrance if you are a Gnus user and this
-     section is the first page you read in this Info.  See *note
+     section is the first page you read in this Info.  See *Note
      Hooking into MUAs:: first.
 
      By default, Gnus will not apply the treatment variables, for
@@ -6904,121 +6904,121 @@ Function Index
 
 
 Tag Table:
-Node: Top1134
-Node: Introduction6654
-Node: Getting Started7702
-Node: Required Emacs Version8496
-Node: You Need w3m9574
-Node: Other Requirements10101
-Node: Installing Emacs-w3m14843
-Node: Non-UNIX-like systems18082
-Node: Minimal Settings18816
-Node: Basic Usage21112
-Node: Browsing Web Pages21807
-Node: Key Binding22542
-Node: Launching and Jumping23893
-Node: Moving in a page28471
-Node: Moving over pages32180
-Node: Browsing with Mouse Operations37518
-Node: Going Back to Daily Hacking and/or Daily Writing39203
-Node: Inline Images40289
-Node: Tracing History43704
-Node: Managing Bookmarks48235
-Node: Adding Bookmarks48765
-Node: Consulting Bookmarks50304
-Node: Editing Bookmarks50999
-Node: Using Tabs51873
-Ref: Using Tabs-Footnote-155507
-Ref: Using Tabs-Footnote-255693
-Node: Working with buffers55770
-Node: Creating and killing buffers56386
-Node: Moving across buffers57471
-Ref: Moving across buffers-Footnote-159812
-Node: Selecting buffers59998
-Node: Downloading62634
-Node: Submitting Forms63858
-Node: HTML File Information65477
-Node: Pretty Good Features67777
-Node: Using Search Engines68585
-Node: The Search Interface69960
-Node: Quick Searching71535
-Node: Adding New Search Engines74061
-Node: Grouping URLs76405
-Node: Weather Information77508
-Node: Using Antenna77690
-Node: Setting up Antenna78362
-Node: Daily web tracking78976
-Node: Showing Directory Tree80737
-Node: Viewing Perl Documents82399
-Node: Using Namazu82588
-Node: Octet82791
-Node: Frame Local Buffers83236
-Node: Session Manager84837
-Node: Customizable Variables87071
-Node: General Variables89907
-Node: Image Variables116138
-Node: Form Variables120939
-Node: Cookie Variables121855
-Node: Bookmark Variables122503
-Node: Search Variables123328
-Node: Weather Variables124542
-Node: Dtree Variables125181
-Node: Antenna Variables126189
-Node: Perldoc Variables127500
-Node: Namazu Variables128441
-Node: Octet Variables130179
-Node: Session Manager Variables130445
-Node: Hooks131285
-Node: Other Variables133093
-Node: Hooking into MUAs135595
-Node: Gnus136667
-Node: Mew141584
-Node: SEMI MUAs143956
-Node: VM146730
-Node: Frequently Asked Questions147147
-Node: General FAQ147497
-Node: Trouble FAQ149442
-Ref: Trouble FAQ-Footnote-1158903
-Node: Shimbun FAQ158975
-Node: Known Problems159808
-Node: Shimbun Library159977
-Node: Nnshimbun162830
-Ref: Nnshimbun-Footnote-1175127
-Ref: Nnshimbun-Footnote-2175327
-Ref: Nnshimbun-Footnote-3176028
-Ref: Nnshimbun-Footnote-4176132
-Node: Mew Shimbun176602
-Ref: Mew Shimbun-Footnote-1186070
-Ref: Mew Shimbun-Footnote-2186200
-Node: Shimbun with Wanderlust186365
-Node: Shimbun local mode186749
-Node: Shimbun Sites188537
-Node: Newspapers Supported by Shimbun189093
-Node: News Sites Supported by Shimbun199778
-Node: Mailing Lists Supported by Shimbun209337
-Node: Sport Sites Supported by Shimbun222740
-Node: Misc Sites Supported by Shimbun223598
-Node: Shimbun Basics235602
-Node: Overview236197
-Node: Getting web page and header information240032
-Ref: Getting web page and header information-Footnote-1245792
-Ref: Getting web page and header information-Footnote-2245885
-Node: Displaying an article245993
-Node: Inheriting shimbun module248792
-Ref: Inheriting shimbun module-Footnote-1250975
-Ref: Inheriting shimbun module-Footnote-2251060
-Node: Making text/plain articles251114
-Node: Zenkaku to hankaku conversion253444
-Node: Coding convention of Shimbun254554
-Node: Tips255726
-Node: Mailing List260584
-Node: Emacs-w3m Functions261926
-Node: External Packages262114
-Node: Authors263280
-Node: Index263650
-Node: Concept Index263919
-Node: Key Index270739
-Node: Variable Index280465
-Node: Function Index297766
+Node: Top1136
+Node: Introduction6656
+Node: Getting Started7704
+Node: Required Emacs Version8498
+Node: You Need w3m9576
+Node: Other Requirements10103
+Node: Installing Emacs-w3m14845
+Node: Non-UNIX-like systems18084
+Node: Minimal Settings18818
+Node: Basic Usage21114
+Node: Browsing Web Pages21809
+Node: Key Binding22544
+Node: Launching and Jumping23895
+Node: Moving in a page28473
+Node: Moving over pages32182
+Node: Browsing with Mouse Operations37520
+Node: Going Back to Daily Hacking and/or Daily Writing39205
+Node: Inline Images40291
+Node: Tracing History43706
+Node: Managing Bookmarks48237
+Node: Adding Bookmarks48767
+Node: Consulting Bookmarks50306
+Node: Editing Bookmarks51001
+Node: Using Tabs51875
+Ref: Using Tabs-Footnote-155509
+Ref: Using Tabs-Footnote-255695
+Node: Working with buffers55772
+Node: Creating and killing buffers56388
+Node: Moving across buffers57473
+Ref: Moving across buffers-Footnote-159814
+Node: Selecting buffers60000
+Node: Downloading62636
+Node: Submitting Forms63860
+Node: HTML File Information65479
+Node: Pretty Good Features67779
+Node: Using Search Engines68587
+Node: The Search Interface69962
+Node: Quick Searching71537
+Node: Adding New Search Engines74063
+Node: Grouping URLs76407
+Node: Weather Information77510
+Node: Using Antenna77692
+Node: Setting up Antenna78364
+Node: Daily web tracking78978
+Node: Showing Directory Tree80739
+Node: Viewing Perl Documents82401
+Node: Using Namazu82590
+Node: Octet82793
+Node: Frame Local Buffers83238
+Node: Session Manager84839
+Node: Customizable Variables87073
+Node: General Variables89909
+Node: Image Variables116140
+Node: Form Variables120941
+Node: Cookie Variables121857
+Node: Bookmark Variables122505
+Node: Search Variables123330
+Node: Weather Variables124544
+Node: Dtree Variables125183
+Node: Antenna Variables126191
+Node: Perldoc Variables127502
+Node: Namazu Variables128443
+Node: Octet Variables130181
+Node: Session Manager Variables130447
+Node: Hooks131287
+Node: Other Variables133095
+Node: Hooking into MUAs135597
+Node: Gnus136669
+Node: Mew141586
+Node: SEMI MUAs143958
+Node: VM146732
+Node: Frequently Asked Questions147149
+Node: General FAQ147499
+Node: Trouble FAQ149444
+Ref: Trouble FAQ-Footnote-1158905
+Node: Shimbun FAQ158977
+Node: Known Problems159810
+Node: Shimbun Library159979
+Node: Nnshimbun162832
+Ref: Nnshimbun-Footnote-1175129
+Ref: Nnshimbun-Footnote-2175329
+Ref: Nnshimbun-Footnote-3176030
+Ref: Nnshimbun-Footnote-4176134
+Node: Mew Shimbun176604
+Ref: Mew Shimbun-Footnote-1186072
+Ref: Mew Shimbun-Footnote-2186202
+Node: Shimbun with Wanderlust186367
+Node: Shimbun local mode186751
+Node: Shimbun Sites188539
+Node: Newspapers Supported by Shimbun189095
+Node: News Sites Supported by Shimbun199780
+Node: Mailing Lists Supported by Shimbun209339
+Node: Sport Sites Supported by Shimbun222742
+Node: Misc Sites Supported by Shimbun223600
+Node: Shimbun Basics235604
+Node: Overview236199
+Node: Getting web page and header information240034
+Ref: Getting web page and header information-Footnote-1245794
+Ref: Getting web page and header information-Footnote-2245887
+Node: Displaying an article245995
+Node: Inheriting shimbun module248794
+Ref: Inheriting shimbun module-Footnote-1250977
+Ref: Inheriting shimbun module-Footnote-2251062
+Node: Making text/plain articles251116
+Node: Zenkaku to hankaku conversion253446
+Node: Coding convention of Shimbun254556
+Node: Tips255728
+Node: Mailing List260586
+Node: Emacs-w3m Functions261928
+Node: External Packages262116
+Node: Authors263282
+Node: Index263652
+Node: Concept Index263921
+Node: Key Index270741
+Node: Variable Index280467
+Node: Function Index297768
 
 End Tag Table

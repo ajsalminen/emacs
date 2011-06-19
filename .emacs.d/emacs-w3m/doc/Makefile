@@ -1,6 +1,6 @@
 .SUFFIXES: .texi .info .pdf
 
-INSTALL      = /usr/local/bin/ginstall -c
+INSTALL      = /usr/bin/install -c
 INSTALL_DATA = ${INSTALL} -m 644
 INSTALL_INFO = install-info
 prefix       = /Applications/Emacs.app/Contents
@@ -16,9 +16,9 @@ SHELL        = /bin/sh
 
 MAKEINFO     = makeinfo
 TEXI2DVI     = texi2dvi
-PTEX         = ptex
-JBIBTEX      = jbibtex
-DVIPDFMX     = dvipdfmx
+PTEX         = false
+JBIBTEX      = false
+DVIPDFMX     = false
 TEXI2PDF     = texi2pdf
 EMACS        = /Applications/Emacs.app/Contents/MacOS/Emacs
 VANILLA_FLAG = -q -no-site-file --no-unibyte

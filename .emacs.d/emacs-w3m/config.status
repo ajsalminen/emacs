@@ -441,7 +441,7 @@ gives unlimited permission to copy, distribute and modify it."
 
 ac_pwd='/Users/baron/.emacs.d/emacs-w3m'
 srcdir='.'
-INSTALL='/usr/local/bin/ginstall -c'
+INSTALL='/usr/bin/install -c'
 test -n "$AWK" || AWK=awk
 # The default lists apply if the user does not specify any file.
 ac_need_defaults=:
@@ -606,9 +606,9 @@ S["VANILLA_FLAG"]="-q -no-site-file --no-unibyte"
 S["EMACS"]="/Applications/Emacs.app/Contents/MacOS/Emacs"
 S["EGREP"]="egrep"
 S["TEXI2PDF"]="texi2pdf"
-S["DVIPDFMX"]="dvipdfmx"
-S["JBIBTEX"]="jbibtex"
-S["PTEX"]="ptex"
+S["DVIPDFMX"]="false"
+S["JBIBTEX"]="false"
+S["PTEX"]="false"
 S["TEXI2DVI"]="texi2dvi"
 S["MAKEINFO"]="makeinfo"
 S["INSTALL_DATA"]="${INSTALL} -m 644"

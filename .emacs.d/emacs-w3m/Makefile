@@ -1,4 +1,4 @@
-INSTALL      = /usr/local/bin/ginstall -c
+INSTALL      = /usr/bin/install -c
 INSTALL_DATA = ${INSTALL} -m 644
 prefix       = /Applications/Emacs.app/Contents
 datarootdir  = ${prefix}/share
