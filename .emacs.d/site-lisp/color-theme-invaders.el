@@ -7,7 +7,7 @@
      ((background-color . "black")
       (background-mode . dark)
       (border-color . "#3e3e5e")
-      (cursor-color . "red")
+      (cursor-color . "green")
       (foreground-color . "white")
       (mouse-color . "#8ae234"))
      ((list-matching-lines-buffer-name-face . underline)
