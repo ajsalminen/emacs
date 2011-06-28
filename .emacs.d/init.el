@@ -1587,9 +1587,17 @@ nEnd:")
 
 (global-set-key "\C-ca" 'org-agenda)
 (global-set-key "\C-cb" 'org-iswitchb)
+
+(require 'calfw-ical)
+(cfw:install-ical-schedules)
+(require 'calfw-org)
+(cfw:install-org-schedules)
+(cfw:open-org-calendar)
+
 (add-hook 'org-mode-hook 'turn-on-font-lock) ; Org buffers only
 (add-hook 'org-mode-hook
           (lambda ()
+            (define-key org-agenda-mode-map "C" 'cfw:open-org-calendar)
             (define-key org-mode-map (kbd "C-'") 'smex-with-toggle)))
 ;;(add-hook 'org-mode-hook 'smart-tab-mode-off)
 
