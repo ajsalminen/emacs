@@ -3607,4 +3607,8 @@ FORMAT-STRING is like `format', but it can have multiple %-sequences."
 (setq sl-scratch-log-file "~/Dropbox/.scratch-log")
 (setq sl-prev-scratch-string-file "~/Dropbox/.scratch-log-prev")
 
+(require 'fuzzy-format)
+(setq fuzzy-format-default-indent-tabs-mode nil)
+(global-fuzzy-format-mode t)
+
 (message "********** successfully initialized **********")
