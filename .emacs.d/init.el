@@ -3601,6 +3601,10 @@ FORMAT-STRING is like `format', but it can have multiple %-sequences."
   "A minor mode that disables the arrow-keys, pg-up/down, delete and backspace."  t " no-easy-keys"
   'no-easy-keys-minor-mode-map :global t)
 
-(no-easy-keys-minor-mode 1)
+;; (no-easy-keys-minor-mode 1)
+
+(require 'scratch-log)
+(setq sl-scratch-log-file "~/Dropbox/.scratch-log")
+(setq sl-prev-scratch-string-file "~/Dropbox/.scratch-log-prev")
 
 (message "********** successfully initialized **********")
