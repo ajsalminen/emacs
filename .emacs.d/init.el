@@ -21,7 +21,7 @@
                         "~/.emacs.d/el-get/el-get"
 			"~/.emacs.d/el-get/google-weather"
                         "~/.emacs.d/elib-1.0"
-                        "~/.emacs.d/ensime_2.8.1-0.5.0/elisp"
+                        "~/.emacs.d/ensime_2.9.0-1-0.6.0/elisp"
                         "~/.emacs.d/ess-5.11/lisp"
                         "~/.emacs.d/jdee/dist/jdee-2.4.1/lisp"
                         "~/.emacs.d/magit"
@@ -1744,7 +1744,7 @@ nEnd:")
 ;; ロード
 (require 'auto-complete-config)
 (add-to-list 'ac-dictionary-directories "~/.emacs.d/ac-dict")
-;; (ac-config-default)
+(ac-config-default)
 (require 'ac-company)
 ;; 対象の全てで補完を有効にする
 (global-auto-complete-mode t)
@@ -2994,7 +2994,7 @@ FORMAT-STRING is like `format', but it can have multiple %-sequences."
   (byte-recompile-directory "~/.emacs.d" 0 t)
   (byte-recompile-directory "~/.emacs.d/wanderlust" 0 t)
   (byte-recompile-directory "~/.emacs.d/vim" 0 t)
-  (byte-recompile-directory "~/.emacs.d/ensime_2.8.1-0.4.2/elisp/" 0 t)
+  (byte-recompile-directory "~/.emacs.d/ensime_2.9.0-1-0.6.0/elisp" 0 t)
   (byte-recompile-directory "~/.emacs.d/twittering" 0 t))
 
 (defalias 'by 'byte-compile-all-my-files)
@@ -3603,9 +3603,9 @@ FORMAT-STRING is like `format', but it can have multiple %-sequences."
 
 ;; (no-easy-keys-minor-mode 1)
 
-(require 'scratch-log)
-(setq sl-scratch-log-file "~/Dropbox/.scratch-log")
-(setq sl-prev-scratch-string-file "~/Dropbox/.scratch-log-prev")
+;; (require 'scratch-log)
+;; (setq sl-scratch-log-file "~/Dropbox/.scratch-log")
+;; (setq sl-prev-scratch-string-file "~/Dropbox/.scratch-log-prev")
 
 (require 'fuzzy-format)
 (setq fuzzy-format-default-indent-tabs-mode nil)
