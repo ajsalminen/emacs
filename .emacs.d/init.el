@@ -1487,6 +1487,9 @@ directory, select directory. Lastly the file is opened."
 
 (add-hook 'org-timer-done-hook '(lambda()
                                   (todochiku-message "Pomodoro" "completed" (todochiku-icon 'alarm))))
+
+(add-hook 'org-capture-after-finalize-hook '(lambda() (org-agenda-redo)))
+
 (when (eq window-system 'ns)
   (defun org-toggle-iimage-in-org ()
     "display images in your org file"
