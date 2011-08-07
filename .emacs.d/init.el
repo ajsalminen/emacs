@@ -1876,7 +1876,7 @@ nEnd:")
         ("\\.hpp$" (".cpp" ".c"))))
 
 (require 'flymake)
-(defvar xcode:gccver "4.2")
+(defvar xcode:gccver "4.2.1")
 (defvar xcode:sdkver "4.3")
 (defvar xcode:sdkpath "/Developer/Platforms/iPhoneSimulator.platform/Developer")
 (defvar xcode:sdk (concat xcode:sdkpath "/SDKs/iPhoneSimulator" xcode:sdkver ".sdk"))
