@@ -432,19 +432,19 @@
                         (setq offlineimap-enable-mode-line-p t)
                         (defun kill-offlineimap ()
                           (interactive)
+                          (shell-command "kill `cat ~/.offlineimap/pid`")
                           (ignore-errors
                             (save-excursion
                               (set-buffer (get-buffer-create "*OfflineIMAP*"))
                               (offlineimap-kill))))
-
                         (defun restart-offlineimap ()
                           (interactive)
-                          (kill-offlineimap)
-                          (progn
-                            (offlineimap)))
-
-                        (add-hook 'wl-init-hook 'offlineimap)
-                        ;; (add-hook 'wl-exit-hook 'offlineimap-resync)
+                          (ignore-errors
+                            (kill-offlineimap))
+                          (offlineimap))
+                        (add-hook 'wl-init-hook 'restart-offlineimap)
+                        (add-hook 'wl-exit-hook 'offlineimap-resync)ppp
+                        (add-hook 'wl-summary-exit-hook 'offlineimap-resync)
                         (add-hook 'wl-summary-prepared-hook '(lambda ()
                                                                (wl-summary-rescan "date" t )
                                                                (beginning-of-buffer)))
