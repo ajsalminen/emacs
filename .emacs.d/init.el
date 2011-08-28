@@ -442,9 +442,16 @@
                           (ignore-errors
                             (kill-offlineimap))
                           (offlineimap))
+                        (defun resync-offlineimap ()
+                          (interactive)
+                          (condition-case err
+                              (offlineimap-resync)
+                            (error
+                             (offlineimap))))
+
                         (add-hook 'wl-init-hook 'restart-offlineimap)
-                        (add-hook 'wl-exit-hook 'offlineimap-resync)ppp
-                        (add-hook 'wl-summary-exit-hook 'offlineimap-resync)
+                        (add-hook 'wl-exit-hook 'resync-offlineimap)
+                        (add-hook 'wl-summary-exit-hook 'resync-offlineimap)
                         (add-hook 'wl-summary-prepared-hook '(lambda ()
                                                                (wl-summary-rescan "date" t )
                                                                (beginning-of-buffer)))
