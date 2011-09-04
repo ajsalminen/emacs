@@ -2009,8 +2009,8 @@ nEnd:")
 
 
   (require 'xcode-document-viewer)
-  (setq xcdoc:document-path "/Developer/Platforms/iPhoneOS.platform/Developer/Documentation/DocSets/com.apple.adc.documentation.AppleiOS4_3.iOSLibrary.docset/")
-  (setq xcdoc:open-w3m-other-buffer t)
+  (setq xcdoc:document-path "/Developer/Documentation/DocSets/com.apple.adc.documentation.AppleiOS4_3.iOSLibrary.docset")
+  (setq xcdoc:open-w3m-other-buffer nil)
 
   (require 'anything-apple-docset)
   (setq anything-apple-docset-path xcdoc:document-path)
@@ -2018,7 +2018,7 @@ nEnd:")
 
   (require 'apple-reference-browser)
   (setq arb:docset-path xcdoc:document-path)
-  (setq arb:open-w3m-other-buffer t)
+  (setq arb:open-w3m-other-buffer nil)
   (define-key global-map "\C-cd" 'arb:search)
 
 
