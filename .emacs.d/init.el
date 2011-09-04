@@ -3633,6 +3633,6 @@ FORMAT-STRING is like `format', but it can have multiple %-sequences."
 (require 'htmlize)
 
 (require 'ace-jump-mode)
-(define-key global-map (kbd "C-c SPC") 'ace-jump-mode)
+(define-key global-map (kbd "C-x SPC") 'ace-jump-mode)
 
 (message "********** successfully initialized **********")
