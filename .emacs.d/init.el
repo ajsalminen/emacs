@@ -432,19 +432,26 @@
                         (setq offlineimap-enable-mode-line-p t)
                         (defun kill-offlineimap ()
                           (interactive)
+                          (shell-command "kill `cat ~/.offlineimap/pid`")
                           (ignore-errors
                             (save-excursion
                               (set-buffer (get-buffer-create "*OfflineIMAP*"))
                               (offlineimap-kill))))
-
                         (defun restart-offlineimap ()
                           (interactive)
-                          (kill-offlineimap)
-                          (progn
-                            (offlineimap)))
+                          (ignore-errors
+                            (kill-offlineimap))
+                          (offlineimap))
+                        (defun resync-offlineimap ()
+                          (interactive)
+                          (condition-case err
+                              (offlineimap-resync)
+                            (error
+                             (offlineimap))))
 
-                        (add-hook 'wl-init-hook 'offlineimap)
-                        ;; (add-hook 'wl-exit-hook 'offlineimap-resync)
+                        (add-hook 'wl-init-hook 'restart-offlineimap)
+                        (add-hook 'wl-exit-hook 'resync-offlineimap)
+                        (add-hook 'wl-summary-exit-hook 'resync-offlineimap)
                         (add-hook 'wl-summary-prepared-hook '(lambda ()
                                                                (wl-summary-rescan "date" t )
                                                                (beginning-of-buffer)))
@@ -1876,7 +1883,7 @@ nEnd:")
         ("\\.hpp$" (".cpp" ".c"))))
 
 (require 'flymake)
-(defvar xcode:gccver "4.2")
+(defvar xcode:gccver "4.2.1")
 (defvar xcode:sdkver "4.3")
 (defvar xcode:sdkpath "/Developer/Platforms/iPhoneSimulator.platform/Developer")
 (defvar xcode:sdk (concat xcode:sdkpath "/SDKs/iPhoneSimulator" xcode:sdkver ".sdk"))
@@ -3422,7 +3429,8 @@ FORMAT-STRING is like `format', but it can have multiple %-sequences."
   "Prevent annoying \"Active processes exist\" query when you quit Emacs."
   (flet ((process-list ())) ad-do-it))
 
-(autoload 'sql-mode "sql-mode" "SQL Editing Mode" t)
+(require 'sql)
+;; (autoload 'sql-mode "sql-mode" "SQL Editing Mode" t)
 (setq auto-mode-alist
       (append '(("\\.sql$" . sql-mode)
                 ("\\.tbl$" . sql-mode)
@@ -3437,23 +3445,23 @@ FORMAT-STRING is like `format', but it can have multiple %-sequences."
                          (function (lambda ()
                                      (local-set-key "\C-cu" 'sql-to-update)))))))
 
-(defadvice sql-send-region (after sql-store-in-history)
-  "The region sent to the SQLi process is also stored in the history."
-  (let ((history (buffer-substring-no-properties start end)))
-    (save-excursion
-      (set-buffer sql-buffer)
-      (message history)
-      (if (and (funcall comint-input-filter history)
-               (or (null comint-input-ignoredups)
-                   (not (ring-p comint-input-ring))
-                   (ring-empty-p comint-input-ring)
-                   (not (string-equal (ring-ref comint-input-ring 0)
-                                      history))))
-          (ring-insert comint-input-ring history))
-      (setq comint-save-input-ring-index comint-input-ring-index)
-      (setq comint-input-ring-index nil))))
+;; (defadvice sql-send-region (after sql-store-in-history)
+;;   "The region sent to the SQLi process is also stored in the history."
+;;   (let ((history (buffer-substring-no-properties start end)))
+;;     (save-excursion
+;;       (set-buffer sql-buffer)
+;;       (message history)
+;;       (if (and (funcall comint-input-filter history)
+;;                (or (null comint-input-ignoredups)
+;;                    (not (ring-p comint-input-ring))
+;;                    (ring-empty-p comint-input-ring)
+;;                    (not (string-equal (ring-ref comint-input-ring 0)
+;;                                       history))))
+;;           (ring-insert comint-input-ring history))
+;;       (setq comint-save-input-ring-index comint-input-ring-index)
+;;       (setq comint-input-ring-index nil))))
 
-(ad-activate 'sql-send-region)
+;; (ad-activate 'sql-send-region)
 
 (defun my-sqli-setup ()
   "Set the input ring file name based on the product name."
