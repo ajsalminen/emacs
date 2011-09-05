@@ -1420,10 +1420,6 @@ directory, select directory. Lastly the file is opened."
 (add-hook 'today-invisible-calendar-hook 'calendar-mark-weekend)
 
 
-(require 'calfw) ; 初回一度だけ
-;; (cfw:open-calendar-buffer)
-;; (cfw:contents-debug-data)
-
 ;;for carbon emacs
 (unless (fboundp 'calendar-extract-day)
   (defalias 'calendar-extract-day (symbol-function 'extract-calendar-day))
@@ -1440,8 +1436,18 @@ directory, select directory. Lastly the file is opened."
 
 ;; 週の先頭の曜日
 (setq calendar-week-start-day 0) ; 日曜日は0, 月曜日は1
-(require 'calfw-ical)
-(cfw:install-ical-schedules)
+
+(defun start-calfw ()
+  (interactive)
+  (require 'calfw) ; 初回一度だけ
+  ;; (cfw:open-calendar-buffer)
+  ;; (cfw:contents-debug-data)
+  (require 'calfw-ical)
+  (cfw:install-ical-schedules)
+  (require 'calfw-org)
+  (cfw:install-org-schedules)
+  (cfw:open-org-calendar))
+
 
 ;; org-modeを利用するための設定
 (require 'org-install)
@@ -1606,12 +1612,6 @@ nEnd:")
 
 (global-set-key "\C-ca" 'org-agenda)
 (global-set-key "\C-cb" 'org-iswitchb)
-
-(require 'calfw-ical)
-(cfw:install-ical-schedules)
-(require 'calfw-org)
-(cfw:install-org-schedules)
-(cfw:open-org-calendar)
 
 (add-hook 'org-mode-hook 'turn-on-font-lock) ; Org buffers only
 (add-hook 'org-mode-hook
