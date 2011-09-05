@@ -2016,8 +2016,8 @@ nEnd:")
 
 
   (require 'xcode-document-viewer)
-  (setq xcdoc:document-path "/Developer/Platforms/iPhoneOS.platform/Developer/Documentation/DocSets/com.apple.adc.documentation.AppleiOS4_3.iOSLibrary.docset/")
-  (setq xcdoc:open-w3m-other-buffer t)
+  (setq xcdoc:document-path "/Developer/Documentation/DocSets/com.apple.adc.documentation.AppleiOS4_3.iOSLibrary.docset")
+  (setq xcdoc:open-w3m-other-buffer nil)
 
   (require 'anything-apple-docset)
   (setq anything-apple-docset-path xcdoc:document-path)
@@ -2025,7 +2025,7 @@ nEnd:")
 
   (require 'apple-reference-browser)
   (setq arb:docset-path xcdoc:document-path)
-  (setq arb:open-w3m-other-buffer t)
+  (setq arb:open-w3m-other-buffer nil)
   (define-key global-map "\C-cd" 'arb:search)
 
 
@@ -3429,7 +3429,8 @@ FORMAT-STRING is like `format', but it can have multiple %-sequences."
   "Prevent annoying \"Active processes exist\" query when you quit Emacs."
   (flet ((process-list ())) ad-do-it))
 
-(autoload 'sql-mode "sql-mode" "SQL Editing Mode" t)
+(require 'sql)
+;; (autoload 'sql-mode "sql-mode" "SQL Editing Mode" t)
 (setq auto-mode-alist
       (append '(("\\.sql$" . sql-mode)
                 ("\\.tbl$" . sql-mode)
@@ -3444,23 +3445,23 @@ FORMAT-STRING is like `format', but it can have multiple %-sequences."
                          (function (lambda ()
                                      (local-set-key "\C-cu" 'sql-to-update)))))))
 
-(defadvice sql-send-region (after sql-store-in-history)
-  "The region sent to the SQLi process is also stored in the history."
-  (let ((history (buffer-substring-no-properties start end)))
-    (save-excursion
-      (set-buffer sql-buffer)
-      (message history)
-      (if (and (funcall comint-input-filter history)
-               (or (null comint-input-ignoredups)
-                   (not (ring-p comint-input-ring))
-                   (ring-empty-p comint-input-ring)
-                   (not (string-equal (ring-ref comint-input-ring 0)
-                                      history))))
-          (ring-insert comint-input-ring history))
-      (setq comint-save-input-ring-index comint-input-ring-index)
-      (setq comint-input-ring-index nil))))
+;; (defadvice sql-send-region (after sql-store-in-history)
+;;   "The region sent to the SQLi process is also stored in the history."
+;;   (let ((history (buffer-substring-no-properties start end)))
+;;     (save-excursion
+;;       (set-buffer sql-buffer)
+;;       (message history)
+;;       (if (and (funcall comint-input-filter history)
+;;                (or (null comint-input-ignoredups)
+;;                    (not (ring-p comint-input-ring))
+;;                    (ring-empty-p comint-input-ring)
+;;                    (not (string-equal (ring-ref comint-input-ring 0)
+;;                                       history))))
+;;           (ring-insert comint-input-ring history))
+;;       (setq comint-save-input-ring-index comint-input-ring-index)
+;;       (setq comint-input-ring-index nil))))
 
-(ad-activate 'sql-send-region)
+;; (ad-activate 'sql-send-region)
 
 (defun my-sqli-setup ()
   "Set the input ring file name based on the product name."
