@@ -873,7 +873,7 @@
 (setq mac-allow-anti-aliasing t)
 
 ;;Font settings for CJK fonts on Cocoa Emacs
-(when (and (= emacs-major-version 23) (or (eq window-system 'mac) (eq window-system 'ns)))
+(when (and (>= emacs-major-version 23) (or (eq window-system 'mac) (eq window-system 'ns)))
   (create-fontset-from-ascii-font
    "-apple-monaco-medium-normal-normal-*-12-*" nil "hirakaku12")
 
@@ -900,8 +900,8 @@
    'katakana-jisx0201
    "-apple-hiragino_kaku_gothic_pro-medium-normal-normal-*-14-*-iso10646-1")
 
-  ;; (if (fboundp 'ns-toggle-fullscreen)
-  ;;     (global-set-key "\M-\r" 'ns-toggle-fullscreen))
+  (if (fboundp 'ns-toggle-fullscreen)
+      (global-set-key "\M-\r" 'ns-toggle-fullscreen))
 
   ;; apologetic hack to make sure my mac input is used
   (defun set-mac-input ()
