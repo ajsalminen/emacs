@@ -21,7 +21,7 @@
                         "~/.emacs.d/el-get/el-get"
 			"~/.emacs.d/el-get/google-weather"
                         "~/.emacs.d/elib-1.0"
-                        "~/.emacs.d/ensime_2.9.0-1-0.6.1/elisp"
+                        "~/.emacs.d/ensime_2.9.1-0.7.6/elisp"
                         "~/.emacs.d/ess-5.11/lisp"
                         "~/.emacs.d/jdee/dist/jdee-2.4.1/lisp"
                         "~/.emacs.d/magit"
@@ -3013,7 +3013,7 @@ FORMAT-STRING is like `format', but it can have multiple %-sequences."
   (byte-recompile-directory "~/.emacs.d" 0 t)
   (byte-recompile-directory "~/.emacs.d/wanderlust" 0 t)
   (byte-recompile-directory "~/.emacs.d/vim" 0 t)
-  (byte-recompile-directory "~/.emacs.d/ensime_2.9.0-1-0.6.1/elisp" 0 t)
+  (byte-recompile-directory "~/.emacs.d/ensime_2.9.1-0.7.6/elisp" 0 t)
   (byte-recompile-directory "~/.emacs.d/twittering" 0 t))
 
 (defalias 'by 'byte-compile-all-my-files)
