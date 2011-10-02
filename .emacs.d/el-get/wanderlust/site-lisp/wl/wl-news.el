@@ -67,6 +67,10 @@
 (defconst wl-news-news-alist
   '(("en" ((2 16 0) . "* Changes in 2.16.0 from 2.14.x
 
+** Added support for sending mail with sendmail package
+
+** Prevent accidental loss of messages when renaming IMAP folder
+
 ** Put spam mark on the message registered as spam.
 
 ** Remove spam mark from the message registered as non-spam.

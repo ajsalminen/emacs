@@ -21,7 +21,7 @@
                         "~/.emacs.d/el-get/el-get"
 			"~/.emacs.d/el-get/google-weather"
                         "~/.emacs.d/elib-1.0"
-                        "~/.emacs.d/ensime_2.9.0-1-0.6.1/elisp"
+                        "~/.emacs.d/ensime_2.9.1-0.7.6/elisp"
                         "~/.emacs.d/ess-5.11/lisp"
                         "~/.emacs.d/jdee/dist/jdee-2.4.1/lisp"
                         "~/.emacs.d/magit"
@@ -384,29 +384,29 @@
 
                )
         (:name wanderlust
-               :type git
-               :module "wanderlust"
-	       :depends (apel flim semi)
-               :url "https://github.com/wanderlust/wanderlust.git"
-               :build (mapcar
-                       (lambda (target-and-dirs)
-                         (list el-get-emacs
-                               (mapcar (lambda (pkg)
-                                         (mapcar (lambda (d) `("-L" ,d)) (el-get-load-path pkg)))
-                                       '("apel" "flim" "semi"))
+               ;; :type git
+               ;; :module "wanderlust"
+	       ;; :depends (apel flim semi)
+               ;; :url "https://github.com/wanderlust/wanderlust.git"
+               ;; :build (mapcar
+               ;;         (lambda (target-and-dirs)
+               ;;           (list el-get-emacs
+               ;;                 (mapcar (lambda (pkg)
+               ;;                           (mapcar (lambda (d) `("-L" ,d)) (el-get-load-path pkg)))
+               ;;                         '("apel" "flim" "semi"))
 
-                               "--eval" (prin1-to-string
-                                         '(progn (setq wl-install-utils t)
-                                                 (setq wl-info-lang "en")
-                                                 (setq wl-news-lang "en")))
+               ;;                 "--eval" (prin1-to-string
+               ;;                           '(progn (setq wl-install-utils t)
+               ;;                                   (setq wl-info-lang "en")
+               ;;                                   (setq wl-news-lang "en")))
 
-                               (split-string "-batch -q -no-site-file -l WL-MK -f")
-                               target-and-dirs))
-                       '(("wl-texinfo-format" "doc")
-                         ("compile-wl-package"  "site-lisp" "icons")
-                         ("install-wl-package" "site-lisp" "icons")))
-               :info "doc/wl.info"
-               :load-path ("site-lisp/wl" "utils")
+               ;;                 (split-string "-batch -q -no-site-file -l WL-MK -f")
+               ;;                 target-and-dirs))
+               ;;         '(("wl-texinfo-format" "doc")
+               ;;           ("compile-wl-package"  "site-lisp" "icons")
+               ;;           ("install-wl-package" "site-lisp" "icons")))
+               ;; :info "doc/wl.info"
+               ;; :load-path ("site-lisp/wl" "utils")
                :after (lambda ()
                         (autoload 'wl "wl" "Wanderlust" t)
                         (autoload 'wl-other-frame "wl" "Wanderlust on new frame." t)
@@ -466,9 +466,9 @@
                         (setq mu-cite-prefix-format '("> "))
                         (setq mu-cite-top-format '("\n\n" full-name "'s message :\n\n"))
                         (add-hook 'mail-citation-hook (function mu-cite-original))
-                        (unless (assq 'signature wl-draft-config-sub-func-alist)
-                          (wl-append wl-draft-config-sub-func-alist
-                                     '((signature . wl-draft-config-sub-signature))))
+                        ;; (unless (assq 'signature wl-draft-config-sub-func-alist)
+                        ;;   (wl-append wl-draft-config-sub-func-alist
+                        ;;              '((signature . wl-draft-config-sub-signature))))
                         (defun wl-draft-config-sub-signature (content)
                           "Insert the signature at the end of the MIME message."
                           (let ((signature-insert-at-eof nil)
@@ -478,6 +478,7 @@
                         ))
         ))
 (el-get 'sync)
+
 
 ;; All my custom settings that differ and/or can't be under version control
 (setq custom-file "~/custom.el")
@@ -3013,7 +3014,7 @@ FORMAT-STRING is like `format', but it can have multiple %-sequences."
   (byte-recompile-directory "~/.emacs.d" 0 t)
   (byte-recompile-directory "~/.emacs.d/wanderlust" 0 t)
   (byte-recompile-directory "~/.emacs.d/vim" 0 t)
-  (byte-recompile-directory "~/.emacs.d/ensime_2.9.0-1-0.6.1/elisp" 0 t)
+  (byte-recompile-directory "~/.emacs.d/ensime_2.9.1-0.7.6/elisp" 0 t)
   (byte-recompile-directory "~/.emacs.d/twittering" 0 t))
 
 (defalias 'by 'byte-compile-all-my-files)
@@ -3576,13 +3577,13 @@ FORMAT-STRING is like `format', but it can have multiple %-sequences."
             (local-set-key (kbd "M-.") 'gtags-find-tag)   ; find a tag, also M-.
             (local-set-key (kbd "M-,") 'gtags-find-rtag)))  ; reverse tag
 
-(require 'elscreen)
-(require 'elscreen-w3m)
-(require 'elscreen-color-theme)
-(require 'elscreen-server)
-(require 'elscreen-wl)
-(require 'elscreen-dired)
-(require 'elscreen-gf)
+;; (require 'elscreen)
+;; (require 'elscreen-w3m)
+;; (require 'elscreen-color-theme)
+;; (require 'elscreen-server)
+;; (require 'elscreen-wl)
+;; (require 'elscreen-dired)
+;; (require 'elscreen-gf)
 
 (require 'multiple-line-edit)
 (global-set-key "\C-c<" 'mulled/edit-trailing-edges)
@@ -3635,5 +3636,13 @@ FORMAT-STRING is like `format', but it can have multiple %-sequences."
 
 (require 'ace-jump-mode)
 (define-key global-map (kbd "C-x SPC") 'ace-jump-mode)
+
+(require 'clipboard-to-kill-ring)
+(clipboard-to-kill-ring t)
+
+(require 'workgroups)
+(workgroups-mode 1)
+(setq wg-prefix-key (kbd "C-x w"))
+(wg-load "~/.emacs.d/wg")
 
 (message "********** successfully initialized **********")

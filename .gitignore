@@ -43,3 +43,5 @@ ac-comphist.dat
 .emacs.d/emacs-w3m/config.log
 .emacs.d/emacs-w3m/doc/emacs-w3m-ja.info
 .emacs.d/emacs-w3m/w3m-load.el
+.emacs.d/el-get/wanderlust/wl/wl-news.el
+.emacs.d/wg
