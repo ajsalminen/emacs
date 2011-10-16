@@ -3643,6 +3643,22 @@ FORMAT-STRING is like `format', but it can have multiple %-sequences."
 (require 'workgroups)
 (workgroups-mode 1)
 (setq wg-prefix-key (kbd "C-x w"))
-(wg-load "~/.emacs.d/wg")
+
+(defun write-string-to-file (string file)
+  (interactive "sEnter the string: \nFFile to save to: ")
+  (with-temp-buffer
+    (insert string)
+    (when (file-writable-p file)
+      (write-region (point-min)
+                    (point-max)
+                    file))))
+
+(defun load-wg ()
+  (interactive)
+  (let ((file  "~/.emacs.d/wg"))
+    (progn
+      (unless (file-exists-p file)
+        (write-string-to-file " " file))
+      (wg-load file))))
 
 (message "********** successfully initialized **********")
