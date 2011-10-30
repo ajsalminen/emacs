@@ -160,8 +160,8 @@ autoloads: bbdb-autoloads.el
 autoloadsc: bbdb-autoloads.elc
 
 extras:: bbdb-print.elc bbdb-ftp.elc bbdb-whois.elc \
-	Warning: Could not find simple.el nor simple.elc Warning: Could not find simple.el nor simple.elc bbdb-snarf.elc bbdb-w3.elc \
-	Warning: Could not find simple.el nor simple.elc bbdb-merge.elc bbdb-migrate.elc bbdb-gui.elc
+	  bbdb-snarf.elc bbdb-w3.elc \
+	bbdb-sc.elc bbdb-merge.elc bbdb-migrate.elc bbdb-gui.elc
 ifeq ($(EMACS_FLAVOR),xemacs)
 extras:: bbdb-xemacs.elc
 endif

@@ -21,7 +21,7 @@
                         "~/.emacs.d/el-get/el-get"
 			"~/.emacs.d/el-get/google-weather"
                         "~/.emacs.d/elib-1.0"
-                        "~/.emacs.d/ensime_2.9.0-1-0.6.1/elisp"
+                        "~/.emacs.d/ensime_2.9.1-0.7.6/elisp"
                         "~/.emacs.d/ess-5.11/lisp"
                         "~/.emacs.d/jdee/dist/jdee-2.4.1/lisp"
                         "~/.emacs.d/magit"
@@ -384,29 +384,29 @@
 
                )
         (:name wanderlust
-               :type git
-               :module "wanderlust"
-	       :depends (apel flim semi)
-               :url "https://github.com/wanderlust/wanderlust.git"
-               :build (mapcar
-                       (lambda (target-and-dirs)
-                         (list el-get-emacs
-                               (mapcar (lambda (pkg)
-                                         (mapcar (lambda (d) `("-L" ,d)) (el-get-load-path pkg)))
-                                       '("apel" "flim" "semi"))
+               ;; :type git
+               ;; :module "wanderlust"
+	       ;; :depends (apel flim semi)
+               ;; :url "https://github.com/wanderlust/wanderlust.git"
+               ;; :build (mapcar
+               ;;         (lambda (target-and-dirs)
+               ;;           (list el-get-emacs
+               ;;                 (mapcar (lambda (pkg)
+               ;;                           (mapcar (lambda (d) `("-L" ,d)) (el-get-load-path pkg)))
+               ;;                         '("apel" "flim" "semi"))
 
-                               "--eval" (prin1-to-string
-                                         '(progn (setq wl-install-utils t)
-                                                 (setq wl-info-lang "en")
-                                                 (setq wl-news-lang "en")))
+               ;;                 "--eval" (prin1-to-string
+               ;;                           '(progn (setq wl-install-utils t)
+               ;;                                   (setq wl-info-lang "en")
+               ;;                                   (setq wl-news-lang "en")))
 
-                               (split-string "-batch -q -no-site-file -l WL-MK -f")
-                               target-and-dirs))
-                       '(("wl-texinfo-format" "doc")
-                         ("compile-wl-package"  "site-lisp" "icons")
-                         ("install-wl-package" "site-lisp" "icons")))
-               :info "doc/wl.info"
-               :load-path ("site-lisp/wl" "utils")
+               ;;                 (split-string "-batch -q -no-site-file -l WL-MK -f")
+               ;;                 target-and-dirs))
+               ;;         '(("wl-texinfo-format" "doc")
+               ;;           ("compile-wl-package"  "site-lisp" "icons")
+               ;;           ("install-wl-package" "site-lisp" "icons")))
+               ;; :info "doc/wl.info"
+               ;; :load-path ("site-lisp/wl" "utils")
                :after (lambda ()
                         (autoload 'wl "wl" "Wanderlust" t)
                         (autoload 'wl-other-frame "wl" "Wanderlust on new frame." t)
@@ -478,9 +478,9 @@
                         (setq mu-cite-prefix-format '("> "))
                         (setq mu-cite-top-format '("\n\n" full-name "'s message :\n\n"))
                         (add-hook 'mail-citation-hook (function mu-cite-original))
-                        (unless (assq 'signature wl-draft-config-sub-func-alist)
-                          (wl-append wl-draft-config-sub-func-alist
-                                     '((signature . wl-draft-config-sub-signature))))
+                        ;; (unless (assq 'signature wl-draft-config-sub-func-alist)
+                        ;;   (wl-append wl-draft-config-sub-func-alist
+                        ;;              '((signature . wl-draft-config-sub-signature))))
                         (defun wl-draft-config-sub-signature (content)
                           "Insert the signature at the end of the MIME message."
                           (let ((signature-insert-at-eof nil)
@@ -490,6 +490,7 @@
                         ))
         ))
 (el-get 'sync)
+
 
 ;; All my custom settings that differ and/or can't be under version control
 (setq custom-file "~/custom.el")
@@ -885,7 +886,7 @@
 (setq mac-allow-anti-aliasing t)
 
 ;;Font settings for CJK fonts on Cocoa Emacs
-(when (and (= emacs-major-version 23) (or (eq window-system 'mac) (eq window-system 'ns)))
+(when (and (>= emacs-major-version 23) (or (eq window-system 'mac) (eq window-system 'ns)))
   (create-fontset-from-ascii-font
    "-apple-monaco-medium-normal-normal-*-12-*" nil "hirakaku12")
 
@@ -912,8 +913,8 @@
    'katakana-jisx0201
    "-apple-hiragino_kaku_gothic_pro-medium-normal-normal-*-14-*-iso10646-1")
 
-  ;; (if (fboundp 'ns-toggle-fullscreen)
-  ;;     (global-set-key "\M-\r" 'ns-toggle-fullscreen))
+  (if (fboundp 'ns-toggle-fullscreen)
+      (global-set-key "\M-\r" 'ns-toggle-fullscreen))
 
   ;; apologetic hack to make sure my mac input is used
   (defun set-mac-input ()
@@ -1432,10 +1433,6 @@ directory, select directory. Lastly the file is opened."
 (add-hook 'today-invisible-calendar-hook 'calendar-mark-weekend)
 
 
-(require 'calfw) ; 初回一度だけ
-;; (cfw:open-calendar-buffer)
-;; (cfw:contents-debug-data)
-
 ;;for carbon emacs
 (unless (fboundp 'calendar-extract-day)
   (defalias 'calendar-extract-day (symbol-function 'extract-calendar-day))
@@ -1452,8 +1449,18 @@ directory, select directory. Lastly the file is opened."
 
 ;; 週の先頭の曜日
 (setq calendar-week-start-day 0) ; 日曜日は0, 月曜日は1
-(require 'calfw-ical)
-(cfw:install-ical-schedules)
+
+(defun start-calfw ()
+  (interactive)
+  (require 'calfw) ; 初回一度だけ
+  ;; (cfw:open-calendar-buffer)
+  ;; (cfw:contents-debug-data)
+  (require 'calfw-ical)
+  (cfw:install-ical-schedules)
+  (require 'calfw-org)
+  (cfw:install-org-schedules)
+  (cfw:open-org-calendar))
+
 
 ;; org-modeを利用するための設定
 (require 'org-install)
@@ -1618,12 +1625,6 @@ nEnd:")
 
 (global-set-key "\C-ca" 'org-agenda)
 (global-set-key "\C-cb" 'org-iswitchb)
-
-(require 'calfw-ical)
-(cfw:install-ical-schedules)
-(require 'calfw-org)
-(cfw:install-org-schedules)
-(cfw:open-org-calendar)
 
 (add-hook 'org-mode-hook 'turn-on-font-lock) ; Org buffers only
 (add-hook 'org-mode-hook
@@ -3025,7 +3026,7 @@ FORMAT-STRING is like `format', but it can have multiple %-sequences."
   (byte-recompile-directory "~/.emacs.d" 0 t)
   (byte-recompile-directory "~/.emacs.d/wanderlust" 0 t)
   (byte-recompile-directory "~/.emacs.d/vim" 0 t)
-  (byte-recompile-directory "~/.emacs.d/ensime_2.9.0-1-0.6.1/elisp" 0 t)
+  (byte-recompile-directory "~/.emacs.d/ensime_2.9.1-0.7.6/elisp" 0 t)
   (byte-recompile-directory "~/.emacs.d/twittering" 0 t))
 
 (defalias 'by 'byte-compile-all-my-files)
@@ -3588,13 +3589,13 @@ FORMAT-STRING is like `format', but it can have multiple %-sequences."
             (local-set-key (kbd "M-.") 'gtags-find-tag)   ; find a tag, also M-.
             (local-set-key (kbd "M-,") 'gtags-find-rtag)))  ; reverse tag
 
-(require 'elscreen)
-(require 'elscreen-w3m)
-(require 'elscreen-color-theme)
-(require 'elscreen-server)
-(require 'elscreen-wl)
-(require 'elscreen-dired)
-(require 'elscreen-gf)
+;; (require 'elscreen)
+;; (require 'elscreen-w3m)
+;; (require 'elscreen-color-theme)
+;; (require 'elscreen-server)
+;; (require 'elscreen-wl)
+;; (require 'elscreen-dired)
+;; (require 'elscreen-gf)
 
 (require 'multiple-line-edit)
 (global-set-key "\C-c<" 'mulled/edit-trailing-edges)
@@ -3646,7 +3647,31 @@ FORMAT-STRING is like `format', but it can have multiple %-sequences."
 (require 'htmlize)
 
 (require 'ace-jump-mode)
-(define-key global-map (kbd "C-c SPC") 'ace-jump-mode)
+(define-key global-map (kbd "C-x SPC") 'ace-jump-mode)
+
+(require 'clipboard-to-kill-ring)
+(clipboard-to-kill-ring t)
+
+(require 'workgroups)
+(workgroups-mode 1)
+(setq wg-prefix-key (kbd "C-x w"))
+
+(defun write-string-to-file (string file)
+  (interactive "sEnter the string: \nFFile to save to: ")
+  (with-temp-buffer
+    (insert string)
+    (when (file-writable-p file)
+      (write-region (point-min)
+                    (point-max)
+                    file))))
+
+(defun load-wg ()
+  (interactive)
+  (let ((file  "~/.emacs.d/wg"))
+    (progn
+      (unless (file-exists-p file)
+        (write-string-to-file " " file))
+      (wg-load file))))
 
 (setq emacs-directory "~/.emacs.d/")
 (setq backup-directory "~/.saves")

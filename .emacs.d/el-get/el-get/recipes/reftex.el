@@ -5,4 +5,6 @@
        :build ("make" "make info")
        :features reftex
        :load-path ("lisp")
-       :info "doc")
+       :info "doc"
+       :after (lambda ()
+		(load "reftex")))
