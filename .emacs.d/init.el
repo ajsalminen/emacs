@@ -455,6 +455,18 @@
                         (add-hook 'wl-summary-prepared-hook '(lambda ()
                                                                (wl-summary-rescan "date" t )
                                                                (beginning-of-buffer)))
+
+                        (defun imapfilter ()
+                          (interactive)
+                          (message "calling imapfilter…")
+                          (when (and (file-readable-p "~/.imapfilter/config.lua")
+                                     (executable-find "imapfilter"))
+                            (if (start-process "imapfilter" "imapfilter" "imapfilter")
+                                (message "imapfilter ran fine.")
+                              (message "error running imapfilter!"))))
+
+                        (add-hook 'wl-folder-check-entity-pre-hook 'imapfilter)
+
                         (setq wl-icon-directory "~/.emacs.d/el-get/wanderlust/icons")
                         (require 'wl-gravatar)
                         (setq wl-highlight-x-face-function 'wl-gravatar-insert)
@@ -3636,4 +3648,8 @@ FORMAT-STRING is like `format', but it can have multiple %-sequences."
 (require 'ace-jump-mode)
 (define-key global-map (kbd "C-c SPC") 'ace-jump-mode)
 
+(setq emacs-directory "~/.emacs.d/")
+(setq backup-directory "~/.saves")
+
+(require 'backups-mode)
 (message "********** successfully initialized **********")
