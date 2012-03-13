@@ -796,7 +796,9 @@
   (interactive)
   (load "~/.emacs.d/init.el"))
 
-(setq default-directory "~/projects/ghub")
+(if (file-exists-p  "~/projects/ghub")
+    (setq default-directory "~/projects/ghub"))
+
 
 (require 'yasnippet)
 (yas/load-directory "~/.emacs.d/yasnippet/snippets")
@@ -1470,6 +1472,7 @@ directory, select directory. Lastly the file is opened."
 
 (require 'google-weather)
 (require 'org-google-weather)
+
 
 (require 'todochiku)
 
