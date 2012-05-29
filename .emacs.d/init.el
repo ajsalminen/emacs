@@ -2032,7 +2032,8 @@ nEnd:")
 
 
   (require 'xcode-document-viewer)
-  (setq xcdoc:document-path "/Developer/Documentation/DocSets/com.apple.adc.documentation.AppleiOS4_3.iOSLibrary.docset")
+  ;; (setq xcdoc:document-path "/Developer/Documentation/DocSets/com.apple.adc.documentation.AppleiOS4_3.iOSLibrary.docset")
+  (setq xcdoc:document-path "~/Library/Developer/Shared/Documentation/DocSets/com.apple.adc.documentation.AppleiOS5_1.iOSLibrary.docset")
   (setq xcdoc:open-w3m-other-buffer nil)
 
   (require 'anything-apple-docset)
