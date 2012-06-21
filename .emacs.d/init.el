@@ -65,7 +65,7 @@
 ;; Setup PATH
 
 (eval-when-compile (require 'cl))
-(when (and (= emacs-major-version 23) (eq window-system 'ns))
+(when (and (>= emacs-major-version 23) (eq window-system 'ns))
   (setq mac-option-key-is-meta nil)
   (setq mac-command-key-is-meta t)
   (setq mac-command-modifier 'meta)
@@ -79,7 +79,7 @@
   ;; really important when typing commasand such
     (mac-add-key-passed-to-system 'shift)))
 
-(when (and (= emacs-major-version 23) (or (eq window-system 'ns) (eq window-system 'x)))
+(when (and (>= emacs-major-version 23) (or (eq window-system 'ns) (eq window-system 'x)))
   (setenv "PATH" (shell-command-to-string "source ~/.zshrc; echo -n $PATH")) ;
   (when (eq window-system 'x)
     (setenv "PATH" (concat "/usr/local/texlive/2010/bin/i386-linux:" (getenv "PATH"))))
@@ -383,113 +383,219 @@
                (add-hook 'mail-setup-hook 'bbdb-insinuate-sendmail)
 
                )
-        (:name wanderlust
-               ;; :type git
-               ;; :module "wanderlust"
-	       ;; :depends (apel flim semi)
-               ;; :url "https://github.com/wanderlust/wanderlust.git"
-               ;; :build (mapcar
-               ;;         (lambda (target-and-dirs)
-               ;;           (list el-get-emacs
-               ;;                 (mapcar (lambda (pkg)
-               ;;                           (mapcar (lambda (d) `("-L" ,d)) (el-get-load-path pkg)))
-               ;;                         '("apel" "flim" "semi"))
 
-               ;;                 "--eval" (prin1-to-string
-               ;;                           '(progn (setq wl-install-utils t)
-               ;;                                   (setq wl-info-lang "en")
-               ;;                                   (setq wl-news-lang "en")))
+        ;; (:name wanderlust
+        ;;        ;; :type git
+        ;;        ;; :module "wanderlust"
+	;;        ;; :depends (apel flim semi)
+        ;;        ;; :url "https://github.com/wanderlust/wanderlust.git"
+        ;;        ;; :build (mapcar
+        ;;        ;;         (lambda (target-and-dirs)
+        ;;        ;;           (list el-get-emacs
+        ;;        ;;                 (mapcar (lambda (pkg)
+        ;;        ;;                           (mapcar (lambda (d) `("-L" ,d)) (el-get-load-path pkg)))
+        ;;        ;;                         '("apel" "flim" "semi"))
 
-               ;;                 (split-string "-batch -q -no-site-file -l WL-MK -f")
-               ;;                 target-and-dirs))
-               ;;         '(("wl-texinfo-format" "doc")
-               ;;           ("compile-wl-package"  "site-lisp" "icons")
-               ;;           ("install-wl-package" "site-lisp" "icons")))
-               ;; :info "doc/wl.info"
-               ;; :load-path ("site-lisp/wl" "utils")
-               :after (lambda ()
-                        (autoload 'wl "wl" "Wanderlust" t)
-                        (autoload 'wl-other-frame "wl" "Wanderlust on new frame." t)
-                        (autoload 'wl-draft "wl-draft" "Write draft with Wanderlust." t)
-                        (if (featurep 'ecb)
-                            (add-hook 'wl-init-hook 'ecb-deactivate))
-                        ;;(add-hook 'wl-exit-hook 'ecb-activate)
-                        (require 'mime-w3m)
-                        (defalias 'wle 'wl-exit)
-                        (defalias 'wlo 'wl-other-frame)
-                        (add-hook 'mime-view-mode-hook
-                                  (lambda ()
-                                    (local-set-key "s" 'w3m-view-this-url-new-session)))
-                        (add-hook 'wl-init-hook (lambda ()
-                                                  (require 'bbdb-wl)
-                                                  (bbdb-wl-setup)))
-                        (require 'wl-draft)
-                        (add-hook 'wl-draft-mode-hook
-                                  (lambda ()
-                                    (flyspell-mode t)
-                                    (define-key wl-draft-mode-map (kbd "<tab>") 'bbdb-complete-name)))
-                        (require 'offlineimap)
-                        (setq offlineimap-enable-mode-line-p t)
-                        (defun kill-offlineimap ()
-                          (interactive)
-                          (shell-command "kill `cat ~/.offlineimap/pid`")
-                          (ignore-errors
-                            (save-excursion
-                              (set-buffer (get-buffer-create "*OfflineIMAP*"))
-                              (offlineimap-kill))))
-                        (defun restart-offlineimap ()
-                          (interactive)
-                          (ignore-errors
-                            (kill-offlineimap))
-                          (offlineimap))
-                        (defun resync-offlineimap ()
-                          (interactive)
-                          (condition-case err
-                              (offlineimap-resync)
-                            (error
-                             (offlineimap))))
+        ;;        ;;                 "--eval" (prin1-to-string
+        ;;        ;;                           '(progn (setq wl-install-utils t)
+        ;;        ;;                                   (setq wl-info-lang "en")
+        ;;        ;;                                   (setq wl-news-lang "en")))
 
-                        (add-hook 'wl-init-hook 'restart-offlineimap)
-                        (add-hook 'wl-exit-hook 'resync-offlineimap)
-                        (add-hook 'wl-summary-exit-hook 'resync-offlineimap)
-                        (add-hook 'wl-summary-prepared-hook '(lambda ()
-                                                               (wl-summary-rescan "date" t )
-                                                               (beginning-of-buffer)))
+        ;;        ;;                 (split-string "-batch -q -no-site-file -l WL-MK -f")
+        ;;        ;;                 target-and-dirs))
+        ;;        ;;         '(("wl-texinfo-format" "doc")
+        ;;        ;;           ("compile-wl-package"  "site-lisp" "icons")
+        ;;        ;;           ("install-wl-package" "site-lisp" "icons")))
+        ;;        ;; :info "doc/wl.info"
+        ;;        ;; :load-path ("site-lisp/wl" "utils")
+        ;;        :after (lambda ()
+        ;;                 (autoload 'wl "wl" "Wanderlust" t)
+        ;;                 (autoload 'wl-other-frame "wl" "Wanderlust on new frame." t)
+        ;;                 (autoload 'wl-draft "wl-draft" "Write draft with Wanderlust." t)
+        ;;                 (if (featurep 'ecb)
+        ;;                     (add-hook 'wl-init-hook 'ecb-deactivate))
+        ;;                 ;;(add-hook 'wl-exit-hook 'ecb-activate)
+        ;;                 (require 'mime-w3m)
+        ;;                 (defalias 'wle 'wl-exit)
+        ;;                 (defalias 'wlo 'wl-other-frame)
+        ;;                 (add-hook 'mime-view-mode-hook
+        ;;                           (lambda ()
+        ;;                             (local-set-key "s" 'w3m-view-this-url-new-session)))
+        ;;                 (add-hook 'wl-init-hook (lambda ()
+        ;;                                           (require 'bbdb-wl)
+	;; 					  (:name wanderlust
+	;; 						 ;; :type git
+	;; 						 ;; :module "wanderlust"
+	;; 						 ;; :depends (apel flim semi)
+	;; 						 ;; :url "https://github.com/wanderlust/wanderlust.git"
+	;; 						 ;; :build (mapcar
+	;; 						 ;;         (lambda (target-and-dirs)
+	;; 						 ;;           (list el-get-emacs
+	;; 						 ;;                 (mapcar (lambda (pkg)
+	;; 						 ;;                           (mapcar (lambda (d) `("-L" ,d)) (el-get-load-path pkg)))
+	;; 						 ;;                         '("apel" "flim" "semi"))
 
-                        (defun imapfilter ()
-                          (interactive)
-                          (message "calling imapfilter…")
-                          (when (and (file-readable-p "~/.imapfilter/config.lua")
-                                     (executable-find "imapfilter"))
-                            (if (start-process "imapfilter" "imapfilter" "imapfilter")
-                                (message "imapfilter ran fine.")
-                              (message "error running imapfilter!"))))
+	;; 						 ;;                 "--eval" (prin1-to-string
+	;; 						 ;;                           '(progn (setq wl-install-utils t)
+	;; 						 ;;                                   (setq wl-info-lang "en")
+	;; 						 ;;                                   (setq wl-news-lang "en")))
 
-                        (add-hook 'wl-folder-check-entity-pre-hook 'imapfilter)
+	;; 						 ;;                 (split-string "-batch -q -no-site-file -l WL-MK -f")
+	;; 						 ;;                 target-and-dirs))
+	;; 						 ;;         '(("wl-texinfo-format" "doc")
+	;; 						 ;;           ("compile-wl-package"  "site-lisp" "icons")
+	;; 						 ;;           ("install-wl-package" "site-lisp" "icons")))
+	;; 						 ;; :info "doc/wl.info"
+	;; 						 ;; :load-path ("site-lisp/wl" "utils")
+	;; 						 :after (lambda ()
+	;; 							  (autoload 'wl "wl" "Wanderlust" t)
+	;; 							  (autoload 'wl-other-frame "wl" "Wanderlust on new frame." t)
+	;; 							  (autoload 'wl-draft "wl-draft" "Write draft with Wanderlust." t)
+	;; 							  (if (featurep 'ecb)
+	;; 							      (add-hook 'wl-init-hook 'ecb-deactivate))
+	;; 							  ;;(add-hook 'wl-exit-hook 'ecb-activate)
+	;; 							  (require 'mime-w3m)
+	;; 							  (defalias 'wle 'wl-exit)
+	;; 							  (defalias 'wlo 'wl-other-frame)
+	;; 							  (add-hook 'mime-view-mode-hook
+	;; 								    (lambda ()
+	;; 								      (local-set-key "s" 'w3m-view-this-url-new-session)))
+	;; 							  (add-hook 'wl-init-hook (lambda ()
+	;; 										    (require 'bbdb-wl)
+	;; 										    (bbdb-wl-setup)))
+	;; 							  (require 'wl-draft)
+	;; 							  (add-hook 'wl-draft-mode-hook
+	;; 								    (lambda ()
+	;; 								      (flyspell-mode t)
+	;; 								      (define-key wl-draft-mode-map (kbd "<tab>") 'bbdb-complete-name)))
+	;; 							  (require 'offlineimap)
+	;; 							  (setq offlineimap-enable-mode-line-p t)
+	;; 							  (defun kill-offlineimap ()
+	;; 							    (interactive)
+	;; 							    (shell-command "kill `cat ~/.offlineimap/pid`")
+	;; 							    (ignore-errors
+	;; 							      (save-excursion
+	;; 								(set-buffer (get-buffer-create "*OfflineIMAP*"))
+	;; 								(offlineimap-kill))))
+	;; 							  (defun restart-offlineimap ()
+	;; 							    (interactive)
+	;; 							    (ignore-errors
+	;; 							      (kill-offlineimap))
+	;; 							    (offlineimap))
+	;; 							  (defun resync-offlineimap ()
+	;; 							    (interactive)
+	;; 							    (condition-case err
+	;; 								(offlineimap-resync)
+	;; 							      (error
+	;; 							       (offlineimap))))
 
-                        (setq wl-icon-directory "~/.emacs.d/el-get/wanderlust/icons")
-                        (require 'wl-gravatar)
-                        (setq wl-highlight-x-face-function 'wl-gravatar-insert)
-                        (setq gnus-gravatar-directory "~/.emacs-gravatar/")
-                        (setq gravatar-unregistered-icon 'identicon)
-                        (setq wl-gravatar-retrieve-once t)
+	;; 							  (add-hook 'wl-init-hook 'restart-offlineimap)
+	;; 							  (add-hook 'wl-exit-hook 'resync-offlineimap)
+	;; 							  (add-hook 'wl-summary-exit-hook 'resync-offlineimap)
+	;; 							  (add-hook 'wl-summary-prepared-hook '(lambda ()
+	;; 												 (wl-summary-rescan "date" t )
+	;; 												 (beginning-of-buffer)))
 
-                        (autoload 'mu-cite-original "mu-cite" nil t)
-                        (setq mu-cite-prefix-format '("> "))
-                        (setq mu-cite-top-format '("\n\n" full-name "'s message :\n\n"))
-                        (add-hook 'mail-citation-hook (function mu-cite-original))
-                        ;; (unless (assq 'signature wl-draft-config-sub-func-alist)
-                        ;;   (wl-append wl-draft-config-sub-func-alist
-                        ;;              '((signature . wl-draft-config-sub-signature))))
-                        (defun wl-draft-config-sub-signature (content)
-                          "Insert the signature at the end of the MIME message."
-                          (let ((signature-insert-at-eof nil)
-                                (signature-file-name content))
-                            (goto-char (mime-edit-content-end))
-                            (insert-signature)))
-                        ))
-        ))
+	;; 							  (defun imapfilter ()
+	;; 							    (interactive)
+	;; 							    (message "calling imapfilter…")
+	;; 							    (when (and (file-readable-p "~/.imapfilter/config.lua")
+	;; 								       (executable-find "imapfilter"))
+	;; 							      (if (start-process "imapfilter" "imapfilter" "imapfilter")
+	;; 								  (message "imapfilter ran fine.")
+	;; 								(message "error running imapfilter!"))))
+
+	;; 							  (add-hook 'wl-folder-check-entity-pre-hook 'imapfilter)
+
+	;; 							  (setq wl-icon-directory "~/.emacs.d/el-get/wanderlust/icons")
+	;; 							  (require 'wl-gravatar)
+	;; 							  (setq wl-highlight-x-face-function 'wl-gravatar-insert)
+	;; 							  (setq gnus-gravatar-directory "~/.emacs-gravatar/")
+	;; 							  (setq gravatar-unregistered-icon 'identicon)
+	;; 							  (setq wl-gravatar-retrieve-once t)
+
+	;; 							  (autoload 'mu-cite-original "mu-cite" nil t)
+	;; 							  (setq mu-cite-prefix-format '("> "))
+	;; 							  (setq mu-cite-top-format '("\n\n" full-name "'s message :\n\n"))
+	;; 							  (add-hook 'mail-citation-hook (function mu-cite-original))
+	;; 							  ;; (unless (assq 'signature wl-draft-config-sub-func-alist)
+	;; 							  ;;   (wl-append wl-draft-config-sub-func-alist
+	;; 							  ;;              '((signature . wl-draft-config-sub-signature))))
+	;; 							  (defun wl-draft-config-sub-signature (content)
+	;; 							    "Insert the signature at the end of the MIME message."
+	;; 							    (let ((signature-insert-at-eof nil)
+	;; 								  (signature-file-name content))
+	;; 							      (goto-char (mime-edit-content-end))
+	;; 							      (insert-signature)))
+	;; 							  ))                        (bbdb-wl-setup)))
+        ;;                 (require 'wl-draft)
+        ;;                 (add-hook 'wl-draft-mode-hook
+        ;;                           (lambda ()
+        ;;                             (flyspell-mode t)
+        ;;                             (define-key wl-draft-mode-map (kbd "<tab>") 'bbdb-complete-name)))
+        ;;                 (require 'offlineimap)
+        ;;                 (setq offlineimap-enable-mode-line-p t)
+        ;;                 (defun kill-offlineimap ()
+        ;;                   (interactive)
+        ;;                   (shell-command "kill `cat ~/.offlineimap/pid`")
+        ;;                   (ignore-errors
+        ;;                     (save-excursion
+        ;;                       (set-buffer (get-buffer-create "*OfflineIMAP*"))
+        ;;                       (offlineimap-kill))))
+        ;;                 (defun restart-offlineimap ()
+        ;;                   (interactive)
+        ;;                   (ignore-errors
+        ;;                     (kill-offlineimap))
+        ;;                   (offlineimap))
+        ;;                 (defun resync-offlineimap ()
+        ;;                   (interactive)
+        ;;                   (condition-case err
+        ;;                       (offlineimap-resync)
+        ;;                     (error
+        ;;                      (offlineimap))))
+
+        ;;                 (add-hook 'wl-init-hook 'restart-offlineimap)
+        ;;                 (add-hook 'wl-exit-hook 'resync-offlineimap)
+        ;;                 (add-hook 'wl-summary-exit-hook 'resync-offlineimap)
+        ;;                 (add-hook 'wl-summary-prepared-hook '(lambda ()
+        ;;                                                        (wl-summary-rescan "date" t )
+        ;;                                                        (beginning-of-buffer)))
+
+        ;;                 (defun imapfilter ()
+        ;;                   (interactive)
+        ;;                   (message "calling imapfilter…")
+        ;;                   (when (and (file-readable-p "~/.imapfilter/config.lua")
+        ;;                              (executable-find "imapfilter"))
+        ;;                     (if (start-process "imapfilter" "imapfilter" "imapfilter")
+        ;;                         (message "imapfilter ran fine.")
+        ;;                       (message "error running imapfilter!"))))
+
+        ;;                 (add-hook 'wl-folder-check-entity-pre-hook 'imapfilter)
+
+        ;;                 (setq wl-icon-directory "~/.emacs.d/el-get/wanderlust/icons")
+        ;;                 (require 'wl-gravatar)
+        ;;                 (setq wl-highlight-x-face-function 'wl-gravatar-insert)
+        ;;                 (setq gnus-gravatar-directory "~/.emacs-gravatar/")
+        ;;                 (setq gravatar-unregistered-icon 'identicon)
+        ;;                 (setq wl-gravatar-retrieve-once t)
+
+        ;;                 (autoload 'mu-cite-original "mu-cite" nil t)
+        ;;                 (setq mu-cite-prefix-format '("> "))
+        ;;                 (setq mu-cite-top-format '("\n\n" full-name "'s message :\n\n"))
+        ;;                 (add-hook 'mail-citation-hook (function mu-cite-original))
+        ;;                 ;; (unless (assq 'signature wl-draft-config-sub-func-alist)
+        ;;                 ;;   (wl-append wl-draft-config-sub-func-alist
+        ;;                 ;;              '((signature . wl-draft-config-sub-signature))))
+        ;;                 (defun wl-draft-config-sub-signature (content)
+        ;;                   "Insert the signature at the end of the MIME message."
+        ;;                   (let ((signature-insert-at-eof nil)
+        ;;                         (signature-file-name content))
+        ;;                     (goto-char (mime-edit-content-end))
+        ;;                     (insert-signature)))
+        ;;                 ))
+	))
 (el-get 'sync)
+(message "el-get initialized")
 
 
 ;; All my custom settings that differ and/or can't be under version control
@@ -500,8 +606,10 @@
 
 (setq Info-directory-list
       '("/usr/local/share/info" "~/info" "~/devdocs" "/usr/share/info" "/usr/local/info" "/usr/share/info/emacs-23"))
+(message "loaded custom stuff")
 
-;;; This was installed by package-install.el.
+
+;;; this was installed by package-install.el.
 ;;; This provides support for the package system and
 ;;; interfacing with ELPA, the package archive.
 ;;; Move this code earlier if you want to reference
@@ -522,6 +630,8 @@
   ;; Your init file should contain only one such instance.
   ;; If there is more than one, they won't work right.
  )
+(message "packages initialized")
+
 
 (setq initial-scratch-message nil)
 
@@ -582,6 +692,7 @@
       '((propertize (concat " " 24-hours ":" minutes " ")
                     'face 'egoge-display-time)))
 (display-time-mode 1)
+(message "various custom packages")
 
 ;; Scala configs
 (let ((path "~/.emacs.d/scala"))
@@ -601,6 +712,7 @@
 
 (add-to-list 'ensime-doc-lookup-map '("net\\.liftweb\\." . make-lift-doc-url))
 
+(message "scala lift stuff")
 
 ;; Frame fiddling
 (defun set-frame-size-according-to-resolution ()
@@ -633,7 +745,7 @@
 (set-frame-position (selected-frame) 45 0)
 (add-to-list 'default-frame-alist (cons 'width 150))
 (add-to-list 'default-frame-alist (cons 'height 47))
-
+(message "windows dimensions")
 
 (setq truncate-lines nil)
 (setq truncate-partial-width-windows nil)
@@ -681,6 +793,7 @@
 (add-hook 'LaTeX-mode-hook 'turn-on-reftex) ; with AUCTeX LaTeX mode
 (add-hook 'latex-mode-hook 'turn-on-reftex) ; with Emacs latex mode
 
+(message "load latex/reftex")
 (setq reftex-plug-into-AUCTeX t)
 
 ;; (add-hook 'reftex-mode-hook 'reftex-toc)
@@ -776,6 +889,7 @@
                                ;; (define-key LaTeX-mode-map (kbd "<return>") 'newline-cjk-hack)
                                (define-key LaTeX-mode-map (kbd "<backspace>") 'backspace-cjk-hack))))
 
+(message "pre ESS")
 
 (setq ess-etc-directory "~/.emacs.d/ess-5.11/etc")
 (require 'ess-site)
@@ -842,6 +956,8 @@
         try-complete-lisp-symbol))
 
 (global-set-key "\M-/" 'hippie-expand)
+
+(message "yasnippet loading")
 
 (defun no-pdf ()
   "Run pdftotext on the entire buffer."
@@ -942,6 +1058,8 @@
                     '("ヒラギノ丸ゴ pro w4*" . "jisx0208.*")))
 
 (blink-cursor-mode t)
+
+(message "mac setup stuff")
 
 ;; Ubuntu related settings
 (when (and (= emacs-major-version 23) (eq window-system 'x))
@@ -1056,6 +1174,8 @@
 (recentf-mode 1)
 ;;(global-set-key "\C-x\ \C-r" 'recentf-open-files)
 
+(message "recentf stuff")
+
 (transient-mark-mode 1)
 (setq gc-cons-threshold 4000)
 (setq gc-cons-percentage 0.05)
@@ -1145,6 +1265,8 @@
       (vim-mode t))))
 
 (global-set-key (kbd "C-c v") 'vim-mode-toggle-with-input)
+
+(message "vim mode")
 
 (defun input-mode-toggle-enter ()
   (interactive)
@@ -1315,6 +1437,7 @@ directory, select directory. Lastly the file is opened."
        (file-cache-add-file buffer-file-name)))
 (add-hook 'kill-buffer-hook 'file-cache-add-this-file)
 
+(message "cache files")
 
 ;; File Name Cache
 ;; http://www.emacswiki.org/emacs/FileNameCache
@@ -1408,6 +1531,7 @@ directory, select directory. Lastly the file is opened."
         (eval-buffer nil nil)
         (delete-other-windows) ))))
 
+(message "pre image mode")
 
 (autoload 'iimage-mode "iimage" "Support Inline image minor mode." t)
 (autoload 'turn-on-iimage-mode "iimage" "Turn on Inline image minor mode." t)
@@ -1451,6 +1575,8 @@ directory, select directory. Lastly the file is opened."
 
 ;; 週の先頭の曜日
 (setq calendar-week-start-day 0) ; 日曜日は0, 月曜日は1
+
+(message "calendar")
 
 (defun start-calfw ()
   (interactive)
@@ -1722,6 +1848,10 @@ nEnd:")
 (org-clock-persistence-insinuate)
 
 (setq org-timer-timer-is-countdown t)
+(message "org-mode stuff")
+
+
+
 ;; ここまで
 
 ;; 思いついたコードやメモコードを書いて保存できるようにするための設定
@@ -2053,7 +2183,7 @@ nEnd:")
               (define-key objc-mode-map (kbd "C-c h") 'xcdoc:ask-search))))
 
 ;; end of iphone-related settings
-
+(message "xcode/iphone stuff")
 
 ;; Common copying and pasting functions
 (defun copy-word (&optional arg)
@@ -2242,7 +2372,7 @@ nEnd:")
 (defalias 'wwa 'w3m-search-alc)
 (defalias 'wwr 'w3m-search-alc-at-point)
 (global-set-key (kbd "C-c j") 'w3m-search-alc-at-point)
-
+(message "w3m settings")
 
 (require 'revbufs)
 
@@ -2322,6 +2452,8 @@ nEnd:")
   (garbage-collect))
 
 (defalias 'twe 'twittering-mode-exit)
+(message "twittering mode setup")
+
 
 (setq frame-title-format '("" invocation-name "@" system-name " "
                            global-mode-string "%b %+%+ %f" ))
@@ -2389,6 +2521,8 @@ nEnd:")
       auto-save-interval 20)
 (make-directory auto-save-directory t)
 
+(message "auto save stuff")
+
 (defun unfill-paragraph ()
   (interactive)
   (let ((fill-column (point-max)))
@@ -2418,6 +2552,7 @@ nEnd:")
 
 ;;(add-hook 'weblogger-entry-mode-hook 'textile-minor-mode)
 
+(message "dddf2")
 (defun publish-post ()
   (interactive)
   (textile-to-html-buffer-respect-weblogger)
@@ -2446,6 +2581,8 @@ nEnd:")
 ;; (add-hook 'text-mode-hook 'turn-on-screen-lines-mode)
 
 (require 'summarye)
+
+(message "point stuff")
 
 (defun point-to-top ()
   "Put cursor on top line of window, like Vi's H."
@@ -2493,6 +2630,8 @@ nEnd:")
 (enclose-remove-encloser "'")
 ;; (add-hook 'LaTeX-mode-hook 'enclose-mode)
 (add-hook 'weblogger-entry-mode 'enclose-mode)
+
+(message "ido keys")
 
 (autoload 'mode-compile "mode-compile"
   "Command to compile current buffer file based on the major mode" t)
@@ -2568,6 +2707,8 @@ nEnd:")
 (add-hook 'rhtml-mode '(lambda ()
                          (define-key rhtml-mode-map (kbd "M-s") 'save-buffer)))
 
+(message "rhtml/yaml stuff")
+
 (autoload 'yaml-mode "yaml-mode" nil t)
 (add-to-list 'auto-mode-alist '("\\.yml$" . yaml-mode))
 (add-to-list 'auto-mode-alist '("\\.yaml$" . yaml-mode))
@@ -2610,6 +2751,8 @@ nEnd:")
 
 (require 'midnight)
 
+(message "window movement")
+
 (windmove-default-keybindings 'meta)
 
 (define-prefix-command 'numwin-bindings-keymap)
@@ -2624,6 +2767,8 @@ nEnd:")
 (add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
 (setq haskell-font-lock-symbols t)
 ;; (setq haskell-hoogle-command "~/.cabal/bin/hoogle")
+
+(message "igrep")
 
 (require 'igrep)
 (setq igrep-options "-ir")
@@ -2653,6 +2798,8 @@ nEnd:")
 (require 'undo-tree)
 (global-undo-tree-mode)
 
+(message "insert")
+
 (defun insert-time ()
   (interactive)
   (insert (format-time-string "%Y-%m-%d-%R")))
@@ -2680,6 +2827,7 @@ nEnd:")
 
 (require 'sr-speedbar)
 
+(message "sr-speedbar")
 
 (setq tramp-bkup-backup-directory-info nil)
 (require 'backup-dir)
@@ -2725,6 +2873,9 @@ nEnd:")
     (eshell-bol)
     (if (= p (point))
         (beginning-of-line))))
+
+
+(message "eshell")
 
 (add-hook 'eshell-mode-hook
           (lambda ()
@@ -2822,6 +2973,9 @@ If existing, the current prompt will be deleted."
 
 (require 're-builder+)
 
+(message "rebuilder")
+
+
 (defun reb-query-replace (to-string)
   "Replace current RE from point with `query-replace-regexp'."
   (interactive
@@ -2872,6 +3026,8 @@ If existing, the current prompt will be deleted."
 (add-to-list 'auto-mode-alist '("\\.js" . espresso-mode))
 
 (autoload 'moz-minor-mode "moz" "Mozilla Minor and Inferior Mozilla Modes" t)
+
+(message "javascript espresso")
 
 (defun espresso-custom-setup ()
   (setq tab-width 4)
@@ -2940,6 +3096,7 @@ windows, use `window-number-mode' to display the window numbers in
 the mode-line."
   t)
 
+(message "window revive")
 
 (autoload 'save-current-configuration "revive" "Save status" t)
 (autoload 'resume "revive" "Resume Emacs" t)
@@ -3019,6 +3176,7 @@ FORMAT-STRING is like `format', but it can have multiple %-sequences."
     (dotimes (i n)
       (insert-buffer-substring (current-buffer) (point-at-bol)(1+ (point-at-eol))))))
 
+(message "number rect")
 
 (require 'gse-number-rect)
 (global-set-key "\C-hj" 'number-rectangle)
@@ -3094,6 +3252,9 @@ FORMAT-STRING is like `format', but it can have multiple %-sequences."
   (interactive)
   (find-alternate-file (concat "/sudo:root@localhost:" (buffer-file-name (current-buffer)))))
 
+(message "sudo edit (not working)")
+
+
 ;; ;; code from failed sudo attempt
 ;; (require 'sudo)
 
@@ -3129,9 +3290,11 @@ FORMAT-STRING is like `format', but it can have multiple %-sequences."
 (add-to-list 'auto-mode-alist '("\\.cron\\(tab\\)?\\'" . crontab-mode))
 (add-to-list 'auto-mode-alist '("cron\\(tab\\)?\\.[^el]+"    . crontab-mode))
 
+(message "crontab")
+
 (server-start)
 ;; sudo-ext requires server
-(when (and (= emacs-major-version 23) (eq window-system 'x))
+(when (and (>= emacs-major-version 23) (eq window-system 'x))
   (require 'sudo-ext))
 
 (cond
@@ -3145,6 +3308,8 @@ FORMAT-STRING is like `format', but it can have multiple %-sequences."
     (setq delete-by-moving-to-trash nil))))
 
 (require 'savekill)
+
+(message "savekill")
 
 ;; credit to Benjamin Riefenstahl <Benjamin.Riefenstahl@epost.de>
 (defun benny-antiword-file-handler (operation &rest args)
@@ -3210,6 +3375,8 @@ FORMAT-STRING is like `format', but it can have multiple %-sequences."
   (interactive)
   (write-file "~/.emacs.d/site-lisp/"))
 
+(message "save elisp")
+
 (require 'sequential-command-config)
 (sequential-command-setup-keys)
 
@@ -3235,6 +3402,7 @@ FORMAT-STRING is like `format', but it can have multiple %-sequences."
 (setq moccur-split-word t)
 (global-set-key (kbd "C-c o") 'occur-by-moccur)
 
+(message "moccur")
 
 ;; adapted from
 ;; http://d.hatena.ne.jp/derui/20100223/1266929390
@@ -3291,6 +3459,8 @@ FORMAT-STRING is like `format', but it can have multiple %-sequences."
            (not (file-directory-p file)))
       (view-file file)
     ad-do-it))
+
+(message "find file")
 
 (defvar view-mode-original-keybind nil)
 (defun view-mode-set-window-controls (prefix-key)
@@ -3355,6 +3525,7 @@ FORMAT-STRING is like `format', but it can have multiple %-sequences."
 
 (require 'http-twiddle)
 
+(message "eshell")
 
 (defun eshell/ff (file)
   (find-file-other-window file))
@@ -3421,6 +3592,8 @@ FORMAT-STRING is like `format', but it can have multiple %-sequences."
 (require 'muse-project)
 (require 'muse-journal )
 
+(message "muse")
+
 (setq muse-project-alist
       '(("Journal" ("~/journal/"
                     :default "journal"))))
@@ -3445,6 +3618,8 @@ FORMAT-STRING is like `format', but it can have multiple %-sequences."
 (defadvice save-buffers-kill-emacs (around no-query-kill-emacs activate)
   "Prevent annoying \"Active processes exist\" query when you quit Emacs."
   (flet ((process-list ())) ad-do-it))
+
+(message "dddf25")
 
 (require 'sql)
 ;; (autoload 'sql-mode "sql-mode" "SQL Editing Mode" t)
@@ -3503,6 +3678,9 @@ FORMAT-STRING is like `format', but it can have multiple %-sequences."
 (require 'drupal-mode)
 (autoload 'drupal-mode "drupal-mode" "Major mode for editing drupal php " t)
 
+
+(message "drupal")
+
 (add-to-list 'auto-mode-alist '("\\.\\(module\\|test\\|install\\|theme\\)$" . drupal-mode))
 (add-to-list 'auto-mode-alist '("\\.\\(php\\|inc\\)$" . php-mode))
 (add-to-list 'auto-mode-alist '("\\.info" . conf-windows-mode))
@@ -3557,41 +3735,44 @@ FORMAT-STRING is like `format', but it can have multiple %-sequences."
 (defalias 'ack-find-file 'ack-and-a-half-find-file)
 (defalias 'ack-find-file-same 'ack-and-a-half-find-file-same)
 
-(require 'gtags)
-(defun gtags-root-dir ()
-  "Returns GTAGS root directory or nil if doesn't exist."
-  (with-temp-buffer
-    (if (zerop (call-process "global" nil t nil "-pr"))
-        (buffer-substring (point-min) (1- (point-max)))
-      nil)))
 
-(defun gtags-update ()
-  "Make GTAGS incremental update"
-  (call-process "global" nil nil nil "-u"))
+(message "ack")
 
-(defun gtags-update-hook ()
-  (when (gtags-root-dir)
-    (gtags-update)))
+;; (require 'gtags)
+;; (defun gtags-root-dir ()
+;;   "Returns GTAGS root directory or nil if doesn't exist."
+;;   (with-temp-buffer
+;;     (if (zerop (call-process "global" nil t nil "-pr"))
+;;         (buffer-substring (point-min) (1- (point-max)))
+;;       nil)))
 
-(add-hook 'after-save-hook #'gtags-update-hook)
+;; (defun gtags-update ()
+;;   "Make GTAGS incremental update"
+;;   (call-process "global" nil nil nil "-u"))
 
-(defun ww-next-gtag ()
-  "Find next matching tag, for GTAGS."
-  (interactive)
-  (let ((latest-gtags-buffer
-         (car (delq nil  (mapcar (lambda (x) (and (string-match "GTAGS SELECT" (buffer-name x)) (buffer-name x)) )
-                                 (buffer-list)) ))))
-    (cond (latest-gtags-buffer
-           (switch-to-buffer latest-gtags-buffer)
-           (next-line)
-           (gtags-select-it nil)))))
+;; (defun gtags-update-hook ()
+;;   (when (gtags-root-dir)
+;;     (gtags-update)))
+
+;; (add-hook 'after-save-hook #'gtags-update-hook)
+
+;; (defun ww-next-gtag ()
+;;   "Find next matching tag, for GTAGS."
+;;   (interactive)
+;;   (let ((latest-gtags-buffer
+;;          (car (delq nil  (mapcar (lambda (x) (and (string-match "GTAGS SELECT" (buffer-name x)) (buffer-name x)) )
+;;                                  (buffer-list)) ))))
+;;     (cond (latest-gtags-buffer
+;;            (switch-to-buffer latest-gtags-buffer)
+;;            (next-line)
+;;            (gtags-select-it nil)))))
 
 
-(add-hook 'gtags-mode-hook
-          (lambda()
-            (local-set-key [(control meta ,)] 'ww-next-gtag)
-            (local-set-key (kbd "M-.") 'gtags-find-tag)   ; find a tag, also M-.
-            (local-set-key (kbd "M-,") 'gtags-find-rtag)))  ; reverse tag
+;; (add-hook 'gtags-mode-hook
+;;           (lambda()
+;;             (local-set-key [(control meta ,)] 'ww-next-gtag)
+;;             (local-set-key (kbd "M-.") 'gtags-find-tag)   ; find a tag, also M-.
+;;             (local-set-key (kbd "M-,") 'gtags-find-rtag)))  ; reverse tag
 
 ;; (require 'elscreen)
 ;; (require 'elscreen-w3m)
@@ -3600,6 +3781,8 @@ FORMAT-STRING is like `format', but it can have multiple %-sequences."
 ;; (require 'elscreen-wl)
 ;; (require 'elscreen-dired)
 ;; (require 'elscreen-gf)
+
+(message "elscreen")
 
 (require 'multiple-line-edit)
 (global-set-key "\C-c<" 'mulled/edit-trailing-edges)
@@ -3650,6 +3833,8 @@ FORMAT-STRING is like `format', but it can have multiple %-sequences."
 
 (require 'htmlize)
 
+(message "ace jump")
+
 (require 'ace-jump-mode)
 (define-key global-map (kbd "C-x SPC") 'ace-jump-mode)
 
@@ -3668,6 +3853,8 @@ FORMAT-STRING is like `format', but it can have multiple %-sequences."
       (write-region (point-min)
                     (point-max)
                     file))))
+
+(message "string to file")
 
 (defun load-wg ()
   (interactive)

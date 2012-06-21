@@ -16,9 +16,9 @@ SHELL        = /bin/sh
 
 MAKEINFO     = makeinfo
 TEXI2DVI     = texi2dvi
-PTEX         = false
+PTEX         = ptex
 JBIBTEX      = false
-DVIPDFMX     = false
+DVIPDFMX     = dvipdfmx
 TEXI2PDF     = texi2pdf
 EMACS        = /Applications/Emacs.app/Contents/MacOS/Emacs
 VANILLA_FLAG = -q -no-site-file --no-unibyte
