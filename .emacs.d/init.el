@@ -224,6 +224,12 @@
 (when
     (load
      (expand-file-name "~/.emacs.d/elpa/package.el"))
+  (require 'package)
+  (setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
+                           ("marmalade" . "http://marmalade-repo.org/packages/")
+                           ("melpa" . "http://melpa.milkbox.net/packages/")))
+  ;; (add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/") t)
+  ;; (add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/"))
   (package-initialize))
 
 ;; user the snippent below to bootstrap el-get
@@ -3292,11 +3298,6 @@ FORMAT-STRING is like `format', but it can have multiple %-sequences."
 
 (message "crontab")
 
-(server-start)
-;; sudo-ext requires server
-(when (and (>= emacs-major-version 23) (eq window-system 'x))
-  (require 'sudo-ext))
-
 (cond
  ((>= emacs-major-version '23)
   (progn
@@ -3868,4 +3869,10 @@ FORMAT-STRING is like `format', but it can have multiple %-sequences."
 (setq backup-directory "~/.saves")
 
 (require 'backups-mode)
+
+(server-start)
+;; sudo-ext requires server
+(when (and (>= emacs-major-version 23) (eq window-system 'x))
+  (require 'sudo-ext))
+
 (message "********** successfully initialized **********")
