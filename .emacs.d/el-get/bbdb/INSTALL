@@ -1,166 +1,89 @@
-This file has three sets of installation instructions: with `make',
-without `make', and uncompiled. Please follow the appropriate set of
-instructions. If you plan on running BBDB directly from CVS, please
-check the additional instructions below.
+Copyright (C) 2011-2012 Roland Winkler <winkler@gnu.org>
+See the end of the file for license conditions.
 
 ===============================================================================
 
-Running BBDB from CVS:
+To compile and install BBDB with `make':
 
-  *** PLEASE NOTE ****
-  This applies to the master CVS tree at sourceforge, not the XEmacs CVS tree.
-  *** PLEASE NOTE ***
+0) (BBDB development version only)
 
-  This is not recommended, unless you're a BBDB developer. You will
-  need to either install the GNU autoconf package, or download the
-  pregenerated copy of configure from the BBDB website. If you choose
-  the former option, you'll need to run `autoconf' to generate the
-  configure script. Thereafter, follow the appropriate set of
-  instructions below.
+   Configure the configure process:
 
-===============================================================================
+   Run `autoconf' in the top directory of the BBDB code.
+   This creates the `configure' script required for step 1).
 
-To compile and install the BBDB on systems with `make':
+1) Configure the build process:
 
-  1) Configure the compilation process:
+   Run the `configure' script in the top directory of the BBDB code.
+   This performs a number of checks on your system and generates the
+   Makefiles accordingly.
 
-       First of all, you should run the `configure' script at the toplevel of
-       the distribution. This script will perform a number of checks on your
-       system and generate the Makefile's accordingly.
+   The `configure' script comes with various options:
 
-       The `configure' script comes with a number of options that might be of
-       interest to you:
+   `--with-emacs=PROG' selects a GNU Emacs program to use.
+     This defaults to emacs. You need at least GNU Emacs 23.
 
-       `--with-emacs=PROG' lets you select an Emacs program to use. By
-         default, "emacs" and "xemacs" will be tried in that order.
+   `--with-vm-dir=DIR' specifies the path where VM can be found.
+     Without this option the resulting BBDB build does not support VM.
 
-       `--with-{gnus,mhe,vm}-dir=DIR' let you specify the paths where Gnus,
-         MH-E and VM can respectively be found, if Emacs can't find them by
-         itself (like, if they're not in the load-path by default).
+   Use `configure --help' to see all available options.
 
-       `--with-other-dirs=DIRS' lets you specify additional paths (space or
-         colon spearated) to find other libraries that might be needed (see
-         the "Byte Compiling the Lisp files" section of the BBDB manual for
-         more information).
+2) Build BBDB:
 
-         NOTE: Gnu Emacs 19.34 users should add the path to Custom 1.9962
-         here if they plan to build Gnus support.  Gnus support will not build
-         under Gnu Emacs 19.34 without Custom 1.9962.
+   To build BBDB type 'make bbdb'.
 
-       `--with-package-dir=DIR' lets you specify the installation path for
-         for XEmacs package installation. By default,
-         "/usr/local/lib/xemacs/site-packages" is used.
+   If you use the BBDB development version, but you do not have autoconf,
+   go to the lisp directory and type 'make --makefile=./makefile-temp'.
+   (The file lisp/makefile-temp will be deleted in the repository when
+   BBDB v3 is released with a configure script.)
 
-       `--with-symlinks' will make the installation process use symbolic links
-         to the sources instead of copying the files.
+3) Install BBDB:
 
-       `--with-linkpath=PATH' lets you specify the path to link from, if your
-         `pwd' command doesn't work properly.
+   i)   If the BBDB lisp files are in a directory
+        "/path/to/bbdb/lisp" you can use in your emacs init file
 
+        (require 'bbdb-loaddefs "/path/to/bbdb/lisp/bbdb-loaddefs.el")
 
-  2) Build the BBDB:
+        This adds "/path/to/bbdb/lisp" to the load-path; so it is all
+        you need to make BBDB known to your Emacs.
 
-       To build the BBDB with support for all of the supported mail
-       and news programs (gnus, mh-e, rmail, and vm), issue the
-       command 'make all'.  (The BBDB also supports sendmail mode -
-       support for it is automatically compiled in, regardless of the
-       build options supplied) To build with support only for gnus,
-       mh-e, rmail, and/or vm, issue the 'make' command with one or
-       more of the following arguments: 'gnus', 'mh-e', 'rmail',
-       and/or 'vm'.  To build the BBDB without support for any mail
-       program (except for sendmail mode), issue the command
-       'make bbdb'.
+   ii)  Add the BBDB texinfo subdirectory to the Info search path.
 
+   iii) Add the BBDB tex subdirectory to the TeX search path
+        This can be done, for example, by adding the path to the
+        BBDB tex subdirectory to the environment variable TEXINPUTS.
 
-  3) Install the BBDB:
+   `make install' installs these files in their usual system directories.
+   These directories are listed in the output of the configure script.
+   You can override them via respective options for this script.
 
-       The three most typical installations are outlined below:
-
-        a) In-place.
-             i)   Follow steps 1 and 2
-             ii)  Add the lisp subdirectory to the Emacs load-path
-             iii) Add the tex subdirectory to the TeX
-                  search path (can be done by adding the complete path
-                  to the tex subdirectory to the environment variable
-                  TEXINPUTS)
-             iv)  Add the texinfo directory to the Info search path.
-        b) "Normal".
-             i)   Follow steps 1 and 2.
-             ii)  Copy the .el and .elc files from the lisp
-                  subdirectory to a directory on the Emacs load-path
-                  (or make a new directory, copy the files to it, and
-                  add the new directory to the load-path).
-             iii) Copy the .tex files from the tex subdirectory to a
-                  directory on the TeX search path (or make a new
-                  directory, copy the files to it, and add the new
-                  directory to the TeX search path.
-             iv)  Copy the .info and .info-* files from the texinfo
-                  subdirectory to a directory on the Info search path
-                  (or make a new directory, copy the files to it, and
-                  add the new directory to the Info search path)
-        c) XEmacs Package
-             NOTE: This installation option is only available to users
-                   running XEmacs 20.3 or higher.
-             i)    Follow steps 1 and 2.
-             ii)   Issue the 'make install-pkg' command.
-
-
-
-To compile and install the BBDB on systems without `make':
-
-  If at all possible, use make to automatically build the BBDB as
-  outlined above.  While it looks like there are fewer steps in the
-  non-make instructions below, they're more tedious and involved.
-
-  1) Compile the .el files using the byte-compile-file function in
-     Emacs.
-
-  2) Install the BBDB as outlined in step 3 above.
+   `make install' is not required to run BBDB.
 
 ===============================================================================
 
-To run BBDB uncompiled:
+For information on configuration and setup of BBDB's lisp code,
+see the BBDB info manual. (M-x bbdb, and press 'h' in BBDB.)
 
-  Again, this is really not recommended, although it will generate a
-  more meaningful stacktrace if you happen to run into a problem. In
-  order to run BBDB uncompiled, you'll need to do two things:
+Questions, comments, suggestions, and bug reports may be directed to
+the BBDB mailing list at bbdb-info@lists.sourceforge.net.
+To subscribe, send mail to bbdb-info-request@lists.sourceforge.net,
+with 'subscribe' as the subject.
 
-  1) Generate bbdb-autoloads.el
-     You can do this by typing 'make autoloads' in the main BBDB
-     directory. Note that this will require you to have previously run
-     configure to generate Makefiles.
+==================================================================
 
-  2) Add .../bbdb/lisp to your load path
-     You need to make sure that the lisp subdirectory of the BBDB
-     source is in your load path so that Emacs can find the BBDB
-     files.
+Copyright (C) 2011 Roland Winkler <winkler@gnu.org>
 
-  Since arbitrary chunks of the BBDB are macros, you'll probably find
-  the uncompiled version slower than the compiled version.
+This file is part of the Insidious Big Brother Database (aka BBDB),
 
-===============================================================================
+BBDB is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
 
-***************************************************************************
-*                                                                         *
-*         THE BBDB INITIALIZATION PROCEDURE CHANGED IN 1.57unoff.         *
-*                                                                         *
-*                              YOU *MUST* ADD                             *
-*                                                                         *
-*   (require 'bbdb)                                                       *
-*   (bbdb-initialize)                                                     *
-*                                                                         *
-*   TO YOUR BBDB INITIALIZATION CODE.  THIS TAKES THE PLACE OF ALL BBDB   *
-*    AUTOLOADS.  IT DOES *NOT* TAKE THE PLACE OF THE INSINUATION CODE.    *
-*                                                                         *
-*       If you do not add this code, you will receive keymap errors       *
-*                          (among other things)                           *
-*                                                                         *
-***************************************************************************
+BBDB is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
 
-For information on post-installation BBDB configuration and setup, see
-the info file. (M-x bbdb, and press 'i' in the BBDB info window)
-
-Questions, Comments, Suggestions, and Bug Reports may be directed to
-the BBDB mailing list at bbdb-info@lists.sourceforge.net.  To
-subscribe, send mail to bbdb-info-request@lists.sourceforge.net, with
-'subscribe' as the subject.
+You should have received a copy of the GNU General Public License
+along with BBDB.  If not, see <http://www.gnu.org/licenses/>.

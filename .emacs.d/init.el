@@ -247,7 +247,19 @@
        (eval-print-last-sexp)))))
 
 ;; separate el-get stuff into its own file
-(require 'el-get)
+(add-to-list 'load-path "~/.emacs.d/el-get/el-get")
+
+(unless (require 'el-get nil 'noerror)
+  (with-current-buffer
+      (url-retrieve-synchronously
+       "https://raw.github.com/dimitri/el-get/master/el-get-install.el")
+    (goto-char (point-max))
+    (eval-print-last-sexp)))
+
+;; (el-get 'sync)
+;; (require 'el-get)
+
+(setq el-get-git-shallow-clone t)
 
 (defun el-get-rebuild ()
   (interactive)
@@ -344,15 +356,34 @@
         ;;                 "prefix" "NONE" "NONE"))
         ;;         '("compile-semi" "install-semi")))
         (:name bbdb
-               :type git
-               :url "https://github.com/barak/BBDB.git"
-               :load-path ("./lisp" "./bits")
-               :build ("./configure" "make autoloads" "make")
-               :build/darwin `(,(concat "./configure --with-emacs=" el-get-emacs) "make autoloads" "make")
-               :features bbdb
-               :autoloads nil
-               :post-init (lambda () (bbdb-initialize))
-               :info "texinfo"
+	       :type git
+	       :url "git://github.com/baron/bbdb.git"
+	       ;; :load-path ("./lisp" "./bits")
+	       ;; :build ("autoconf" "./configure" "make autoloads" "make")
+	       ;; ;; :build/darwin ("autoconf" "./configure --with-emacs=/Applications/Emacs.app/Contents/MacOS/Emacs" "make autoloads" "make")
+	       ;; :build/darwin (("autoconf") ("./configure --with-emacs=/Applications/Emacs.app/Contents/MacOS/Emacs") ("make autoloads") (cp ) ("make"))
+
+	       :load-path ("./lisp")
+	       ;; if using vm, add `--with-vm-dir=DIR' after ./configure
+	       :build `("autoconf" ,(concat "./configure --with-emacs=" el-get-emacs)
+			"make clean" "rm -f lisp/bbdb-autoloads.el"
+			"make bbdb")
+	       :features bbdb-loaddefs
+	       :autoloads nil
+
+	       ;; :features bbdb
+	       ;; ;; :after (lambda () (bbdb-initialize))
+	       ;; :info "texinfo"
+
+               ;; :type git
+	       ;; :url "https://github.com/barak/BBDB.git"
+               ;; :load-path ("./lisp" "./bits")
+               ;; :build ("./configure" "make autoloads" "make")
+               ;; :build/darwin `(,(concat "./configure --with-emacs=" el-get-emacs) "make autoloads" "make")
+               ;; :features bbdb
+               ;; :autoloads nil
+               ;; :post-init (lambda () (bbdb-initialize))
+               ;; :info "texinfo"
 	       ;; :type git
 	       ;; :url "git://git.savannah.nongnu.org/bbdb.git"
 	       ;; :load-path ("./lisp")
@@ -386,9 +417,38 @@
                          ;; http://flex.ee.uec.ac.jp/texi/bbdb/bbdb_11.html
                          '(( "From" . "no.?reply\\|DAEMON\\|daemon\\|facebookmail\\|twitter"))))
                (bbdb-insinuate-message)
+               (bbdb-autoinitialize)
+               (bbdb-mua-auto-update-init 'gnus 'message 'wl)
                (add-hook 'mail-setup-hook 'bbdb-insinuate-sendmail)
 
                )
+
+
+        (:name wanderlust
+               :description "Wanderlust bootstrap."
+               :depends semi
+               :type github
+               :pkgname "wanderlust/wanderlust"
+               :build (mapcar
+                       (lambda (target-and-dirs)
+                         (list el-get-emacs
+                               (mapcar (lambda (pkg)
+                                         (mapcar (lambda (d) `("-L" ,d)) (el-get-load-path pkg)))
+                                       (append
+                                        '("apel" "flim" "semi")
+                                        (when (el-get-package-exists-p "bbdb") (list "bbdb"))))
+                               "--eval" (el-get-print-to-string
+                                         '(progn (setq wl-install-utils t)
+                                                 (setq wl-info-lang "en")
+                                                 (setq wl-news-lang "en")))
+
+                               (split-string "-batch -q -no-site-file -l WL-MK -f")
+                               target-and-dirs))
+                       '(("wl-texinfo-format" "doc")
+                         ("compile-wl-package"  "site-lisp" "icons")
+                         ("install-wl-package" "site-lisp" "icons")))
+               :info "doc/wl.info"
+               :load-path ("site-lisp/wl" "utils"))
 
         ;; (:name wanderlust
         ;;        ;; :type git

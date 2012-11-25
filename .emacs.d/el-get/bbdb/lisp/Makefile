@@ -1,194 +1,185 @@
+# Copyright (C) 2010-2012 Roland Winkler <winkler@gnu.org>
+# 
+# This file is part of the Insidious Big Brother Database (aka BBDB),
+# 
+# BBDB is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+# 
+# BBDB is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+# 
+# You should have received a copy of the GNU General Public License
+# along with BBDB.  If not, see <http://www.gnu.org/licenses/>.
 
+
+
+srcdir = .
+top_srcdir = ..
+lisp = $(srcdir)
 
 INSTALL = /usr/bin/install -c
-INSTALL_PROGRAM = ${INSTALL}
-INSTALL_SCRIPT = ${INSTALL}
 INSTALL_DATA = ${INSTALL} -m 644
+
+prefix = /usr/local
+datarootdir= ${prefix}/share
+datadir= ${datarootdir}
+lispdir = $(DESTDIR)/usr/local/share/emacs/site-lisp/bbdb
 
 RM   = /bin/rm -f
 LN_S = ln -s
 
-EMACS_PROG = /Applications/Emacs.app/Contents/MacOS/Emacs -no-site-file -no-init-file
-EMACS_FLAVOR = emacs
+EMACS = /Applications/Emacs.app/Contents/MacOS/Emacs
 
-GNUSDIR = 
-MHEDIR = 
+# Command line flags for Emacs.
+EMACSOPT = --batch --no-site-file --no-init-file
+
+# The actual Emacs command run in the targets below.
+emacs = LC_ALL=C $(EMACS) $(EMACSOPT)
+
+# If you want to use BBDB with VM this should point to your vm/lisp directory.
+# See also the target all below.
 VMDIR = 
-OTHERDIRS = 
 
-PACKAGEDIR = /usr/lib/xemacs/site-packages
-SYMLINKS = no
-LINKPATH = 
+VM	= -eval '(if (not (string-match "$(VMDIR)" "")) (setq load-path (cons "$(VMDIR)" load-path)))'
 
-# this is lovely, isn't it?  Surprisingly enough, it seems to work...
-VM	= -eval '(if (> (length "$(VMDIR)") 0) \
-		   (setq load-path (cons "$(VMDIR)" load-path)))'
-
-GNUS	= -eval '(if (> (length "$(GNUSDIR)") 0) \
-	           (setq load-path (cons "$(GNUSDIR)" load-path)))'
-
-MHE	= -eval '(if (> (length "$(MHEDIR)") 0) \
-	           (setq load-path (cons "$(MHEDIR)" load-path)))'
-
-PUSHPATH= -eval "`\
-           dir=\". $(OTHERDIRS)\"; \
-           echo \(setq load-path \(append \(list ; \
-           for i in $$dir ; do \
-              echo \(expand-file-name \\"$$i\\"\)\ ; \
-           done ;\
-           echo \) load-path\)\) ; \
-           `"
+PUSHPATH = -eval '(push "./" load-path)'
 
 .SUFFIXES: .elc .el .tar .Z .gz .uu
 
-DEPSRCS=	bbdb-com.el  bbdb-hooks.el  bbdb-gnus.el  bbdb-mhe.el \
-		bbdb-rmail.el bbdb-vm.el bbdb-ftp.el bbdb-whois.el \
-		bbdb-print.el bbdb-srv.el bbdb-reportmail.el \
-		bbdb-merge.el bbdb-migrate.el bbdb-gui.el
-
-ifeq ($(EMACS_FLAVOR),xemacs)
-DEPSRCS+=	bbdb-xemacs.el 
-endif
+DEPSRCS=	bbdb-com.el bbdb-print.el bbdb-anniv.el \
+		bbdb-migrate.el \
+		bbdb-mua.el bbdb-message.el bbdb-rmail.el \
+		bbdb-gnus.el bbdb-mhe.el bbdb-vm.el
 
 DEPBINS=	${DEPSRCS:.el=.elc}
 SRCS=		bbdb.el  $(DEPSRCS)
 BINS=		bbdb.elc $(DEPBINS)
 
-all: Makefile  gnus   bbdb autoloadsc
+all: Makefile bbdb autoloads 
 
 Makefile: Makefile.in
-	cd ..; ./config.status
+	@echo "Makefile.in has changed, rerun configure!"
+	exit 1
 
-install-pkg: uninstall-pkg bbdb autoloadsc
-	@if test "x$(SYMLINKS)" = "xno" ; then                 \
-          mkdir -p -m 0755 $(PACKAGEDIR)/lisp/bbdb;            \
-          for i in `ls *.elc` ; do                             \
-            $(INSTALL_DATA) `echo $$i | sed 's/c$$//g'`        \
-                            $(PACKAGEDIR)/lisp/bbdb ;          \
-            $(INSTALL_DATA) $$i $(PACKAGEDIR)/lisp/bbdb ;      \
-          done ;                                               \
-        else                                                   \
-          if test "x$(LINKPATH)" = "x" ; then                  \
-            $(LN_S) `pwd` $(PACKAGEDIR)/lisp/bbdb ;            \
-          else                                                 \
-            $(LN_S) $(LINKPATH)/lisp $(PACKAGEDIR)/lisp/bbdb ; \
-          fi ;                                                 \
-        fi
-
-uninstall-pkg:
-	-$(RM) -r $(PACKAGEDIR)/lisp/bbdb
-
-bbdb-autoloads.el: $(DEPSRCS)
+bbdb-loaddefs.el: $(SRCS)
+#	2011-12-11: We switched from bbdb-autoloads.el to bbdb-loaddefs.el.
+#	If the user still has an old bbdb-autoloads.el in the BBDB
+#	lisp directory (and keeps loading it from the emacs init file),
+#	we might get strange mistakes that things fail. So we throw an error
+#	if these old files are found.
+	@if test -f bbdb-autoloads.el -o -f bbdb-autoloads.elc; then \
+	  (echo "*** ERROR: Old file(s) \`bbdb-autoloads.el(c)' found ***" ; \
+	  echo "*** Delete these files; do not load them from your init file ***") && \
+	  false ; \
+	fi
 	@-$(RM) $@;
-	@echo "(provide 'bbdb-autoloads)" > $@;
-	@echo "(eval-when-compile" >> $@;
-	@echo "  (condition-case ()" >> $@;
-	@echo "      (require 'custom)" >> $@;
-	@echo "    (error nil))" >> $@;
-	@echo "  (if (and (featurep 'custom) (fboundp 'custom-declare-variable))()" >> $@;
-	@echo "    (defmacro defgroup (&rest args)" >> $@;
-	@echo "      nil)" >> $@;
-	@echo "    (defmacro defcustom (var value doc &rest args)" >> $@;
-	@echo "      \`(defvar ,var ,value ,doc))" >> $@;
-	@echo "    (defmacro defface (var value doc &rest args)" >> $@;
-	@echo "      \`(make-face ,var))" >> $@;
-	@echo "    (defmacro define-widget (&rest args)" >> $@;
-	@echo "      nil)))" >> $@;
+	@echo "(provide 'bbdb-loaddefs)" > $@;
+	@echo "(if (and load-file-name (file-name-directory load-file-name))" >> $@;
+	@echo "    (add-to-list 'load-path (file-name-directory load-file-name)))" >> $@;
 	@echo "" >> $@;
-	$(EMACS_PROG) -batch -q -l autoload \
-		--eval '(setq generated-autoload-file "'`pwd`'/$@")' \
-		--eval "(if (featurep 'xemacs) (delete-file generated-autoload-file))" \
-		--eval '(setq make-backup-files nil)' \
-		--eval '(setq autoload-package-name "bbdb")' \
+#	generated-autoload-file must have an absolute path
+#	$srcdir can be relative.
+	@$(emacs) -l autoload					\
+		--eval '(setq generated-autoload-file "'`pwd`/$@'")'	\
+		--eval '(setq make-backup-files nil)'			\
 		-f batch-update-autoloads `pwd`
 
-bbdb-autoloads.elc: bbdb-autoloads.el
-	$(EMACS_PROG) -batch -q -f batch-byte-compile ./$^
-
-bbdb.elc:            bbdb.el
-bbdb-com.elc:        bbdb.elc bbdb-com.el
-bbdb-ftp.elc:        bbdb.elc bbdb-ftp.el
-bbdb-gui.elc:		 bbdb.elc bbdb-gui.el
-bbdb-merge.elc:      bbdb-merge.el
-bbdb-migrate.elc:    bbdb.elc bbdb-migrate.el
-bbdb-print.elc:      bbdb.elc bbdb-print.el
-bbdb-snarf.elc:      bbdb.elc bbdb-snarf.el
-bbdb-whois.elc:      bbdb.elc bbdb-whois.el
-bbdb-w3.elc:         bbdb.elc bbdb-w3.el
-bbdb-xemacs.elc:     bbdb.elc bbdb-xemacs.el
+.PHONY: no-bbdb-autoloads
+no-bbdb-autoloads:
 
 .el.elc:
-	$(EMACS_PROG) -batch -q $(PUSHPATH) -l ./bbdb.elc -f batch-byte-compile $<
+	@$(emacs) $(PUSHPATH) -f batch-byte-compile $<
 
 bbdb.elc:	bbdb.el
-	$(EMACS_PROG) -batch -q -f batch-byte-compile ./bbdb.el
+	@$(emacs) -f batch-byte-compile $(@:.elc=.el)
 
-bbdb-gnus.elc:	bbdb.elc bbdb-gnus.el
-	$(EMACS_PROG) -batch -q $(PUSHPATH) -l ./bbdb.elc $(GNUS)   \
+bbdb-com.elc:	bbdb.elc bbdb-com.el
+	@$(emacs) $(PUSHPATH) \
 		-f batch-byte-compile $(@:.elc=.el)
-bbdb-mhe.elc:	bbdb.elc bbdb-mhe.el
-	$(EMACS_PROG) -batch -q $(PUSHPATH) -l ./bbdb.elc $(MHE)    \
-		-f batch-byte-compile $(@:.elc=.el)
-bbdb-rmail.elc:	bbdb.elc bbdb-rmail.el
-	$(EMACS_PROG) -batch -q $(PUSHPATH) -l ./bbdb.elc $(RMAIL)  \
-		-f batch-byte-compile $(@:.elc=.el)
-bbdb-vm.elc:	bbdb.elc bbdb-vm.el
-	$(EMACS_PROG) -batch -q $(PUSHPATH) -l ./bbdb.elc $(VM)     \
-		-f batch-byte-compile $(@:.elc=.el)
-
-bbdb-srv.elc:   bbdb.elc bbdb-srv.el
-	$(EMACS_PROG) -batch -q $(PUSHPATH) -l ./bbdb.elc -eval '(progn (or (fboundp (quote define-obsolete-variable-alias)) (if (locate-library "gnuserv-compat") (load "gnuserv-compat" t t))) (if (and (locate-library "gnuserv") (locate-library "itimer")) (byte-compile-file "bbdb-srv.el") (message "Optional package bbdb-srv skipped - gnuserv not found")))'
-
-bbdb-reportmail.elc: bbdb.elc bbdb-reportmail.el
-	$(EMACS_PROG) -batch -q $(PUSHPATH) -l ./bbdb.elc -eval '(if (locate-library "reportmail") (byte-compile-file "bbdb-reportmail.el") (message "Optional package bbdb-reportmail skipped - reportmail not found"))'
-
-bbdb-sc.elc: bbdb.elc bbdb-sc.el
-	$(EMACS_PROG) -batch -q $(PUSHPATH) -l ./bbdb.elc -eval '(if (locate-library "supercite") (byte-compile-file "bbdb-sc.el") (message "Optional package bbdb-sc skipped - supercite not found"))'
-
-# bbdb-hooks uses VM macros if it can find VM.
-
-bbdb-hooks.elc:  bbdb.elc bbdb-hooks.el
-	$(EMACS_PROG) -batch -q $(PUSHPATH) -l ./bbdb.elc \
-	-eval "(and (not (string= \"$(VMDIR)\" \"\")) \
-		    (setq load-path (cons \"$(VMDIR)\" load-path)) \
-		    (load \"vm\" t t) \
-		    (load \"vm-vars\" t t))" \
+bbdb-mua.elc:  bbdb.elc bbdb-com.elc bbdb-mua.el
+	@$(emacs) $(PUSHPATH) \
+	-eval '(unless (string= "$(VMDIR)" "") (push "$(VMDIR)" load-path) (load "vm" t t))' \
 	-f batch-byte-compile $(@:.elc=.el)
+bbdb-rmail.elc:	bbdb.elc bbdb-com.elc bbdb-mua.elc bbdb-rmail.el
+	@$(emacs) $(PUSHPATH) \
+		-f batch-byte-compile $(@:.elc=.el)
+bbdb-gnus.elc:	bbdb.elc bbdb-com.elc bbdb-mua.elc bbdb-gnus.el
+	@$(emacs) $(PUSHPATH) \
+		-f batch-byte-compile $(@:.elc=.el)
+bbdb-mhe.elc:	bbdb.elc bbdb-com.elc bbdb-mua.elc bbdb-mhe.el
+	@$(emacs) $(PUSHPATH) \
+		-f batch-byte-compile $(@:.elc=.el)
+# VM is not part of GNU Emacs
+bbdb-vm.elc:	bbdb.elc bbdb-com.elc bbdb-mua.elc bbdb-vm.el
+	@$(emacs) $(PUSHPATH) $(VM) \
+		-f batch-byte-compile $(@:.elc=.el)
 
-autoloads: bbdb-autoloads.el
+bbdb-print.elc:	bbdb.elc bbdb-com.elc bbdb-print.el
+	@$(emacs) $(PUSHPATH) \
+		-f batch-byte-compile $(@:.elc=.el)
+bbdb-migrate.elc:	bbdb.elc bbdb-migrate.el
+	@$(emacs) $(PUSHPATH) \
+		-f batch-byte-compile $(@:.elc=.el)
+bbdb-anniv.elc:	bbdb.elc bbdb-anniv.el
+	@$(emacs) $(PUSHPATH) \
+		-f batch-byte-compile $(@:.elc=.el)
+bbdb-ispell.elc:	bbdb.elc bbdb-ispell.el
+	@$(emacs) $(PUSHPATH) \
+		-f batch-byte-compile $(@:.elc=.el)
 
-autoloadsc: bbdb-autoloads.elc
+autoloads: bbdb-loaddefs.el
 
-extras:: bbdb-print.elc bbdb-ftp.elc bbdb-whois.elc \
-	  bbdb-snarf.elc bbdb-w3.elc \
-	bbdb-sc.elc bbdb-merge.elc bbdb-migrate.elc bbdb-gui.elc
-ifeq ($(EMACS_FLAVOR),xemacs)
-extras:: bbdb-xemacs.elc
-endif
+bbdb:	bbdb-loaddefs.el bbdb.elc bbdb-com.elc bbdb-print.elc \
+	bbdb-anniv.elc bbdb-migrate.elc bbdb-mua.elc \
+	bbdb-message.elc bbdb-rmail.elc bbdb-gnus.elc bbdb-mhe.elc \
+	bbdb-ispell.elc
+vm:	bbdb-vm.elc
 
-bbdb:	bbdb.elc bbdb-com.elc bbdb-hooks.elc autoloadsc extras
+install-el: all
+	$(INSTALL) -d -m 0755 "$(lispdir)/"
+	for elc in *.elc; do                                        \
+	    el=`basename $$elc c`;                                  \
+	    if test -f "$(srcdir)/$$el"; then                       \
+	        echo "Install $$el in $(lispdir)/";                 \
+	        $(INSTALL_DATA) "${srcdir}/$$el" "$(lispdir)/";     \
+	    fi;                                                     \
+        done;
+	for el in bbdb-loaddefs.el; do             \
+	    echo "Install $$el in $(lispdir)/";    \
+	    $(INSTALL_DATA) $$el "$(lispdir)/";    \
+        done;
 
-rmail:	bbdb bbdb-rmail.elc
+install-elc: all
+	$(INSTALL) -d -m 0755 "$(lispdir)/"
+	for elc in bbdb-loaddefs.el *.elc; do      \
+	    echo "Install $$elc in $(lispdir)/";   \
+	    $(INSTALL_DATA) $$elc "$(lispdir)/";   \
+        done;
 
-vm:	bbdb bbdb-vm.elc
-
-mhe:	bbdb bbdb-mhe.elc
-
-gnus:	bbdb bbdb-gnus.elc
-
-# aliases
-mh:	mhe
-mh-e:	mhe
+uninstall:
+	for elc in *.elc; do        \
+	  $(RM) "$(lispdir)/$$elc"; \
+	done
+	for el in *.el; do          \
+	  $(RM) "$(lispdir)/$$el";  \
+	done
 
 # Assorted clean-up targets
 clean:
-	-$(RM) bbdb*.elc
+	-$(RM) bbdb*.elc TAGS
 
 distclean: clean
 
-# Backward compatibility
-reallyclean: distclean
-
-cvsclean: distclean
-	-$(RM) bbdb-autoloads.el  # Generated file
+maintainer-clean: distclean
+	-$(RM) bbdb-loaddefs.el  # Generated file
 	-$(RM) Makefile
+
+extraclean: maintainer-clean
+	-$(RM) -f *~ \#*
+
+TAGS: $(SRCS)
+	etags $(SRCS)

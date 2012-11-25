@@ -2635,8 +2635,8 @@ If ARG, without confirm."
   (string= (funcall wl-summary-subject-filter-function subject1)
 	   (funcall wl-summary-subject-filter-function subject2)))
 
-(defmacro wl-summary-put-alike (alike)
-  `(elmo-set-hash-val (format "#%d" (wl-count-lines))
+(defmacro wl-summary-put-alike (alike count)
+  `(elmo-set-hash-val (format "#%d" ,count)
 		      ,alike
 		      wl-summary-alike-hashtb))
 
@@ -2646,24 +2646,27 @@ If ARG, without confirm."
 
 (defun wl-summary-insert-headers (folder func &optional mime-decode)
   (let ((numbers (elmo-folder-list-messages folder 'visible t))
+	(count (wl-count-lines))
 	ov this last alike)
     (buffer-disable-undo (current-buffer))
     (make-local-variable 'wl-summary-alike-hashtb)
     (setq wl-summary-alike-hashtb (elmo-make-hash (* (length numbers) 2)))
     (when mime-decode
       (set-buffer-multibyte default-enable-multibyte-characters))
-    (while (setq ov (elmo-message-entity folder (pop numbers)))
-      (setq this (funcall func ov))
-      (and this (setq this (std11-unfold-string this)))
-      (if (equal last this)
-	  (setq alike (cons ov alike))
-	(when last
-	  (wl-summary-put-alike alike)
-	  (insert last ?\n))
-	(setq alike (list ov)
-	      last this)))
-    (when last
-      (wl-summary-put-alike alike)
+    (mapc (lambda (number)
+	    (setq ov (elmo-message-entity folder number))
+	    (setq this (funcall func ov))
+	    (if (equal last this)
+		(setq alike (cons ov alike))
+	      (when last
+		(wl-summary-put-alike alike count)
+		(insert last ?\n)
+		(setq count (1+ count)))
+	      (setq alike (list ov)
+		    last this)))
+	  numbers)
+    (when (null (eq last this))
+      (wl-summary-put-alike alike count)
       (insert last ?\n))
     (when mime-decode
       (decode-mime-charset-region (point-min) (point-max)
@@ -3757,10 +3760,7 @@ Return non-nil if the mark is updated"
 	  (completing-read (format "Range (%s): " default)
 			   (mapcar
 			    (lambda (x) (cons x x))
-			    input-range-list)))
-    (if (string= range "")
-	default
-      range)))
+			    input-range-list) nil nil nil nil default))))
 
 (defun wl-summary-toggle-disp-folder (&optional arg)
   (interactive)
@@ -4684,7 +4684,7 @@ If ARG is numeric number, decode message as following:
 	  (save-excursion
 	    (setq from (std11-field-body "from")
 		  newsgroups (std11-field-body "newsgroups")
-		  message-id (std11-field-body "message-id")
+		  message-id (elmo-get-message-id-from-buffer)
 		  distribution (std11-field-body "distribution"))
 	    ;; Make sure that this article was written by the user.
 	    (unless (wl-address-user-mail-address-p
@@ -4735,7 +4735,7 @@ If ARG is numeric number, decode message as following:
 	       (wl-address-header-extract-address
 		(car (wl-parse-addresses from))))
 	(error "This article is not yours"))
-      (let* ((message-id (std11-field-body "message-id"))
+      (let* ((message-id (elmo-get-message-id-from-buffer))
 	     (followup-to (std11-field-body "followup-to"))
 	     (mail-default-headers
 	      (concat mail-default-headers
@@ -4779,13 +4779,10 @@ If ARG is numeric number, decode message as following:
       (setq wl-save-dir wl-temporary-file-directory))
     (if num
 	(save-excursion
-	  (setq filename (expand-file-name
-			  (concat (number-to-string num)
-				  wl-summary-save-file-suffix)
-			  wl-save-dir))
+	  (setq filename (concat (number-to-string num) wl-summary-save-file-suffix))
 	  (when (or (null arg)
 		    (file-exists-p filename))
-	    (setq filename (read-file-name "Save to file: " filename)))
+	    (setq filename (expand-file-name (read-file-name "Save to file: " wl-save-dir nil nil filename))))
 	  (wl-summary-set-message-buffer-or-redisplay)
 	  (set-buffer (wl-message-get-original-buffer))
 	  (when (or arg
@@ -4985,10 +4982,7 @@ If ARG is numeric number, decode message as following:
       (unwind-protect
 	  (let ((decode-dir wl-temporary-file-directory))
 	    (if (not wl-prog-uudecode-no-stdout-option)
-		(setq filename (read-file-name "Save to file: "
-					       (expand-file-name
-						(elmo-safe-filename filename)
-						wl-temporary-file-directory)))
+		(setq filename (expand-file-name (read-file-name "Save to file: " wl-temporary-file-directory nil nil (elmo-safe-filename))))
 	      (setq decode-dir
 		    (wl-read-directory-name "Save to directory: "
 					    wl-temporary-file-directory))
