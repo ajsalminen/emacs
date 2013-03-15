@@ -987,7 +987,8 @@
 (yas/load-directory "~/.emacs.d/yasnippet/snippets")
 ;; Develop and keep personal snippets under ~/emacs.d/mysnippets
 (setq yas/root-directory "~/.emacs.d/mysnippets")
-(yas/initialize)
+(yas-global-mode 1)
+;; (yas/initialize)
 
 (defun yas/ido-prompt-fix (prompt choices &optional display-fn)
   (when (featurep 'ido)
@@ -2805,11 +2806,14 @@ nEnd:")
 (global-set-key [(control tab)] 'other-frame)
 (global-set-key [(shift control tab)] '(lambda() (interactive) (other-frame -1)))
 
-(require 'redo+)
-(global-set-key (kbd "C-M-/") 'redo)
-(setq undo-no-redo t)
-(setq undo-limit 600000)
-(setq undo-strong-limit 900000)
+;; redo+ is broken in 24.3 and above
+(when (not (and (>= emacs-major-version 24) (>= emacs-minor-version 3)))
+  (progn
+    (require 'redo+)
+    (global-set-key (kbd "C-M-/") 'redo)
+    (setq undo-no-redo t)
+    (setq undo-limit 600000)
+    (setq undo-strong-limit 900000)))
 
 (require 'goto-chg)
 (global-set-key [(control ?.)] 'goto-last-change)
@@ -2941,7 +2945,7 @@ nEnd:")
         (beginning-of-line))))
 
 
-(message "eshell")
+(message "eshell activated")
 
 (add-hook 'eshell-mode-hook
           (lambda ()
@@ -3641,7 +3645,7 @@ FORMAT-STRING is like `format', but it can have multiple %-sequences."
     (diminish 'scim-mode))
 (diminish 'undo-tree-mode)
 (diminish 'window-number-mode)
-(diminish 'yas/minor-mode "Y")
+;; (diminish 'yas/minor-mode "Y")
 
 (add-hook 'emacs-lisp-mode-hook
           (lambda()
