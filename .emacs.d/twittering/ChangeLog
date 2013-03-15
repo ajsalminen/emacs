@@ -1,3 +1,2130 @@
+2013-02-11  Tadashi MATSUO  <tad@mymail.twin.jp>
+
+	* twittering-mode.el: Fix the jojo-mode that caused an error when
+	the condition of automatically posting a tweet was satisfied.
+	Thanks to the anonymous person who reported the problem.
+	(twittering-post-predicted-message-like-jojo): fix variable name.
+
+	* twittering-mode.el: Fix a return value of
+	`twittering-render-replied-statuses'. The function returns nil
+	without regard to whether a tweet is rendered or not. Thanks to
+	Ikumi Keita who reported the problem.
+	(twittering-render-replied-statuses): fix a return value.
+
+	* twittering-mode.el: Support different intervals of retrieving
+	timelines.
+	(twittering-relative-retrieval-interval-alist): new variable.
+	(twittering-relative-retrieval-count-alist): new variable.
+	(twittering-retrieve-timeline): reset the retrieval count.
+	(twittering-start): update all active timelines forcibly once.
+	(twittering-get-relative-interval): new function.
+	(twittering-get-retrieval-count): new function.
+	(twittering-set-retrieval-count): new function.
+	(twittering-initialize-retrieval-count): new function.
+	(twittering-update-active-buffers): reduce retrievals according to
+	the variable `twittering-relative-retrieval-interval-alist'.
+
+2013-01-21  Tadashi MATSUO  <tad@mymail.twin.jp>
+
+	* twittering-mode.el: Update the regexp for extracting an ID from
+	a tweet.
+	(twittering-extract-id-from-url): update the regexp for extracting
+	an ID from a tweet.
+
+	* twittering-mode.el: Avoid rendering same tweets repeatedly. The
+	function `twittering-render-timeline' rendered given repeated
+	tweets as is. Since a merged timeline may include one tweet
+	multiple times, such a tweet was rendered multiple times.
+	(twittering-render-timeline): skip repeated tweets.
+
+2013-01-14  Tadashi MATSUO  <tad@mymail.twin.jp>
+
+	* twittering-mode.el: Fix a bug of backward retrieval of
+	favorites timeline. The functions, `twittering-goto-next-status'
+	and `twittering-goto-previous-status', did nothing for favorites
+	timeline. They now treat favorites timeline as they treat other
+	timelines. Thanks to the anonymous person who reported the
+	problem.
+	(twittering-goto-next-status): Remove a special action for
+	favorites timeline.
+	(twittering-goto-previous-status): likewise.
+
+	* README.markdown: Add explanations of major configurations and
+	others.
+
+2012-11-05  Tadashi MATSUO  <tad@mymail.twin.jp>
+
+	* twittering-mode.el: Support the backward retrieval of favorites
+	timeline.
+	(twittering-call-api): send the parameter `max_id' for retrieving
+	favorites timeline if necessary.
+
+	* twittering-mode.el: Display how many tweets are added to each
+	buffer.
+	(twittering-http-get-default-sentinel): display how many tweets
+	are added to each buffer.
+	(twittering-add-statuses-to-timeline-data): return a list of pairs
+	of a timeline spec string and the number of addtional tweets.
+	(twittering-render-timeline): return a list of tweets newly
+	rendered.
+
+	* twittering-mode.el: Extract the format from the HTTP response
+	header.
+	(twittering-get-content-subtype-symbol-from-header-info): new
+	function for extracting the content subtype from a HTTP header.
+	(twittering-send-http-request): fix docstring.
+	(twittering-get-error-message): extract the format from the HTTP
+	response header instead of using `connection-info`.
+	(twittering-http-get-default-sentinel): likewise.
+	(twittering-retrieve-single-tweet-sentinel): likewise.
+
+2012-09-17  Tadashi MATSUO  <tad@mymail.twin.jp>
+
+	* twittering-mode.el: Request a compressed HTTP response when
+	using `curl'.
+	(twittering-send-http-request-curl): add the option `--compressed'
+	to the arguments for the program `curl'.
+
+	* twittering-mode.el: Do not call `force-mode-line-update' via the
+	unread status notifier. It had been invoked via a sentinel or
+	`post-command-hook'.
+	(twittering-set-number-of-unread): do not call the function
+	`force-mode-line-update'.
+
+	* twittering-mode.el: Add a new function
+	`twittering-retrieve-timeline'.
+	(twittering-retrieve-timeline): new function for retrieving and
+	rendering a timeline. This accepts any timeilne spec string
+	including that for composite timeline, though
+	`twittering-call-api' accepts only a primary timeline. Also, the
+	new function can be invoked with more detailed retrieval options
+	than the existing function `twittering-get-and-render-timeline'.
+	(twittering-get-and-render-timeline): reimplemented with the new
+	function `twittering-retrieve-timeline'.
+
+	* twittering-mode.el: Add a new command
+	`twittering-get-tweets-before' to get tweets before a
+	specific time.
+	(twittering-parse-time-string): new function.
+	(twittering-time-to-id): new function.
+	(twittering-get-tweets-within-specific-time-range): new function.
+	(twittering-get-tweets-before): new function.
+
+	* twittering-mode.el: Display how many tweets are retrieved.
+	(twittering-http-get-default-sentinel): display how many tweets
+	are retrieved. This may includes some tweets that has been already
+	retrieved as an other timeline.
+
+2012-07-22  Tadashi MATSUO  <tad@mymail.twin.jp>
+
+	* twittering-mode.el: Clear list of undo entries on a pop-up edit
+	buffer.
+	(twittering-update-status-from-pop-up-buffer): clear list of undo
+	entries.
+
+	* twittering-mode.el: Fix the bug that retweets may not be
+	rendered in a composite timeline.
+	(twittering-render-timeline): render a retweet if the first ID
+	referring the retweet is unknown. This is necessary because a
+	referring ID table of a composite timeline may lack information of
+	some component timelines.
+
+	* twittering-mode.el: `twittering-id-to-time' restores the
+	milli-second parameter.
+	(twittering-id-to-time): restore the milli-second parameter.
+
+	* twittering-mode.el: Fix the bug that
+	`twittering-render-replied-statuses' may ignore the argument
+	`pos'.
+	(twittering-render-replied-statuses): correctly consider the
+	argument `pos'.
+
+	* twittering-mode.el: Fix the bug that a single tweet timeline
+	consisting of a retweet causes an error. A single tweet timeline
+	is registered to `twittering-timeline-data-table' in a special
+	way (See `twittering-retrieve-single-tweet-sentinel'). However,
+	`twittering-current-timeline-referring-id-table' did not take it
+	into account.
+	(twittering-current-timeline-referring-id-table): return the
+	correct hash table for a single tweet timeline.
+
+2012-05-06  Tadashi MATSUO  <tad@mymail.twin.jp>
+
+	* twittering-mode.el: Add some timeline specs to the definition of
+	timeline spec strings.
+
+	* twittering-mode.el: Remove routines for the filter timeline.
+	(twittering-timeline-spec-to-string): remove routines for the
+	filter timeline.
+	(twittering-extract-timeline-spec): likewise.
+	(twittering-timeline-spec-primary-p): remove the mention to the
+	filter timeline from the docstring.
+	* test/test-twittering-mode.el: remove tests for the filter
+	timeline.
+
+	* twittering-mode.el: Fix the docstring of `twittering-call-api'.
+	(twittering-call-api): fix the docstring for the command
+	`retrieve-single-tweet'.
+
+	* twittering-mode.el: Support a `single tweet' timeline, which
+	consists of a tweet specified by its ID.
+	(twittering-retrieve-single-tweet-sentinel): support the retrieval
+	via `twittering-call-api' with the command `retrieve-timeline'.
+	(twittering-timeline-spec-to-string): support a `single tweet'
+	timeline spec.
+	(twittering-extract-timeline-spec): likewise.
+	(twittering-timeline-spec-primary-p): likewise.
+	(twittering-current-timeline-data): likewise.
+	(twittering-call-api): invoke the `retrieve-single-tweet' command
+	if the `retrieve-timeline' command is specified with a single
+	tweet timeline spec.
+	* test/test-twittering-mode.el: Add a test for a `single tweet'
+	timeline spec.
+	* README.markdown: Add an explanation for a `single tweet'
+	timeline spec.
+
+	* twittering-mode.el: Add the expanded uri to the url string as a
+	property if possible.
+	(twittering-make-fontified-tweet-text-with-entity): add the
+	expanded-uri property to the url string.
+
+	* twittering-mode.el: Visit a single tweet timeline via a URL of a
+	tweet.
+	(twittering-extract-id-from-url): new function.
+	(twittering-other-user-timeline): visit a single tweet timeline if
+	the cursor points to a URL of a tweet.
+
+2012-04-02  Tadashi MATSUO  <tad@mymail.twin.jp>
+
+	* README.markdown: Fix the order of tags.
+
+2012-04-01  Tadashi MATSUO  <tad@mymail.twin.jp>
+
+	* README.markdown: Fix the explanation of the key binding 'd'.
+
+	* README.markdown: Add an explanation how to post an
+	official/native retweet.
+
+	* README.markdown: Add basic key bindings to the 'Quick start'
+	section.
+
+	* twittering-mode.el: Bind "C-cC-w" to
+	`twittering-delete-status'. The binding is a future replacement
+	for "C-cD", which violates the Emacs Key Binding Conventions.
+	(twittering-mode-map): bind "C-cC-w" to the function
+	`twittering-delete-status'.
+	* README.markdown: Fix the documents related to "C-cD".
+
+	* twittering-mode.el: Add a new variable
+	`twittering-pop-to-buffer-function' to specify how to open a
+	window for an edit buffer. Previously, a window for an edit buffer
+	was opened by invoking the function `pop-to-buffer' with
+	specifying non-nil as the argument NORECORD. This was an ad-hoc
+	solution of the problem that an edit buffer was assigned on a
+	different window for each time. However, with the solution, a
+	window for an edit buffer might be hidden by opening another
+	window because the window for an edit buffer was not recorded in
+	the list of recently selected windows. To avoid the behavior, new
+	functions open a window with a fixed rule and record a new window
+	in the list.
+	(twittering-pop-to-buffer-function): new variable.
+	(twittering-pop-to-buffer): new function, which just invokes the
+	function specified by `twittering-pop-to-buffer-function'.
+	(twittering-pop-to-buffer-simple): new function for the new
+	variable `twittering-pop-to-buffer-function'.
+	(twittering-pop-to-buffer-in-current-window): likewise.
+	(twittering-pop-to-buffer-in-largest-window): likewise.
+	(twittering-pop-to-buffer-in-bottom-largest-window): likewise.
+	(twittering-update-status-from-pop-up-buffer): use
+	`twittering-pop-to-buffer' instead of invoking `pop-to-buffer'
+	directly.
+
+2012-03-27  Tadashi MATSUO  <tad@mymail.twin.jp>
+
+	* twittering-mode.el: Fix the filename of the footer line.
+
+	* twittering-mode.el: Fix the calculation of length of a tweet
+	including a URL.
+	(twittering-effective-length): always use the length retrieved by
+	'help/configuration' API. The function previously used the minimum
+	of the length by the API and the original length. This causes
+	failure in posting a tweet because the t.co URL wrapper
+	automatically wraps all links as of October 10, 2011.
+
+	* README.markdown: Fix a typo.
+
+	* README.markdown: Update the document.
+
+	* twittering-mode.el: Ensure that a pop-up edit buffer is
+	initially marked as unmodified.
+	(twittering-update-status-from-pop-up-buffer): mark the pop-up
+	edit buffer as unmodified. Since the help is rendered as a
+	read-only text, the buffer must be marked as unmodified
+	explicitly.
+
+2012-03-17  Tadashi MATSUO  <tad@mymail.twin.jp>
+
+	* twittering-mode.el: Fix the condition of confirmation on posting
+	a tweet. The variable `twittering-request-confirmation-on-posting'
+	had been ignored on posting a reply. Thanks to Takashi Masuda who
+	reported the problem.
+	(twittering-edit-post-status): fix the condition of confirmation
+	on posting a tweet.
+
+	* twittering-mode.el: Support error messages formatted as JSON.
+	(twittering-get-error-message): receive a new argument
+	CONNECTION-INFO and support error messages sent as JSON.
+	(twittering-http-get-default-sentinel): send CONNECTION-INFO to
+	the function `twittering-get-error-message'.
+	(twittering-http-get-list-sentinel-base): likewise.
+	(twittering-http-post-default-sentinel): likewise.
+	(twittering-http-post-destroy-status-sentinel): likewise.
+
+	* twittering-mode.el: Parse a HTTP response body whose status code
+	is 401 or 404.
+	(twittering-get-error-message): try to parse a HTTP respose body
+	whose status code is 401 or 404.
+
+	* twittering-mode.el: Display an error message from the
+	'help/configuration' API.
+	(twittering-update-service-configuration-sentinel): display an
+	error message in a HTTP response body.
+
+	* twittering-mode.el: Record HTTP response headers on debug mode.
+	(twittering-get-response-header): record the extracted HTTP
+	response header if `twittering-debug-mode' is non-nil.
+
+	* twittering-mode.el: Remove the function
+	`twittering-make-field-properties'. It is unnecessary because
+	`twittering-render-a-field' automatically add a field property.
+	(twittering-get-common-properties): update the docstring.
+	(twittering-make-field-properties): removed.
+	(twittering-make-field-properties-of-popped-ancestors): removed.
+	(twittering-make-properties-of-popped-ancestors): new function.
+	(twittering-show-replied-statuses): use
+	`twittering-make-properties-of-popped-ancestors' instead of
+	`twittering-make-field-properties-of-popped-ancestors'.
+
+	* twittering-mode.el: Add a new function
+	`twittering-make-field-id-from-id' which generates a field ID from
+	a tweet ID instead of a tweet alist.
+	(twittering-make-field-id-from-id): new function.
+	(twittering-make-field-id): reimplemented with the new function
+	`twittering-make-field-id-from-id'.
+
+	* twittering-mode.el: Add a new command `retrieve-single-tweet'
+	to the function `twittering-call-api'.
+	(twittering-retrieve-single-tweet-sentinel): new function.
+	(twittering-call-api): add `retrieve-single-tweet' as a new
+	command.
+	(twittering-make-alist-of-forbidden-tweet): new function, which
+	generates a dummy alist for a forbidden tweet.
+	(twittering-make-alist-of-non-existent-tweet): new function, which
+	generates a dummy alist for a non-existent tweet.
+
+	* twittering-mode.el: Add functions for finding a region of
+	replied statuses with the common base status.
+	(twittering-replied-statuses-visible-p): add a docstring.
+	(twittering-get-beginning-of-visible-replied-statuses): new
+	function, which returns the beginning position of replied statuses
+	rendered by `twittering-show-replied-statuses'.
+	(twittering-get-end-of-visible-replied-statuses): new function,
+	which returns the end position of replied statuses rendered by
+	`twittering-show-replied-statuses'.
+	(twittering-hide-replied-statuses): determine a region being
+	deleted by using the new functions.
+
+	* twittering-mode.el: Fix the behavior of the function
+	`twittering-replied-statuses-visible-p' on a header or a footer.
+	(twittering-replied-statuses-visible-p): return nil on a header or
+	a footer.
+
+	* twittering-mode.el: Add a new function
+	`twittering-render-replied-statuses'.
+	(twittering-render-replied-statuses): new function, which renders
+	replied statuses even if some replied statuses have been already
+	rendered.
+	(twittering-show-replied-statuses): reimplemented with the new
+	function `twittering-render-replied-statuses'.
+
+	* twittering-mode.el: `twittering-redisplay-status-on-each-buffer'
+	supports various symbols as a specifier of regions to be
+	redisplayed.
+	(twittering-redisplay-status-on-each-buffer): support other
+	symbols besides `need-to-be-updated' as a specifier of regions to
+	be redisplayed.
+
+	* twittering-mode.el: Support iterative retrieval of a series of
+	replies.
+	(twittering-retrieve-single-tweet-sentinel): redisplay some
+	regions related to the retrieved status.
+	(twittering-render-a-tweet-with-delay): new function.
+	(twittering-toggle-or-retrieve-replied-statuses): new function.
+	(twittering-mode-map): bind "R" to the new function
+	`twittering-toggle-or-retrieve-replied-statuses'.
+
+	* twittering-mode.el: Add a new function `twittering-id-to-time'
+	that extracts a corresponding time from an ID generated by
+	Snowflake.
+	(twittering-snowflake-epoch-time): new function.
+	(twittering-id-to-time): new function.
+
+	* twittering-mode.el: Use the time extracted from ID for forbidden
+	or non-existent tweets.
+	(twittering-make-alist-of-forbidden-tweet): use the time extracted
+	from ID.
+	(twittering-make-alist-of-non-existent-tweet): likewise.
+
+	* twittering-mode.el: Update the docstring of the variable
+	`twittering-initial-timeline-spec-string'.
+	(twittering-initial-timeline-spec-string): update the docstring.
+
+2012-03-04  Tadashi MATSUO  <tad@mymail.twin.jp>
+
+	* twittering-mode.el: Fix the escape of a query string in a search
+	timeline spec.
+	(twittering-timeline-spec-to-string): correctly escape a query of
+	a search timeline spec.
+	(twittering-extract-timeline-spec): correctly decode a query
+	string with escaped characters.
+	* test/test-twittering-mode.el: Add tests for search timeline
+	specs.
+
+	* twittering-mode.el: Support ":exclude-re/REGEXP/SPEC"
+	timelines.
+	(twittering-timeline-spec-to-string): support the new timeline
+	spec ":exclude-re/REGEXP/SPEC".
+	(twittering-extract-timeline-spec): likewise.
+	(twittering-timeline-spec-composite-p): likewise.
+	(twittering-get-base-timeline-specs): likewise.
+	(twittering-generate-composite-timeline): likewise.
+	(twittering-current-timeline-referring-id-table): likewise.
+	(twittering-current-timeline-data): likewise.
+	* test/test-twittering-mode.el: Add tests for exclude-re timeline
+	specs.
+
+2012-02-28  Tadashi MATSUO  <tad@mymail.twin.jp>
+
+	* twittering-mode.el: Fix the function
+	`twittering-current-timeline-referring-id-table'. There was the
+	possibility that the function returns nil for a composite timeline
+	spec. This made native retweets disappear on the composite
+	timeline. Thanks to Boots_of_Lead who reported the bug.
+	(twittering-current-timeline-referring-id-table): for a composite
+	timeline spec, return the table of the first primary base spec
+	with a non-nil referring table. This function previously returned
+	the first direct base timeline spec, which might be nil.
+
+	* twittering-mode.el: Add an explanation to the docstring of
+	`twittering-new-tweets-rendered-hook'.
+	(twittering-new-tweets-rendered-hook): add an explanation to the
+	docstring.
+
+	* twittering-mode.el: Reimplement jojo-mode as a hook.
+	(twittering-add-statuses-to-timeline-data): remove statements for
+	jojo-mode.
+	(twittering-initialize-global-variables-if-necessary): add
+	`twittering-jojo-mode-hook-function' to the new tweets rendered
+	hook.
+	(twittering-jojo-mode-p): removed.
+	(twittering-update-jojo): removed.
+	(twittering-post-predicted-message-like-jojo): new function.
+	(twittering-jojo-mode-hook-function): new function.
+
+	* twittering-mode.el: Display the replied tweet on the pop-up
+	edit buffer.
+	(twittering-edit-set-help-string): new function.
+	(twittering-edit-setup-help): add a new argument REPLY-TO-ID.
+	(twittering-update-status-from-pop-up-buffer): send REPLY-TO-ID to
+	the function `twittering-edit-setup-help'.
+
+	* twittering-mode.el: Generate a description of a edited tweet by
+	`twittering-generate-format-status-function'.
+	(twittering-edit-set-help-string): do not add a text property to
+	STR.
+	(twittering-edit-setup-help): generate a description by
+	`twittering-generate-format-status-function'.
+
+	* twittering-mode.el: Render a help on a pop-up edit buffer as a
+	read-only text. The replied tweet can be copied on the edit
+	buffer. Rendering a help as a read-only text also suppresses
+	strange behavior of overlays exceeding the size of the current
+	window.
+	(twittering-help-overlay): removed.
+	(twittering-help-overlay-priority): removed.
+	(twittering-edit-help-end-pos): new variable.
+	(twittering-edit-mode): remove the parent mode to suppress
+	invocation of hooks for `text-mode'. The trick for disabling
+	font-lock mode is introduced. `twittering-edit-help-end-pos' is
+	prepared as a buffer-local variable.
+	(twittering-edit-extract-status): determine the region being
+	extracted with `twittering-edit-help-end-pos'.
+	(twittering-edit-reset-status): new function.
+	(twittering-edit-set-help-string): render a help for
+	`twittering-edit-mdoe' as a read-only text.
+	(twittering-update-status-from-pop-up-buffer): move the cursor
+	just behind the help.
+	(twittering-edit-next-history): extract the edited message by
+	`twittering-edit-extract-status' and reset it by
+	`twittering-edit-reset-status'.
+	(twittering-edit-previous-history): likewise.
+
+	* twittering-mode.el: Dynamically determine an end position of a
+	help on a pop-up edit buffer.
+	(twittering-edit-help-end-pos): removed.
+	(twittering-edit-mode): remove the variable
+	`twittering-edit-help-end-pos'.
+	(twittering-edit-get-help-end): new function, which replaces the
+	buffer-local variable `twittering-edit-help-end-pos'.
+	(twittering-edit-extract-status): use the function
+	`twittering-edit-get-help-end' instead of the variable
+	`twittering-edit-help-end-pos'.
+	(twittering-edit-reset-status): likewise.
+	(twittering-edit-set-help-string): likewise.
+	(twittering-update-status-from-pop-up-buffer): likewise.
+
+	* twittering-mode.el: Control an attribute of a tweet being edited
+	with an alist bound to `twittering-edit-mode-info'.
+	(twittering-reply-recipient): removed.
+	(twittering-edit-mode-info): new variable, which is an alist
+	specifying the attribute of the tweet being edited.
+	(twittering-update-status-from-pop-up-buffer): control the
+	attribute of the tweet being edited with the new variable
+	`twittering-edit-mode-info'.
+	(twittering-edit-post-status): determine the attribute of the
+	tweet being posted by the variable `twittering-edit-mode-info'.
+
+	* twittering-mode.el: Allow a reply where a mention is not placed
+	on the beginning.
+	(twittering-edit-post-status): allow a reply where a mention is
+	not placed on the beginning.
+	(twittering-update-status-from-minibuffer): likewise.
+
+	* twittering-mode.el: Send the cited ID to the function
+	`twittering-update-status' when editing an organic retweet.
+	(twittering-edit-skeleton-alist): mention that IN-REPLY-TO is
+	non-nil when a tweet is edited as an organic retweet.
+	(twittering-update-status-from-minibuffer): post a tweet as a
+	reply only if TWEET-TYPE is the symbol `reply'.
+	(twittering-update-status): mention that REPLY-TO-ID is non-nil
+	when a tweet cites or replies to a certain tweet.
+	(twittering-organic-retweet): send the ID of the cited tweet to
+	`twittering-update-status' as REPLY-TO-ID.
+
+	* twittering-mode.el: Generate a help on an edit buffer from the
+	buffer-local variable `twittering-edit-mode-info'.
+	(twittering-edit-setup-help): generate a help from the
+	buffer-local variable `twittering-edit-mode-info'.
+	(twittering-update-status-from-pop-up-buffer): remove obsolete
+	arguments from the invocation of `twittering-edit-setup-help'.
+
+	* twittering-mode.el: Enable to toggle a reply and a normal tweet
+	on an edit buffer.
+	(twittering-edit-mode-map): bind "C-c C-r" to
+	`twittering-edit-toggle-reply'.
+	(twittering-edit-setup-help): display a help for
+	`twittering-edit-toggle-reply'.
+	(twittering-edit-toggle-reply): new function, which toggles
+	whether the tweet being edited will be sent as a reply or not.
+
+	* twittering-mode.el: Confirm that the edited message should be
+	sent as a normal tweet when it has been edited as a reply but it
+	does not include a mention to the cited user.
+	(twittering-edit-post-status): confirm that the edited message
+	should be sent as a normal tweet when it has been edited as a
+	reply but it does not include a mention to the cited user.
+
+	* twittering-mode.el: Support a new format specifier "%u" for
+	`twittering-retweet-format'. It is replaced with the URL of the
+	cited tweet.
+	(twittering-retweet-format): update the docstring.
+	(twittering-get-status-url-from-alist): new function.
+	(twittering-organic-retweet): support a new format specifier
+	"%u".
+
+2012-02-12  Tadashi MATSUO  <tad@mymail.twin.jp>
+
+	* twittering-mode.el: Accept a symbol as FUNC of a composite
+	timeline spec ":exclude-if/FUNC/SPEC".
+	(twittering-extract-timeline-spec): accept a symbol as FUNC of
+	a composite timeline spec ":exclude-if/FUNC/SPEC".
+	* test/test-twittering-mode.el: Add a test of an exclude-if
+	timeline spec with a symbol as FUNC.
+
+	* twittering-mode.el: Give the help overlay a priority specified
+	by `twittering-help-overlay-priority'.
+	(twittering-help-overlay-priority): new variable.
+	(twittering-edit-setup-help): give the overlay a priority
+	specified by `twittering-help-overlay-priority'.
+
+2012-02-11  Tadashi MATSUO  <tad@mymail.twin.jp>
+
+	* twittering-mode.el: Use an after-string property instead of
+	a before-string property to show the help on an edit buffer.
+	Thanks to irie who discoverd the problem and wrote a suitable
+	code.
+	(twittering-edit-setup-help): set an after-string property of the
+	overlay for the help and give high priority to the overlay.
+
+	* twittering-mode.el: Remove duplicates in a merge timeline spec.
+	(twittering-extract-timeline-spec): remove duplicates in a list of
+	timeline specs in a merge timeline spec.
+	* test/test-twittering-mode.el: Add a test of reducing duplicates
+	in a merge timeline spec.
+
+	* twittering-mode.el: Remove duplicates in the list of primary
+	base timeline specs.
+	(twittering-get-primary-base-timeline-specs): remove duplicates in
+	the list of primary base timeline specs.
+	* test/test-twittering-mode.el: Add a test of dependence of
+	composite timeline specs.
+
+	* twittering-mode.el: Fix the behavior of the function
+	`twittering-get-current-status-head' for the position following
+	the header. Thanks to lemit who reported the problem.
+	The previous one made `twittering-replied-statuses-visible-p'
+	return an incorrect value on the position following the header.
+	(twittering-get-current-status-head): fix the behavior when POS
+	points to the beginning of a field and also points to the end of
+	another field. The function previously returned the head of the
+	previous field.
+
+	* twittering-mode.el: Fix the behavior of `twittering-get-id-at'
+	on the head of the footer.
+	(twittering-get-id-at): use `twittering-get-current-status-head'
+	instead of `twittering-get-previous-status-head'. On the head of
+	the footer, the former returns the head of the footer and the
+	latter returns the head of the status followed by the footer.
+
+2012-02-06  Tadashi MATSUO  <tad@mymail.twin.jp>
+
+	* twittering-mode.el: Delete a specified status from composite
+	timeline buffers.
+	(twittering-get-dependent-timeline-specs): new function.
+	(twittering-delete-status-from-data-table): delete the given
+	status from buffers bound to composite timelines.
+
+	* twittering-mode.el: Decode a HTTP response body before invoking
+	a sentinel.
+	(twittering-decode-response-body): new function.
+	(twittering-send-http-request): decode the response body by
+	`twittering-decode-response-body' before invoking the sentinel.
+	(twittering-http-get-default-sentinel): do not decode the response
+	body here.
+
+	* twittering-mode.el: Delete a status after the successful
+	response for the `destroy-status' API is received.
+	(twittering-http-post-destroy-status-sentinel): new function.
+	(twittering-call-api): use the new function
+	`twittering-http-post-destroy-status-sentinel' as the sentinel of
+	`twittering-http-post' for the command `destroy-status'.
+	(twittering-delete-status): do not delete the specified status
+	here.
+
+	* twittering-mode.el: `twittering-render-a-field' moves the
+	cursor even if the given status is not rendered.
+	(twittering-render-a-field): move the cursor even if the given
+	status is not rendered.
+
+	* twittering-mode.el: Do not use the return value of the function
+	`twittering-render-a-field'.
+	(twittering-render-timeline): do not use the return value of
+	`twittering-render-a-field'.
+	(twittering-show-replied-statuses): likewise.
+
+	* twittering-mode.el: `twittering-render-a-field' returns nil if
+	the status is not rendered.
+	(twittering-render-a-field): return nil if the status is not
+	rendered.
+	(twittering-render-timeline): show replied statuses only if the
+	status is rendered.
+
+	* twittering-mode.el: Add a docstring for
+	`twittering-render-timeline'.
+	(twittering-render-timeline): add a docstring.
+
+	* twittering-mode.el: Add `twittering-rerender-timeline-all' that
+	re-renders tweets after clearing the buffer.
+	(twittering-render-timeline): modify arguments.
+	(twittering-rerender-timeline-all): new function.
+	(twittering-get-managed-buffer): replace the invocation of the
+	function `twittering-render-timeline' with that of the function
+	`twittering-rerender-timeline-all'.
+	(twittering-icon-mode): likewise.
+	(twittering-toggle-reverse-mode): likewise.
+	(twittering-erase-old-statuses): likewise.
+
+	* twittering-mode.el: Add a new hook
+	`twittering-new-tweets-rendered-hook'.
+	(twittering-rendered-new-tweets-spec): new variable.
+	(twittering-rendered-new-tweets-spec-string): new variable.
+	(twittering-rendered-new-tweets): new variable.
+	(twittering-new-tweets-rendered-hook): new hook.
+	(twittering-http-get-default-sentinel): call
+	`twittering-render-timeline' with non-nil INVOKE-HOOK.
+	(twittering-add-statuses-to-timeline-data): likewise.
+	(twittering-render-timeline): add a new argument INVOKE-HOOK.
+	(twittering-rerender-timeline-all): call
+	`twittering-render-timeline' with nil INVOKE-HOOK.
+
+	* twittering-mode.el: Unread status notifier uses the new hook
+	invoked when rendering tweets. This corrects the number of unread
+	statuses on composite timelines.
+	(twittering-update-unread-status-info): modified for use in
+	`twittering-new-tweets-rendered-hook'.
+	(twittering-enable-unread-status-notifier): use
+	`twittering-new-tweets-rendered-hook' instead of
+	`twittering-new-tweets-hook'.
+
+	* twittering-mode.el: Add a new hook `twittering-mode-init-hook'.
+	The new hook is invoked after initializing global variables.
+	(twittering-mode-init-hook): new hook invoked after initializing
+	global variables.
+	(twittering-mode-hook): add a docstring.
+	(twittering-initialize-global-variables-if-necessary): invoke
+	hooks specified by `twittering-mode-init-hook'.
+
+2012-01-29  Tadashi MATSUO  <tad@mymail.twin.jp>
+
+	* twittering-mode.el: Follow the header conventions. Thanks to
+	Jonas Bernoulli who reported the nonfulfillment.
+
+	* twittering-mode.el: Expand a path before calling the function
+	`alpaca-after-find-file'.
+	(twittering-read-from-encrypted-file): expand FILE into a full
+	path. Since "alpaca.el" uses the `buffer-file-name' as the prefix
+	of the temporary file, it must be a full path.
+
+	* twittering-mode.el: Add a new argument of the function
+	`twittering-render-a-field' for rendering a tweet without a
+	separator.
+	(twittering-render-a-field): add a new argument for rendering a
+	tweet without a separator.
+
+	* twittering-mode.el: Render the header and footer line.
+	(twittering-make-field-id-of-timeline-oldest-end): new function.
+	(twittering-make-field-id-of-timeline-latest-end): new function.
+	(twittering-field-id-is-timeline-oldest-end): new function.
+	(twittering-field-id-is-timeline-latest-end): new function.
+	(twittering-render-timeline): render the header and footer on
+	rendering the whole of the buffer. In that case, the function now
+	moves the cursor to the normal field not to the header nor
+	footer.
+	(twittering-mode-map): bind "G" to `twittering-goto-last-status'
+	instead of `end-of-buffer'.
+	(twittering-enter): update the timeline when the function is
+	invoked on the header or footer.
+	(twittering-goto-last-status): new function.
+	(twittering-get-last-status-head): new function.
+	(twittering-goto-first-normal-field): new function.
+	(twittering-goto-last-normal-field): new function.
+	(twittering-get-first-normal-field-head): new function.
+	(twittering-get-last-normal-field-head): new function.
+	(twittering-goto-next-status): move the cursor to the normal field
+	before instruction for updating the timeline.
+	(twittering-goto-previous-status): likewise.
+
+	* twittering-mode.el: Add variables for customizing the header and
+	footer.
+	(twittering-timeline-header-face): new variable.
+	(twittering-timeline-footer-face): new variable.
+	(twittering-timeline-header): new variable.
+	(twittering-timeline-footer): new variable.
+	(twittering-render-timeline): render the header and footer
+	according to the customization variables.
+	(twittering-initialize-global-variables-if-necessary): initialize
+	the faces for the header and footer.
+
+	* twittering-mode.el: The current version of twittering-mode
+	always behaves as the previous version does on scroll-mode. The
+	variable `twittering-scroll-mode' is obsolete.
+	(twittering-scroll-mode): removed.
+	(twittering-mode-line-buffer-identification): ignore the obsolete
+	variable `twittering-scroll-mode'.
+	(twittering-render-timeline): remove expressions for restoring
+	positions on non-scroll-mode.
+	(twittering-mode-map): do not bind "s" to the function
+	`twittering-scroll-mode'.
+	(twittering-mode-setup): do not call `make-local-variable' for the
+	variable `twittering-scroll-mode'.
+	* test/test-twittering-mode.el: Remove tests related to the
+	scroll-mode.
+
+	* twittering-mode.el: Remove invalid timeline specs from the
+	history after the failure of the retrieval.
+	(twittering-http-get-default-sentinel): remove the specified
+	timeline spec string from the history after it becomes clear that
+	the spec is invalid.
+	(twittering-remove-timeline-spec-string-from-history): new
+	function.
+	(twittering-get-managed-buffer): add the requested timeline spec
+	string to the history. It may be removed from the history after if
+	it is invalid.
+
+	* twittering-mode.el: Support ":exclude-if/FUNC/SPEC" timelines.
+	(twittering-http-get-default-sentinel): remove timeline spec
+	strings depending the invalid spec.
+	(twittering-timeline-spec-to-string): support the new timeline
+	spec ":exclude-if/FUNC/SPEC".
+	(twittering-extract-timeline-spec): likewise.
+	(twittering-timeline-spec-composite-p): new function.
+	(twittering-timeline-spec-depending-on-p): new function.
+	(twittering-get-base-timeline-specs): new function.
+	(twittering-get-primary-base-timeline-specs): new function.
+	(twittering-generate-composite-timeline): new function.
+	(twittering-current-timeline-referring-id-table): support the new
+	timeline spec ":exclude-if/FUNC/SPEC".
+	(twittering-current-timeline-data): likewise.
+	(twittering-add-statuses-to-timeline-data): update composite
+	timelines that depend on the primary timeline.
+	(twittering-get-and-render-timeline): add new arguments SPEC and
+	SPEC-STRING to retrieve timelines that have no buffers but
+	constitute some composite timelines.
+	* test/test-twittering-mode.el: Add tests for the timeline spec
+	":exclude-if/FUNC/SPEC".
+
+	* twittering-mode.el: Support merge timelines.
+	(twittering-timeline-spec-composite-p): support the merge timeline
+	spec.
+	(twittering-get-base-timeline-specs): likewise.
+	(twittering-generate-composite-timeline): likewise.
+	(twittering-current-timeline-referring-id-table): likewise.
+	(twittering-current-timeline-data): likewise.
+
+2012-01-14  Tadashi MATSUO  <tad@mymail.twin.jp>
+
+	* twittering-mode.el: Do not record the edit buffer in the list of
+	recently selected ones. Thanks to tdkn who reported the behavior
+	related to the list.
+	(twittering-update-status-from-pop-up-buffer): do not put the
+	buffer at the front of the list of recently selected ones.
+
+	* twittering-mode.el: Add a field property to a tweet on the
+	function `twittering-render-a-field'.
+	(twittering-make-common-properties): Do not add a field property.
+	(twittering-render-a-field): add a field property.
+
+2012-01-08  Tadashi MATSUO  <tad@mymail.twin.jp>
+
+	* twittering-mode.el: Explicitly signal an error when
+	twittering-mode fails to retrieve a request token.
+	(twittering-oauth-get-access-token): signal an error when
+	twittering-mode fails to retrieve a request token.
+
+	* test/test-twittering-mode.el: Add a test for parsing JSON with a
+	character unsupported by Emacs.
+
+	* test/test-twittering-mode.el: Add a test for parsing XML with a
+	character unsupported by Emacs.
+
+	* twittering-mode.el: Confirm that a file is readable before
+	decrypting it.
+	(twittering-read-from-encrypted-file): confirm that FILE is
+	readable.
+
+	* twittering-mode.el: Expand a path before invoking the function
+	`epg-decrypt-file'.
+	(twittering-read-from-encrypted-file): expand FILE before invoking
+	`epg-decrypt-file'.
+
+2011-12-09  Tadashi MATSUO  <tad@mymail.twin.jp>
+
+	* twittering-mode.el: Retrieve an ID of a tweet replied by a
+	tweet on a search timeline. You can display replied tweets on a
+	search timeline if they have been retrieved. This is available
+	only when tweets are retrieved as the JSON format.
+	(twittering-json-object-to-a-status-on-search): extract the
+	"in_reply_to_status_id_str" field, which Twitter begins to serve
+	recently.
+
+	* twittering-mode.el: Replace `json-read' with
+	`twittering-json-read' in order to prevent abnormal exit caused by
+	decoding an unknown code point. Thanks to lemit who reported the
+	problem.
+	(twittering-http-get-default-sentinel): use `twittering-json-read'
+	instead of `json-read'.
+	(twittering-json-read): new function.
+
+2011-12-07  Tadashi MATSUO  <tad@mymail.twin.jp>
+
+	* twittering-mode.el: Rearrange some codes for interpreting a JSON
+	object.
+	(twittering-json-object-to-a-status-base): rearrange codes for
+	interpreting a JSON object.
+
+	* twittering-mode.el: Fix the interpretation of JSON objects for
+	direct messages. Thanks to Alexis who reported the problem.
+	(twittering-http-get-default-sentinel): use
+	`twittering-json-object-to-a-status-on-direct-messages' for
+	timelines related to direct messages.
+	(twittering-json-object-to-a-status-on-direct-messages): new
+	function.
+
+2011-11-26  Tadashi MATSUO  <tad@mymail.twin.jp>
+
+	* twittering-mode.el: Fix the strange behavior on moving the
+	cursor according to logical lines. Thanks to lemit who reported
+	the problem.
+	(twittering-mode-setup): bind `inhibit-field-text-motion' to
+	non-nil as a buffer-local variable. If it is nil, the field
+	property attached tweets interferes with the cursor motion based
+	on logical lines.
+
+	* twittering-mode.el: Store the tweet parameters, `truncated' and
+	`user-protected', as boolean parameters.
+	(twittering-normalize-raw-status): store the `truncated' and
+	`user-protected' parameters as boolean parameters.
+	(twittering-generate-format-table): use the `truncated' and
+	`user-protected' parameters as boolean.
+	(twittering-organic-retweet): likewise.
+	* test/test-twittering-mode.el: Update tests to follow the change
+	of internal representation of a tweet.
+	* test/fixture/timeline-data.el: Update data to follow the change
+	of internal representation of a tweet.
+
+	* twittering-mode.el: Store the tweet parameter `created-at' as
+	Emacs internal time representation. This avoids parsing a time
+	string whenever a tweet is re-rendered.
+	(twittering-atom-xmltree-to-status-datum): store `created-at' as
+	Emacs internal time representation.
+	(twittering-normalize-raw-status): likewise.
+	(twittering-created-at-to-seconds): removed.
+	(twittering-generate-format-table): use the parameters
+	`created-at' as Emacs internal time representation.
+	(twittering-generate-formater-for-first-spec): likewise.
+	* test/test-twittering-mode.el: Update tests to follow the change
+	of internal representation of a tweet.
+	* test/fixture/timeline-data.el: Update data to follow the change
+	of internal representation of a tweet.
+
+	* twittering-mode.el: `twittering-call-api' receives `sentinel' as
+	an argument for the command `retrieve-timeline'.
+	(twittering-call-api): receive `sentinel' as an argument for
+	the command `retrieve-timeline'.
+
+	* twittering-mode.el: `twittering-call-api' receives `format' as
+	an argument for the command `retrieve-timeline'.
+	(twittering-http-get-default-sentinel): refer to `format' in
+	`connection-info' for parsing the retrieved content.
+	(twittering-call-api): receive `format' as an argument for the
+	command `retrieve-timeline'. The `format' is automatically added
+	to the last of `additional-info' for `twittering-http-get'.
+
+	* twittering-mode.el: Support retrieval of tweets as the JSON
+	format.
+	(twittering-http-get-default-sentinel): support the JSON format.
+	(twittering-extract-common-element-from-json): new function.
+	(twittering-json-object-to-a-status): new function.
+	(twittering-json-object-to-a-status-base): new function.
+	(twittering-json-object-to-a-status-on-search): new function.
+
+	* twittering-mode.el: Retrieve tweets as the JSON format if
+	possible.
+	(twittering-get-and-render-timeline): retrieve tweets as the JSON
+	format if possible.
+
+	* twittering-mode.el: Render a link wrapped by the t.co service as
+	the original URL on a search timeline if possible. This requires
+	`json.el'.
+	(twittering-call-api): retrieve a search timeline with entities.
+
+2011-11-13  Tadashi MATSUO  <tad@mymail.twin.jp>
+
+	* twittering-mode.el: Fix the bug that unconditionally adds
+	`emacs21' and `url-emacs21' into `load-path' on byte-compilation.
+	On byte-compilation, the directories `emacs21' and `url-emacs21',
+	which are included in the repository of twittering-mode, were
+	unconditionally added into `load-path'. Due to this bug, some
+	macros were embedded as obsolete definitions for Emacs21 in the
+	result of byte-compilation. Some functions in the result cause
+	errors on Emacs 22 or later because the obsolete definitions
+	conflict with Emacs newer than 21. On Emacs 22 or later, the
+	directories are no longer added to `load-path' on
+	byte-compilation.
+	Thanks to HKey who has discovered the bug.
+
+2011-10-30  Tadashi MATSUO  <tad@mymail.twin.jp>
+
+	* test/test-twittering-mode.el: Remove obsolete tests of the
+	obsolete feature related to `twittering-sign-string-function' and
+	`twittering-sign-simple-string'.
+	(test-sign-string): removed.
+
+	* twittering-mode.el: A tweet has a greater field ID than that of
+	its ancestor tweets. The order of field IDs matches with the order
+	in which tweets should be rendered.
+	(twittering-make-field-id): attach a greater field ID to normal
+	tweets than its ancestor tweets.
+
+	* twittering-mode.el: Use a common macro for rendering a status.
+	(twittering-render-a-field): new macro for rendering a status.
+	(twittering-render-timeline): use `twittering-render-a-field'.
+	(twittering-show-replied-statuses): use
+	`twittering-render-a-field'.
+
+	* twittering-mode.el: Accept list names including non-ASCII
+	characters.
+	(twittering-extract-timeline-spec): accept list names including
+	non-ASCII characters.
+	* test/test-twittering-mode.el (timeline-spec): add a test for a
+	list name including non-ASCII characters.
+
+2011-10-23  Tadashi MATSUO  <tad@mymail.twin.jp>
+
+	* twittering-mode.el: Keep the private information unless the
+	server explicitly informs that it is invalid.
+	(twittering-verify-credentials): display the reason of
+	authorization failure.
+	(twittering-http-get-verify-credentials-sentinel): keep the
+	private information for authorization unless the server returns
+	401(Unauthorized) as the HTTP response status code.
+
+2011-10-09  Tadashi MATSUO  <tad@mymail.twin.jp>
+
+	* twittering-mode.el: Bind `default-directory' to the temporary
+	directory to avoid problems caused by executing programs on
+	a removed directory. Thanks to tomykaira who reported the problem.
+	(twittering-send-http-request-internal): locally bind the variable
+	`default-directory' to the temporary directory in order to prevent
+	Emacs from executing an external program in the invalid condition
+	where `default-directory' points to a directory which has been
+	already removed.
+	(twittering-start-http-session-curl-https-p): likewise.
+	(twittering-sha1): likewise.
+	(twittering-read-from-encrypted-file): likewise.
+	(twittering-write-and-encrypt): likewise.
+	(twittering-convert-image-data): likewise.
+	(twittering-save-icon-properties): likewise.
+	(twittering-load-icon-properties): likewise.
+	(twittering-initialize-global-variables-if-necessary): likewise.
+
+2011-10-07  Tadashi MATSUO  <tad@mymail.twin.jp>
+
+	* twittering-mode.el: Fix the argument of the function
+	`twittering-read-username-with-completion'. Thanks to Akira
+	Tamamori who reported a problem caused by the bug.
+	(twittering-read-timeline-spec-with-completion): fix the argument
+	of the function `twittering-read-username-with-completion'.
+
+	* twittering-mode.el: Search the content-type header from a HTTP
+	response in a case-insensitive way according to RFC2616. Thanks to
+	luozengbin who reported the bug.
+	(twittering-http-get-default-sentinel): fix the check of the
+	content-type header of a HTTP response. The content-type is now
+	searched in a case-insensitive way according to RFC2616.
+
+	* twittering-mode.el: Add new functions related to preparation for
+	invoking APIs.
+	(twittering-add-application-header-to-http-request): confirm the
+	existence of OAuth token.
+	(twittering-api-invocation-is-ready-p): new function for checking
+	whether prerequisites for invoking APIs have been prepared without
+	side effects. Strictly speaking, this function may have a side
+	effect because the function `twittering-lookup-connection-type'
+	may change some variables.
+	(twittering-ensure-preparation-for-api-invocation): new function
+	for ensuring prerequisites for invoking APIs.
+	(twittering-visit-timeline): use the new function
+	`twittering-ensure-preparation-for-api-invocation'.
+
+	* twittering-mode.el: Signal an error when no valid connection
+	method is found on sending a HTTP request.
+	(twittering-send-http-request-internal): signal an error when no
+	valid connection method is found.
+
+2011-10-03  Tadashi MATSUO  <tad@mymail.twin.jp>
+
+	* twittering-mode.el: Allow users to supplement a username for
+	timeline specs with a following username afterward.
+	(twittering-read-timeline-spec-with-completion): allow users to
+	supplement a username for timeline specs with a following username
+	afterward.
+
+	* twittering-mode.el: Add a username to the variable
+	`twittering-user-history' after retrieving a user timeline.
+	(twittering-timeline-spec-is-user-p): new function.
+	(twittering-add-timeline-history): add a username to the history
+	bound to `twittering-user-history' if the given spec is a user
+	timeline.
+
+	* twittering-mode.el: Fix the macro
+	`twittering-revive:prop-get-value'.
+	(twittering-revive:prop-get-value): use `macroexpand' instead of
+	`macroexpand-all'.
+
+2011-09-25  Tadashi MATSUO  <tad@mymail.twin.jp>
+
+	* twittering-mode.el: Users can post a tweet consisting of only
+	mentions from the pop-up buffer.
+	(twittering-edit-post-status): check a tweet with a simple regexp
+	instead of `twittering-status-not-blank-p'.
+
+	* twittering-mode.el: Add functions for `revive.el'.
+	(twittering-revive:prop-get-value): new macro defined only when
+	compiling `twittering-mode.el'.
+	(twittering-revive:twittering): new function for restoring a
+	timeline buffer with `revive.el'.
+	(twittering-setup-revive): new function configuring `revive.el'
+	for restoring a timeline buffer.
+
+	* twittering-mode.el: `twittering-update-status' receives a
+	tweet-type symbol instead of a timeline spec. It replaces a
+	timeline spec representing whether the tweet beingedited is a
+	direct message or not.
+	(twittering-update-status-function): update docstring.
+	(twittering-edit-setup-help): receive a tweet-type symbol as the
+	second argument instead of a timeline spec.
+	(twittering-update-status-from-pop-up-buffer): receive a
+	tweet-type symbol as the fourth argument instead of a timeline
+	spec.
+	(twittering-update-status-from-minibuffer): likewise.
+	(twittering-update-status): likewise.
+	(twittering-direct-message): invoke `twittering-update-status'
+	with a tweet-type symbol `direct-message' instead of a timeline
+	spec.
+	(twittering-enter): invoke `twittering-update-status' with a
+	tweet-type symbol instead of a timeline spec.
+
+	* twittering-mode.el: A skeleton can be used as
+	`twittering-retweet-format'.
+	(twittering-retweet-format): update docstring.
+	(twittering-update-status-from-pop-up-buffer): accept a skeleton
+	as the first argument.
+	(twittering-update-status-from-minibuffer): likewise.
+	(twittering-update-status): likewise.
+	(twittering-organic-retweet): invoke `twittering-update-status'
+	with a skeleton for generating an initial string.
+
+	* twittering-mode.el: In default, the cursor is placed on the head
+	when editing an organic retweet.
+	(twittering-retweet-format): modify the initial value so that the
+	cursor will be placed previous to the initial string.
+
+	* twittering-mode.el: The symbol `organic-retweet' is added as a
+	tweet type referred by edit skeleton.
+	(twittering-update-status-function): update docstring.
+	(twittering-edit-skeleton-alist): likewise.
+	(twittering-update-status): likewise.
+	(twittering-organic-retweet): invoke `twittering-update-status'
+	with the tweet type symbol `organic-retweet' as the explicit
+	fourth argument.
+
+2011-09-05  Tadashi MATSUO  <tad@mymail.twin.jp>
+
+	* twittering-mode.el: Fix extraction of hashtags from a XML
+	response.
+	(twittering-normalize-raw-status): Fix extraction of hashtags from
+	a XML response.
+
+	* twittering-mode.el: The sign string feature is obsolete. The
+	feature based on the function `twittering-sign-string-function'
+	and the variable `twittering-sign-simple-string' is removed. The
+	edit skeleton feature can be used as its alternative.
+	(twittering-initialize-global-variables-if-necessary): display a
+	warning about obsolete sign string feature. The function also
+	translates the configuration of obsolete sign string into that of
+	edit skeleton if possible.
+	(twittering-sign-simple-string): removed.
+	(twittering-sign-string-function): removed.
+	(twittering-sign-string-default-function): removed.
+	(twittering-sign-string): removed.
+	(twittering-edit-length-check): do not use the obsolete function
+	`twittering-sign-string'.
+	(twittering-show-minibuffer-length): likewise.
+	(twittering-update-status-from-minibuffer): likewise.
+
+2011-09-04  Tadashi MATSUO  <tad@mymail.twin.jp>
+
+	* twittering-mode.el: Remove stickiness of text properties.
+	(twittering-make-string-with-user-name-property): add front-sticky
+	and rear-nonsticky property to STR for removing stickiness.
+	(twittering-make-string-with-source-property): likewise.
+	(twittering-make-string-with-uri-property): likewise.
+	(twittering-generate-format-table): add front-sticky and
+	rear-nonsticky property to the string for "%r" in order to remove
+	stickiness.
+	(twittering-generate-formater-for-first-spec): add front-sticky
+	and rear-nonsticky property to the string for "%@" in order to
+	remove stickiness.
+
+2011-09-03  Tadashi MATSUO  <tad@mymail.twin.jp>
+
+	* twittering-mode.el: Fix a comment.
+
+	* twittering-mode.el: The properties for hashtags, mentions and
+	URIs are non-sticky.
+	(twittering-make-fontified-tweet-text): make the properties
+	non-sticky for the both direction.
+
+	* twittering-mode.el: Render a link wrapped by the t.co service as
+	the original URL.
+	(twittering-call-api): call APIs with the option
+	`include_entities=true' if possible.
+	(twittering-normalize-raw-status): extract entities.
+	(twittering-xmltree-to-status): extract entities of direct
+	messages.
+	(twittering-make-fontified-tweet-text): do not fontify a region if
+	it has been already fontified.
+	(twittering-make-fontified-tweet-text-with-entity): new function.
+	(twittering-generate-format-table): try to fontify the text with
+	entities first.
+
+	* twittering-mode.el: Fix indices in entities of a timeline
+	retrieved as XML.
+	(twittering-make-gap-list): new function.
+	(twittering-get-gap): new function.
+	(twittering-normalize-raw-status): correct indices in entities so
+	that they mean the position in the decoded text.
+
+	* twittering-mode.el: Suppress redundant decoding.
+	(twittering-normalize-raw-status): decode entities with
+	`twittering-decode-entities-after-parsing-xml'.
+	(twittering-decode-entities-after-parsing-xml): new function.
+
+2011-08-27  Tadashi MATSUO  <tad@mymail.twin.jp>
+
+	* twittering-mode.el: A list timeline includes native retweets.
+	(twittering-call-api): retrieve a list timeline with native
+	retweets.
+
+	* twittering-mode.el: Update the service configuration with the
+	'help/configuration' API periodically.
+	(twittering-call-api): add `get-service-configuration' as a new
+	command.
+	(twittering-service-configuration-default): new constant.
+	(twittering-service-configuration): new variable.
+	(twittering-service-configuration-queried): new variable.
+	(twittering-service-configuration-update-interval): new variable.
+	(twittering-get-service-configuration): new function.
+	(twittering-update-service-configuration): new function.
+	(twittering-update-service-configuration-sentinel): new function.
+	(twittering-update-service-configuration-clean-up-sentinel): new
+	function.
+	(twittering-update-active-buffers): invoke
+	`twittering-update-service-configuration'.
+
+	* twittering-mode.el: Count characters with considering the t.co
+	link wrapper.
+	(twittering-effective-length): new function.
+	(twittering-edit-length-check): check the length with
+	`twittering-effective-length'.
+	(twittering-edit-post-status): likewise.
+	(twittering-show-minibuffer-length): likewise.
+
+	* twittering-mode.el: Ad-hoc support for non-ASCII hashtags.
+	(twittering-extract-timeline-spec): support non-ASCII hashtags by
+	an ad-hoc way.
+	(twittering-make-fontified-tweet-text): likewise.
+	(twittering-edit-skeleton-inherit-hashtags): likewise.
+
+2011-08-18  Tadashi MATSUO  <tad@mymail.twin.jp>
+
+	* twittering-mode.el: Display the requested URI if a HTTP request
+	has failed.
+	(twittering-send-http-request): display the requested method and
+	URI if the request has failed.
+
+2011-08-17  Tadashi MATSUO  <tad@mymail.twin.jp>
+
+	* twittering-mode.el: Correctly store icons when
+	`twittering-convert-fix-size' is nil.
+	(twittering-save-icon-properties): correctly generate stored
+	representation of icon images when its size is not specified
+	explicitly.
+
+2011-08-14  Tadashi MATSUO  <tad@mymail.twin.jp>
+
+	* twittering-mode.el: Update the API for a list timeline.
+	(twittering-call-api): use the current API for retrieving a list
+	timeline.
+
+	* twittering-mode.el: Support ":retweeted_to_user/USER" timeline.
+	(twittering-timeline-spec-to-string): support `retweeted_to_user'
+	timeline.
+	(twittering-extract-timeline-spec): support a string like
+	":retweeted_to_user/USER" as a `retweeted_by_user' timeline.
+	(twittering-timeline-spec-primary-p): add `retweeted_to_user'
+	as a primary timeline.
+	(twittering-call-api): support `retweeted_to_user' timeline.
+	(twittering-read-timeline-spec-with-completion): add
+	":retweeted_to_user/" as a candidate.
+
+	* twittering-mode.el: Support ":retweeted_by_user/USER" timeline.
+	(twittering-timeline-spec-to-string): support `retweeted_by_user'
+	timeline.
+	(twittering-extract-timeline-spec): support a string like
+	":retweeted_by_user/USER" as a `retweeted_by_user' timeline.
+	(twittering-timeline-spec-primary-p): add `retweeted_by_user'
+	as a primary timeline.
+	(twittering-call-api): support `retweeted_by_user' timeline.
+	(twittering-read-timeline-spec-with-completion): add
+	":retweeted_by_user/" as a candidate.
+
+2011-08-13  Tadashi MATSUO  <tad@mymail.twin.jp>
+
+	* twittering-mode.el: Add `migre.me' as a URL shortening serivce.
+	(twittering-tinyurl-services-map): add an entry for `migre.me'.
+
+	* twittering-mode.el: Save icons correctly when
+	`twittering-icon-storage-limit' is nil. Thanks to HufflepuffBR who
+	reported this problem.
+	(twittering-save-icon-properties): fix the list representation of
+	stored data when `twittering-icon-storage-limit' is nil.
+
+2011-07-29  Tadashi MATSUO  <tad@mymail.twin.jp>
+
+	* twittering-mode.el: The hash by newer algorithm introduced in
+	OpenSSL 1.0.0 is also generated for each certificate. This is
+	required because OpenSSL 1.0.0 and later fails to find an
+	appropriate certificate if its name is based on the hash by the
+	older algorithm which has been used by OpenSSL before 1.0.0.
+	Thanks to Sakuma who reported this problem.
+	(twittering-ca-cert-alist): redefined as a constant. And each
+	entry has the hash generated by OpenSSL 1.0.0 and later.
+	(twittering-delete-ca-cert): delete multiple files for each
+	certificate.
+	(twittering-ensure-ca-cert): generate two files for each
+	certificate, where their names are the hash by the older algorithm
+	used by OpenSSL before 1.0.0 and the other hash by the newer
+	algorithm used by OpenSSL 1.0.0 and later.
+
+	* twittering-mode.el: Embed a new root CA certificate to follow
+	an update of the server.
+	(twittering-ca-cert-alist): add a new root CA certificate,
+	`GeoTrust Global CA' in order to follow the update of the server
+	certificate of `search.twitter.com'.
+
+	* twittering-mode.el: Output embedded certificates as a single
+	file instead of a directory including them. This avoids the
+	management of multiple hashes for each certificate.
+	(twittering-cert-file): new variable replacing
+	`twittering-cert-directory'.
+	(twittering-cert-directory): removed.
+	(twittering-ca-cert-list): new variable replacing
+	`twittering-ca-cert-alist'.
+	(twittering-ca-cert-alist): removed.
+	(twittering-delete-ca-cert): remove a single file including
+	multiple certificates.
+	(twittering-ensure-ca-cert): prepare a single file including
+	multiple certificates instead of a directory including multiple
+	files.
+	(twittering-make-connection-info): replace the parameter
+	`cacert-directory-fullpath' with `cacert-file-fullpath'.
+	(twittering-send-http-request-curl): use the option `--cacert'
+	instead of `--capath'.
+	(twittering-send-http-request-wget): use the option
+	`--ca-certificate' instead of `--ca-directory'.
+
+2011-07-25  Tadashi MATSUO  <tad@mymail.twin.jp>
+
+	* twittering-mode.el: Fix the API call for `user_timeline' in
+	order to prevent Twitter from confusing a username consisting of
+	digits with a user id. Thanks to Makoto Fujiwara who reported this
+	problem.
+	(twittering-call-api): fix the API call for `user_timeline'. The
+	new implementation gives a username as a query parameter. This
+	prevents Twitter from confusing a username consisting of digits
+	with a user id.
+
+	* twittering-mode.el: Fix a bug that moves the cursor by calling
+	`twittering-update-status-interactive' from buffers which are not
+	managed by `twittering-mode'. Thanks to mofigan who reported this
+	problem.
+	(twittering-ensure-whole-of-status-is-visible): do not change
+	window configuration unless the given window is bound to a buffer
+	managed by `twittering-mode'.
+
+2011-07-20  Tadashi MATSUO  <tad@mymail.twin.jp>
+
+	* twittering-mode.el: Fix indentation of the function
+	`twittering-verify-credentials'.
+	(twittering-verify-credentials): fix indentation.
+
+	* twittering-mode.el: Display exit status of the process for
+	authorization if it exited abnormally.
+	(twittering-http-get-verify-credentials-clean-up-sentinel):
+	display exit status of the process if it exited abnormally.
+
+	* twittering-mode.el: Embed another root CA certificate to follow
+	an update of the server. Now, the server certificate for
+	`api.twitter.com' is updated and it cannot be verified by the
+	already embedded certificate `Equifax Secure Certificate
+	Authority'. So, a root CA certificate `VeriSign Class 3 Public
+	Primary CA - G2' is also embedded, which is used for verifying the
+	server `api.twitter.com'.
+	(twittering-cert-file): removed.
+	(twittering-delete-ca-cert-file): removed.
+	(twittering-cert-directory): new variable.
+	(twittering-delete-ca-cert): new function.
+	(twittering-ensure-ca-cert): prepare a directory including
+	multiple CA certificates instead of a single file. Now this
+	function generates "VeriSign Class 3 Public Primary CA - G2".
+	(twittering-make-connection-info): replace the parameter
+	`cacert-fullpath' with `cacert-directory-fullpath'.
+	(twittering-send-http-request-native): remove redundant bindings.
+	(twittering-send-http-request-curl): follow the modification of
+	the parameter generated by `twittering-make-connection-info'.
+	(twittering-send-http-request-wget): likewise.
+	* cert/equifax.pem: removed. This certificate had not been used.
+	* cert/Equifax_Secure_Certificate_Authority.cer: Add a certificate
+	that has been used. It was retrieved from
+	https://www.geotrust.com/resources/root_certificates/certificates/Equifax_Secure_Certificate_Authority.cer ,
+	which is used only for verifying the server `search.twitter.com'.
+	* cert/PCA-3G2.pem: Add a root certificate. It is retrieved from
+	https://www.verisign.com/repository/roots/root-certificates/PCA-3G2.pem ,
+	which is used for verifying the server `api.twitter.com'.
+
+2011-07-16  Tadashi MATSUO  <tad@mymail.twin.jp>
+
+	* test/test-twittering-mode.el: Add tests for HMAC-SHA1.
+
+	* twittering-mode.el: Fix the function for HMAC-SHA1 so that it
+	always return a correct digest.
+	(twittering-sha1): new function. This function can return a
+	correct digest without regard to the current coding system.
+	For very long object, the function `sha1' uses an external program
+	and coding system for the program is not correctly specified.
+	Therefore, the result may depend on the current coding system.
+	The new function is an alternative without the above problem.
+	(twittering-hmac-sha1): use `twittering-sha1' instead of `sha1'.
+
+	* twittering-mode.el: `twittering-wait-while' is reimplemented
+	with `lexical-let'.
+	(twittering-wait-while): reimplemented with `lexical-let'.
+	Redundant statements are no longer added. This suppresses warnings
+	on byte-compilation.
+
+	* twittering-mode.el: Fix docstring of
+	`twittering-edit-skeleton-alist'.
+	(twittering-edit-skeleton-alist): fix docstring.
+
+	* twittering-mode.el: Load private information before
+	initialization.
+	(twittering-private-info-file-loaded): new variable.
+	(twittering-private-info-loaded-p): new function.
+	(twittering-ensure-private-info): new function.
+	(twittering-verify-credentials): do not try to load private
+	information.
+	(twittering-visit-timeline): ensure that private information is
+	loaded if necessary.
+
+	* twittering-mode.el: Initialize global variables before ensuring
+	a connection method.
+	(twittering-visit-timeline): invoke
+	`twittering-initialize-global-variables-if-necessary' first.
+
+	* twittering-mode.el: Open the timeline buffer only if
+	authorization succeeded.
+	(twittering-verify-credentials): return t or nil according to
+	whether the authorization succeeded or not.
+	(twittering-visit-timeline): open the timeline buffer only if
+	authorization succeeded.
+
+	* twittering-mode.el: In `twittering-start', bind a local variable
+	only if necessary.
+	(twittering-start): bind `action' only if necessary.
+
+	* twittering-mode.el: Start timers only when an active timeline
+	buffer is opened.
+	(twittering-verify-credentials): do not invoke `twittering-start'.
+	(twittering-http-get-verify-credentials-sentinel): likewise.
+
+	* twittering-mode.el: `twittering-account-authorization' must be
+	reset if `twittering-verify-credentials' exited non-locally.
+	(twittering-verify-credentials): do not manage the global variable
+	`twittering-account-authorization', which will be managed by the
+	new function `twittering-ensure-account-verification'.
+	`twittering-verify-credentials' raises an error if the function
+	`twittering-account-authorization-queried-p` returns non-nil.
+	(twittering-ensure-account-verification): new function. This
+	function can correctly reset the global variable
+	`twittering-account-authorization' if authorization is failed and
+	the function `twittering-verify-credentials' exits non-locally.
+	(twittering-visit-timeline): call
+	`twittering-ensure-account-verification' instead of
+	`twittering-verify-credentials'.
+
+2011-06-26  Tadashi MATSUO  <tad@mymail.twin.jp>
+
+	* twittering-mode.el: Revise the routine for the format specifier
+	"%C".
+	(twittering-make-string-with-uri-property): new function.
+	(twittering-generate-formater-for-first-spec): use the function
+	`twittering-make-string-with-uri-property' for the format
+	specifier "%C".
+	(twittering-make-time-string): removed.
+
+	* twittering-mode.el: Add a function to go to the next/previous
+	URI explicitly written in a tweet.
+	(twittering-make-fontified-tweet-text): add uri-origin property to
+	URIs explicitly written in a tweet.
+	(twittering-get-next-thing-pos): new function.
+	(twittering-goto-next-thing): ignore things except URIs explicitly
+	written in a tweet if a prefix argument is given.
+	(twittering-goto-previous-thing): likewise.
+	(twittering-goto-next-uri): new function.
+	(twittering-goto-previous-uri): new function.
+
+	* twittering-mode.el: Wait a moment after finding that the process
+	is dead and the query has not been finished. This prevents Emacs
+	from canceling the query on the middle of evaluating the
+	sentinel.
+	(twittering-wait-while): new macro.
+	(twittering-oauth-get-token-alist): wait a moment after finding
+	that the process is dead and the query has not been finished. This
+	prevents Emacs from canceling the query on the middle of
+	evaluating the sentinel.
+	(twittering-tinyurl-get): likewise.
+	(twittering-verify-credentials): likewise.
+	(twittering-get-list-sync): likewise.
+
+	* twittering-mode.el: Correctly ensure an available connection
+	method even if SSL is unavailable.
+	(twittering-ensure-connection-method): return correct value in the
+	case with compromise.
+
+	* twittering-mode.el: `twittering-ensure-connection-method'
+	displays an error message if no connection methods available.
+	(twittering-ensure-connection-method): display an error message if
+	no connection methods are available.
+	(twittering-visit-timeline): do not display an error message if no
+	connection methods are available.
+
+2011-06-21  Takashi Masuda  <masutaka@nifty.com>
+
+	* twittering-mode.el: Add text properties to "%C".
+	(twittering-generate-formater-for-first-spec): use
+	`twittering-make-time-string' instead of `format-time-string'.
+	(twittering-make-time-string): new function.
+
+	* twittering-mode.el: Add timeline spec aliases as completion
+	candidates on specifying a timeline spec.
+	(twittering-read-timeline-spec-with-completion): add timeline spec
+	aliases, defined in `twittering-timeline-spec-alias', as
+	completion candidates.
+
+2011-05-21  Tadashi MATSUO  <tad@mymail.twin.jp>
+
+	* twittering-mode.el: Fix the message for dead process on basic
+	authentication.
+	(twittering-verify-credentials): make the message for dead process
+	on basic authentication similar as that on OAuth/xAuth
+	authentication.
+
+	* twittering-mode.el: Fix the display of messages about
+	authorization.
+	(twittering-send-http-request): do not display a message on
+	authorization.
+	(twittering-http-get-verify-credentials-sentinel): directly
+	display a message whether the authorization succeeded or not.
+	`twittering-send-http-request' does not display it.
+
+	* twittering-mode.el: Add the variable
+	`twittering-disable-overlay-on-too-long-string' in order to avoid
+	interference between the update of overlay and some input
+	methods.
+	(twittering-disable-overlay-on-too-long-string): new variable.
+	(twittering-edit-length-check): do not update the overlay if
+	`twittering-disable-overlay-on-too-long-string' is non-nil.
+
+2011-05-16  Tadashi MATSUO  <tad@mymail.twin.jp>
+
+	* twittering-mode.el: Ensure that a sentinel is invoked when a
+	process is started successfully.
+	(twittering-process-alive-p): new function.
+	(twittering-start-process-with-sentinel): new function.
+	(twittering-send-http-request-native): ensure that the given
+	sentinel is invoked when the process is started successfully.
+	(twittering-send-http-request-curl): replace `start-process' with
+	`twittering-start-process-with-sentinel' in order to ensure that
+	the sentinel is invoked.
+	(twittering-send-http-request-wget): likewise.
+
+	* twittering-mode.el: Confirm that the process is alive on waiting
+	for its sentinel.
+	(twittering-oauth-get-token-alist): check whether the process is
+	alive on waiting for the invocation of the sentinel for the
+	process.
+	(twittering-tinyurl-get): likewise.
+	(twittering-verify-credentials): likewise.
+	(twittering-get-list-sync): use `twittering-process-alive-p'.
+
+	* twittering-mode.el: Ignore errors on `xml-parse-region'.
+	(twittering-xml-parse-region): return nil if an error happens on
+	`xml-parse-region'.
+
+	* twittering-mode.el: Fix uri property of a list name in a
+	tweet. Thanks to Naohiro Aota who reported the problem.
+	(twittering-get-list-url): new function.
+	(twittering-make-fontified-tweet-text): correctly generate uri
+	property for a list name in a tweet.
+
+2011-05-08  Tadashi MATSUO  <tad@mymail.twin.jp>
+
+	* test/test-twittering-mode.el: Fix and add tests of proxy
+	configuration. Now they do not depend on environment variables.
+
+2011-05-06  Tadashi MATSUO  <tad@mymail.twin.jp>
+
+	* twittering-mode.el: Replace the symbol `us-ascii' for a
+	coding-system with `iso-safe', which is valid even on Emacs21.
+	(twittering-ensure-ca-cert): use `iso-safe' instead of `us-ascii'
+	as a coding-system for ASCII.
+	(twittering-start-http-session-curl-https-p): likewise.
+	(twittering-initialize-global-variables-if-necessary): likewise.
+
+	* twittering-mode.el: Add some directories for Emacs21 to
+	`load-path' even when byte-compiling the file on Emacs21.
+
+	* twittering-mode.el: embed a timeline spec string such as
+	"#HASHTAG" for `goto-spec' of a hashtag instead of a search
+	timeline spec as an internal representation.
+	(twittering-make-hashtag-timeline-spec-string-direct): new macro.
+	(twittering-make-fontified-tweet-text): embed a timeline spec
+	string such as "#HASHTAG" for `goto-spec' of a hashtag instead of
+	a search timeline spec as an internal representation.
+
+	* twittering-mode.el: Add `twittering-update-status' as a function.
+	(twittering-update-status-function): update docstring.
+	(twittering-update-status-from-pop-up-buffer): rename the argument
+	`spec' `tweet-type-as-spec'.
+	(twittering-update-status-from-minibuffer): likewise.
+	(twittering-update-status): new function.
+	(twittering-direct-message): call `twittering-update-status'
+	instead of referring `twittering-update-status-function'.
+	(twittering-reply-to-user): likewise.
+	(twittering-organic-retweet): likewise.
+	(twittering-enter): likewise.
+
+	* twittering-mode.el: Edit skeletons can refer to the current
+	timeline spec.
+	(twittering-update-status-function): update the docstring to
+	follow the additional argument CURRENT-SPEC.
+	(twittering-edit-skeleton-alist): update the docstring.
+	(twittering-edit-skeleton-insert-base): support the new argument
+	CURRENT-SPEC.
+	(twittering-edit-skeleton-insert): likewise.
+	(twittering-edit-skeleton-inherit-hashtags): likewise.
+	(twittering-edit-skeleton-inherit-mentions): likewise.
+	(twittering-update-status-from-pop-up-buffer): likewise.
+	(twittering-update-status-from-minibuffer): likewise.
+	(twittering-update-status): add a new argument
+	IGNORE-CURRENT-SPEC.
+
+	* twittering-mode.el: The predefined edit skeletons
+	`inherit-hashtags' and `inherit-any' insert hashtags if the
+	current timeline is a search timeline where the query string
+	includes hashtags.
+	(twittering-timeline-spec-is-search-p): new function.
+	(twittering-extract-query-string-from-search-timeline-spec): new
+	function.
+	(twittering-edit-skeleton-alist): change the definition of
+	`inherit-hashtags' and `inherit-any' so that they add hashtags if
+	the current timeline is a search timeline.
+	(twittering-edit-skeleton-inherit-hashtags): insert hashtags if
+	CURRENT-SPEC is a search timeline where the query string includes
+	hashtags.
+
+2011-04-23  Tadashi MATSUO  <tad@mymail.twin.jp>
+
+	* NEWS, NEWS.ja, LAST-VERSION, VERSION, doc/web/index.text:
+	Version 2.0.0 released.
+
+	* twittering-mode.el: Fix coding system for some operations so
+	that they work well even if the default coding system is
+	`utf-16le-dos'. Thanks to Moto_Dong who reported the problem.
+	(twittering-ensure-ca-cert): explicitly specify coding-system.
+	(twittering-start-http-session-curl-https-p): likewise.
+	(twittering-read-from-encrypted-file): likewise.
+	(twittering-write-and-encrypt): likewise.
+	(twittering-load-icon-properties): likewise.
+	(twittering-initialize-global-variables-if-necessary): likewise.
+	(twittering-status-not-blank-p): likewise.
+
+	* test/test-twittering-mode.el: add a test for a timeline spec
+	string like "#hashtag".
+
+	* twittering-mode.el: Store the formatter function before
+	compilation.
+	(twittering-format-status-function-without-compile): new
+	variable.
+	(twittering-update-status-format): store the formatter function as
+	a lambda expression before being compiled.
+
+	* twittering-mode.el: Embed expressions for fontification in the
+	formatter function instead of calling them as a function.
+	(twittering-make-fontified-tweet-text): return an expression that
+	fontifies a given string. The regular expressions of strings being
+	fontified are concatenated on generating a formatter function.
+	(twittering-generate-format-table): embed the expression
+	fontifying a string in the formatter function. The expression will
+	be byte-compiled by `twittering-update-status-format'.
+
+	* twittering-mode.el: Redefine some functions as inline in order
+	to make the formatter function more efficient.
+	(twittering-make-common-properties): redefined as an inline
+	function.
+	(twittering-make-string-with-user-name-property): likewise.
+	(twittering-make-string-with-source-property): likewise.
+	(twittering-fill-string): likewise.
+	(twittering-update-filled-string): likewise.
+	(twittering-make-passed-time-string): likewise.
+
+	* twittering-mode.el: Reduce redundant calls of `string-match' on
+	formatting a tweet. When generating a timeline spec from a string
+	with obvious meaning, the new macros are used instead of the
+	general function, `twittering-extract-timeline-spec'.
+	(twittering-make-user-timeline-spec-direct): new macro.
+	(twittering-make-list-timeline-spec-direct): new macro.
+	(twittering-make-hashtag-timeline-spec-direct): new macro.
+	(twittering-extract-timeline-spec): use new macros.
+	(twittering-make-string-with-user-name-property): call the new
+	macro `twittering-make-user-timeline-spec-direct' instead of
+	calling `twittering-extract-timeline-spec'.
+	(twittering-make-fontified-tweet-text): call the new macros
+	`twittering-make-{user,list,hashtag}-timeline-spec-direct' instead
+	of calling `twittering-extract-timeline-spec'.
+
+2011-04-09  Tadashi MATSUO  <tad@mymail.twin.jp>
+
+	* twittering-mode.el: Fix headers for a proxy.
+	(twittering-make-connection-info): extract proxy information from
+	`connection-info' instead of directly referring to
+	`twittering-http-proxy-user', `twittering-http-proxy-password',
+	etc.
+	(twittering-send-http-request-native): generate the
+	"Proxy-Authorization" header correctly and give the absolute URI
+	as the request URI when the connection is peformed via a proxy.
+	(twittering-send-http-request-urllib): add "Proxy-Authorization"
+	header if necessary.
+	(twittering-http-application-headers): do not add headers related
+	to a proxy. They are added in functions for each connection
+	method.
+
+	* twittering-mode.el: "U" pushes a URI of a tweet on text without
+	a uri property.
+	(twittering-push-uri-onto-kill-ring): push a URI of a tweet unless
+	the currently pointed character has a uri property.
+
+	* twittering-mode.el: `twittering-direct-message' always posts a
+	tweet with direct message API.
+	(twittering-direct-message): always post a tweet with direct
+	message API.
+
+	* twittering-mode.el: Introduce "edit skeleton".
+	(twittering-edit-skeleton-footer): new variable.
+	(twittering-edit-skeleton-footer-history): new variable.
+	(twittering-edit-skeleton-alist): new variable.
+	(twittering-switch-edit-skeleton): new function.
+	(twittering-edit-skeleton-change-footer): new function.
+	(twittering-edit-skeleton-insert-base): new function.
+	(twittering-edit-skeleton-insert): new function.
+	(twittering-update-status-from-pop-up-buffer): insert the current
+	edit skeleton before editing a tweet.
+	(twittering-update-status-from-minibuffer): likewise.
+
+	* twittering-mode.el: Add pre-defined edit skeletons.
+	(twittering-extract-matched-substring-all): new function.
+	(twittering-edit-skeleton-alist): add some examples of edit
+	skeletons.
+	(twittering-edit-skeleton-inherit-hashtags): new function for an
+	edit skeleton.
+	(twittering-edit-skeleton-inherit-mentions): likewise.
+
+	* twittering-mode.el: Add the variable
+	`twittering-fallback-image-format'.
+	(twittering-fallback-image-format): new variable.
+	(twittering-create-image-pair): use the value of
+	`twittering-fallback-image-format' as the fallback format instead
+	of directly using 'xpm.
+
+2011-03-27  Tadashi MATSUO  <tad@mymail.twin.jp>
+
+	* twittering-mode.el: Discard standard error of the program
+	"convert". On an environment where the option "-flatten" cause a
+	warning for a non-animated image, Emacs must exclude such
+	warnings.
+	(twittering-convert-image-data): discard standard error of the
+	program "convert".
+
+	* twittering-mode.el: Entrust image type estimation to the command
+	"convert".
+	(twittering-create-image-pair): do not send image type estimated by
+	Emacs to the function `twittering-convert-image-data'.
+
+2011-03-26  Tadashi MATSUO  <tad@mymail.twin.jp>
+
+	* twittering-mode.el: `twittering-other-user-list-interactive'
+	works well when the specified user follows no list.
+	(twittering-other-user-list-interactive): fix an error occurring
+	when the specified user follows no list or selection is
+	cancelled.
+
+	* twittering-mode.el: `twittering-other-user-list-interactive'
+	displays a subscription as a string like timeline spec string.
+	(twittering-http-get-list-subscriptions-sentinel): exclude
+	preceding "@" from a string corresponding to a subscription.
+	(twittering-other-user-list-interactive): follow the above
+	modification.
+
+	* twittering-mode.el: Modify the prompts for subscription.
+	(twittering-read-subscription-list-name): modify the prompt for
+	subscription.
+	(twittering-other-user-list-interactive): likewise.
+
+	* twittering-mode.el: Add an advice for avoiding an error occuring
+	when `getenv' returns an empty string on Emacs21. The bug had been
+	fixed on Emacs22 and later.
+
+	* test/test-twittering-mode.el: Fix a test of formating a status
+	according to a change of behavior of `fill-region'. It does not
+	keep white spaces and tabs adjacent to hard newlines on Emacs21,
+	but it keeps them on Emacs22 and later.
+
+	* twittering-mode.el: Remove opacity on converting an image into
+	a XPM image on Emacs22 and earlier.
+	(twittering-convert-image-data): add an option "+matte" to the
+	command "convert" in order to avoid color allocation error
+	occurring when Emacs22 and earlier try to decode a XPM image with
+	opacity.
+
+	* twittering-mode.el: Convert an image, which may be animated,
+	into a single static image if Emacs does not support animated
+	images.
+	(twittering-convert-image-data): add an option "-flatten" to the
+	command "convert" unless `create-animated-image'.
+
+	* twittering-mode.el: Always convert a GIF image into a XPM image
+	if Emacs does not support animated images.
+	(twittering-create-image-pair): always convert a GIF image into a
+	XPM image if Emacs does not support animated images.
+
+2011-03-26  Naohiro Aota  <naota@elisp.net>
+
+	* twittering-mode.el (twittering-http-get-list-sentinel-base): New
+	macro: from `twittering-http-get-list-index-sentinel'.
+	(twittering-http-get-list-index-sentinel): Use it.
+	(twittering-http-get-list-subscriptions-sentinel): Ditto.
+	(twittering-call-api): Add `get-list-subscriptions' description;
+	Implement `get-list-subscriptions'.
+	(twittering-get-list-subscriptions): New function.
+	(twittering-get-list-sync): New function from
+	`twittering-get-list-index-sync'.
+	(twittering-get-list-index-sync): Rewrite to use it.
+	(twittering-get-list-subscriptions-sync): New function. Use it.
+	(twittering-read-timeline-spec-with-completion): New function.
+	(twittering-other-user-list-interactive): Accept prefix to read
+	other users' subscription list.
+
+2011-03-15  Tadashi MATSUO  <tad@mymail.twin.jp>
+
+	* twittering-mode.el: Support cancel of retweets posted by the
+	authenticated user.
+	(twittering-delete-status): cancel a retweet if it has been
+	retweeted by the authenticated user.
+
+	* twittering-mode.el: Explicitly use binary coding system on I/O
+	of icon properties. Thanks to Naohiro Aota.
+	(twittering-save-icon-properties): explicitly use binary coding
+	system on writing icon properties.
+	(twittering-load-icon-properties): likewise.
+
+2011-02-19  Tadashi MATSUO  <tad@mymail.twin.jp>
+
+	* twittering-mode.el: Disable the persistent icon storage if
+	`jka-compr' is unavailable.
+	(twittering-save-icon-properties): confirm that `jka-compr' is
+	available.
+	(twittering-load-icon-properties): likewise.
+	(twittering-initialize-global-variables-if-necessary): disable
+	the persistent icon storage if `jka-compr' is unavilable.
+
+	* twittering-mode.el: Add `twittering-add-to-history' for
+	Emacs21.
+	(twittering-add-to-history): new function.
+	(twittering-add-timeline-history): use
+	`twittering-add-to-history'.
+
+	* twittering-mode.el: Introduce the limit of number of
+	icons being stored persistently.
+	(twittering-icon-storage-file): add docstring about
+	`twittering-icon-storage-limit'.
+	(twittering-icon-storage-recent-icons): new variable to which
+	properties of recently rendered icons are stored.
+	(twittering-icon-storage-limit): new variable.
+	(twittering-update-icon-storage-recent-icons): new function.
+	(twittering-get-display-spec-for-icon): invoke
+	`twittering-update-icon-storage-recent-icons' whenever this
+	function is invoked.
+	(twittering-save-icon-properties): write properties of icons
+	within the limit specified by `twittering-icon-storage-limit'. In
+	addition, this function records properties in the new format.
+	(twittering-load-icon-properties): support the new format for
+	storing properties of icons.
+
+2011-02-15  Tadashi MATSUO  <tad@mymail.twin.jp>
+
+	* twittering-mode.el: Confirm validity of a format string before
+	updating the function formatting a tweet.
+	(twittering-update-status-format): update the function only if the
+	given format string is valid.
+
+	* twittering-mode.el: Support a new format specifier "%RT{...}".
+	(twittering-status-format): update docstring.
+	(twittering-generate-formater-for-first-spec): support a new
+	format specifier "%RT{...}".
+
+2011-02-13  Tadashi MATSUO  <tad@mymail.twin.jp>
+
+	* test/test-twittering-mode.el (test-hmac-sha1): Fix a typo.
+
+	* twittering-mode.el: Rearrange internal representation of a
+	retweet.
+	(twittering-add-statuses-to-timeline-data): use `retweeted-id'
+	instead of `source-id'.
+	(twittering-normalize-raw-status): rearrange internal
+	representation of a retweet. The information as a tweet posted by
+	the retweeter is stored with keys prefixed with `retweeting-'. The
+	information as a tweet posted by the original author is stored
+	with keys prefixed with `retweeted-'. Keys prefixed with
+	`original-' or `source-' are obsolete.
+	(twittering-make-common-properties): use `retweeted-id' instead of
+	`source-id'.
+	(twittering-get-common-properties): likewise.
+	(twittering-generate-format-table): use
+	`retweeting-user-screen-name' instead of
+	`original-user-screen-name'.
+	(twittering-generate-formater-for-first-spec): use `retweeted-id'
+	instead of `source-id'.
+	(twittering-render-timeline): likewise.
+	(twittering-native-retweet): likewise.
+
+	* twittering-mode.el: `created_at' for an official retweet means
+	when the original tweet was posted instead of when it was
+	retweeted.
+	(twittering-normalize-raw-status): do not override
+	`created_at'. The key `created_at' in an alist representing a
+	retweet means when the original tweet was posted.
+
+	* twittering-mode.el: When `twittering-follow' is invoked on an
+	official retweet, ask a subject.
+	(twittering-follow): ask a subject when this function is invoked
+	on an official retweet.
+
+	* twittering-mode.el: Add a function to report a user as a spammer.
+	(twittering-call-api): support a new command
+	`block-and-report-as-spammer'.
+	(twittering-block-and-report-as-spammer): new function.
+
+	* twittering-mode.el: Add a function to block a user.
+	(twittering-call-api): support a new command `block'.
+	(twittering-block): new function.
+
+	* twittering-mode.el: Support persistent icon storage.
+	(twittering-icon-storage-file): new variable.
+	(twittering-use-icon-storage): new variable.
+	(twittering-register-image-spec): new function.
+	(twittering-register-image-data): reimplemented with
+	`twittering-register-image-spec'.
+	(twittering-save-icon-properties): new function.
+	(twittering-load-icon-properties): new function.
+
+2011-02-05  Tadashi MATSUO  <tad@mymail.twin.jp>
+
+	* twittering-mode.el: Remove a trailing newline from strings
+	received from `bit.ly' and `j.mp'. Thanks to mm_o_ig.
+	(twittering-tinyurl-services-map): add a post-processing function
+	that removes a trailing newline from result of `bit.ly' and
+	`j.mp'.
+
+	* twittering-mode.el: Revise some messages. Thanks to Server.
+	(twittering-http-get-default-sentinel): revise messages.
+	(twittering-show-replied-statuses): likewise.
+	(twittering-hide-replied-statuses): likewise.
+	(twittering-edit-post-status): likewise.
+	(twittering-read-timeline-spec-with-completion): likewise.
+	(twittering-other-user-list-interactive): likewise.
+	(twittering-direct-message): likewise.
+	(twittering-goto-next-status): likewise.
+	(twittering-goto-previous-status): likewise.
+
+2011-01-29  Tadashi MATSUO  <tad@mymail.twin.jp>
+
+	* twittering-mode.el: Reimplement `twittering-tinyurl-get' with
+	`twittering-send-http-request'.
+	(twittering-url-wrapper): removed.
+	(twittering-url-insert-file-contents): removed.
+	(twittering-url-retrieve-synchronously): removed.
+	(twittering-tinyurl-get): reimplemented with
+	`twittering-send-http-request'. In addition, the query parameter
+	is correcly encoded by `twittering-percent-encode'.
+
+	* twittering-mode.el: Add `is.gd' as a URL shortening service.
+	Thanks to Michael Kohl.
+	(twittering-tinyurl-service): update the document.
+	(twittering-tinyurl-services-map): add an entry for `is.gd'.
+
+	* twittering-mode.el: Extend the format of
+	`twittering-tinyurl-services-map'. One can register a service that
+	requires a special HTTP request and/or post-processing.
+	(twittering-tinyurl-services-map): extend the meaning of the
+	variable.
+	(twittering-tinyurl-get): support new format of
+	`twittering-tinyurl-services-map'.
+
+	* twittering-mode.el: Add `goo.gl' as a URL shortening service.
+	(twittering-tinyurl-services-map): add an entry for `goo.gl'.
+
+	* twittering-mode.el: Add `bit.ly' and `j.mp' as URL shortening
+	services. Thanks to Lars Gregori.
+	(twittering-tinyurl-services-map): add entries for `bit.ly' and
+	`j.mp'.
+	(twittering-bitly-login): new variable.
+	(twittering-bitly-api-key): new variable.
+	(twittering-make-http-request-for-bitly): new function.
+
+	* twittering-mode.el: Reimplement normalization of alists from XML
+	structure.
+	(twittering-atom-xmltree-to-status-datum): change the value
+	corresponding to the key `source' into a URL with a tag.
+	(twittering-status-to-status-datum): removed.
+	(twittering-normalize-raw-status): new function to generate
+	normalized alist representing a tweet.
+	(twittering-xmltree-to-status): use
+	`twittering-normalize-raw-status' instead of
+	`twittering-status-to-status-datum'.
+
+	* twittering-mode.el: `twittering-make-clickable-status-datum'
+	does not redefine `source'.
+	(twittering-atom-xmltree-to-status-datum): define `source' as
+	a text surrounded by A-tag.
+	(twittering-normalize-raw-status): likewise.
+	(twittering-make-clickable-status-datum): do not redefine
+	`source'.
+
+	* twittering-mode.el: Add text properties to tweets on rendering.
+	(twittering-http-get-default-sentinel): do not call
+	`twittering-make-clickable-status-datum'.
+	(twittering-make-clickable-status-datum): removed.
+	(twittering-make-string-with-user-name-property): new function.
+	(twittering-make-string-with-source-property): new function.
+	(twittering-make-fontified-tweet-text): new function.
+	(twittering-generate-format-table): add text properties.
+
+2011-01-23  Tadashi MATSUO  <tad@mymail.twin.jp>
+
+	* test/test-twittering-mode.el: Add some tests for the format
+	specifiers "%FILL[prefix]{...}" and "%FOLD[prefix]{...}".
+	* twittering-mode.el (twittering-status-format): add a document
+	for the format specifier "%FOLD[prefix]{...}".
+
+	* test/test-twittering-mode.el: Fix an error of
+	`url-generic-parse-url' on Emacs21 by calling
+	`url-scheme-get-property' before `url-generic-parse-url' is called.
+
+2011-01-21  Tadashi MATSUO  <tad@mymail.twin.jp>
+
+	* twittering-mode.el: Decode received XML document as UTF-8 before
+	parsing it.
+	(twittering-http-get-default-sentinel): decode received XML
+	document as UTF-8 before parsing it if Content-Type in response
+	header has a parameter "charset=utf-8".
+
+	* twittering-mode.el: The format specifier "%FOLD[prefix]{...}"
+	does not squeeze white spaces.
+	(twittering-fill-string): does not squeeze white spaces if
+	`keep-newline' is non-nil.
+
+2011-01-16  Tadashi MATSUO  <tad@mymail.twin.jp>
+
+	* twittering-mode.el: Ensure that the pointed tweet is visible on
+	editing a tweet.
+	(twittering-ensure-whole-of-status-is-visible): new function.
+
+	* twittering-mode.el: Isolate addition of text properties from a
+	function parsing XML.
+	(twittering-http-get-default-sentinel): call
+	`twittering-make-clickable-status-datum' here.
+	(twittering-atom-xmltree-to-status): do not add text properties to
+	statuses.
+	(twittering-status-to-status-datum): likewise.
+
+	* twittering-mode.el: Render statuses in order of field property
+	instead of id property.
+	(twittering-make-common-properties): add field property as a
+	common property.
+	(twittering-get-common-properties): likewise.
+	(twittering-field-id<): new function.
+	(twittering-field-id=): new function.
+	(twittering-make-field-id): new function.
+	(twittering-make-field-properties): new function.
+	(twittering-render-timeline): render statuses in order of their
+	field properties.
+	(twittering-show-replied-statuses): add special field property to
+	replied statuses.
+
+	* twittering-mode.el: Move point by using field property instead
+	of id property.
+	(twittering-get-current-status-head): redefined with field
+	property instead of id property.
+	(twittering-get-first-status-head): likewise.
+	(twittering-get-next-status-head): likewise.
+	(twittering-get-previous-status-head): likewise.
+
+	* twittering-mode.el: Use rendered-as property for rendering
+	replied statuses instead of a trick with id and original-id
+	properties.
+	(twittering-get-common-properties): add rendered-as property as a
+	common property.
+	(twittering-make-field-properties): add rendered-as property if
+	necessary.
+	(twittering-make-field-properties-of-popped-ancestors): new
+	function.
+	(twittering-rendered-as-ancestor-status-p): new function.
+	(twittering-get-base-id-of-ancestor-at): new function.
+	(twittering-replied-statuses-visible-p): use the new function
+	`twittering-get-base-id-of-ancestor-at' instead of directly
+	referring id and original-id properties.
+	(twittering-hide-replied-statuses): likewise.
+	(twittering-show-replied-statuses): use
+	`twittering-make-field-properties-of-popped-ancestors'.
+
+	* twittering-mode.el: Remove a trick using id and original-id
+	properties for rendering replied statuses.
+	(twittering-get-common-properties): remove original-id from common
+	properties.
+	(twittering-show-replied-statuses): do not overwrite id and
+	original-id properties.
+	(twittering-enter): do not refer original-id property.
+
+	* twittering-mode.el: Support favorites timeline.
+	(twittering-timeline-spec-to-string): support favorites timeline
+	spec.
+	(twittering-extract-timeline-spec): likewise.
+	(twittering-timeline-spec-primary-p): add favorites timeline spec
+	is a primary timeline spec.
+	(twittering-call-api): support favorites timeline spec.
+	(twittering-read-timeline-spec-with-completion): add ":favorites"
+	as a candidate of completion. In addition, one can input a
+	username with completion for ":favorites/".
+	(twittering-goto-next-status): display an error message on the
+	oldest tweet on favorites timeline.
+	(twittering-goto-previous-status): likewise.
+	* test/test-twittering-mode.el: Add tests for favorites timeline
+	spec.
+
+2011-01-09  Tadashi MATSUO  <tad@mymail.twin.jp>
+
+	* twittering-mode.el: Ensure that encrypted strings are written
+	with no conversion. Thanks to Sakuma.
+	(twittering-write-and-encrypt): ensure that encrypted strings are
+	written with no conversion.
+
+2010-12-17  Yuto HAYAMIZU  <y.hayamizu@gmail.com>
+
+	* twittering-mode.el (twittering-organic-retweet): prohibit
+	retweeting protected tweets.
+
 2010-11-30  Tadashi MATSUO  <tad@mymail.twin.jp>
 
 	* twittering-mode.el: Ensure that the methods using url library
