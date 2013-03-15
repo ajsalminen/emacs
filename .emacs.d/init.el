@@ -12,7 +12,7 @@
 ;; the mother of all load paths
 (setq more-load-paths '("~/.emacs.d/auctex-11.86"
                         "~/.emacs.d/auctex-11.86/preview"
-                        "~/.emacs.d/auto-complete-1.3.1"
+                        "~/.emacs.d/auto-complete"
                         "~/.emacs.d/bbdb-2.35/lisp/"
                         "~/.emacs.d/cedet-1.0/common/"
                         "~/.emacs.d/color-theme"
@@ -4089,5 +4089,6 @@ FORMAT-STRING is like `format', but it can have multiple %-sequences."
     (if face (message "Face: %s" face) (message "No face at %d" pos))))
 
 (require 'go-mode-load)
+(require 'go-autocomplete)
 
 (message "********** successfully initialized **********")
