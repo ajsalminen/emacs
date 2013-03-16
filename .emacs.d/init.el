@@ -823,12 +823,16 @@
 (load "auctex.el" nil t t)
 (load "preview-latex.el" nil t t)
 
-;; (require 'smart-tab)
-(require 'tabkey2)
+
 ;; (require 'pabbrev)
-(tabkey2-mode t)
+
+;; FIXME: not working under emacs 24.3
+;; (require 'tabkey2)
+;; (tabkey2-mode nil)
 
 ;; (setq dabbrev-case-fold-search t)
+
+;; (require 'smart-tab)
 ;; (global-smart-tab-mode t)
 ;; (global-pabbrev-mode t)
 
@@ -988,7 +992,13 @@
 (yas/load-directory "~/.emacs.d/yasnippet/snippets")
 ;; Develop and keep personal snippets under ~/emacs.d/mysnippets
 (setq yas/root-directory "~/.emacs.d/mysnippets")
-(yas-global-mode 1)
+
+;; FIXME: disable for now (emacs 24.3 issues)
+;; (yas-global-mode 1)
+;; (setq yas/trigger-key (kbd "C-TAB"))
+;; (setq yas/next-field-key (kbd "TAB"))
+
+
 ;; (yas/initialize)
 
 (defun yas/ido-prompt-fix (prompt choices &optional display-fn)
@@ -1001,8 +1011,6 @@
 (yas/load-directory yas/root-directory)
 
 (setq yas/wrap-around-region t)
-(setq yas/trigger-key (kbd "C-TAB"))
-(setq yas/next-field-key (kbd "TAB"))
 
 (add-hook 'yas/minor-mode-on-hook
           '(lambda ()
@@ -1010,6 +1018,30 @@
 
 (require 'anything-c-yasnippet)
 (global-set-key (kbd "C-c y") 'anything-c-yas-complete)
+
+
+;; autocomplete stuff
+(require 'auto-complete-config)
+(add-to-list 'ac-dictionary-directories "~/.emacs.d/ac-dict")
+(ac-config-default)
+(require 'ac-company)
+;; 対象の全てで補完を有効にする
+(global-auto-complete-mode t)
+(ac-company-define-source ac-source-company-xcode company-xcode)
+;; objc-mode で補完候補を設定
+(setq ac-modes (append ac-modes '(objc-mode)))
+
+(setq ac-expand-on-auto-complete nil)
+(setq ac-auto-start nil)
+(setq ac-dwim nil) ; To get pop-ups with docs even if a word is uniquely completed
+(define-key ac-completing-map (kbd "C-n") 'ac-next)
+(define-key ac-completing-map (kbd "C-p") 'ac-previous)
+
+(setq tab-always-indent 'complete)
+(add-to-list 'completion-styles 'initials t)
+(defun set-auto-complete-as-completion-at-point-function ()
+  (setq completion-at-point-functions '(auto-complete)))
+(add-hook 'auto-complete-mode-hook 'set-auto-complete-as-completion-at-point-function)
 
 
 (require 'hippie-exp)
@@ -2007,16 +2039,6 @@ nEnd:")
   (if (fboundp 'normal-top-level-add-subdirs-to-load-path)
       (normal-top-level-add-subdirs-to-load-path)))
 
-;; ロード
-(require 'auto-complete-config)
-(add-to-list 'ac-dictionary-directories "~/.emacs.d/ac-dict")
-(ac-config-default)
-(require 'ac-company)
-;; 対象の全てで補完を有効にする
-(global-auto-complete-mode t)
-(ac-company-define-source ac-source-company-xcode company-xcode)
-;; objc-mode で補完候補を設定
-(setq ac-modes (append ac-modes '(objc-mode)))
 
 (require 'auto-complete-clang)
 (setq clang-completion-suppress-error 't)
