@@ -3,7 +3,7 @@
 INSTALL      = /usr/bin/install -c
 INSTALL_DATA = ${INSTALL} -m 644
 INSTALL_INFO = install-info
-prefix       = /Applications/Emacs.app/Contents
+prefix       = /usr/local
 datarootdir  = ${prefix}/share
 infodir      = ${datarootdir}/info
 srcdir       = .
@@ -20,8 +20,8 @@ PTEX         = ptex
 JBIBTEX      = false
 DVIPDFMX     = dvipdfmx
 TEXI2PDF     = texi2pdf
-EMACS        = /Applications/Emacs.app/Contents/MacOS/Emacs
-VANILLA_FLAG = -q -no-site-file --no-unibyte
+EMACS        = /usr/local/bin/emacs
+VANILLA_FLAG = -q -no-site-file
 FLAGS        = $(VANILLA_FLAG) -batch -l ./w3mhack.el $(ADDITIONAL_LOAD_PATH)
 
 ## This is used to set the environment variable XEMACSDEBUG for
@@ -68,25 +68,25 @@ emacs-w3m-ja.info: version.texi emacs-w3m-ja.texi
 	esac
 
 install: $(INFO_DEPS)
-	$(SHELL) $(top_srcdir)/mkinstalldirs "$(infodir)"
+	$(SHELL) $(top_srcdir)/mkinstalldirs "$(DESTDIR)$(infodir)"
 	@for file in $(INFO_DEPS); do\
 	  if test -f $$file; then\
-	    for old in `cd "$(infodir)" && echo $$file-[0-9]`; do\
-	      if test -f "$(infodir)/$$old"; then\
-	        echo "rm -f \"$(infodir)/$$old\"";\
-	        rm -f "$(infodir)/$$old";\
+	    for old in `cd "$(DESTDIR)$(infodir)" && echo $$file-[0-9]`; do\
+	      if test -f "$(DESTDIR)$(infodir)/$$old"; then\
+	        echo "rm -f \"$(DESTDIR)$(infodir)/$$old\"";\
+	        rm -f "$(DESTDIR)$(infodir)/$$old";\
 	      fi;\
 	    done;\
-	    echo "$(INSTALL_DATA) $$file \"$(infodir)/$$file\"";\
-	    $(INSTALL_DATA) $$file "$(infodir)/$$file";\
+	    echo "$(INSTALL_DATA) $$file \"$(DESTDIR)$(infodir)/$$file\"";\
+	    $(INSTALL_DATA) $$file "$(DESTDIR)$(infodir)/$$file";\
 	  else : ; fi;\
 	done
 	@if $(SHELL) -c $(INSTALL_INFO)' --version| sed 1q\
 		| fgrep -s -v -i debian'>/dev/null 2>&1; then\
 	  for file in $(INFO_DEPS); do\
-	    if test -f "$(infodir)/$$file"; then\
-	      echo "$(INSTALL_INFO) --info-dir=\"$(infodir)\" \"$(infodir)/$$file\"";\
-	      $(INSTALL_INFO) --info-dir="$(infodir)" "$(infodir)/$$file" || :;\
+	    if test -f "$(DESTDIR)$(infodir)/$$file"; then\
+	      echo "$(INSTALL_INFO) --info-dir=\"$(DESTDIR)$(infodir)\" \"$(DESTDIR)$(infodir)/$$file\"";\
+	      $(INSTALL_INFO) --info-dir="$(DESTDIR)$(infodir)" "$(DESTDIR)$(infodir)/$$file" || :;\
 	    else : ; fi\
 	  done;\
 	else : ; fi

@@ -1,6 +1,6 @@
 ;;; w3mhack.el --- a hack to setup the environment for building w3m
 
-;; Copyright (C) 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010
+;; Copyright (C) 2001-2010, 2012
 ;; TSUCHIYA Masatoshi <tsuchiya@namazu.org>
 
 ;; Author: Katsumi Yamaoka <yamaoka@jpl.org>
@@ -395,31 +395,31 @@ Error: You have to install APEL before building emacs-w3m, see manuals.
   (and (not w3mhack-nonunix-icondir)
        (setq w3mhack-nonunix-icondir
 	     (expand-file-name "images/w3m" data-directory)))
-  (labels
-      ((mkdir (dir)
-	      (unless (file-directory-p dir)
-		(message "mkdir %s" dir)
-		(unless w3mhack-nonunix-dryrun
-		  (make-directory dir 'parents))))
-       (install (srcdir dstdir pattern)
-		(dolist (src (directory-files srcdir t pattern))
-		  (let ((dst (expand-file-name
-			      (file-name-nondirectory src) dstdir)))
-		    (message "cp %s %s"
-			     (file-relative-name src default-directory) dst)
-		    (unless w3mhack-nonunix-dryrun
-		      (copy-file src dst t t))))))
-    (mkdir w3mhack-nonunix-lispdir)
-    (install default-directory w3mhack-nonunix-lispdir "\\.elc?\\'")
+  (let ((mkdir (lambda (dir)
+		 (unless (file-directory-p dir)
+		   (message "mkdir %s" dir)
+		   (unless w3mhack-nonunix-dryrun
+		     (make-directory dir 'parents)))))
+	(install (lambda (srcdir dstdir pattern)
+		   (dolist (src (directory-files srcdir t pattern))
+		     (let ((dst (expand-file-name
+				 (file-name-nondirectory src) dstdir)))
+		       (message "cp %s %s"
+				(file-relative-name src default-directory) dst)
+		       (unless w3mhack-nonunix-dryrun
+			 (copy-file src dst t t)))))))
+    (funcall mkdir w3mhack-nonunix-lispdir)
+    (funcall install default-directory w3mhack-nonunix-lispdir "\\.elc?\\'")
     (let ((shimbun-directory
 	   (expand-file-name shimbun-module-directory default-directory)))
       (when (file-exists-p (expand-file-name "shimbun.elc" shimbun-directory))
-	(install shimbun-directory w3mhack-nonunix-lispdir "\\.elc?\\'")))
+	(funcall install shimbun-directory w3mhack-nonunix-lispdir
+		 "\\.elc?\\'")))
     (when w3mhack-nonunix-icondir
-      (mkdir w3mhack-nonunix-icondir)
-      (install (expand-file-name (if (featurep 'xemacs)
-				     "icons30"
-				   "icons"))
+      (funcall mkdir w3mhack-nonunix-icondir)
+      (funcall install (expand-file-name (if (featurep 'xemacs)
+					     "icons30"
+					   "icons"))
 	       w3mhack-nonunix-icondir "\\.\\(?:png\\|xpm\\)\\'"))))
 
 ;; Byte optimizers and version specific functions.
@@ -701,12 +701,25 @@ to remove some obsolete variables in the first argument VARLIST."
 	      (function directory-file-name)
 	      (nreverse paths) ":")))))
 
+;; FIXME: How to do it for Windows?
+(defun w3mhack-expand-file-name (name destdir)
+  "Convert filename NAME to the one relative to DESTDIR."
+  (if (and name destdir
+	   (eq (aref name 0) ?/)) ;; Not "NONE"?
+      (expand-file-name (substring name 1) destdir)
+    name))
+
 (defun w3mhack-what-where ()
   "Show what files should be installed and where should they go."
-  (let ((lisp-dir (pop command-line-args-left))
-	(icon-dir (pop command-line-args-left))
-	(package-dir (pop command-line-args-left))
-	(info-dir (pop command-line-args-left)))
+  (let* ((destdir (getenv "DESTDIR"))
+	 (lisp-dir (w3mhack-expand-file-name (pop command-line-args-left)
+					     destdir))
+	 (icon-dir (w3mhack-expand-file-name (pop command-line-args-left)
+					     destdir))
+	 (package-dir (w3mhack-expand-file-name (pop command-line-args-left)
+						destdir))
+	 (info-dir (w3mhack-expand-file-name (pop command-line-args-left)
+					     destdir)))
     (message "
 lispdir=%s
 ICONDIR=%s

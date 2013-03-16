@@ -8,8 +8,7 @@
 @synindex pg cp
 
 @copying
-Copyright @copyright{} 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007,
-2008, 2009 @w{TSUCHIYA Masatoshi}
+Copyright @copyright{} 2000-2011 @w{TSUCHIYA Masatoshi}
 
 @quotation
 Permission is granted to copy, distribute and/or modify this document
@@ -2989,7 +2988,7 @@ emacs-w3m session.
 @item w3m-popup-frame-parameters
 @vindex w3m-popup-frame-parameters
 Alist of frame parameters used when creating a new emacs-w3m frame.  It
-allows not only the alist form but also XEmacs' plist form.
+allows not only the alist form but also XEmacs's plist form.
 
 @item w3m-prefer-cache
 @vindex w3m-prefer-cache
@@ -3035,47 +3034,6 @@ window.
 The percentage of the selection window to the whole frame.  The car is
 used when splitting windows horizontally and the cdr is for splitting
 windows vertically.
-
-@item w3m-show-decoded-url
-@vindex w3m-show-decoded-url
-Non-@code{nil} means show decoded URIs in the echo area, the balloon,
-etc.  This variable can take one of the following five kinds of forms:
-
-@enumerate
-@item
-t
-
-Decode URIs using the encoding guessed from the value of
-@code{w3m-coding-system-priority-list}.
-
-@item
-Coding system
-
-Decode URIs using this value.
-
-@item
-List of coding systems
-
-Decode URIs using the encoding assumed based on this list.
-
-@item
-Alist of predicates and forms described below:
-
-Each element looks like the @code{(PREDICATE . ENCODING)} form.
-@code{PREDICATE} should be a regexp, a function or a Lisp form, and
-@code{ENCODING} should be one of the forms described here excluding this
-form.  If @code{PREDICATE} is a regexp, it will be tested whether it
-matches to the target url.  If it is a function, it will be called with
-the target url.  If it is a Lisp form, it will be simply evaluated.
-Elements are tested in turn until the result of the test of the
-predicate is true and the encoding which is associated to the predicate
-is used for decoding URIs.
-
-@item
-nil
-
-Don't decode URIs.
-@end enumerate
 
 @item w3m-use-title-buffer-name
 @vindex w3m-use-title-buffer-name
@@ -4692,20 +4650,6 @@ Manual}) です。
 レベルです。新たに作られた @samp{nnshimbun} グループに適用されます。デフォ
 ルト値は @code{nil} です。これはサーバー変数 (@pxref{Server Variables,
 ,サーバー変数, gnus-ja, The Gnus Manual}) です。
-
-@item nnshimbun-marks-is-evil
-@vindex nnshimbun-marks-is-evil
-もし @code{nil} でなければ、Gnus は @samp{shimbun} スプールのために
-印 (marks) ファイルを作りも使いもしません。印ファイルを使うことによって、
-@samp{shimbun} グループを @file{.newsrc.eld} から切り放してバックアップ
-し、復元することが可能になります。何らかの理由でこれを @code{t} に設定し
-た後で、再び @code{nil} にする場合はいつも、グループの印ファイルを消さな
-ければなりません (普通それは @samp{shimbun} グループのディレクトリにあ
-る @samp{.marks} という名前のファイルですが、正確に
-は @code{nnshimbun-marks-file-name} の値を参照してください)。そうすれ
-ば Gnus によって印ファイルが再生成されるでしょう。デフォルト値
-は @code{nil} です。これはサーバー変数 (@pxref{Server Variables, ,サーバー
-変数, gnus-ja, The Gnus Manual}) です。
 @end table
 
 @cindex group parameters
@@ -5279,12 +5223,14 @@ gendai-net.wadai gendai-net.kenko gendai-net.syoku gendai-net.book
 
 @item @uref{http://mainichi.jp/, 毎日jp}
 @itemx (2007年10月に MSN から自社サイトに移行)
-mainichi.flash mainichi.sports mainichi.entertainment
-mainichi.entertainment.art mainichi.mantan mainichi.electronics
-mainichi.weekly mainichi.opinion.editorial mainichi.opinion.yoroku
-mainichi.opinion.hasshinbako mainichi.opinion.eye mainichi.opinion.hito
-mainichi.opinion.kinji mainichi.opinion.yuraku mainichi.opinion.closeup
+mainichi.flash mainichi.sports mainichi.entertainment mainichi.mantan
+mainichi.electronics mainichi.weekly mainichi.opinion.editorial
+mainichi.opinion.yoroku mainichi.opinion.hasshinbako
+mainichi.opinion.eye mainichi.opinion.hito mainichi.opinion.kinji
+mainichi.opinion.yuraku mainichi.opinion.closeup
 mainichi.opinion.kaisetsu mainichi.opinion.newsup
+mainichi.opinion.jidainokaze mainichi.entertainment.art
+mainichi.fuchisou
 
 これらのグループは、デフォルトで写真をも含む HTML の記事を作ります。それ
 らに、テキストだけの記事を生成させたいならば、以下の行
@@ -5386,10 +5332,12 @@ nikkei.release.const.house nikkei.release.const.etc nikkei.shasetsu
 
 @item @uref{http://sankei.jp.msn.com/, MSN 産経ニュース}
 @itemx (2007年10月から MSN に移行)
-sankei.points sankei.affairs sankei.politics sankei.economy sankei.world
-sankei.sports sankei.entertainments sankei.life sankei.culture
-sankei.release sankei.region sankei.usatoday sankei.usatoday.ja
-sankei.column.sankeisho sankei.column.shucho sankei.column.seiron
+sankei.points sankei.flash sankei.affairs sankei.politics sankei.economy
+sankei.world sankei.sports sankei.entertainments sankei.life
+sankei.science sankei.region sankei.west.flash sankei.west.points
+sankei.west.affairs sankei.west.sports sankei.west.life
+sankei.west.economy sankei.column.sankeisho sankei.column.shucho
+sankei.column.seiron
 
 @item @uref{http://www.spiegel.de/, Spiegel Online}
 spiegel.news
@@ -5924,6 +5872,9 @@ Tigris.org に保存されているすべてのメーリングリストを閲覧できます。閲覧
 scipy.astropy scipy.ipython-user scipy.ipython-dev scipy.scipy-user
 scipy.scipy-dev scipy.scipy-testlog scipy.scipy-chaco scipy.scipy-cvs
 
+@item @uref{http://lists.chise.org/mailman/listinfo, lists.chise.org Mailing Lists}
+chise.apel chise.chise chise.emacs-mime
+
 @end table
 
 @node Sport Sites Supported by Shimbun
@@ -6141,18 +6092,17 @@ vinelinux.errata.2x.i386 vinelinux.errata.2x.ppc
 vinelinux.errata.2x.sparc vinelinux.errata.2x.alpha
 vinelinux.errata.1x
 
-@item @uref{http://www.mmz.kantei.go.jp/, 内閣メールマガジン}
-kantei.m-magazine-en kantei.m-magazine-ja kantei.m-magazine-cn.hatoyama
-kantei.m-magazine-kr.hatoyama kantei.m-magazine-en.hatoyama
-kantei.m-magazine-ja.hatoyama kantei.m-magazine-en.aso
-kantei.m-magazine-ja.aso kantei.m-magazine-en.fukuda
-kantei.m-magazine-ja.fukuda kantei.m-magazine-en.abe
-kantei.m-magazine-ja.abe kantei.m-magazine-en.koizumi
-kantei.m-magazine-ja.koizumi
+@item @uref{http://www.kantei.go.jp/, 内閣ブログ/メールマガジン}
+kantei.blog-en kantei.blog-ja kantei.blog-en.kan kantei.blog-ja.kan
+kantei.m-magazine-cn.hatoyama kantei.m-magazine-kr.hatoyama
+kantei.m-magazine-en.hatoyama kantei.m-magazine-ja.hatoyama
+kantei.m-magazine-en.aso kantei.m-magazine-ja.aso
+kantei.m-magazine-en.fukuda kantei.m-magazine-ja.fukuda
+kantei.m-magazine-en.abe kantei.m-magazine-ja.abe
+kantei.m-magazine-en.koizumi kantei.m-magazine-ja.koizumi
+kantei.m-magazine
 
-後方互換性のため @samp{kantei.m-magazine}、
-@samp{kantei.m-magazine-cn} および @samp{kantei.m-magazine-kr} も利用可
-能になっています。
+後方互換性のため @samp{kantei.m-magazine} も利用可能になっています。
 
 @item @uref{http://www.jpo.go.jp/, 特許庁}
 jpo.news jpo.revision jpo.lawguide jpo.details

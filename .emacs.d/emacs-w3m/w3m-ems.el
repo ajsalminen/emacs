@@ -1,7 +1,6 @@
 ;;; w3m-ems.el --- GNU Emacs stuff for emacs-w3m
 
-;; Copyright (C) 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010
-;; TSUCHIYA Masatoshi <tsuchiya@namazu.org>
+;; Copyright (C) 2001-2013 TSUCHIYA Masatoshi <tsuchiya@namazu.org>
 
 ;; Authors: Yuuichi Teranishi  <teranisi@gohome.org>,
 ;;          TSUCHIYA Masatoshi <tsuchiya@namazu.org>,
@@ -85,7 +84,10 @@
   (autoload 'w3m-delete-buffer "w3m")
   (autoload 'w3m-image-type "w3m")
   (autoload 'w3m-retrieve "w3m")
-  (autoload 'w3m-select-buffer-update "w3m"))
+  (autoload 'w3m-select-buffer-update "w3m")
+  (unless (fboundp 'image-animate)
+    (defalias 'image-animate 'ignore)
+    (defalias 'image-animated-p 'ignore)))
 
 (eval-and-compile
   (unless (fboundp 'frame-current-scroll-bars)
@@ -106,12 +108,15 @@
 Return the first possible coding system.
 
 PRIORITY-LIST is a list of coding systems ordered by priority."
-  (let (category categories)
-    (dolist (codesys priority-list)
-      (setq category (coding-system-category codesys))
-      (unless (or (null category) (assq category categories))
-	(push (cons category codesys) categories)))
-    (car (detect-coding-with-priority start end (nreverse categories)))))
+  (w3m-static-if (fboundp 'with-coding-priority)
+      (with-coding-priority priority-list
+	(car (detect-coding-region start end)))
+    (let (category categories)
+      (dolist (codesys priority-list)
+	(setq category (coding-system-category codesys))
+	(unless (or (null category) (assq category categories))
+	  (push (cons category codesys) categories)))
+      (car (detect-coding-with-priority start end (nreverse categories))))))
 
 (defun w3m-mule-unicode-p ()
   "Check the existence as charsets of mule-unicode."
@@ -134,27 +139,29 @@ This function is an interface to `define-coding-system'."
 		      :mnemonic mnemonic :coding-type 'ccl
 		      :ccl-decoder decoder :ccl-encoder encoder))))
     (eval-when-compile
-      (funcall (if (featurep 'bytecomp)
-		   (lambda (form)
-		     (let ((byte-compile-warnings
-			    (if (eq (get 'make-coding-system 'byte-compile)
-				    'byte-compile-obsolete)
-				(delq 'obsolete
-				      (copy-sequence
-				       (cond ((consp byte-compile-warnings)
-					      byte-compile-warnings)
-					     (byte-compile-warnings
-					      byte-compile-warning-types)
-					     (t nil))))
-			      byte-compile-warnings)))
-		       (byte-compile form)))
-		 'identity)
-	       '(lambda (coding-system mnemonic docstring decoder encoder) "\
+      (funcall
+       (if (featurep 'bytecomp)
+	   (lambda (form)
+	     (let ((byte-compile-warnings
+		    (if (or (get 'make-coding-system 'byte-obsolete-info)
+			    (eq (get 'make-coding-system 'byte-compile)
+				'byte-compile-obsolete))
+			(delq 'obsolete
+			      (copy-sequence
+			       (cond ((consp byte-compile-warnings)
+				      byte-compile-warnings)
+				     (byte-compile-warnings
+				      byte-compile-warning-types)
+				     (t nil))))
+		      byte-compile-warnings)))
+	       (byte-compile form)))
+	 'identity)
+       '(lambda (coding-system mnemonic docstring decoder encoder) "\
 Define a new CODING-SYSTEM by CCL programs DECODER and ENCODER.
 CODING-SYSTEM, DECODER and ENCODER must be symbols.
 This function is an interface to `make-coding-system'."
-		  (make-coding-system coding-system 4 mnemonic docstring
-				      (cons decoder encoder)))))))
+	  (make-coding-system coding-system 4 mnemonic docstring
+			      (cons decoder encoder)))))))
 
 ;; For Emacsen of which the `mule-version' is 5.x, redefine the ccl
 ;; programs that been defined in w3m-ccl.el.
@@ -231,10 +238,29 @@ This function is an interface to `make-coding-system'."
 circumstances."
   (and w3m-display-inline-images (display-images-p)))
 
-(eval-and-compile
-  (defalias 'w3m-ems-create-image (if (fboundp 'create-animated-image)
-				      'create-animated-image
-				    'create-image)))
+;; Animation.
+(defcustom w3m-image-animate-seconds 10
+  "Animate images (if possible) for this many seconds.
+If nil, don't play the animation.  If t, loop forever."
+  :group 'w3m
+  :type '(choice (integer :tag "Animate for (seconds)")
+		 (const :tag "Inhibit animation" nil)
+		 (const :tag "Animate forever" t)))
+
+(defun w3m-image-animate (image)
+  "Start animating IMAGE if possible.  Return IMAGE."
+    (when (and (fboundp 'image-animate)
+	       w3m-image-animate-seconds
+	       (image-animated-p image))
+      (image-animate image nil w3m-image-animate-seconds)
+      ;; Reset an image to the initial one after playing the animation.
+      ;; FIXME: Is there a better way?
+      (when (numberp w3m-image-animate-seconds)
+	(run-with-timer (1+ w3m-image-animate-seconds) nil
+			(lambda (image)
+			  (image-animate image 0 0))
+			image)))
+    image)
 
 (defun w3m-create-image (url &optional no-cache referer size handler)
   "Retrieve data from URL and create an image object.
@@ -262,7 +288,7 @@ and its cdr element is used as height."
 				    ((match-beginning 2) 'jpeg)
 				    (t 'png)))
 			 (w3m-image-type type))))
-	  (setq image (w3m-ems-create-image
+	  (setq image (create-image
 		       (buffer-string) type t
 		       :ascent 'center
 		       :background w3m-image-default-background))
@@ -286,10 +312,8 @@ and its cdr element is used as height."
 				    (plist-get (cdr image) :data)
 				    (car set-size)(cdr set-size)
 				    handler))
-			(if resized (plist-put (cdr image) :data resized))
-			image))
-		  image))
-	    image))))))
+			(if resized (plist-put (cdr image) :data resized)))))))
+	  (w3m-image-animate image))))))
 
 (defun w3m-create-resized-image (url rate &optional referer size handler)
   "Resize an cached image object.
@@ -428,6 +452,12 @@ Buffer string between BEG and END are replaced with IMAGE."
 		 (insert " ")
 		 (setq start (1+ start)
 		       end (1- end)))))
+	;; Empty text won't be buttonized, so we fill it with something.
+	;; "submit" seems to be a proper choice in nine cases out of ten.
+	(when (= start end)
+	  (goto-char start)
+	  (insert "submit")
+	  (setq end (point)))
 	(let ((w (widget-convert-button
 		  'w3m-form-button start end
 		  :w3m-form-action (plist-get properties 'w3m-action))))
@@ -533,9 +563,10 @@ variable or both the value of this variable and the global value of
   ;; Invalidate the default bindings.
   (let ((keys (cdr (key-binding [tool-bar] t)))
 	item)
-    (while (setq item (pop keys))
-      (when (setq item (car-safe item))
-	(define-key keymap (vector 'tool-bar item) 'undefined))))
+    (unless (eq (caar keys) 'keymap) ;; Emacs >= 24
+      (while (setq item (pop keys))
+	(when (setq item (car-safe item))
+	  (define-key keymap (vector 'tool-bar item) 'undefined)))))
   (let ((n (length defs))
 	def)
     (while (>= n 0)
@@ -815,7 +846,8 @@ otherwise works in all the emacs-w3m buffers."
 	     (not (eq (symbol-function 'force-window-update) 'ignore)))
 	(lambda (&optional window) "\
 Force redisplay of WINDOW which defaults to the selected window."
-	  (force-window-update (or window (selected-window))))
+	  (force-window-update (or window (selected-window)))
+	  (sit-for 0))
       (lambda (&optional ignore) "\
 Wobble the selected window to force redisplay of the header-line."
 	(save-window-excursion

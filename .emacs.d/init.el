@@ -22,6 +22,7 @@
                         "~/.emacs.d/el-get/el-get"
                         "~/.emacs.d/el-get/google-weather"
                         "~/.emacs.d/elib-1.0"
+                        "~/.emacs.d/emacs-w3m"
                         "~/.emacs.d/ensime_2.9.1-0.7.6/elisp"
                         "~/.emacs.d/ess-5.11/lisp"
                         "~/.emacs.d/jdee/dist/jdee-2.4.1/lisp"
@@ -1111,6 +1112,23 @@
 
   (if (fboundp 'ns-toggle-fullscreen)
       (global-set-key "\M-\r" 'ns-toggle-fullscreen))
+
+  ;; fix fonts
+  (defun fix-mac-fonts ()
+    (interactive)
+    (let* ((size 12) ; ASCIIフォントのサイズ [9/10/12/14/15/17/19/20/...]
+           (asciifont "Menlo") ; ASCIIフォント
+           (jpfont "Hiragino Kaku Gothic Pro") ; 日本語フォント
+           (h (* size 10))
+           (fontspec (font-spec :family asciifont))
+           (jp-fontspec (font-spec :family jpfont)))
+      (set-face-attribute 'default nil :family asciifont :height h)
+      (set-fontset-font nil 'japanese-jisx0213.2004-1 jp-fontspec)
+      (set-fontset-font nil 'japanese-jisx0213-2 jp-fontspec)
+      (set-fontset-font nil 'katakana-jisx0201 jp-fontspec) ; 半角カナ
+      (set-fontset-font nil '(#x0080 . #x024F) fontspec) ; 分音符付きラテン
+      (set-fontset-font nil '(#x0370 . #x03FF) fontspec) ; ギリシャ文字
+      ))
 
   ;; apologetic hack to make sure my mac input is used
   (defun set-mac-input ()
@@ -2301,16 +2319,20 @@ nEnd:")
 (require 'basic-edit-toolkit)
 
 (require 'w3m-load)
+
 (require 'w3m-extension)
 (autoload 'w3m-filter "w3m-filter")
 (setq w3m-use-filter t)
+(setq w3m-default-display-inline-images t)
 (setq w3m-key-binding 'lynx)
-(w3m-link-numbering-mode 1)
-;;(add-hook 'w3m-mode-hook 'w3m-link-numbering-mode)
-(setq w3m-use-cookies t)
-
+(w3m-lnum-mode 1)
+;;; (w3m-link-numbering-mode 1)
 (setq w3m-session-load-last-sessions t)
 (setq w3m-session-load-crashed-sessions t)
+
+
+;;(add-hook 'w3m-mode-hook 'w3m-link-numbering-mode)
+(setq w3m-use-cookies t)
 
 (autoload 'wget "wget" "wget interface for Emacs." t)
 (autoload 'wget-web-page "wget" "wget interface to download whole web page." t)

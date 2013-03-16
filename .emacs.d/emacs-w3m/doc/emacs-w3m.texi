@@ -8,8 +8,7 @@
 @synindex pg cp
 
 @copying
-Copyright @copyright{} 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007,
-2008, 2009 @w{TSUCHIYA Masatoshi}
+Copyright @copyright{} 2000-2011 @w{TSUCHIYA Masatoshi}
 
 @quotation
 Permission is granted to copy, distribute and/or modify this document
@@ -2931,7 +2930,7 @@ emacs-w3m session.
 @item w3m-popup-frame-parameters
 @vindex w3m-popup-frame-parameters
 Alist of frame parameters used when creating a new emacs-w3m frame.  It
-allows not only the alist form but also XEmacs' plist form.
+allows not only the alist form but also XEmacs's plist form.
 
 @item w3m-prefer-cache
 @vindex w3m-prefer-cache
@@ -2977,47 +2976,6 @@ window.
 The percentage of the selection window to the whole frame.  The car is
 used when splitting windows horizontally and the cdr is for splitting
 windows vertically.
-
-@item w3m-show-decoded-url
-@vindex w3m-show-decoded-url
-Non-@code{nil} means show decoded URIs in the echo area, the balloon,
-etc.  This variable can take one of the following five kinds of forms:
-
-@enumerate
-@item
-t
-
-Decode URIs using the encoding guessed from the value of
-@code{w3m-coding-system-priority-list}.
-
-@item
-Coding system
-
-Decode URIs using this value.
-
-@item
-List of coding systems
-
-Decode URIs using the encoding assumed based on this list.
-
-@item
-Alist of predicates and forms described below:
-
-Each element looks like the @code{(PREDICATE . ENCODING)} form.
-@code{PREDICATE} should be a regexp, a function or a Lisp form, and
-@code{ENCODING} should be one of the forms described here excluding this
-form.  If @code{PREDICATE} is a regexp, it will be tested whether it
-matches to the target url.  If it is a function, it will be called with
-the target url.  If it is a Lisp form, it will be simply evaluated.
-Elements are tested in turn until the result of the test of the
-predicate is true and the encoding which is associated to the predicate
-is used for decoding URIs.
-
-@item
-nil
-
-Don't decode URIs.
-@end enumerate
 
 @item w3m-use-title-buffer-name
 @vindex w3m-use-title-buffer-name
@@ -4646,19 +4604,6 @@ The default group level overriding @code{gnus-level-default-subscribed}.
 It will be applied to newly created @samp{nnshimbun} groups.  The
 default value is @code{nil}.  This is a server variable (@pxref{Server
 Variables, ,Server Variables, gnus, The Gnus Manual}).
-
-@item nnshimbun-marks-is-evil
-@vindex nnshimbun-marks-is-evil
-If non-@code{nil}, Gnus will never generate and use marks file for
-@samp{shimbun} spools.  Using marks files makes it possible to backup
-and restore @samp{shimbun} groups separately from @file{.newsrc.eld}.
-If you have, for some reason, set this to @code{t}, and want to set it
-to @code{nil} again, you should always remove the corresponding marks
-file (usually named @samp{.marks} in the @samp{shimbun} group directory,
-but see @code{nnshimbun-marks-file-name}) for the group.  Then the marks
-file will be regenerated properly by Gnus.  The default value is
-@code{nil}.  This is a server variable (@pxref{Server Variables, ,Server
-Variables, gnus, The Gnus Manual}).
 @end table
 
 @cindex group parameters
@@ -5252,12 +5197,14 @@ gendai-net.wadai gendai-net.kenko gendai-net.syoku gendai-net.book
 
 @item @uref{http://mainichi.jp/, Mainichi jp}
 @itemx (This site has been shifted from MSN in October, 2007)
-mainichi.flash mainichi.sports mainichi.entertainment
-mainichi.entertainment.art mainichi.mantan mainichi.electronics
-mainichi.weekly mainichi.opinion.editorial mainichi.opinion.yoroku
-mainichi.opinion.hasshinbako mainichi.opinion.eye mainichi.opinion.hito
-mainichi.opinion.kinji mainichi.opinion.yuraku mainichi.opinion.closeup
+mainichi.flash mainichi.sports mainichi.entertainment mainichi.mantan
+mainichi.electronics mainichi.weekly mainichi.opinion.editorial
+mainichi.opinion.yoroku mainichi.opinion.hasshinbako
+mainichi.opinion.eye mainichi.opinion.hito mainichi.opinion.kinji
+mainichi.opinion.yuraku mainichi.opinion.closeup
 mainichi.opinion.kaisetsu mainichi.opinion.newsup
+mainichi.opinion.jidainokaze mainichi.entertainment.art
+mainichi.fuchisou
 
 Those groups generate HTML articles containing photographs by default.
 If you would like to make them generate articles that contain only text,
@@ -5359,13 +5306,12 @@ nikkei.release.const.house nikkei.release.const.etc nikkei.shasetsu
 
 @item @uref{http://sankei.jp.msn.com/, MSN Sankei News}
 @itemx (This site has been shifted to MSN in October, 2007)
-sankei.news.shakai sankei.news.kokusai sankei.news.seiji
-sankei.news.keizai sankei.news.seikatsu sankei.news.kyouiku
-sankei.news.sports sankei.news.cutlure sankei.news.chiho
-sankei.special.komori sankei.special.kuroda sankei.special.ito
-sankei.special.tamura sankei.special.jieitai sankei.special.kenpo
-sankei.special.kyouiku sankei.special.kiko sankei.ronsetsu.shucho
-sankei.ronsetsu.sankeisho sankei.ronsetsu.seiron
+sankei.points sankei.flash sankei.affairs sankei.politics sankei.economy
+sankei.world sankei.sports sankei.entertainments sankei.life
+sankei.science sankei.region sankei.west.flash sankei.west.points
+sankei.west.affairs sankei.west.sports sankei.west.life
+sankei.west.economy sankei.column.sankeisho sankei.column.shucho
+sankei.column.seiron
 
 @item @uref{http://www.spiegel.de/, Spiegel Online}
 spiegel.news
@@ -5904,6 +5850,9 @@ Group name is tigris.<project>.<mailinglist>.
 scipy.astropy scipy.ipython-user scipy.ipython-dev scipy.scipy-user
 scipy.scipy-dev scipy.scipy-testlog scipy.scipy-chaco scipy.scipy-cvs
 
+@item @uref{http://lists.chise.org/mailman/listinfo, lists.chise.org Mailing Lists}
+chise.apel chise.chise chise.emacs-mime
+
 @end table
 
 @node Sport Sites Supported by Shimbun
@@ -6116,17 +6065,17 @@ vinelinux.errata.2x.i386 vinelinux.errata.2x.ppc
 vinelinux.errata.2x.sparc vinelinux.errata.2x.alpha
 vinelinux.errata.1x
 
-@item @uref{http://www.mmz.kantei.go.jp/, Japan's Cabinet Mail Magazine}
-kantei.m-magazine-en kantei.m-magazine-ja kantei.m-magazine-cn.hatoyama
-kantei.m-magazine-kr.hatoyama kantei.m-magazine-en.hatoyama
-kantei.m-magazine-ja.hatoyama kantei.m-magazine-en.aso
-kantei.m-magazine-ja.aso kantei.m-magazine-en.fukuda
-kantei.m-magazine-ja.fukuda kantei.m-magazine-en.abe
-kantei.m-magazine-ja.abe kantei.m-magazine-en.koizumi
-kantei.m-magazine-ja.koizumi
+@item @uref{http://www.kantei.go.jp/, Japan's Cabinet Blog/Mail Magazine}
+kantei.blog-en kantei.blog-ja kantei.blog-en.kan kantei.blog-ja.kan
+kantei.m-magazine-cn.hatoyama kantei.m-magazine-kr.hatoyama
+kantei.m-magazine-en.hatoyama kantei.m-magazine-ja.hatoyama
+kantei.m-magazine-en.aso kantei.m-magazine-ja.aso
+kantei.m-magazine-en.fukuda kantei.m-magazine-ja.fukuda
+kantei.m-magazine-en.abe kantei.m-magazine-ja.abe
+kantei.m-magazine-en.koizumi kantei.m-magazine-ja.koizumi
+kantei.m-magazine
 
-@samp{kantei.m-magazine}, @samp{kantei.m-magazine-cn} and
-@samp{kantei.m-magazine-kr} are also available for the backward
+@samp{kantei.m-magazine} is also available for the backward
 compatibility.
 
 @item @uref{http://www.jpo.go.jp/, Patent Office in Japan}

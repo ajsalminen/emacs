@@ -1,7 +1,6 @@
 ;;; w3m-form.el --- Stuffs to handle <form> tag
 
-;; Copyright (C) 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010
-;; TSUCHIYA Masatoshi <tsuchiya@namazu.org>
+;; Copyright (C) 2001-2012 TSUCHIYA Masatoshi <tsuchiya@namazu.org>
 
 ;; Authors: TSUCHIYA Masatoshi <tsuchiya@namazu.org>,
 ;;          Yuuichi Teranishi  <teranisi@gohome.org>,
@@ -630,8 +629,7 @@ If optional REUSE-FORMS is non-nil, reuse it as `w3m-current-form'."
 	      (setq action (w3m-url-transfer-encode-string
 			    (w3m-decode-anchor-string action)
 			    (if charset
-				(w3m-charset-to-coding-system charset)
-			      w3m-current-coding-system))))
+				(w3m-charset-to-coding-system charset)))))
 	    (if (setq form (cdr (assq fid forms)))
 		(progn
 		  (setf (w3m-form-method form) (or method "get"))

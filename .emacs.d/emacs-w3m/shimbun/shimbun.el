@@ -1,7 +1,6 @@
 ;;; shimbun.el --- interfacing with web newspapers -*- coding: iso-2022-7bit; -*-
 
-;; Copyright (C) 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010
-;; Yuuichi Teranishi <teranisi@gohome.org>
+;; Copyright (C) 2001-2012 Yuuichi Teranishi <teranisi@gohome.org>
 
 ;; Author: TSUCHIYA Masatoshi <tsuchiya@namazu.org>,
 ;;         Akihiro Arisawa    <ari@mbf.sphere.ne.jp>,
@@ -79,6 +78,7 @@
 (require 'luna)
 (require 'std11)
 (require 'w3m)
+(require 'xml)
 
 (eval-and-compile
   (luna-define-class shimbun ()
@@ -96,9 +96,6 @@
 			  ;; Say whether to convert Japanese zenkaku
 			  ;; ASCII chars into hankaku.
 			  japanese-hankaku
-			  ;; Coding system for encoding URIs when
-			  ;; accessing the server.
-			  url-coding-system
 			  ;; Number of times to retry fetching contents.
 			  retry-fetching))
   (luna-define-internal-accessors 'shimbun))
@@ -234,11 +231,21 @@ Default is the value of `w3m-default-save-directory'."
   (shimbun-mua-shimbun-internal mua))
 
 ;;; emacs-w3m implementation of url retrieval and entity decoding.
-(defun shimbun-retrieve-url (url &optional no-cache no-decode
-				 referer url-coding-system)
+(defalias 'shimbun-beginning-of-tag 'w3m-beginning-of-tag)
+(defalias 'shimbun-decode-anchor-string 'w3m-decode-anchor-string)
+(defalias 'shimbun-decode-entities 'w3m-decode-entities)
+(defalias 'shimbun-decode-entities-string 'w3m-decode-entities-string)
+(defalias 'shimbun-end-of-tag 'w3m-end-of-tag)
+(defalias 'shimbun-expand-url 'w3m-expand-url)
+(defalias 'shimbun-find-coding-system 'w3m-find-coding-system)
+(defalias 'shimbun-flet 'w3m-flet)
+(defalias 'shimbun-interactive-p 'w3m-interactive-p)
+(defalias 'shimbun-replace-in-string 'w3m-replace-in-string)
+(defalias 'shimbun-url-encode-string 'w3m-url-encode-string)
+
+(defun shimbun-retrieve-url (url &optional no-cache no-decode referer)
   "Rertrieve URL contents and insert to current buffer.
-Return content-type of URL as string when retrieval succeeded.
-Non-ASCII characters `url' are escaped based on `url-coding-system'."
+Return content-type of URL as string when retrieval succeeded."
   (let (type charset fname)
     (if (and url
 	     shimbun-use-local
@@ -262,9 +269,8 @@ Non-ASCII characters `url' are escaped based on `url-coding-system'."
 	      (delete-region (point-min) pos))))
       ;; retrieve URL
       (when url
-	(setq type (w3m-retrieve
-		    (w3m-url-transfer-encode-string url url-coding-system)
-		    nil no-cache nil referer))))
+	(setq type (w3m-retrieve (w3m-url-transfer-encode-string url)
+				 nil no-cache nil referer))))
     (if type
 	(progn
 	  (unless no-decode
@@ -285,21 +291,11 @@ Non-ASCII characters `url' are escaped based on `url-coding-system'."
       shimbun-retry-fetching))
 
 (defun shimbun-fetch-url (shimbun url &optional no-cache no-decode referer)
-  "Retrieve contents specified by URL for SHIMBUN.
-This function is exacly similar to `shimbun-retrieve-url', but
-considers the `coding-system' slot of SHIMBUN when estimating a
-coding system of retrieved contents and the `url-coding-system'
-slot of SHIMBUN to encode URL."
-  (let* ((coding (shimbun-coding-system-internal shimbun))
-	 (w3m-coding-system-priority-list
-	  (if coding
-	      (cons coding w3m-coding-system-priority-list)
-	    w3m-coding-system-priority-list))
-	 (retry (shimbun-retry-fetching shimbun)))
-    (setq coding (or (shimbun-url-coding-system-internal shimbun) coding))
+  "Retrieve contents specified by URL for SHIMBUN."
+  (let ((retry (shimbun-retry-fetching shimbun)))
     (save-restriction
       (narrow-to-region (point) (point))
-      (or (shimbun-retrieve-url url no-cache no-decode referer coding)
+      (or (shimbun-retrieve-url url no-cache no-decode referer)
 	  (and retry
 	       (let (retval)
 		 (shimbun-message
@@ -307,7 +303,7 @@ slot of SHIMBUN to encode URL."
 		 (while (and (> retry 0) (not retval))
 		   (delete-region (point-min) (point-max))
 		   (setq retval (shimbun-retrieve-url
-				 url no-cache no-decode referer coding)
+				 url no-cache no-decode referer)
 			 retry (1- retry)))
 		 (shimbun-message shimbun
 				  "shimbun: Retrying to fetch contents...%s"
@@ -317,16 +313,6 @@ slot of SHIMBUN to encode URL."
 (defun shimbun-real-url (url &optional no-cache)
   "Return a real URL."
   (w3m-real-url url no-cache))
-
-(defalias 'shimbun-beginning-of-tag 'w3m-beginning-of-tag)
-(defalias 'shimbun-decode-anchor-string 'w3m-decode-anchor-string)
-(defalias 'shimbun-decode-entities 'w3m-decode-entities)
-(defalias 'shimbun-decode-entities-string 'w3m-decode-entities-string)
-(defalias 'shimbun-end-of-tag 'w3m-end-of-tag)
-(defalias 'shimbun-expand-url 'w3m-expand-url)
-(defalias 'shimbun-find-coding-system 'w3m-find-coding-system)
-(defalias 'shimbun-replace-in-string 'w3m-replace-in-string)
-(defalias 'shimbun-url-encode-string 'w3m-url-encode-string)
 
 ;;; Implementation of Header API.
 (eval-and-compile
@@ -879,7 +865,7 @@ you want to use no database."
   '(url groups coding-system server-name from-address
 	content-start content-end x-face-alist expiration-days
 	prefer-text-plain text-content-start text-content-end
-	japanese-hankaku url-coding-system retry-fetching))
+	japanese-hankaku retry-fetching))
 
 (defun shimbun-open (server &optional mua)
   "Open a shimbun for SERVER.
@@ -1158,7 +1144,8 @@ HEADER is a header structure obtained via `shimbun-headers'.")
 
 (defun shimbun-make-html-contents (shimbun header)
   (let ((base-url (or (shimbun-current-base-url)
-		      (shimbun-article-url shimbun header))))
+		      (file-name-directory
+		       (shimbun-article-url shimbun header)))))
     (when (shimbun-clear-contents shimbun header)
       (goto-char (point-min))
       (insert "<html>\n<head>\n<base href=\""
@@ -1278,7 +1265,7 @@ that the content type is text/html, otherwise text/plain."
   (if html
       (progn
 	(insert "<html>\n<head>\n<base href=\""
-		(shimbun-article-url shimbun header)
+		(file-name-directory (shimbun-article-url shimbun header))
 		"\">\n</head>\n<body>\n")
 	(shimbun-insert-footer shimbun header t "</body>\n</html>\n"))
     (shimbun-insert-footer shimbun header))
@@ -1615,7 +1602,7 @@ it considers the buffer has already been narrowed to an article."
 	(error))
       (goto-char start)
       (while (re-search-forward
-	      "[^　、。，．＿ー―‐〜‘’“”（）［］｛｝〈〉＝′″￥]+"
+	      "[^　、。，．＿ー―‐〜~‘’“”（）［］｛｝〈〉＝′″￥]+"
 	      nil t)
 	(japanese-hankaku-region (match-beginning 0) (match-end 0) t))
       (goto-char start)
@@ -1813,6 +1800,48 @@ There are exceptions; some chars aren't converted, and \"＜\", \"＞\
       (setq start (point)))
     (unless (eobp)
       (shimbun-japanese-hankaku-region start (point-max) quote))))
+
+;; Silence XEmacs's byte compiler.
+(eval-when-compile
+  (if (fboundp 'libxml-parse-xml-region) nil
+    (defalias 'libxml-parse-xml-region 'ignore)))
+
+(defun shimbun-xml-parse-buffer ()
+  "Calls (lib)xml-parse-region on the whole buffer.
+This is a wrapper for `xml-parse-region', which will resort to
+using `libxml-parse-xml-region' if available, since it is much
+faster."
+  (if (and (fboundp 'libxml-parse-xml-region)
+	   (not (eq (symbol-function 'libxml-parse-xml-region) 'ignore)))
+      (save-excursion
+	(goto-char (point-min))
+	(let ((xml (libxml-parse-xml-region
+		    (1- (search-forward "<" nil t)) (point-max)))
+	      start stylestring stylesheet)
+	  (if xml
+	      (progn
+		;; Parse the stylesheet
+		(goto-char (point-min))
+		(when (re-search-forward "<\\(rss\\|feed\\)\\(.*?\\)>"
+					 nil t)
+		  (setq stylestring (match-string 2)
+			start 0)
+		  (while (string-match "\\(xmlns:?.*?\\)=\"\\(.*?\\)\""
+				       stylestring start)
+		    (setq start (match-end 0))
+		    (push (cons (intern (match-string 1 stylestring))
+				(match-string 2 stylestring))
+			  stylesheet)))
+		;; Add stylesheet into XML structure
+		(when stylesheet
+		  (if (nth 1 xml)
+		      (nconc (nth 1 xml) stylesheet)
+		    (setcar (cdr xml) stylesheet)))
+		(list xml))
+	    ;; Unfortunately libxml failed parsing for some reason.
+	    (xml-parse-region (point-min) (point-max)))))
+    ;; We don't have libxml, so just use the slow one.
+    (xml-parse-region (point-min) (point-max))))
 
 (provide 'shimbun)
 

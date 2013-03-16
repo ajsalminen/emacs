@@ -1,3 +1,676 @@
+2013-02-04  Katsumi Yamaoka  <yamaoka@jpl.org>
+
+	* w3m.el (w3m-retrieve-and-render): Remove workaround.
+	* w3m-util.el (w3m-force-window-update-later): Make 1st arg optional.
+	* w3m-ems.el (w3m-force-window-update): A window need to be redisplayed
+	for `force-window-update' to work (see the docstring).
+
+2013-01-23  Katsumi Yamaoka  <yamaoka@jpl.org>
+
+	* w3m-lnum.el (w3m-lnum-read-interactive): Replace w3m-scroll-up-1 with
+	w3m-scroll-up.
+
+	* w3m.el (w3m-scroll-up): Rename from w3m-scroll-up-1.
+	(w3m-scroll-up, w3m-scroll-up-or-next-url): Make the bottom of a page
+	border on the bottom of a screen when having finished scrolling
+	the page up.
+	(w3m-scroll-down): New function detached from
+	w3m-scroll-down-or-previous-url.
+	(w3m-scroll-down-or-previous-url): Move point to the top when having
+	finished scrolling a page down.
+	(w3m-mwheel-scroll-up, w3m-mwheel-scroll-down): New functions.
+	(w3m-mode): Bind mwheel-scroll-(up,down)-function to
+	w3m-mwheel-scroll-(up,down).
+	Suggested by Dan Jacobson <jidanni@jidanni.org>.
+
+2013-01-11  Katsumi Yamaoka  <yamaoka@jpl.org>
+
+	* w3m.el (w3m-retrieve-and-render): Do (sit-for 0) to update the
+	header-line appearance as a workaround; see the 2013-01-11 comment.
+	(w3m-view-this-url-1): Revert 2010-01-15 change; don't popup new
+	session if w3m-new-session-in-background is non-nil.
+	Reported by Michael Heerdegen <michael_heerdegen@web.de>.
+
+2012-12-25  Katsumi Yamaoka  <yamaoka@jpl.org>
+
+	* w3m-search.el (w3m-search-do-search): Save history position.
+	Reported by Dan Jacobson <jidanni@jidanni.org>.
+
+2012-12-17  Katsumi Yamaoka  <yamaoka@jpl.org>
+
+	* w3m-ems.el (w3m-ems-create-image): Abolish.
+	(w3m-image-animate-seconds): New user option.
+	(w3m-image-animate): New function.
+	(w3m-create-image): Use it.
+
+	* w3m.el (w3m-resize-inline-image-internal): Use w3m-image-animate.
+
+	* w3m-xmas.el (w3m-image-animate): Alias to identity.
+
+2012-12-10  Katsumi Yamaoka  <yamaoka@jpl.org>
+
+	* w3m.el (w3m-decode-anchor-string): Decode url used to next/prev/...
+	cf. http://emacs-w3m.namazu.org/ml/msg11824.html
+
+2012-12-05  Katsumi Yamaoka  <yamaoka@jpl.org>
+
+	* w3m-util.el (w3m-flet): Rewrite it using cl-letf.
+
+2012-12-04  Katsumi Yamaoka  <yamaoka@jpl.org>
+
+	* w3m-util.el (w3m-labels): Revert; use cl-labels if available.
+
+2012-12-04  Katsumi Yamaoka  <yamaoka@jpl.org>
+
+	* w3m-util.el (w3m-labels): Rewrite.
+
+2012-11-19  Uday S Reddy  <u.s.reddy@cs.bham.ac.uk>
+
+	* w3m.el (w3m-command-environment): Make the "CYGWIN" environment
+	variable default to "binmode" for NTEmacs.
+
+2012-10-18  Katsumi Yamaoka  <yamaoka@jpl.org>
+
+	* w3m-filter.el (w3m-filter-configuration): Work around a widget bug.
+
+2012-10-17  Katsumi Yamaoka  <yamaoka@jpl.org>
+
+	* w3m-filter.el: Change file coding system to utf-8.
+	(w3m-filter-configuration):
+	New user option, a successor to w3m-filter-rules.
+	(w3m-filter-rules):
+	Make it semi-obsolete (but still usable) and default to nil.
+	(w3m-filter):
+	Use w3m-filter-configuration in addition to w3m-filter-rules.
+	(w3m-filter-google-click-tracking)
+	(w3m-filter-google-shrink-table-width, w3m-filter-add-name-anchors):
+	New filters.
+
+	* w3m.el (w3m-rendering-half-dump):
+	Move function, that adds name anchors, to w3m-filter.el.
+	(w3m-create-page): Move Google click-tracking filter to w3m-filter.el.
+
+	* w3m-util.el (w3m-widget-type-convert-widget):
+	Don't modify default sexp values.
+
+2012-10-10  Katsumi Yamaoka  <yamaoka@jpl.org>
+
+	* w3m-bookmark.el (w3m-bookmark-buffer): Use (0 0) as the Unix epoch.
+
+	* w3m.el (w3m-create-page): Fix regexp matching Google's click-
+	tracking urls.
+
+2012-07-22  Katsumi Yamaoka  <yamaoka@jpl.org>
+
+	* w3m.el (w3m-rendering-half-dump): Add name anchors for only existing
+	internal links.
+
+2012-07-19  Katsumi Yamaoka  <yamaoka@jpl.org>
+
+	* w3m-util.el (w3m-flet): New macro.
+
+2012-07-18  Katsumi Yamaoka  <yamaoka@jpl.org>
+
+	* w3m.el (w3m-input-url): Decode url string by the coding system that
+	url itself specifies if any.
+
+	* w3m.el (w3m-goto-url): Allow optional save-pos argument, that leads
+	it to run w3m-history-store-position.
+	(w3m-view-parent-page, w3m-scroll-up-or-next-url)
+	(w3m-scroll-down-or-previous-url): Run w3m-history-store-position.
+	(w3m-gohome, w3m-browse-url, w3m-find-file, w3m-db-history)
+	(w3m-history): Run w3m-history-store-position by way of w3m-goto-url.
+
+	* w3m-util.el (w3m-labels): New macro that runs cl-labels in Emacs 24.2
+	and later, otherwise runs labels.
+
+	* mime-w3m.el (mime-w3m-insinuate):
+	* w3m-bookmark.el (w3m-bookmark-safe-string):
+	* w3m-proc.el (w3m-process-do-with-temp-buffer):
+	* w3m-rss.el (w3m-rss-parse-date-string):
+	* w3m-weather.el (w3m-weather-completion-table):
+	Replace labels with w3m-labels.
+
+	* w3mhack.el (w3mhack-nonunix-install): Don't use labels.
+
+2012-07-13  Katsumi Yamaoka  <yamaoka@jpl.org>
+
+	* w3m.el (w3m-input-url, w3m-header-line-insert):
+	Don't decode only control characters.
+
+2012-07-12  Katsumi Yamaoka  <yamaoka@jpl.org>
+
+	* w3m.el (w3m-input-url): Don't decode %00~%1F and %7F~%9F in url.
+
+2012-07-11  Katsumi Yamaoka  <yamaoka@jpl.org>
+
+	* w3m.el (w3m-url-decode-string): Allow optional regexp matching %**.
+	(w3m-header-line-insert): Don't decode %00~%1F and %7F~%9F in url.
+
+	* w3m.el (w3m-create-page): Show raw contents briefly, not fully, when
+	prompting a user for the content type.
+
+2012-07-10  Katsumi Yamaoka  <yamaoka@jpl.org>
+
+	* w3m.el (w3m-rendering-half-dump): Add name anchors fast.
+
+2012-07-10  Naohiro Aota  <naota@elisp.net>
+
+	* w3m.el: (w3m-data-retrieve): URL-decode data-string. It can have
+	"%2b%2d%3d" representing "/+=".
+
+2012-07-08  Katsumi Yamaoka  <yamaoka@jpl.org>
+
+	* w3m.el (w3m-rendering-half-dump): Add name anchors that w3m can
+	handle in nested tags.
+
+2012-07-02  Katsumi Yamaoka  <yamaoka@jpl.org>
+
+	* w3m.el (w3m-view-url-with-external-browser): Improve prompt string.
+	Suggested by Dan Jacobson <jidanni@jidanni.org>.
+
+2012-06-25  Katsumi Yamaoka  <yamaoka@jpl.org>
+
+	* w3m.el (w3m-active-region-or-url-at-point, w3m-print-this-url):
+	Try to pick #name anchor out.
+
+	* w3m-search.el (w3m-search-read-variables): Make commands that use it
+	error out when other processes run in the current w3m buffer.
+
+	* w3m.el (w3m-mode): Add description of some missing commands to doc.
+
+2012-06-20  Katsumi Yamaoka  <yamaoka@jpl.org>
+
+	* w3m.el (w3m-create-page): Safely quit session when a user hits C-g;
+	make sure to set w3m-current-url.
+
+2012-06-19  Katsumi Yamaoka  <yamaoka@jpl.org>
+
+	* w3m.el (w3m-cache-header, w3m-cache-request-header)
+	(w3m-cache-contents, w3m-cache-request-contents)
+	(w3m-cache-available-p): Canonicalize given url.
+	(w3m-show-error-information): Show as many info as possible.
+
+2012-06-18  Katsumi Yamaoka  <yamaoka@jpl.org>
+
+	* w3m-util.el (w3m-popup-buffer): Do nothing for the current buffer.
+
+	* w3m.el (w3m-history-highlight-current-url): Extend href anchor to bol.
+
+	* w3m.el (w3m-http-status-alist): New variable.
+	(w3m-http-status): New variable.
+	(w3m-w3m-retrieve): Set it.
+	(w3m-retrieve): Clear it.
+	(w3m-download, w3m-retrieve-and-render, w3m-show-error-information):
+	Show http status if download or retrieving fails.
+
+2012-06-14  Katsumi Yamaoka  <yamaoka@jpl.org>
+
+	* w3m.el (w3m-url-encode-string-2): Encode only `(' and `)'.
+
+2012-06-12  Katsumi Yamaoka  <yamaoka@jpl.org>
+
+	* w3m-proc.el (w3m-process-do-with-temp-buffer): Use labels macro again.
+	Functions that the labels form generates to be used in the outside of
+	the labels form should be prefixed with #' from now on.
+	Thanks to Michael Heerdegen and Andreas Schwab.
+
+	* w3m-proc.el (w3m-process-do-with-temp-buffer): Don't use labels macro
+	of which the spec has been changed in the most recent Emacs.
+
+2012-06-04  Katsumi Yamaoka  <yamaoka@jpl.org>
+
+	* w3m.el (w3m-expand-url): Work for scheme name containing upcase
+	letters.  Reported by Dan Jacobson <jidanni@jidanni.org>.
+
+	* w3m-util.el (w3m-force-mode-line-update): New alias.
+
+	* w3m-lnum.el (w3m-with-lnum, w3m-lnum-universal-dispatch): Use it.
+
+2012-06-03  Katsumi Yamaoka  <yamaoka@jpl.org>
+
+	* w3m.el (w3m-create-page): Improve regexp matching Google's click-
+	tracking urls.
+
+2012-05-14  Katsumi Yamaoka  <yamaoka@jpl.org>
+
+	* w3m.el (w3m-url-encode-string-2): New function.
+	(w3m-print-current-url, w3m-print-this-url, w3m-print-this-image-url):
+	Use it to encode url characters that are apt to be misidentified as
+	word boundaries.
+
+2012-04-22  Katsumi Yamaoka  <yamaoka@jpl.org>
+
+	* w3m.el (w3m-create-page): Decode url in Google's click-tracking
+	filter.
+
+2012-04-18  Andrey Kotlarski  <m00naticus@gmail.com>
+
+	* w3m-lnum.el (w3m-with-lnum, w3m-lnum-universal-dispatch):
+	Explicitly redraw mode line.
+	(w3m-lnum-visit): Fix prompt; add --insecure option to Curl.
+
+2012-04-17  Katsumi Yamaoka  <yamaoka@jpl.org>
+
+	* w3m.el (w3m-create-page): Add a filter for Google's click-tracking
+	temporarily --- maybe this should be incorporated in w3m-filter.el.
+
+2012-04-13  Katsumi Yamaoka  <yamaoka@jpl.org>
+
+	* w3m.el (w3m-goto-mailto-url): Protect against nil value of body=;
+	decode url string; don't change mail buffer's modification status;
+	make sure body text is inserted to the message body.
+
+2012-04-12  Katsumi Yamaoka  <yamaoka@jpl.org>
+
+	* w3m.el (w3m-shr-url-at-point): New function.
+	(w3m-url-at-point): Use it.
+
+	* doc/ptexinfmt.el (texinfo-format-syntax-table): Modify character
+	syntax of " and \ to w, as a workaround.
+	(texinfo-format-comma): Support @comma.
+	(texinfo-format-parse-args): Tweak it so as to work for @comma.
+
+2012-03-16  Katsumi Yamaoka  <yamaoka@jpl.org>
+
+	* w3m.el (w3m-scroll-left, w3m-scroll-right): Use image-mode function
+	for an image page.
+	(w3m-shift-left, w3m-shift-right): Pass prefix argument to image-mode
+	function.
+
+2012-03-12  Dan Jacobson  <jidanni@jidanni.org>
+
+	* w3m.el (w3m-ctl-c-map): Bind `C-c C-e' to w3m-goto-new-session-url.
+
+2012-02-27  Katsumi Yamaoka  <yamaoka@jpl.org>
+
+	* w3m.el (w3m-relationship-estimate-rules)
+	(w3m-open-all-links-in-new-session): Work for https Google pages.
+
+2012-02-20  Katsumi Yamaoka  <yamaoka@jpl.org>
+
+	* w3m.el (w3m-goto-mailto-url): Work for mail body.
+
+2012-02-13  Katsumi Yamaoka  <yamaoka@jpl.org>
+
+	* w3m-util.el (w3m-switch-to-buffer): Abolish.
+
+	* w3m-bookmark.el (w3m-bookmark-add-all-urls):
+	* w3m-ems.el (w3m-tab-drag-mouse-function)
+	(w3m-tab-click-mouse-function, w3m-tab-next-buffer)
+	(w3m-tab-make-keymap):
+	* w3m-form.el (w3m-form-input-textarea, w3m-form-input-select)
+	(w3m-form-input-map):
+	* w3m-session.el (w3m-session-select):
+	* w3m-tabmenu.el (w3m-switch-buffer, w3m-tab-menubar-open-item):
+	* w3m-util.el (w3m-popup-buffer, w3m-make-menu-commands):
+	* w3m.el (w3m-next-buffer, w3m-move-unseen-buffer)
+	(w3m-goto-url-new-session, w3m-reload-all-pages): Revert to using
+	switch-to-buffer.
+
+2012-02-10  Katsumi Yamaoka  <yamaoka@jpl.org>
+
+	* w3m-hist.el (w3m-history-store-position): Don't trust column position
+	that Emacs tells if there's an image.
+	(w3m-history-restore-position): Revert 2011-10-21 change.
+
+2012-02-10  Kevin Ryde  <user42@zip.com.au>
+
+	* w3m.el (w3m-about-header): Show info of image where point stays.
+
+2012-01-26  Katsumi Yamaoka  <yamaoka@jpl.org>
+
+	* w3m.el (w3m-mode): Don't make bidi-paragraph-direction bound globally
+	in old Emacsen and XEmacsen.
+	(w3m-goto-url): Work for name anchors.
+
+2012-01-23  Katsumi Yamaoka  <yamaoka@jpl.org>
+
+	* w3m-ems.el (w3m-form-make-button): Use "submit" instead for an empty
+	text, that won't be buttonized.
+	Reported by Roland Winkler <winkler@gnu.org>.
+
+2012-01-13  Hideyuki SHIRAI  <shirai@meadowy.org>
+
+	* w3m.el (w3m-fontify-anchors, w3m-goto-url): Not encode and decode
+	the anchor values to use Punycode.
+
+2012-01-10  Katsumi Yamaoka  <yamaoka@jpl.org>
+
+	* w3m.el (w3m-image-type-alist): Add image/tiff.
+	(w3m-view-previous-page): Protect against empty history.
+
+2012-01-06  Katsumi Yamaoka  <yamaoka@jpl.org>
+
+	* Makefile.in (install-icons, install-icons30, install-info)
+	(install-info-en, install-info-ja, install-package)
+	(install-package-ja):
+	* doc/Makefile.in (install): Add DESTDIR variable to installation
+	directory.
+
+	* w3mhack.el (w3mhack-expand-file-name): New function.
+	(w3mhack-what-where): Use it.
+
+	* aclocal.m4 (AC_SET_VANILLA_FLAG): Remove --no-unibyte option.
+
+2012-01-02  Elias Pipping  <pipping@lavabit.com>
+
+	* Makefile.in (install-lisp): Add DESTDIR variable to installation
+	directory.
+
+2011-12-26  Dan Jacobson  <jidanni@jidanni.org>
+
+	* w3m.el (w3m-gohome): Always reload the home page.
+
+2011-12-07  Katsumi Yamaoka  <yamaoka@jpl.org>
+
+	* w3m.el (w3m-mode): Force paragraph direction to be left-to-right.
+	Suggested by Naohiro Aota <naota@elisp.net>.
+
+2011-12-06  Katsumi Yamaoka  <yamaoka@jpl.org>
+
+	* Makefile.in (.el.elc): Shut up.
+
+	* w3m-lnum.el (w3m-lnum-read-interactive): Use (sit-for 0) instead of
+	redisplay for Emacs 21.1, too.
+
+2011-12-05  Katsumi Yamaoka  <yamaoka@jpl.org>
+
+	* aclocal.m4 (AC_EMACS_LISP): Simplify.
+	(AC_PATH_EMACS): Simplify Lisp code so as to make it work for recent
+	XEmacsen.
+
+	* w3m-favicon.el (w3m-favicon-type): Silence SXEmacs 22.1.14's byte
+	compiler.
+
+	* w3m-lnum.el (w3m-lnum-read-interactive): Use (sit-for 0) instead of
+	redisplay for XEmacs.
+
+	* w3m.el (w3m-resize-image-interactive): Use read-char-exclusive with
+	no arg for XEmacs.
+
+2011-12-05  Katsumi Yamaoka  <yamaoka@jpl.org>
+
+	* w3m.el (w3m-read-file-name): Don't strip query part from given url.
+	(w3m-download): Always prompt for file name; don't strip query part.
+	Suggested by Dan Jacobson <jidanni@jidanni.org>.
+
+2011-12-04  Katsumi Yamaoka  <yamaoka@jpl.org>
+
+	* w3m-lnum.el (w3m-lnum-universal-dispatch): Add argument passed to
+	kill-buffer, Emacs 22 requires it; use beginning-of-line rather than
+	move-beginning-of-line that XEmacs doesn't provide.
+
+2011-12-02  Dan Jacobson  <jidanni@jidanni.org>
+
+	* w3m-search.el (w3m-search-engine-alist): Put search string first in
+	query form.
+
+2011-11-30  Katsumi Yamaoka  <yamaoka@jpl.org>
+
+	* w3m-util.el (w3m-popup-buffer): Restore history position always.
+
+	* w3m.el (w3m-copy-buffer): Save history position.
+
+2011-11-17  Katsumi Yamaoka  <yamaoka@jpl.org>
+
+	* w3m-lnum.el (w3m-lnum-actions-custom-type): New variable.
+	(w3m-lnum-actions-general, w3m-lnum-actions-image-alist)
+	(w3m-lnum-actions-link-alist w3m-lnum-actions-button-alist)
+	(w3m-lnum-actions-form-alist): Use it to improve custom type.
+
+2011-11-16  Andrey Kotlarski  <m00naticus@gmail.com>
+
+	Add alternative selection->action method.
+
+	* w3m-lnum.el: Update comment section.
+	(w3m-lnum-quick-browsing): Change default value.
+	(w3m-lnum-actions-general, w3m-lnum-actions-image-alist)
+	(w3m-lnum-actions-link-alist, w3m-lnum-actions-button-alist)
+	(w3m-lnum-actions-form-alist): New custom options.
+	(w3m-lnum-remove-overlays): Add optional parameters for start and end.
+	(w3m-lnum, w3m-lnum-prompt-str, w3m-lnum-highlight-anchor): Sanitize
+	variable naming.
+	(w3m-read-event, w3m-lnum-visit, w3m-lnum-make-action): New macros.
+	(w3m-lnum-read-interactive): Add optional parameters for previous filter
+	and selected number.  Return last applied filter along selected value.
+	Use `w3m-read-event'.  Remove lnum overlays within all buffer on
+	scroll.
+	(w3m-with-lnum): Add parameter for initial filter.  Change mode-line
+	during selection.
+	(w3m-lnum-get-action): If single image during image selection -
+	immediately select it.  Accommodate to new return format of
+	`w3m-lnum-read-interactive'.
+	(w3m-lnum-follow): Use `w3m-lnum-visit'.
+	(w3m-lnum-universal-dispatch): New function.
+	(w3m-lnum-universal): New command.
+	(w3m-lnum-view-image, w3m-lnum-save-image, w3m-lnum-print-this-url):
+	Use nth.
+	(w3m-lnum-zoom-image): Use `w3m-resize-image-interactive'.
+	(w3m-lnum-zoom-in-image, w3m-lnum-zoom-out-image): Update doc string.
+	(w3m-lnum-bookmark-add-this-url): Fix bookmarking of current url.
+	(w3m-lnum-actions-link-alist): Add actions for generic browser and Curl
+	if present.
+
+	* w3m.el (autoload): Autoload `w3m-lnum-universal'.
+	(w3m-resize-image-interactive): New function.
+	(w3m-lnum-map): Add key for `w3m-lnum-universal'.
+
+2011-11-14  Katsumi Yamaoka  <yamaoka@jpl.org>
+
+	* w3m.el (w3m-expand-url): Assume only a name anchor, that has no
+	scheme part nor directory part, to be the buffer: scheme.
+	(w3m-buffer-local-url): Move forward.
+
+2011-10-24  Katsumi Yamaoka  <yamaoka@jpl.org>
+
+	* w3m-hist.el: Require w3m-util.
+
+2011-10-22  Naohiro Aota  <naota@elisp.net>
+
+	* w3m.el (w3m-goto-url): Check name anchor after redirect resolution.
+
+2011-10-21  Katsumi Yamaoka  <yamaoka@jpl.org>
+
+	* w3m-hist.el (w3m-history-restore-position): Don't hscroll if there
+	are images ([emacs-w3m:11658]).
+
+2011-10-17  Katsumi Yamaoka  <yamaoka@jpl.org>
+
+	* w3m.el (w3m-canonicalize-url): Fix url that fails to have put
+	a separator following a domain name.
+	Suggested by Dan Jacobson <jidanni@jidanni.org>.
+
+2011-10-14  Katsumi Yamaoka  <yamaoka@jpl.org>
+
+	* w3m.el (w3m-url-coding-system-alist): Add a rule for Google.
+	(w3m-url-coding-system): Allow function to determine coding system.
+
+2011-10-14  Katsumi Yamaoka  <yamaoka@jpl.org>
+
+	* w3m.el (w3m-url-encode-string, w3m-url-transfer-encode-string):
+	Restore optional coding argument.
+	(w3m-gmane-url-at-point, w3m-canonicalize-url): Do.
+	(w3m-download): Decode file name in url.
+
+	* w3m-form.el (w3m-form-make-form-data, w3m-form-parse-and-fontify):
+	* w3m-search.el (w3m-search-escape-query-string, w3m-search-do-search)
+	(w3m-search-uri-replace): Revert last change.
+
+2011-10-13  Katsumi Yamaoka  <yamaoka@jpl.org>
+
+	* w3m.el (w3m-url-coding-system-alist): New user option.
+	(w3m-show-decoded-url, w3m-google-feeling-lucky-charset): Abolish.
+	(w3m-url-coding-system): New function.
+	(w3m-url-encode-string, w3m-url-readable-string)
+	(w3m-url-transfer-encode-string): Use it.
+
+	* w3m.el (w3m-fontify-anchors, w3m-gmane-url-at-point)
+	(w3m-canonicalize-url, w3m-goto-url):
+	* w3m-form.el (w3m-form-make-form-data, w3m-form-parse-and-fontify):
+	* w3m-search.el (w3m-search-escape-query-string, w3m-search-do-search)
+	(w3m-search-uri-replace): Don't specify coding system for encoding url.
+
+2011-10-07  Katsumi Yamaoka  <yamaoka@jpl.org>
+
+	* w3m-favicon.el (w3m-favicon-type): Prefer gif.
+	(w3m-favicon-convert): Work for gif icons named "favicon.ico".
+
+2011-09-08  Katsumi Yamaoka  <yamaoka@jpl.org>
+
+	* w3m-lnum.el (w3m-lnum-face): Remove face alias.
+	(w3m-lnum-quick-browsing): Add custom type.
+	(w3m-lnum-remove-overlays, w3m-lnum-set-numbering)
+	(w3m-lnum-highlight-anchor, w3m-lnum-get-match-info): Fix overlay end
+	range, too.
+
+2011-09-07  Andrey Kotlarski  <m00naticus@gmail.com>
+
+	* w3m.el: Use `w3m-lnum' as naming prefix for commands and
+	maps from `w3m-lnum.el'.
+
+	* w3m-lnum.el: Use `w3m-lnum' as naming prefix everywhere instead of
+	`w3m-linknum' or `w3m-link-numbering'.
+	(w3m-lnum-set-numbering, w3m-lnum): Optionally don't clean previous
+	numbering.
+	(w3m-lnum-read-interactive): Don't clean previous numbering with
+	`w3m-lnum' in cases when there is no such.
+	(w3m-lnum-remove-overlays, w3m-lnum-set-numbering): Fix overlay start
+	range to make it work for XEmacs.
+	(w3m-lnum-get-action): Don't invoke `w3m-lnum-read-interactive' with 0
+	numbered items.
+
+	* w3m-util.el (w3m-goto-next-defun): New macro.
+	(w3m-goto-next-anchor-or-image, w3m-substitute-key-definitions): Move
+	from w3m-lnum.el
+
+2011-09-04  Katsumi Yamaoka  <yamaoka@jpl.org>
+
+	* w3m-lnum.el (w3m-link-numbering, w3m-linknum-minibuffer-prompt)
+	(w3m-linknum-match): Use old defface style for XEmacs.
+	(w3m-link-set-numbering): Replace string-match-p w/ w3m-string-match-p.
+	(w3m-highlight-numbered-anchor, w3m-get-match-info): Fix range passed
+	to overlays-in to make it work for XEmacs.
+
+2011-09-04  Andrey Kotlarski  <m00naticus@gmail.com>
+
+	* w3m-lnum.el: Update copyright years. Don't require `cl'.
+	(w3m-linknum-match): Make numbering face visible for some
+	consoles.
+	(w3m-link-numbering-quick-browsing)
+	(w3m-link-numbering-context-alist): New custom variables.
+	(w3m-linknum-remove-overlays): Delete overlays only within the
+	visible window part.
+	(w3m-link-set-overlay): Don't use `incf'.
+	(w3m-link-set-numbering): Number additional context items as
+	specified by `w3m-link-numbering-context-alist'. Return index of
+	the last matched item.
+	(w3m-goto-next-image2): Fix doc typo.
+	(w3m-goto-next-anchor-or-image, w3m-link-numbering): Cosmetic
+	indent.
+	(w3m-linknum-prompt-str): Don't show 0 when this is being current
+	default for selection.
+	(w3m-read-int-interactive): Up and down scrolling preserves text
+	filter and cleans previous numbering. Allow <enter> shortcutting
+	options as specified by `w3m-link-numbering-quick-browsing'. Don't
+	let the text filter grow when no items match.
+	(w3m-with-linknum): Make `last-index' variable visible within body
+	and set as the last index currently used for numbering.
+	(w3m-get-match-info): New macro.
+	(w3m-get-anchor-info): Use `w3m-get-match-info'.
+	(w3m-go-to-linknum, w3m-linknum-get-action): Call
+	`w3m-get-anchor-info' with a selection number.
+	(w3m-linknum-follow, w3m-linknum-view-image)
+	(w3m-linknum-save-image, w3m-linknum-print-this-url): Don't use cl
+	functions.
+	(w3m-linknum-zoom-image): Cosmetic doc string change.
+	(w3m-linknum-bookmark-add-this-url): Use 1+.
+
+2011-09-03  Dan Jacobson  <jidanni@jidanni.org>
+
+	* w3m.el (w3m-lynx-like-map, w3m-info-like-map): Bind the `C-t t' key
+	to w3m-create-empty-session.
+
+2011-09-02  Katsumi Yamaoka  <yamaoka@jpl.org>
+
+	* w3m.el (w3m-create-empty-session): New user command.
+	(w3m-new-session-url): Default to about:blank.
+	(w3m-input-url): Don't use about:* as initial value.
+	(w3m-goto-url-new-session): Use w3m-new-session-url as the default.
+
+2011-07-20  Katsumi Yamaoka  <yamaoka@jpl.org>
+
+	* w3m-ems.el (w3m-toolbar-define-keys): No need to take care of
+	the tool-bar default bindings for Emacs 24.
+
+2011-07-13  Katsumi Yamaoka  <yamaoka@jpl.org>
+
+	* w3m-ccl.el (charset-id): Work for old Emacsen.
+
+2011-07-11  Katsumi Yamaoka  <yamaoka@jpl.org>
+
+	* w3m.el (w3m-delete-buffer): Switch to the previous emacs-w3m buffer
+	explicitly; bind frame-auto-delete and ignore-window-parameters while
+	killing the buffer.
+	(w3m-goto-url): Change the order of retrieving group:* urls so as to
+	arrange the buffer list in turn.
+
+2011-07-08  Katsumi Yamaoka  <yamaoka@jpl.org>
+
+	* w3m-ccl.el (charset-id): Silence the byte compiler.
+
+	* w3m-ems.el (w3m-detect-coding-region): Use with-coding-priority.
+	(w3m-make-ccl-coding-system): Silence the byte compiler.
+
+2011-07-07  Katsumi Yamaoka  <yamaoka@jpl.org>
+
+	* w3m-util.el (w3m-switch-to-buffer): New function.
+
+	* w3m-bookmark.el (w3m-bookmark-add-all-urls):
+	* w3m-ems.el (w3m-tab-drag-mouse-function)
+	(w3m-tab-click-mouse-function, w3m-tab-next-buffer)
+	(w3m-tab-make-keymap):
+	* w3m-form.el (w3m-form-input-textarea, w3m-form-input-select)
+	(w3m-form-input-map):
+	* w3m-session.el (w3m-session-select):
+	* w3m-tabmenu.el (w3m-switch-buffer, w3m-tab-menubar-open-item):
+	* w3m-util.el (w3m-popup-buffer, w3m-make-menu-commands):
+	* w3m.el (w3m-next-buffer, w3m-move-unseen-buffer)
+	(w3m-goto-url-new-session, w3m-reload-all-pages): Use it.
+
+2011-07-07  Katsumi Yamaoka  <yamaoka@jpl.org>
+
+	* w3m.el (w3m-goto-mailto-url): Pass other headers to the agent.
+	Suggested by Dan Jacobson <jidanni@jidanni.org>.
+
+2011-07-06  Katsumi Yamaoka  <yamaoka@jpl.org>
+
+	* w3m-util.el (w3m-interactive-p): New macro.
+
+	* w3m.el (w3m-toggle-inline-image, w3m-toggle-inline-images)
+	(w3m-goto-url, w3m-safe-view-this-url):
+	* w3m-hist.el (w3m-history-store-position)
+	(w3m-history-restore-position): Use it.
+
+	* w3m-ems.el (w3m-toolbar-define-keys): Work around the Emacs 24 error
+	"`keymap' is reserved for embedded parent maps".
+
+2011-05-11  Katsumi Yamaoka  <yamaoka@jpl.org>
+
+	* w3m.el (w3m-show-form-hint): Give point as arg to w3m-submit to
+	prevent cursor from being caught in form area.
+
+2011-04-20  TAKAHASHI Kaoru  <kaoru@kaisei.org>
+
+	* doc/ptexinfmt.el: Fix description comment style.
+
+2011-04-13  TAKAHASHI Kaoru  <kaoru@kaisei.org>
+
+	* doc/ptexinfmt.el: Use lexical binding.
+	(ptexinfmt-broken-facility): Rename _dummy argument.
+	(texinfo-enclosure-list, texinfo-alias-list): Add defvar stub for
+	lexical binding.
+
 2011-03-10  TSUCHIYA Masatoshi  <tsuchiya@namazu.org>
 
 	* w3m.el (w3m-content-type-alist): Use functionp instead of symbolp for
