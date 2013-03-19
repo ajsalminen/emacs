@@ -46,6 +46,7 @@
 
 (setq load-path (append load-path more-load-paths))
 
+
 ;; (defun kill-ci-buffer ()
 ;;  (interactive)
 ;;  (switch-to-buffer " *Compiler Input*")
@@ -225,9 +226,15 @@
 ;;; Move this code earlier if you want to reference
 ;;; packages in your .emacs.
 
+;; for package backports
+(when (<= emacs-major-version 24)
+  (add-to-list 'load-path "~/.emacs.d/package-backport"))
+
 (when
     (load
-     (expand-file-name "~/.emacs.d/elpa/package.el"))
+     (if (<= emacs-major-version 24)
+	 (expand-file-name "~/.emacs.d/package-backport/package.el")
+       (expand-file-name "~/.emacs.d/elpa/package.el")))
   (require 'package)
   (setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
                            ("marmalade" . "http://marmalade-repo.org/packages/")
