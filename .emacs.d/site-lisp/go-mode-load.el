@@ -18,9 +18,10 @@
 ;;   (let ((generated-autoload-file buffer-file-name)) (update-file-autoloads "go-mode.el"))
 
 
-;;;### (autoloads (gofmt-before-save gofmt go-mode) "go-mode" "go-mode.el"
-;;;;;;  (19917 17808))
-;;; Generated autoloads from go-mode.el
+;;;### (autoloads (godoc gofmt-before-save gofmt go-mode) "go-mode"
+;;;;;;  "../../../../../.emacs.d/site-lisp/go-mode.el" (20802 60655
+;;;;;;  0 0))
+;;; Generated autoloads from ../../../../../.emacs.d/site-lisp/go-mode.el
 
 (autoload 'go-mode "go-mode" "\
 Major mode for editing Go source text.
@@ -44,6 +45,11 @@ Add this to .emacs to run gofmt on the current buffer when saving:
  (add-hook 'before-save-hook #'gofmt-before-save)
 
 \(fn)" t nil)
+
+(autoload 'godoc "go-mode" "\
+Show go documentation for a query, much like M-x man.
+
+\(fn QUERY)" t nil)
 
 ;;;***
 

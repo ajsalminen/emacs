@@ -989,9 +989,19 @@
 
 
 (require 'yasnippet)
-(yas/load-directory "~/.emacs.d/yasnippet/snippets")
 ;; Develop and keep personal snippets under ~/emacs.d/mysnippets
+(setq yas-snippet-dirs
+      '("~/.emacs.d/mysnippets"
+        "~/.emacs.d/yasnippet-go/go-mode"
+        ))
+(yas/load-directory "~/.emacs.d/yasnippet/snippets")
 (setq yas/root-directory "~/.emacs.d/mysnippets")
+
+
+;; (mapc 'yas/load-directory yas/root-directory)
+
+;;; (push 'yas-snippet-dirs "~/.emacs.d/yasnippet-go/go-mode")
+;;; (add-to-list 'yas-snippet-dirs "~/.emacs.d/yasnippet-go/go-mode")
 
 ;; FIXME: disable for now (emacs 24.3 issues)
 ;; (yas-global-mode 1)
@@ -1021,7 +1031,25 @@
 
 
 ;; autocomplete stuff
+(require 'go-mode-load)
+(require 'go-autocomplete)
+(add-hook 'before-save-hook 'gofmt-before-save)
+(add-hook 'go-mode-hook (lambda ()
+                          (local-set-key (kbd "C-c C-r") 'go-remove-unused-imports)))
+(add-hook 'go-mode-hook (lambda ()
+                          (local-set-key (kbd "C-c i") 'go-goto-imports)))
+(add-hook 'go-mode-hook (lambda ()
+                          (local-set-key (kbd \"M-.\") 'godef-jump)))
+
+(require 'flymake)
+(require 'go-flymake)
+(require 'go-errcheck)
+
+
+
 (require 'auto-complete-config)
+
+
 (add-to-list 'ac-dictionary-directories "~/.emacs.d/ac-dict")
 (ac-config-default)
 (require 'ac-company)
@@ -1043,6 +1071,7 @@
   (setq completion-at-point-functions '(auto-complete)))
 (add-hook 'auto-complete-mode-hook 'set-auto-complete-as-completion-at-point-function)
 
+;; (require 'auto-complete-yasnippet)
 
 (require 'hippie-exp)
 (setq hippie-expand-try-functions-list
@@ -4135,8 +4164,5 @@ FORMAT-STRING is like `format', but it can have multiple %-sequences."
   (let ((face (or (get-char-property (point) 'read-face-name)
                   (get-char-property (point) 'face))))
     (if face (message "Face: %s" face) (message "No face at %d" pos))))
-
-(require 'go-mode-load)
-(require 'go-autocomplete)
 
 (message "********** successfully initialized **********")
