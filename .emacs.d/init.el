@@ -1768,8 +1768,6 @@ directory, select directory. Lastly the file is opened."
 (require 'org-google-weather)
 
 
-(require 'todochiku)
-
 (setq org-export-with-sub-superscripts nil)
 (setq org-startup-indented t)
 
@@ -1797,7 +1795,14 @@ directory, select directory. Lastly the file is opened."
         (run-hooks 'org-mobile-post-push-hook)))
     (message "Files for mobile viewer staged")))
 
-(setq todochiku-icons-directory "~/.emacs.d/todochiku-icons")
+
+;; only use this on a mac
+(when (and (>= emacs-major-version 23) (or (eq window-system 'ns) (eq window-system 'x)))
+  (require 'todochiku)
+  (setq todochiku-icons-directory "~/.emacs.d/todochiku-icons")
+  (add-hook 'org-timer-done-hook '(lambda()
+                                    (todochiku-message "Pomodoro" "completed" (todochiku-icon 'alarm)))))
+
 (setq org-timer-default-timer 25)
 (setq org-clock-string-limit 35)
 
@@ -1809,8 +1814,7 @@ directory, select directory. Lastly the file is opened."
                                  (org-timer-cancel-timer)
                                  (setq org-mode-line-string nil)))
 
-(add-hook 'org-timer-done-hook '(lambda()
-                                  (todochiku-message "Pomodoro" "completed" (todochiku-icon 'alarm))))
+
 
 (add-hook 'org-capture-after-finalize-hook '(lambda() (org-agenda-redo)))
 
@@ -1951,7 +1955,7 @@ nEnd:")
     (progn
       (org-mobile-pull)
       (org-mobile-push-unobtrusive)
-      (todochiku-message "org" "all files pushed" (todochiku-icon 'terminail)))))
+      (message "all org mobile files pushed"))))
 
 (defun org-sync-mobile-after-save (&optional force)
   (interactive)
@@ -3701,14 +3705,18 @@ FORMAT-STRING is like `format', but it can have multiple %-sequences."
 (require 'rebound)
 (rebound-mode t)
 
-(require 'migemo)
-(setq migemo-command "cmigemo")
-(setq migemo-options '("-q" "--emacs"))
-(setq migemo-dictionary "/usr/local/share/migemo/utf-8/migemo-dict")
-(setq migemo-user-dictionary nil)
-(setq migemo-regex-dictionary nil)
-(setq migemo-coding-system 'utf-8-unix)
-(migemo-init)
+
+(when (and (executable-find "cmigemo")
+           (require 'migemo))
+
+  (setq migemo-command "cmigemo")
+  (setq migemo-options '("-q" "--emacs"))
+  (setq migemo-dictionary "/usr/local/share/migemo/utf-8/migemo-dict")
+  (setq migemo-user-dictionary nil)
+  (setq migemo-regex-dictionary nil)
+  (setq migemo-coding-system 'utf-8-unix)
+  (migemo-init))
+
 
 (require 'diminish)
 (diminish 'abbrev-mode "Abv")
