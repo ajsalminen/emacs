@@ -1767,11 +1767,73 @@ directory, select directory. Lastly the file is opened."
 (require 'google-weather)
 (require 'org-google-weather)
 
-
-(require 'todochiku)
+(define-key global-map "\C-cc" 'org-capture)
 
 (setq org-export-with-sub-superscripts nil)
 (setq org-startup-indented t)
+(setq org-agenda-tags-column -79)
+(setq org-tags-column -40)
+
+(setq org-startup-truncated nil)
+(setq org-return-follows-link t)
+
+(setq org-agenda-include-diary t)
+
+;; (setq org-agenda-clockreport-parameter-plist '(:link nil :maxlevel 2 :fileskip0 t :compact t))
+(setq org-agenda-clockreport-parameter-plist '(:link nil :maxlevel 2 :fileskip0 t :compact t :properties ("fee") :formula "@2$2=vsum(@3$2..@>$2)"))
+(setq org-agenda-clockreport-parameter-plist '(:link nil :maxlevel 2 :fileskip0 t :compact t :timestamp t :properties ("fee") :formula "@2$3=vsum(@2$3..@>$3)"))
+
+;; Set to the location of your Org files on your local system
+(setq org-directory "~/org")
+(setq org-agenda-files (list "~/org"))
+
+(setq org-tag-faces
+      '(("trans" .(:italic t :background "DodgerBlue1"))
+        ("work" . (:italic t :background "dark blue"))))
+
+(setq org-capture-templates
+      '(("i" "Inbox" entry (file+headline "~/org/todo.org" "Inbox") "** TODO %? \n %i :inbox: %a \n SCHEDULED: %T \n %U")
+        ("r" "Research" entry (file+headline "~/org/diss.org" "Research") "** TODO %? :research: \n %a")
+        ("e" "Translation" entry (file+headline "~/org/trans.org" "Translation")  "** TODO %? :trans: \n :PROPERTIES: \n :type: %^{type|standard|pro|proofreading} \n :lang: %^{lang|je|ej} \n :END:\n %^{fee}p \n %^{chars}p \n :SCHEDULED: %t \n")
+        ("T" "Writing" entry (file+headline "~/org/write.org" "Writing") "** TODO %? :write: \n %a")
+        ("w" "Work" entry (file+headline "~/org/work.org" "Work") "** TODO %? :work: \n SCHEDULED: %t \n")
+        ("l" "RIL" entry (file+headline "~/org/ril.org" "Ril") "** TODO %? :ril: \n %a")
+        ("d" "Dev" entry (file+headline "~/org/dev.org" "Dev") "** TODO %? :dev: %i %a")
+        ("h" "HJ" entry (file+headline "~/org/hj.org" "HJ") "* TODO %? :hj: \n \n Entered on %U\n %i\n %a")
+        ("a" "Activity" entry (file+headline "~/org/activity.org" "Activity") "** TODO %? :activity: \n %a")
+        ("p" "Personal" entry (file+headline "~/org/personal.org" "Personal") "* TODO %? :personal: \n SCHEDULED: %t \n \nEntered on %U\n %i\n %a")))
+
+(setq org-todo-keyword-faces
+      '(("TODO" . org-warning)
+        ("DEFERRED" . shadow)
+        ("CANCELED" . (:foreground "blue" :weight bold))))
+
+
+
+;; Set to the name of the file where new notes will be stored
+(setq org-mobile-inbox-for-pull "~/org/flagged.org")
+;; Set to <your Dropbox root directory>/MobileOrg.
+(setq org-mobile-directory "~/Dropbox/MobileOrg")
+(setq org-agenda-skip-unavailable-files t)
+(setq org-log-done-with-time t)
+
+
+(setq org-default-notes-file (concat org-directory "memo.org"))
+(setq org-log-done 'time)
+(setq org-todo-keywords
+      '((sequence "TODO(t)" "WAIT(w@/!)" "|" "DONE(d!)" "CANCELED(c@)")))
+
+;;(setq org-refile-targets (quote ((org-agenda-files :regexp . "*"))))
+(setq org-refile-targets (quote ((org-agenda-files :level . 1))))
+
+
+(setq org-clock-persist 'history)
+(setq org-clock-modeline-total 'current)
+(org-clock-persistence-insinuate)
+
+(setq org-timer-timer-is-countdown t)
+
+
 
 ;;copied straight from org, don't redisplay frames after push
 (defun org-mobile-push-unobtrusive ()
@@ -1797,7 +1859,14 @@ directory, select directory. Lastly the file is opened."
         (run-hooks 'org-mobile-post-push-hook)))
     (message "Files for mobile viewer staged")))
 
-(setq todochiku-icons-directory "~/.emacs.d/todochiku-icons")
+
+;; only use this on a mac
+(when (and (>= emacs-major-version 23) (or (eq window-system 'ns) (eq window-system 'x)))
+  (require 'todochiku)
+  (setq todochiku-icons-directory "~/.emacs.d/todochiku-icons")
+  (add-hook 'org-timer-done-hook '(lambda()
+                                    (todochiku-message "Pomodoro" "completed" (todochiku-icon 'alarm)))))
+
 (setq org-timer-default-timer 25)
 (setq org-clock-string-limit 35)
 
@@ -1809,8 +1878,7 @@ directory, select directory. Lastly the file is opened."
                                  (org-timer-cancel-timer)
                                  (setq org-mode-line-string nil)))
 
-(add-hook 'org-timer-done-hook '(lambda()
-                                  (todochiku-message "Pomodoro" "completed" (todochiku-icon 'alarm))))
+
 
 (add-hook 'org-capture-after-finalize-hook '(lambda() (org-agenda-redo)))
 
@@ -1889,6 +1957,7 @@ nEnd:")
 (setq org-agenda-custom-commands
       '(("W" tags "work")
         ("w" tags-todo "work")
+        ("g" tags-todo "trans")
         ("j" todo "WAIT"
          (tags-todo "work"))
         ("J" todo-tree "WAIT")
@@ -1931,19 +2000,6 @@ nEnd:")
             (define-key org-mode-map (kbd "C-'") 'smex-with-toggle)))
 ;;(add-hook 'org-mode-hook 'smart-tab-mode-off)
 
-(setq org-startup-truncated nil)
-(setq org-return-follows-link t)
-
-(setq org-agenda-include-diary t)
-
-;; Set to the location of your Org files on your local system
-(setq org-directory "~/org")
-;; Set to the name of the file where new notes will be stored
-(setq org-mobile-inbox-for-pull "~/org/flagged.org")
-;; Set to <your Dropbox root directory>/MobileOrg.
-(setq org-mobile-directory "~/Dropbox/MobileOrg")
-(setq org-agenda-skip-unavailable-files t)
-(setq org-log-done-with-time t)
 
 (defun org-mobile-pullpush ()
   (interactive)
@@ -1951,7 +2007,7 @@ nEnd:")
     (progn
       (org-mobile-pull)
       (org-mobile-push-unobtrusive)
-      (todochiku-message "org" "all files pushed" (todochiku-icon 'terminail)))))
+      (message "all org mobile files pushed"))))
 
 (defun org-sync-mobile-after-save (&optional force)
   (interactive)
@@ -1974,30 +2030,6 @@ nEnd:")
 ;; (require 'deferred)
 ;; (run-at-time t 3600 (lambda () (deferred:call(org-mobile-pullpush))))
 
-(setq org-default-notes-file (concat org-directory "memo.org"))
-(define-key global-map "\C-cc" 'org-capture)
-
-(setq org-log-done 'time)
-(setq org-todo-keywords
-      '((sequence "TODO(t)" "WAIT(w@/!)" "|" "DONE(d!)" "CANCELED(c@)")))
-
-
-(setq org-capture-templates
-      '(("i" "Inbox" entry (file+headline "~/org/todo.org" "Inbox") "** TODO %? \n %i :inbox: %a \n SCHEDULED: %T \n %U")
-        ("r" "Research" entry (file+headline "~/org/diss.org" "Research") "** TODO %? :research: \n %a")
-        ("t" "Writing" entry (file+headline "~/org/write.org" "Writing") "** TODO %? :write: \n %a")
-        ("w" "Work" entry (file+headline "~/org/work.org" "Work") "** TODO %? :work: \n SCHEDULED: %t \n %a")
-        ("l" "RIL" entry (file+headline "~/org/ril.org" "Ril") "** TODO %? :ril: \n %a")
-        ("d" "Dev" entry (file+headline "~/org/dev.org" "Dev") "** TODO %? :dev: %i %a")
-        ("h" "HJ" entry (file+headline "~/org/hj.org" "HJ") "* TODO %? :hj: \n \n Entered on %U\n %i\n %a")
-        ("a" "Activity" entry (file+headline "~/org/activity.org" "Activity") "** TODO %? :activity: \n %a")
-        ("p" "Personal" entry (file+headline "~/org/personal.org" "Personal") "* TODO %? :personal: \n SCHEDULED: %t \n \nEntered on %U\n %i\n %a")))
-
-(setq org-todo-keyword-faces
-      '(("TODO" . org-warning)
-        ("DEFERRED" . shadow)
-        ("CANCELED" . (:foreground "blue" :weight bold))))
-
 (defun org-read-date-and-adjust-timezone ()
   (date-to-time (format "%s %s" (org-read-date t) (car (cdr (current-time-zone))))))
 
@@ -2009,14 +2041,6 @@ nEnd:")
 
 (define-key org-mode-map (kbd "\C-c i") 'org-clock-in-and-out)
 
-;;(setq org-refile-targets (quote ((org-agenda-files :regexp . "*"))))
-(setq org-refile-targets (quote ((org-agenda-files :level . 1))))
-(setq org-agenda-files (list "~/org"))
-
-(setq org-clock-persist 'history)
-(org-clock-persistence-insinuate)
-
-(setq org-timer-timer-is-countdown t)
 (message "org-mode stuff")
 
 
@@ -2490,6 +2514,18 @@ nEnd:")
     (progn
       (w3m-browse-url search-string)
       (switch-to-buffer oldbuf))))
+
+(defun w3m-search-alc (string)
+  "search alc"
+  (interactive "sSearch ALC: ")
+  (let ((search-string (format "http://eow.alc.co.jp/search?q=%s" (w3m-url-encode-string string 'utf-8)))
+        (oldbuf (current-buffer))
+        (query (format "%s" string)))
+    (progn
+      (w3m-browse-url search-string)
+      (switch-to-buffer oldbuf))))
+
+
 
 (defun w3m-search-alc-at-point ()
   (interactive)
@@ -3449,6 +3485,7 @@ FORMAT-STRING is like `format', but it can have multiple %-sequences."
     (set-clipboard-coding-system 'utf-8)
 
     (require 'zlc)
+    (zlc-mode t)
     (setq zlc-select-completion-immediately nil)
     (setq delete-by-moving-to-trash nil))))
 
@@ -3701,14 +3738,18 @@ FORMAT-STRING is like `format', but it can have multiple %-sequences."
 (require 'rebound)
 (rebound-mode t)
 
-(require 'migemo)
-(setq migemo-command "cmigemo")
-(setq migemo-options '("-q" "--emacs"))
-(setq migemo-dictionary "/usr/local/share/migemo/utf-8/migemo-dict")
-(setq migemo-user-dictionary nil)
-(setq migemo-regex-dictionary nil)
-(setq migemo-coding-system 'utf-8-unix)
-(migemo-init)
+
+(when (and (executable-find "cmigemo")
+           (require 'migemo))
+
+  (setq migemo-command "cmigemo")
+  (setq migemo-options '("-q" "--emacs"))
+  (setq migemo-dictionary "/usr/local/share/migemo/utf-8/migemo-dict")
+  (setq migemo-user-dictionary nil)
+  (setq migemo-regex-dictionary nil)
+  (setq migemo-coding-system 'utf-8-unix)
+  (migemo-init))
+
 
 (require 'diminish)
 (diminish 'abbrev-mode "Abv")
@@ -3851,6 +3892,8 @@ FORMAT-STRING is like `format', but it can have multiple %-sequences."
 (require 'change-case)
 
 (global-auto-revert-mode 1)
+(setq global-auto-revert-non-file-buffers t)
+(setq auto-revert-verbose nil)
 
 (require 'delicious)
 
@@ -4081,7 +4124,7 @@ FORMAT-STRING is like `format', but it can have multiple %-sequences."
 (global-set-key "\C-hz" 'dictionary-match-words)
 
 ;; these are utility commands for compiling c
-(define-key mode-specific-map "c" 'compile)
+(define-key mode-specific-map "q" 'compile)
 (define-key mode-specific-map "x" 'recompile)
 (define-key mode-specific-map "\C-z" 'shell-command)
 
@@ -4111,11 +4154,6 @@ FORMAT-STRING is like `format', but it can have multiple %-sequences."
 
 (setq redisplay-dont-pause t)
 
-(require 'fit-frame)
-;; (require 'autofit-frame)
-;; (add-hook 'after-make-frame-functions 'fit-frame)
-
-(setq fit-frame-max-width 80)
 
 (require 'frame-cmds)
 
@@ -4137,8 +4175,13 @@ FORMAT-STRING is like `format', but it can have multiple %-sequences."
 (setq kindly:use-auto-bookmark-p nil)
 (setq kindly:font-face '(:family "Monaco" :height 125 :width condensed))
 
+(require 'fit-frame)
+;; (require 'autofit-frame)
+;; (add-hook 'after-make-frame-functions 'fit-frame)
 
-(require 'offlineimap)
+(setq fit-frame-max-width 80)
+
+;; (require 'offlineimap)
 (require 'mu4e)
 
 ;; (add-hook 'mu4e-main-mode-map-hook
@@ -4150,9 +4193,17 @@ FORMAT-STRING is like `format', but it can have multiple %-sequences."
 (setq debug-on-error nil)
 ;; (setq mu4e-html2text-command "w3m -dump -cols 80 -T text/html")
 (setq mu4e-html2text-command "w3m -dump -T text/html")
-;; (setq mu4e-get-mail-command "offlineimap")
+(setq mu4e-get-mail-command "mbsync -aq")
+(setq mu4e-update-interval 3000)
 (add-hook 'mu4e-headers-mode-hook '(lambda () (visual-line-mode -1)))
 (add-hook 'mu4e-view-mode-hook '(lambda () (kindly-mode)))
+(require 'sr-speedbar)
+(setq sr-speedbar-right-side t)
+(add-hook 'speedbar-load-hook 'fit-frame)
+(add-hook 'speedbar-load-hook '(lambda ()
+                                 (interactive)
+                                 (speedbar-get-focus)))
+
 
 (ignore-errors
   (load-file "~/.mufolders.el"))

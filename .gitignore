@@ -8,10 +8,12 @@ syntax: glob
 *.elc
 /.recentf
 elispcache/*
+.emacs.d/var/pcache/*
 .emacs.d/eproject.lst
 .emacs.d/url
 .emacs.d/tramp
 .emacs.d/kill-ring-saved.el
+.emacs.d/eshell/lastdir
 */CVS/*
 CVS
 .svn
