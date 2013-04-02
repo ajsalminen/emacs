@@ -424,7 +424,7 @@
                          ;; auto-create addresses from mail
                          bbdb/mail-auto-create-p 'bbdb-ignore-some-messages-hook
                          bbdb-ignore-some-messages-alist ;; don't ask about fake addresses
-                         ;; NOTE: there can be only one entry per header (such as To, From)
+                         ;; NOTE: there can be only one entry per HEADer (such as To, From)
                          ;; http://flex.ee.uec.ac.jp/texi/bbdb/bbdb_11.html
                          '(( "From" . "no.?reply\\|DAEMON\\|daemon\\|facebookmail\\|twitter"))))
                (bbdb-insinuate-message)
@@ -3154,8 +3154,8 @@ If existing, the current prompt will be deleted."
 
 (defalias 'qrr 'query-replace-regexp)
 
-(require 'header2)
-(add-hook 'emacs-lisp-mode-hook 'auto-make-header)
+;; (require 'header2)
+;; (add-hook 'emacs-lisp-mode-hook 'auto-make-header)
 
 (require 're-builder+)
 
