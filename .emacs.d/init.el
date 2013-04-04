@@ -4223,4 +4223,12 @@ FORMAT-STRING is like `format', but it can have multiple %-sequences."
                   (get-char-property (point) 'face))))
     (if face (message "Face: %s" face) (message "No face at %d" pos))))
 
+(defun make-trans-frame ()
+  (interactive)
+  (set-frame-width (selected-frame) 185)
+  (set-frame-height (selected-frame) 50)
+  (delete-other-windows)
+  (split-window-right)
+  (split-window-below))
+
 (message "********** successfully initialized **********")
