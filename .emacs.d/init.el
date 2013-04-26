@@ -4227,13 +4227,26 @@ FORMAT-STRING is like `format', but it can have multiple %-sequences."
                   (get-char-property (point) 'face))))
     (if face (message "Face: %s" face) (message "No face at %d" pos))))
 
-(defun make-trans-frame ()
+(defun menu-bar-redisplay-hack ()
+  (interactive)
+  (progn
+    (tool-bar-mode)
+    (tool-bar-mode -1)))
+
+(defun make-three-split-frame ()
   (interactive)
   (set-frame-width (selected-frame) 185)
   (set-frame-height (selected-frame) 50)
   (delete-other-windows)
   (split-window-right)
-  (split-window-below))
+  (split-window-below)
+  (menu-bar-redisplay-hack))
+
+(defun make-laptop-wide-frame ()
+  (interactive)
+  (set-frame-width (selected-frame) 185)
+  (set-frame-height (selected-frame) 50)
+  (menu-bar-redisplay-hack))
 
 
 (global-set-key (kbd "C-S-n")
