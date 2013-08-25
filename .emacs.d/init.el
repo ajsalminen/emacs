@@ -131,7 +131,7 @@
 
 (require 'anything-match-plugin)
 (require 'eijiro)
-(setq eijiro-directory "~/Downloads/EDP-124/EIJIRO/") ; 英辞郎の辞書を置いているディレクトリ
+(setq eijiro-directory "~/Downloads/EDP-124/EIJIRO/") ; 英辞郎の辞書を置いているディレクトリ
 
 (setq anything-sources
       '(anything-c-source-recentf
@@ -672,7 +672,7 @@
         ;; ))
         ))
 (el-get 'sync)
-(message "el-get initialized")
+(message "LOADING: el-get initialized")
 
 
 ;; All my custom settings that differ and/or can't be under version control
@@ -683,7 +683,7 @@
 
 (setq Info-directory-list
       '("/usr/local/share/info" "~/info" "~/devdocs" "/usr/share/info" "/usr/local/info" "/usr/share/info/emacs-23"))
-(message "loaded custom stuff")
+(message "LOADING: loaded custom stuff")
 
 
 ;;; this was installed by package-install.el.
@@ -707,7 +707,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  )
-(message "packages initialized")
+(message "LOADING: packages initialized")
 
 
 (setq initial-scratch-message nil)
@@ -769,7 +769,7 @@
       '((propertize (concat " " 24-hours ":" minutes " ")
                     'face 'egoge-display-time)))
 (display-time-mode 1)
-(message "various custom packages")
+(message "LOADING: various custom packages")
 
 ;; Scala configs
 (let ((path "~/.emacs.d/scala"))
@@ -789,7 +789,7 @@
 
 (add-to-list 'ensime-doc-lookup-map '("net\\.liftweb\\." . make-lift-doc-url))
 
-(message "scala lift stuff")
+(message "LOADING: scala lift stuff")
 
 ;; Frame fiddling
 (defun set-frame-size-according-to-resolution ()
@@ -874,7 +874,7 @@
 (add-hook 'LaTeX-mode-hook 'turn-on-reftex) ; with AUCTeX LaTeX mode
 (add-hook 'latex-mode-hook 'turn-on-reftex) ; with Emacs latex mode
 
-(message "load latex/reftex")
+(message "LOADING: load latex/reftex")
 (setq reftex-plug-into-AUCTeX t)
 
 ;; (add-hook 'reftex-mode-hook 'reftex-toc)
@@ -970,7 +970,7 @@
                                ;; (define-key LaTeX-mode-map (kbd "<return>") 'newline-cjk-hack)
                                (define-key LaTeX-mode-map (kbd "<backspace>") 'backspace-cjk-hack))))
 
-(message "pre ESS")
+(message "LOADING: pre ESS")
 
 (setq ess-etc-directory "~/.emacs.d/ess-5.11/etc")
 (require 'ess-site)
@@ -1060,10 +1060,10 @@
 (add-to-list 'ac-dictionary-directories "~/.emacs.d/ac-dict")
 (ac-config-default)
 (require 'ac-company)
-;; 対象の全てで補完を有効にする
+;; 対象の全てで補完を有効にする
 (global-auto-complete-mode t)
 (ac-company-define-source ac-source-company-xcode company-xcode)
-;; objc-mode で補完候補を設定
+;; objc-mode で補完候補を設定
 (setq ac-modes (append ac-modes '(objc-mode)))
 
 (setq ac-expand-on-auto-complete nil)
@@ -1096,7 +1096,7 @@
 
 (global-set-key "\M-/" 'hippie-expand)
 
-(message "yasnippet loading")
+(message "LOADING: yasnippet loading")
 
 (defun no-pdf ()
   "Run pdftotext on the entire buffer."
@@ -1184,7 +1184,7 @@
   ;; fix fonts
   (defun fix-mac-fonts ()
     (interactive)
-    (let* ((size 12) ; ASCIIフォントのサイズ [9/10/12/14/15/17/19/20/...]
+    (let* ((size 12) ; ASCIIフォントのサイズ [9/10/12/14/15/17/19/20/...]
            (asciifont "Menlo") ; ASCIIフォント
            (jpfont "Hiragino Kaku Gothic Pro") ; 日本語フォント
            (h (* size 10))
@@ -1195,7 +1195,7 @@
       (set-fontset-font nil 'japanese-jisx0213-2 jp-fontspec)
       (set-fontset-font nil 'katakana-jisx0201 jp-fontspec) ; 半角カナ
       (set-fontset-font nil '(#x0080 . #x024F) fontspec) ; 分音符付きラテン
-      (set-fontset-font nil '(#x0370 . #x03FF) fontspec) ; ギリシャ文字
+      (set-fontset-font nil '(#x0370 . #x03FF) fontspec) ; ギリシャ文字
       ))
 
   ;; apologetic hack to make sure my mac input is used
@@ -1215,15 +1215,17 @@
 
   (set-fontset-font "fontset-default"
                     'katakana-jisx0201
-                    '("ヒラギノ丸ゴ pro w4*" . "jisx0201.*"))
+                    '("ヒラギノ丸ゴ pro w4*" . "jisx0201.*"))
 
   (set-fontset-font "fontset-default"
                     'japanese-jisx0208
-                    '("ヒラギノ丸ゴ pro w4*" . "jisx0208.*")))
+                    '("ヒラギノ丸ゴ pro w4*" . "jisx0208.*")))
 
-(blink-cursor-mode t)
+(blink-cursor-mode nil)
+(setq blink-cursor-interval nil)
+(setq blink-cursor-interval 0.8)
 
-(message "mac setup stuff")
+(message "LOADING: mac setup stuff")
 
 ;; Ubuntu related settings
 (when (and (= emacs-major-version 23) (eq window-system 'x))
@@ -1254,12 +1256,12 @@
     (scim-define-common-key ?\C-/ nil)
     ;; SCIMの状態によってカーソル色を変化させる
     (setq scim-cursor-color '("red" "blue" "limegreen"))
-    ;; C-j で半角英数モードをトグルする
+    ;; C-j で半角英数モードをトグルする
     (scim-define-common-key ?\C-j t)
-    ;; SCIM-Anthy 使用時に、選択領域を再変換できるようにする
+    ;; SCIM-Anthy 使用時に、選択領域を再変換できるようにする
     (scim-define-common-key 'S-henkan nil)
     (global-set-key [S-henkan] 'scim-anthy-reconvert-region)
-    ;; SCIM がオフのままローマ字入力してしまった時に、プリエディットに入れ直す
+    ;; SCIM がオフのままローマ字入力してしまった時に、プリエディットに入れ直す
     (global-set-key [C-henkan] 'scim-transfer-romaji-into-preedit))
 
   (defun setup-mozc ()
@@ -1300,7 +1302,7 @@
       ;; (set-face-font 'variable-pitch "Inconsolata-12")
       ;; (set-fontset-font (frame-parameter nil 'font)
       ;; 'japanese-jisx0208
-      ;; '("Takaoゴシック" . "unicode-bmp")
+      ;; '("Takaoゴシック" . "unicode-bmp")
       ;; )
       ;; )
 
@@ -1338,7 +1340,7 @@
 (recentf-mode 1)
 ;;(global-set-key "\C-x\ \C-r" 'recentf-open-files)
 
-(message "recentf stuff")
+(message "LOADING: recentf stuff")
 
 (transient-mark-mode 1)
 (setq gc-cons-threshold 4000)
@@ -1396,7 +1398,7 @@
 (push '("*magit-diff*") popwin:special-display-config)
 (push '("*wclock*" :height 10 :noselect t :position bottom) popwin:special-display-config)
 (push '(Man-mode :stick t :height 20) popwin:special-display-config)
-
+(push '("*Google Translate*" :height 20 :stick t :position bottom :noselect t) popwin:special-display-config)
 
 (defun popwin:define-advice (func buffer)
   (eval `(defadvice ,func (around popwin activate)
@@ -1434,7 +1436,7 @@
 
 (global-set-key (kbd "C-c v") 'vim-mode-toggle-with-input)
 
-(message "vim mode")
+(message "LOADING: vim mode")
 
 (defun input-mode-toggle-enter ()
   (interactive)
@@ -1469,7 +1471,7 @@
 
 ;; (remove-hook 'vim:insert-mode-off-hook 'input-mode-toggle-exit)
 
-;; ----- sdicが呼ばれたときの設定
+;; ----- sdicが呼ばれたときの設定
 (autoload 'sdic-describe-word "sdic" "search word" t nil)
 ;;(setq sdicf-array-command "/usr/local/bin/sary")
 ;; (setq sdic-eiwa-dictionary-list
@@ -1479,12 +1481,12 @@
 
 (eval-after-load "sdic"
   '(progn
-     ;; saryのコマンドをセットする
+     ;; saryのコマンドをセットする
      (setq sdicf-array-command "/usr/local/bin/sary")
-     ;; sdicファイルのある位置を設定し、arrayコマンドを使用するよう設定(現在のところ英和のみ)
+     ;; sdicファイルのある位置を設定し、arrayコマンドを使用するよう設定(現在のところ英和のみ)
 ;;; (setq sdic-eiwa-dictionary-list
 ;;; '((sdicf-client "/usr/local/share/dict/eijirou.sdic" (strategy array))))
-     ;; saryを直接使用できるように sdicf.el 内に定義されているarrayコマンド用関数を強制的に置換
+     ;; saryを直接使用できるように sdicf.el 内に定義されているarrayコマンド用関数を強制的に置換
      (fset 'sdicf-array-init 'sdicf-common-init)
      (fset 'sdicf-array-quit 'sdicf-common-quit)
      (fset 'sdicf-array-search
@@ -1506,43 +1508,43 @@
                  (let (entries)
                    (while (not (eobp)) (sdicf-search-internal))
                    (nreverse entries))))))
-     ;; おまけ--辞書バッファ内で移動した時、常にバッファの一行目になるようにする
+     ;; おまけ--辞書バッファ内で移動した時、常にバッファの一行目になるようにする
      (defadvice sdic-forward-item (after sdic-forward-item-always-top activate)
        (recenter 0))
      (defadvice sdic-backward-item (after sdic-backward-item-always-top activate)
        (recenter 0))))
 
-(autoload 'sdic-describe-word "sdic" "英単語の意味を調べる" t nil)
+(autoload 'sdic-describe-word "sdic" "英単語の意味を調べる" t nil)
 ;; (global-set-key "\C-cd" 'sdic-describe-word)
-(autoload 'sdic-describe-word-at-point "sdic" "カーソルの位置の英単語の意味を調べる" t nil)
+(autoload 'sdic-describe-word-at-point "sdic" "カーソルの位置の英単語の意味を調べる" t nil)
 (global-set-key "\C-cD" 'sdic-describe-word-at-point)
 
 
-;; highlight current line
-(require 'highline)
-;; (global-hl-line-mode t)
-;; To customize the background color
-(set-face-background 'hl-line "#222") ;; Emacs 22 Only
+;; ;; highlight current line
+;; (require 'highline)
+;; ;; (global-hl-line-mode t)
+;; ;; To customize the background color
+;; (set-face-background 'hl-line "#222") ;; Emacs 22 Only
 
-(require 'hl-line+)
-(toggle-hl-line-when-idle nil)
+;; (require 'hl-line+)
+;; (toggle-hl-line-when-idle nil)
 
-(require 'hl-spotlight)
-;; (global-hl-spotlight-mode t)
-(setq hl-spotlight-height 0)
+;; (require 'hl-spotlight)
+;; ;; (global-hl-spotlight-mode t)
+;; (setq hl-spotlight-height 0)
 
-(require 'highlight-current-line)
-;; (highlight-current-line-on t)
-(setq highlight-current-line-globally nil)
-(set-face-background 'highlight-current-line-face "#222")
-(add-hook 'highlight-current-line-hook (lambda () (redisplay t)))
+;; (require 'highlight-current-line)
+;; ;; (highlight-current-line-on t)
+;; (setq highlight-current-line-globally nil)
+;; (set-face-background 'highlight-current-line-face "#222")
+;;(add-hook 'highlight-current-line-hook (lambda () (redisplay t)))
 
-(require 'col-highlight)
-;; to enable at all times
-;; (column-highlight-mode t)
-(toggle-highlight-column-when-idle t)
-(col-highlight-set-interval 2000)
-(set-face-background 'col-highlight "#222")
+;; (require 'col-highlight)
+;; ;; to enable at all times
+;; ;; (column-highlight-mode t)
+;; (toggle-highlight-column-when-idle nil)
+;; (col-highlight-set-interval 200000)
+;; (set-face-background 'col-highlight "#222")
 
 ;; Display line and column numbers
 (setq line-number-mode t)
@@ -1605,7 +1607,7 @@ directory, select directory. Lastly the file is opened."
        (file-cache-add-file buffer-file-name)))
 (add-hook 'kill-buffer-hook 'file-cache-add-this-file)
 
-(message "cache files")
+(message "LOADING: cache files")
 
 ;; File Name Cache
 ;; http://www.emacswiki.org/emacs/FileNameCache
@@ -1699,7 +1701,7 @@ directory, select directory. Lastly the file is opened."
         (eval-buffer nil nil)
         (delete-other-windows) ))))
 
-(message "pre image mode")
+(message "LOADING: pre image mode")
 
 (autoload 'iimage-mode "iimage" "Support Inline image minor mode." t)
 (autoload 'turn-on-iimage-mode "iimage" "Turn on Inline image minor mode." t)
@@ -1744,11 +1746,11 @@ directory, select directory. Lastly the file is opened."
 ;; 週の先頭の曜日
 (setq calendar-week-start-day 0) ; 日曜日は0, 月曜日は1
 
-(message "calendar")
+(message "LOADING: calendar")
 
 (defun start-calfw ()
   (interactive)
-  (require 'calfw) ; 初回一度だけ
+  (require 'calfw) ; 初回一度だけ
   ;; (cfw:open-calendar-buffer)
   ;; (cfw:contents-debug-data)
   (require 'calfw-ical)
@@ -2041,18 +2043,18 @@ nEnd:")
 
 (define-key org-mode-map (kbd "\C-c i") 'org-clock-in-and-out)
 
-(message "org-mode stuff")
+(message "LOADING: org-mode stuff")
 
 
 
-;; ここまで
+;; ここまで
 
-;; 思いついたコードやメモコードを書いて保存できるようにするための設定
+;; 思いついたコードやメモコードを書いて保存できるようにするための設定
 ;; (auto-install-from-emacswiki "open-junk-file.el")
 (require 'open-junk-file)
 (setq open-junk-file-format "~/junk/%Y%m%d_%H%M%s_junk.utf")
 (global-set-key "\C-c\C-j" 'open-junk-file)
-;; ここまで
+;; ここまで
 
 
 ;; iPhone stuff
@@ -2063,12 +2065,12 @@ nEnd:")
 (ffap-bindings)
 (autoload 'ffap-href-enable "ffap-href" nil t)
 
-;; 探すパスは ffap-c-path で設定する
+;; 探すパスは ffap-c-path で設定する
 ;; (setq ffap-c-path
 ;; '("/usr/include" "/usr/local/include"))
 ;; 新規ファイルの場合には確認する
 (setq ffap-newfile-prompt t)
-;; ffap-kpathsea-expand-path で展開するパスの深さ
+;; ffap-kpathsea-expand-path で展開するパスの深さ
 (setq ffap-kpathsea-depth 5)
 
 (setq ff-other-file-alist
@@ -2104,9 +2106,9 @@ nEnd:")
 (setq clang-completion-suppress-error 't)
 (setq clang-completion-flags '("-Wall" "-Wextra" "-fsyntax-only" "-ObjC" "-std=c99" "-isysroot" "/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator4.3.sdk" "-I." "-D__IPHONE_OS_VERSION_MIN_REQUIRED=30200"))
 
-;; ac-company で company-xcode を有効にする
+;; ac-company で company-xcode を有効にする
 (ac-company-define-source ac-source-company-xcode company-xcode)
-;; objc-mode で補完候補を設定
+;; objc-mode で補完候補を設定
 (setq ac-modes (append ac-modes '(objc-mode)))
 ;; hook
 (add-hook 'objc-mode-hook
@@ -2117,15 +2119,15 @@ nEnd:")
             (push 'ac-source-clang-complete ac-sources)
             (push 'ac-source-company-xcode ac-sources)))
 
-;; 補完ウィンドウ内でのキー定義
+;; 補完ウィンドウ内でのキー定義
 (define-key ac-completing-map (kbd "C-n") 'ac-next)
 (define-key ac-completing-map (kbd "C-p") 'ac-previous)
 (define-key ac-completing-map (kbd "M-/") 'ac-stop)
-;; 補完が自動で起動するのを停止
+;; 補完が自動で起動するのを停止
 (setq ac-auto-start nil)
 ;; 起動キーの設定
 (ac-set-trigger-key "TAB")
-;; 候補の最大件数 デフォルトは 10件
+;; 候補の最大件数 デフォルトは 10件
 (setq ac-candidate-max 20)
 
 (require 'auto-complete-latex)
@@ -2140,7 +2142,7 @@ nEnd:")
 (add-to-list 'etags-table-alist
              '("\\.[mh]$" "~/tags/objc.TAGS"))
 ;; auto-complete に etags の内容を認識させるための変数
-;; 以下の例だと3文字以上打たないと補完候補にならないように設定してあります。requires の次の数字で指定します
+;; 以下の例だと3文字以上打たないと補完候補にならないように設定してあります。requires の次の数字で指定します
 (defvar ac-source-etags
   '((candidates . (lambda ()
                     (all-completions ac-target (tags-completion-table))))
@@ -2148,7 +2150,7 @@ nEnd:")
     (selection-face . ac-selection-face)
     (requires . 3))
   "etags をソースにする")
-;; objc で etags からの補完を可能にする
+;; objc で etags からの補完を可能にする
 (add-hook 'objc-mode-hook
           (lambda ()
             (push 'ac-source-etags ac-sources)))
@@ -2243,7 +2245,7 @@ nEnd:")
 ;; (flymake-display-err-minibuffer))
 
 ;; (defadvice flymake-mode (before post-command-stuff activate compile)
-;; "エラー行にカーソルが当ったら自動的にエラーが minibuffer に表示されるように
+;; "エラー行にカーソルが当ったら自動的にエラーが minibuffer に表示されるように
 ;; post command hook に機能追加"
 ;; (set (make-local-variable 'post-command-hook)
 ;; (add-hook 'post-command-hook 'flymake-display-err-minibuffer)))
@@ -2302,8 +2304,8 @@ nEnd:")
 
 
 
-;; 自動的な表示に不都合がある場合は以下を設定してください
-;; post-command-hook は anything.el の動作に影響する場合があります
+;; 自動的な表示に不都合がある場合は以下を設定してください
+;; post-command-hook は anything.el の動作に影響する場合があります
 (define-key global-map (kbd "C-c d") 'flymake-display-err-minibuffer)
 
 (set-face-background 'flymake-errline "red")
@@ -2350,7 +2352,7 @@ nEnd:")
               (define-key objc-mode-map (kbd "C-c h") 'xcdoc:ask-search))))
 
 ;; end of iphone-related settings
-(message "xcode/iphone stuff")
+(message "LOADING: xcode/iphone stuff")
 
 ;; Common copying and pasting functions
 (defun copy-word (&optional arg)
@@ -2552,10 +2554,47 @@ nEnd:")
 
 (add-hook 'w3m-display-hook 'alc-w3m-displayed)
 
+(defun w3m-search-weblio (string)
+  "search alc"
+  (interactive "sSearch weblio: ")
+  (let ((search-string (format "http://ejje.weblio.jp/content/%s" (w3m-url-encode-string string 'utf-8)))
+        (oldbuf (current-buffer))
+        (query (format "%s" string)))
+    (progn
+      (w3m-browse-url search-string)
+      (switch-to-buffer oldbuf))))
+
+(defun w3m-search-weblio (string)
+  "search alc"
+  (interactive "sSearch weblio: ")
+  (let ((search-string (format "http://ejje.weblio.jp/content/%s" (w3m-url-encode-string string 'utf-8)))
+        (oldbuf (current-buffer))
+        (query (format "%s" string)))
+    (progn
+      (browse-url search-string)
+      )))
+
+(setq browse-url-browser-function 'browse-url-default-macosx-browser)
+(setq browse-url-generic-program "open")
+
+
+(defun w3m-search-weblio-at-point ()
+  (interactive)
+  (let ((text (if mark-active
+                  (buffer-substring (point) (mark))
+                (thing-at-point 'word))))
+    (set-text-properties 0 (length text) nil text)
+    (if (eq text nil)
+        (call-interactively 'w3m-search-weblio)
+      (w3m-search-weblio text))))
+
+
 (defalias 'wwa 'w3m-search-alc)
 (defalias 'wwr 'w3m-search-alc-at-point)
+(defalias 'wwd 'w3m-search-weblio-at-point)
 (global-set-key (kbd "C-c j") 'w3m-search-alc-at-point)
-(message "w3m settings")
+(global-set-key (kbd "C-c e") 'w3m-search-weblio-at-point)
+(message "LOADING: w3m settings")
 
 (require 'revbufs)
 
@@ -2635,7 +2674,7 @@ nEnd:")
   (garbage-collect))
 
 (defalias 'twe 'twittering-mode-exit)
-(message "twittering mode setup")
+(message "LOADING: twittering mode setup")
 
 
 (setq frame-title-format '("" invocation-name "@" system-name " "
@@ -2706,7 +2745,7 @@ nEnd:")
       auto-save-interval 20)
 (make-directory auto-save-directory t)
 
-(message "auto save stuff")
+(message "LOADING: auto save stuff")
 
 (defun unfill-paragraph ()
   (interactive)
@@ -2737,7 +2776,7 @@ nEnd:")
 
 ;;(add-hook 'weblogger-entry-mode-hook 'textile-minor-mode)
 
-(message "dddf2")
+(message "LOADING: dddf2")
 (defun publish-post ()
   (interactive)
   (textile-to-html-buffer-respect-weblogger)
@@ -2767,7 +2806,7 @@ nEnd:")
 
 (require 'summarye)
 
-(message "point stuff")
+(message "LOADING: point stuff")
 
 (defun point-to-top ()
   "Put cursor on top line of window, like Vi's H."
@@ -2816,7 +2855,7 @@ nEnd:")
 ;; (add-hook 'LaTeX-mode-hook 'enclose-mode)
 (add-hook 'weblogger-entry-mode 'enclose-mode)
 
-(message "ido keys")
+(message "LOADING: ido keys")
 
 ;; (autoload 'mode-compile "mode-compile"
 ;;   "Command to compile current buffer file based on the major mode" t)
@@ -2894,7 +2933,7 @@ nEnd:")
 (add-hook 'rhtml-mode '(lambda ()
                          (define-key rhtml-mode-map (kbd "M-s") 'save-buffer)))
 
-(message "rhtml/yaml stuff")
+(message "LOADING: rhtml/yaml stuff")
 
 (autoload 'yaml-mode "yaml-mode" nil t)
 (add-to-list 'auto-mode-alist '("\\.yml$" . yaml-mode))
@@ -2941,7 +2980,7 @@ nEnd:")
 
 (require 'midnight)
 
-(message "window movement")
+(message "LOADING: window movement")
 
 (windmove-default-keybindings 'meta)
 
@@ -2958,7 +2997,7 @@ nEnd:")
 (setq haskell-font-lock-symbols t)
 ;; (setq haskell-hoogle-command "~/.cabal/bin/hoogle")
 
-(message "igrep")
+(message "LOADING: igrep")
 
 (require 'igrep)
 (setq igrep-options "-ir")
@@ -2988,7 +3027,7 @@ nEnd:")
 (require 'undo-tree)
 (global-undo-tree-mode)
 
-(message "insert")
+(message "LOADING: insert")
 
 (defun insert-time ()
   (interactive)
@@ -3017,7 +3056,7 @@ nEnd:")
 
 (require 'sr-speedbar)
 
-(message "sr-speedbar")
+(message "LOADING: sr-speedbar")
 
 (setq tramp-bkup-backup-directory-info nil)
 (require 'backup-dir)
@@ -3065,7 +3104,7 @@ nEnd:")
         (beginning-of-line))))
 
 
-(message "eshell activated")
+(message "LOADING: eshell activated")
 
 (add-hook 'eshell-mode-hook
           (lambda ()
@@ -3163,7 +3202,7 @@ If existing, the current prompt will be deleted."
 
 (require 're-builder+)
 
-(message "rebuilder")
+(message "LOADING: rebuilder")
 
 
 (defun reb-query-replace (to-string)
@@ -3217,7 +3256,7 @@ If existing, the current prompt will be deleted."
 
 (autoload 'moz-minor-mode "moz" "Mozilla Minor and Inferior Mozilla Modes" t)
 
-(message "javascript espresso")
+(message "LOADING: javascript espresso")
 
 (defun espresso-custom-setup ()
   (setq tab-width 4)
@@ -3285,18 +3324,6 @@ If existing, the current prompt will be deleted."
 windows, use `window-number-mode' to display the window numbers in
 the mode-line."
   t)
-
-(message "window revive")
-
-(autoload 'save-current-configuration "revive" "Save status" t)
-(autoload 'resume "revive" "Resume Emacs" t)
-(autoload 'wipe "revive" "Wipe Emacs" t)
-
-(setq revive:major-mode-command-alist-private
-      '((w3m-mode . w3m)
-        ("*w3m*" . w3m)))
-
-(defalias 'resume-save 'save-current-configuration)
 
 (defun show-file-name ()
   "Show the full path file name in the minibuffer."
@@ -3366,7 +3393,7 @@ FORMAT-STRING is like `format', but it can have multiple %-sequences."
     (dotimes (i n)
       (insert-buffer-substring (current-buffer) (point-at-bol)(1+ (point-at-eol))))))
 
-(message "number rect")
+(message "LOADING: number rect")
 
 (require 'gse-number-rect)
 (global-set-key "\C-hj" 'number-rectangle)
@@ -3442,7 +3469,7 @@ FORMAT-STRING is like `format', but it can have multiple %-sequences."
   (interactive)
   (find-alternate-file (concat "/sudo:root@localhost:" (buffer-file-name (current-buffer)))))
 
-(message "sudo edit (not working)")
+(message "LOADING: sudo edit (not working)")
 
 
 ;; ;; code from failed sudo attempt
@@ -3480,7 +3507,7 @@ FORMAT-STRING is like `format', but it can have multiple %-sequences."
 (add-to-list 'auto-mode-alist '("\\.cron\\(tab\\)?\\'" . crontab-mode))
 (add-to-list 'auto-mode-alist '("cron\\(tab\\)?\\.[^el]+" . crontab-mode))
 
-(message "crontab")
+(message "LOADING: crontab")
 
 (cond
  ((>= emacs-major-version '23)
@@ -3495,7 +3522,7 @@ FORMAT-STRING is like `format', but it can have multiple %-sequences."
 
 (require 'savekill)
 
-(message "savekill")
+(message "LOADING: savekill")
 
 ;; credit to Benjamin Riefenstahl <Benjamin.Riefenstahl@epost.de>
 (defun benny-antiword-file-handler (operation &rest args)
@@ -3567,7 +3594,7 @@ FORMAT-STRING is like `format', but it can have multiple %-sequences."
   (interactive)
   (write-file "~/.emacs.d/site-lisp/"))
 
-(message "save elisp")
+(message "LOADING: save elisp")
 
 (require 'sequential-command-config)
 (sequential-command-setup-keys)
@@ -3594,7 +3621,7 @@ FORMAT-STRING is like `format', but it can have multiple %-sequences."
 (setq moccur-split-word t)
 (global-set-key (kbd "C-c o") 'occur-by-moccur)
 
-(message "moccur")
+(message "LOADING: moccur")
 
 ;; adapted from
 ;; http://d.hatena.ne.jp/derui/20100223/1266929390
@@ -3652,7 +3679,7 @@ FORMAT-STRING is like `format', but it can have multiple %-sequences."
       (view-file file)
     ad-do-it))
 
-(message "find file")
+(message "LOADING: find file")
 
 (defvar view-mode-original-keybind nil)
 (defun view-mode-set-window-controls (prefix-key)
@@ -3670,7 +3697,7 @@ FORMAT-STRING is like `format', but it can have multiple %-sequences."
 
 
 
-;; view-mode時に、手軽にウィンドウ移動、切替を行えるようにする。
+;; view-mode時に、手軽にウィンドウ移動、切替を行えるようにする。
 (defvar view-mode-window-control-map nil)
 (unless view-mode-window-control-map
   (setq view-mode-window-control-map (make-sparse-keymap))
@@ -3717,7 +3744,7 @@ FORMAT-STRING is like `format', but it can have multiple %-sequences."
 
 (require 'http-twiddle)
 
-(message "eshell")
+(message "LOADING: eshell")
 
 (defun eshell/ff (file)
   (find-file-other-window file))
@@ -3788,7 +3815,7 @@ FORMAT-STRING is like `format', but it can have multiple %-sequences."
 (require 'muse-project)
 (require 'muse-journal )
 
-(message "muse")
+(message "LOADING: muse")
 
 (setq muse-project-alist
       '(("Journal" ("~/journal/"
@@ -3815,7 +3842,7 @@ FORMAT-STRING is like `format', but it can have multiple %-sequences."
   "Prevent annoying \"Active processes exist\" query when you quit Emacs."
   (flet ((process-list ())) ad-do-it))
 
-(message "dddf25")
+(message "LOADING: dddf25")
 
 (require 'sql)
 ;; (autoload 'sql-mode "sql-mode" "SQL Editing Mode" t)
@@ -3875,7 +3902,7 @@ FORMAT-STRING is like `format', but it can have multiple %-sequences."
 (autoload 'drupal-mode "drupal-mode" "Major mode for editing drupal php " t)
 
 
-(message "drupal")
+(message "LOADING: drupal")
 
 (add-to-list 'auto-mode-alist '("\\.\\(module\\|test\\|install\\|theme\\)$" . drupal-mode))
 (add-to-list 'auto-mode-alist '("\\.\\(php\\|inc\\)$" . php-mode))
@@ -3934,7 +3961,7 @@ FORMAT-STRING is like `format', but it can have multiple %-sequences."
 (defalias 'ack-find-file-same 'ack-and-a-half-find-file-same)
 
 
-(message "ack")
+(message "LOADING: ack")
 
 ;; (require 'gtags)
 ;; (defun gtags-root-dir ()
@@ -3980,7 +4007,7 @@ FORMAT-STRING is like `format', but it can have multiple %-sequences."
 ;; (require 'elscreen-dired)
 ;; (require 'elscreen-gf)
 
-(message "elscreen")
+(message "LOADING: elscreen")
 
 (require 'multiple-line-edit)
 (global-set-key "\C-c<" 'mulled/edit-trailing-edges)
@@ -4003,7 +4030,7 @@ FORMAT-STRING is like `format', but it can have multiple %-sequences."
 (defun smartchr-custom-keybindings ()
   (local-set-key (kbd "=") (smartchr '(" = " " == " "=")))
   (local-set-key (kbd "!") (smartchr '("!" "!=")))
-  ;; !! がカーソルの位置
+  ;; !! がカーソルの位置
   (local-set-key (kbd "(") (smartchr '("(`!!')" "(")))
   (local-set-key (kbd "-") (smartchr '("-" "->`!!'" "-=")))
   (local-set-key (kbd "+") (smartchr '("+" "++" "+=")))
@@ -4025,33 +4052,33 @@ FORMAT-STRING is like `format', but it can have multiple %-sequences."
 
 (require 'org2blog-autoloads)
 
-(defvar no-easy-keys-minor-mode-map (make-keymap)
-  "no-easy-keys-minor-mode keymap.")
+;; (defvar no-easy-keys-minor-mode-map (make-keymap)
+;;   "no-easy-keys-minor-mode keymap.")
 
-(let ((f (lambda (m)
-           `(lambda () (interactive)
-              (message (concat "No! use " ,m " instead."))))))
-  (dolist (l '(("<left>" . "C-b") ("<right>" . "C-f") ("<up>" . "C-p")
-               ("<down>" . "C-n")
-               ("<C-left>" . "M-f") ("<C-right>" . "M-b") ("<C-up>" . "M-{")
-               ("<C-down>" . "M-}")
-               ("<M-left>" . "M-f") ("<M-right>" . "M-b") ("<M-up>" . "M-{")
-               ("<M-down>" . "M-}")
-               ("<delete>" . "C-d") ("<C-delete>" . "M-d")
-               ("<M-delete>" . "M-d") ("<next>" . "C-v") ("<C-next>" . "M-x <")
-               ("<prior>" . "M-v") ("<C-prior>" . "M-x >")
-               ("<home>" . "C-a") ("<C-home>" . "M->")
-               ("<C-home>" . "M-<") ("<end>" . "C-e") ("<C-end>" . "M->")))
-    (define-key no-easy-keys-minor-mode-map
-      (read-kbd-macro (car l)) (funcall f (cdr l)))))
+;; (let ((f (lambda (m)
+;;            `(lambda () (interactive)
+;;               (message (concat "No! use " ,m " instead."))))))
+;;   (dolist (l '(("<left>" . "C-b") ("<right>" . "C-f") ("<up>" . "C-p")
+;;                ("<down>" . "C-n")
+;;                ("<C-left>" . "M-f") ("<C-right>" . "M-b") ("<C-up>" . "M-{")
+;;                ("<C-down>" . "M-}")
+;;                ("<M-left>" . "M-f") ("<M-right>" . "M-b") ("<M-up>" . "M-{")
+;;                ("<M-down>" . "M-}")
+;;                ("<delete>" . "C-d") ("<C-delete>" . "M-d")
+;;                ("<M-delete>" . "M-d") ("<next>" . "C-v") ("<C-next>" . "M-x <")
+;;                ("<prior>" . "M-v") ("<C-prior>" . "M-x >")
+;;                ("<home>" . "C-a") ("<C-home>" . "M->")
+;;                ("<C-home>" . "M-<") ("<end>" . "C-e") ("<C-end>" . "M->")))
+;;     (define-key no-easy-keys-minor-mode-map
+;;       (read-kbd-macro (car l)) (funcall f (cdr l)))))
 
-(define-minor-mode no-easy-keys-minor-mode
-  "A minor mode that disables the arrow-keys, pg-up/down, delete and backspace." t " no-easy-keys"
-  'no-easy-keys-minor-mode-map :global t)
+;; (define-minor-mode no-easy-keys-minor-mode
+;;   "A minor mode that disables the arrow-keys, pg-up/down, delete and backspace." t " no-easy-keys"
+;;   'no-easy-keys-minor-mode-map :global t)
 
 ;; (no-easy-keys-minor-mode nil)
 
-(message "no easy keys")
+(message "LOADING: no easy keys")
 
 ;; (require 'scratch-log)
 ;; (setq sl-scratch-log-file "~/Dropbox/.scratch-log")
@@ -4063,17 +4090,13 @@ FORMAT-STRING is like `format', but it can have multiple %-sequences."
 
 (require 'htmlize)
 
-(message "ace jump")
+(message "LOADING: ace jump")
 
 (require 'ace-jump-mode)
-(define-key global-map (kbd "C-x SPC") 'ace-jump-mode)
+(define-key global-map (kbd "C-c SPC") 'ace-jump-mode)
 
 (require 'clipboard-to-kill-ring)
 (clipboard-to-kill-ring t)
-
-(require 'workgroups)
-(workgroups-mode 1)
-(setq wg-prefix-key (kbd "C-x w"))
 
 (defun write-string-to-file (string file)
   (interactive "sEnter the string: \nFFile to save to: ")
@@ -4084,15 +4107,20 @@ FORMAT-STRING is like `format', but it can have multiple %-sequences."
                     (point-max)
                     file))))
 
-(message "string to file")
+(message "LOADING: string to file")
 
-(defun load-wg ()
-  (interactive)
-  (let ((file "~/.emacs.d/wg"))
-    (progn
-      (unless (file-exists-p file)
-        (write-string-to-file " " file))
-      (wg-load file))))
+;; FIXME: doesn't work
+;; (require 'workgroups)
+;; (workgroups-mode 1)
+;; (setq wg-prefix-key (kbd "C-x w"))
+
+;; (defun load-wg ()
+;;   (interactive)
+;;   (let ((file "~/.emacs.d/wg"))
+;;     (progn
+;;       (unless (file-exists-p file)
+;;         (write-string-to-file " " file))
+;;       (wg-load file))))
 
 (setq emacs-directory "~/.emacs.d/")
 (setq backup-directory "~/.saves")
@@ -4326,5 +4354,230 @@ FORMAT-STRING is like `format', but it can have multiple %-sequences."
 (autoload 'elisp-slime-nav-mode "elisp-slime-nav")
 (add-hook 'emacs-lisp-mode-hook (lambda () (elisp-slime-nav-mode t)))
 (eval-after-load 'elisp-slime-nav '(diminish 'elisp-slime-nav-mode))
+
+(require 'browse-kill-ring)
+
+(defun apply-named-macro-to-region-lines (top bottom)
+  "Apply named keyboard macro to all lines in the region."
+  (interactive "r")
+  (let ((macro (intern
+                (completing-read "kbd macro (name): "
+                                 obarray
+                                 (lambda (elt)
+                                   (and (fboundp elt)
+                                        (or (stringp (symbol-function elt))
+                                            (vectorp (symbol-function elt))
+                                            (get elt 'kmacro))))
+                                 t))))
+    (apply-macro-to-region-lines top bottom macro)))
+
+(defun apply-function-to-region-lines (fn)
+  (interactive "aFunction to apply to lines in region: ")
+  (save-excursion
+    (goto-char (region-end))
+    (let ((end-marker (copy-marker (point-marker)))
+          next-line-marker)
+      (goto-char (region-beginning))
+      (if (not (bolp))
+          (forward-line 1))
+      (setq next-line-marker (point-marker))
+      (while (< next-line-marker end-marker)
+        (let ((start nil)
+              (end nil))
+          (goto-char next-line-marker)
+          (save-excursion
+            (setq start (point))
+            (forward-line 1)
+            (set-marker next-line-marker (point))
+            (setq end (point)))
+          (save-excursion
+            (let ((mark-active nil))
+              (narrow-to-region start end)
+              (funcall fn)
+              (widen)))))
+      (set-marker end-marker nil)
+      (set-marker next-line-marker nil))))
+
+;; magic invocations to prevent encoding errors for cjk
+(setq utf-translate-cjk-mode nil) ; disable CJK coding/encoding (Chinese/Japanese/Korean characters)
+(set-language-environment 'utf-8)
+;; (set-keyboard-coding-system 'utf-8-mac) ; For old Carbon emacs on OS X only
+(setq locale-coding-system 'utf-8)
+(set-default-coding-systems 'utf-8)
+(set-terminal-coding-system 'utf-8)
+(unless (eq system-type 'windows-nt)
+  (set-selection-coding-system 'utf-8))
+(prefer-coding-system 'utf-8)
+
+;; ucs-normalize-NFC-region で濁点分離を直す
+;; M-x ucs-normalize-NFC-buffer または "C-x RET u" で、
+;; バッファ全体の濁点分離を直します。
+;; 参考：
+;; http://d.hatena.ne.jp/nakamura001/20120529/1338305696
+;; http://www.sakito.com/2010/05/mac-os-x-normalization.html
+
+(require 'ucs-normalize)
+(prefer-coding-system 'utf-8-hfs)
+(setq file-name-coding-system 'utf-8-hfs)
+(setq locale-coding-system 'utf-8-hfs)
+
+(defun ucs-normalize-NFC-buffer ()
+  (interactive)
+  (ucs-normalize-NFC-region (point-min) (point-max))
+  )
+
+(global-set-key (kbd "C-x RET u") 'ucs-normalize-NFC-buffer)
+
+
+(require 'google-translate)
+(setq google-translate-default-source-language "ja")
+(setq google-translate-default-target-language "en")
+
+(global-set-key "\C-c\C-w" 'google-translate-at-point)
+(global-set-key (kbd "C-c g") 'google-translate-at-point)
+
+(require 'http-get)
+
+(defvar alc-toppage-url "http://eow.alc.co.jp")
+(defvar alc-encoding 'utf-8)
+(defvar alc-encoding-str "UTF-8")
+(defvar alc-http-param-alist '(("ref" . "sa")))
+
+(defun alc-http-param ()
+  (reduce #'(lambda (x y) (concat x "&" y))
+          (mapcar #'(lambda (cons)
+                      (format "%s=%s"
+                              (first cons)
+                              (http-url-encode (rest cons) alc-encoding)))
+                  alc-http-param-alist)))
+
+(defun alc-make-url (word)
+  (cond ((string= word "") alc-toppage-url)
+        (t (format "%s/%s/%s/?%s"
+                   alc-toppage-url
+                   (http-url-encode word alc-encoding)
+                   alc-encoding-str
+                   (alc-http-param)))))
+
+(defun alc (arg)
+  (interactive "sWORD: ")
+  (browse-url (alc-make-url
+               (cond ((string= arg "") (or (current-word) ""))
+                     (t arg)))))
+
+;; (global-set-key "\C-c\C-w" 'alc)
+
+(defun strip-whitespace-and-newlines-in-region (start end)
+  (interactive "*r")
+  (save-excursion
+    (save-restriction
+      (narrow-to-region start end)
+      (goto-char (point-min))
+      (while (re-search-forward "[ \t\r\n]+" nil t)
+        (replace-match "" nil nil))
+      )))
+
+(defun strip-whitespace-in-region (start end)
+  (interactive "*r")
+  (save-excursion
+    (save-restriction
+      (narrow-to-region start end)
+      (goto-char (point-min))
+      (while (re-search-forward "[ \t\r]+" nil t)
+        (replace-match "" nil nil))
+      )))
+
+(defun my-forward-word (arg)
+  (interactive "p")
+  (let ((char-category
+         '(lambda (ch)
+            (when ch
+              (let* ((c (char-category-set ch))
+                     ct)
+                (cond
+                 ((aref c ?a)
+                  (cond
+                   ((or (and (>= ?z ch) (>= ch ?a))
+                        (and (>= ?Z ch) (>= ch ?A))
+                        (and (>= ?9 ch) (>= ch ?0))
+                        (= ch ?-) (= ch ?_))
+                    'alphnum)
+                   (t
+                    'ex-alphnum)))
+                 ((aref c ?j) ; Japanese
+                  (cond
+                   ((aref c ?K) 'katakana)
+                   ((aref c ?A) '2alphnum)
+                   ((aref c ?H) 'hiragana)
+                   ((aref c ?C) 'kanji)
+                   (t 'ja)))
+                 ((aref c ?k) 'hankaku-kana)
+                 ((aref c ?r) 'j-roman)
+                 (t 'etc))))))
+        (direction 'char-after)
+        char type)
+    (when (null arg) (setq arg 1))
+    (when (> 0 arg)
+      (setq arg (- arg))
+      (setq direction 'char-before))
+    (while (> arg 0)
+      (setq char (funcall direction))
+      (setq type (funcall char-category char))
+      (while (and (prog1 (not (eq (point) (point-max)))
+                    (cond ((eq direction 'char-after)
+                           (goto-char (1+ (point))))
+                          (t
+                           (goto-char (1- (point))))))
+                  (eq type (funcall char-category (funcall direction)))))
+      (setq arg (1- arg)))
+    type))
+
+(defun my-backward-word (arg)
+  (interactive "p")
+  (my-forward-word (- (or arg 1))))
+
+;; 素のforward-word, backward-wordを潰す
+(global-set-key "\M-f" 'my-forward-word)
+(global-set-key "\M-b" 'my-backward-word)
+(global-set-key "\M-F" 'forward-word)
+(global-set-key "\M-B" 'backward-word)
+
+(global-set-key (kbd "M-K") (lambda ()
+                  (interactive)
+                  (join-line -1)))
+
+(require 'highlight-symbol)
+
+;; (global-set-key [(control f3)] 'highlight-symbol-at-point)
+(global-set-key [(control *)] 'highlight-symbol-next)
+;; (global-set-key [(shift f3)] 'highlight-symbol-prev)
+
+(autoload 'word-count-mode "word-count"
+  "Minor mode to count words." t nil)
+
+(setq sentence-end-double-space nil)
+
+(load-file (expand-file-name "~/.emacs.d/keymacros.el"))
+
+
+(message "LOADING: window revive")
+
+(autoload 'save-current-configuration "revive" "Save status" t)
+(autoload 'resume "revive" "Resume Emacs" t)
+(autoload 'wipe "revive" "Wipe Emacs" t)
+
+(setq revive:major-mode-command-alist-private
+      '((w3m-mode . w3m)
+        ("*w3m*" . w3m)))
+
+(defalias 'resume-save 'save-current-configuration)
+
+;; (define-key global-map (kbd "C-x S") 'save-current-configuration)
+;; (define-key global-map (kbd "C-x F") 'resume)
+(add-hook 'kill-emacs-hook 'save-current-configuration)
+
+;; should restore all buffers, etc.
+(resume)
+
 
 (message "********** successfully initialized **********")
