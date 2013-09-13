@@ -1780,6 +1780,8 @@ directory, select directory. Lastly the file is opened."
 (setq org-return-follows-link t)
 
 (setq org-agenda-include-diary t)
+(setq org-agenda-window-setup 'other-frame)
+(setq org-agenda-restore-windows-after-quit t)
 
 ;; (setq org-agenda-clockreport-parameter-plist '(:link nil :maxlevel 2 :fileskip0 t :compact t))
 (setq org-agenda-clockreport-parameter-plist '(:link nil :maxlevel 2 :fileskip0 t :compact t :properties ("fee") :formula "@2$2=vsum(@3$2..@>$2)"))
@@ -2527,7 +2529,14 @@ nEnd:")
       (w3m-browse-url search-string)
       (switch-to-buffer oldbuf))))
 
-
+(defun w3m-search-alc (string)
+  "search alc"
+  (interactive "sSearch ALC: ")
+  (let ((search-string (format "http://eow.alc.co.jp/search?q=%s" (w3m-url-encode-string string 'utf-8)))
+        (oldbuf (current-buffer))
+        (query (format "%s" string)))
+    (progn
+      (browse-url search-string))))
 
 (defun w3m-search-alc-at-point ()
   (interactive)
@@ -2577,7 +2586,6 @@ nEnd:")
 (setq browse-url-browser-function 'browse-url-default-macosx-browser)
 (setq browse-url-generic-program "open")
 
-
 (defun w3m-search-weblio-at-point ()
   (interactive)
   (let ((text (if mark-active
@@ -2588,12 +2596,42 @@ nEnd:")
         (call-interactively 'w3m-search-weblio)
       (w3m-search-weblio text))))
 
+;; http://d.hatena.ne.jp/setoryohei/20121220/1356059447
+
+(defun string-word-or-region ()
+  "If region is selected, this returns the string of the region. If not, this returns the string of the word on which the cursor is."
+  (let ((editable (not buffer-read-only))
+        (pt (save-excursion (mouse-set-point last-nonmenu-event)))
+        beg end)
+    (if (and mark-active
+             (<= (region-beginning) pt) (<= pt (region-end)) )
+        (setq beg (region-beginning)
+              end (region-end))
+      (save-excursion
+        (goto-char pt)
+        (backward-char 1)
+        (setq end (progn (forward-word) (point)))
+        (setq beg (progn (backward-word) (point)))))
+    (buffer-substring-no-properties beg end)))
+
+(defun search-google()
+  "Search by google"
+  (interactive)
+  (let* ((str (string-word-or-region)))
+    (browse-url
+     (concat "http://google.com/search?q=\"" str "\""))))
 
 (defalias 'wwa 'w3m-search-alc)
 (defalias 'wwr 'w3m-search-alc-at-point)
 (defalias 'wwd 'w3m-search-weblio-at-point)
 (global-set-key (kbd "C-c j") 'w3m-search-alc-at-point)
 (global-set-key (kbd "C-c e") 'w3m-search-weblio-at-point)
+(global-set-key (kbd "C-c e") '(lambda ()
+                                 (interactive)
+                                 (w3m-search-weblio-at-point)
+                                 (w3m-search-alc-at-point)
+                                 ))
+
 (message "LOADING: w3m settings")
 
 (require 'revbufs)
@@ -4433,8 +4471,48 @@ FORMAT-STRING is like `format', but it can have multiple %-sequences."
 (setq google-translate-default-source-language "ja")
 (setq google-translate-default-target-language "en")
 
+(defun google-translate-flip-languages ()
+  (interactive)
+  (let* ((src-lang google-translate-default-source-language)
+         (tgt-lang google-translate-default-target-language))
+    (setq google-translate-default-source-language tgt-lang)
+    (setq google-translate-default-target-language src-lang)))
+
+(defun google-translate-region-or-line ()
+  (interactive)
+  (let (beg end)
+    (progn
+      (if (region-active-p)
+          (setq beg (region-beginning) end (region-end))
+        (setq beg (line-beginning-position) end (line-end-position)))
+      (let* ((langs (google-translate-read-args nil nil))
+             (source-language (car langs))
+             (target-language (cadr langs)))
+        (google-translate-translate
+         source-language target-language
+         (buffer-substring-no-properties beg end)
+         ))
+      )))
+
+;; takes prefix arg to toggle languages
+(defun google-translate-region-or-line ()
+  (interactive)
+  (let (beg end)
+    (progn
+      (if (region-active-p)
+          (setq beg (region-beginning) end (region-end))
+        (setq beg (line-beginning-position) end (line-end-position)))
+      (let* ((langs (google-translate-read-args nil nil))
+             (source-language (car langs))
+             (target-language (cadr langs))
+             (string (buffer-substring-no-properties beg end)))
+        (if current-prefix-arg
+            (google-translate-translate source-language target-language string)
+          (google-translate-translate target-language source-language string)
+          )))))
+
 (global-set-key "\C-c\C-w" 'google-translate-at-point)
-(global-set-key (kbd "C-c g") 'google-translate-at-point)
+(global-set-key (kbd "C-c g") 'google-translate-region-or-line)
 
 (require 'http-get)
 
@@ -4467,6 +4545,13 @@ FORMAT-STRING is like `format', but it can have multiple %-sequences."
 
 ;; (global-set-key "\C-c\C-w" 'alc)
 
+(defun select-current-line ()
+  (interactive)
+  (move-beginning-of-line nil)
+  (set-mark-command nil)
+  (move-end-of-line nil)
+  (setq deactivate-mark nil))
+
 (defun strip-whitespace-and-newlines-in-region (start end)
   (interactive "*r")
   (save-excursion
@@ -4476,6 +4561,28 @@ FORMAT-STRING is like `format', but it can have multiple %-sequences."
       (while (re-search-forward "[ \t\r\n]+" nil t)
         (replace-match "" nil nil))
       )))
+
+(defun strip-whitespace-and-newlines-in-region (start end)
+  (interactive "*r")
+  (save-excursion
+    (save-restriction
+      (narrow-to-region start end)
+      (goto-char (point-min))
+      (while (re-search-forward "[ \t\r\n]+" nil t)
+        (replace-match "" nil nil))
+      )))
+
+(defun strip-whitespace-and-newlines-in-region-or-line ()
+  (interactive)
+  (let (beg end)
+    (if (region-active-p)
+        (setq beg (region-beginning) end (region-end))
+      (setq beg (line-beginning-position) end (line-end-position)))
+    (strip-whitespace-and-newlines-in-region beg end)))
+
+(global-set-key (kbd "M-L") (lambda ()
+                              (interactive)
+                              (strip-whitespace-and-newlines-in-region-or-line)))
 
 (defun strip-whitespace-in-region (start end)
   (interactive "*r")
@@ -4537,10 +4644,10 @@ FORMAT-STRING is like `format', but it can have multiple %-sequences."
   (my-forward-word (- (or arg 1))))
 
 ;; 素のforward-word, backward-wordを潰す
-(global-set-key "\M-f" 'my-forward-word)
-(global-set-key "\M-b" 'my-backward-word)
-(global-set-key "\M-F" 'forward-word)
-(global-set-key "\M-B" 'backward-word)
+(global-set-key "\M-F" 'my-forward-word)
+(global-set-key "\M-B" 'my-backward-word)
+(global-set-key "\M-f" 'forward-word)
+(global-set-key "\M-b" 'backward-word)
 
 (global-set-key (kbd "M-K") (lambda ()
                   (interactive)
@@ -4576,8 +4683,14 @@ FORMAT-STRING is like `format', but it can have multiple %-sequences."
 ;; (define-key global-map (kbd "C-x F") 'resume)
 (add-hook 'kill-emacs-hook 'save-current-configuration)
 
+(setq abbrev-file-name "~/.abbrev_defs")
+(setq save-abbrevs t)
+(if (file-exists-p abbrev-file-name)
+    (quietly-read-abbrev-file))
+
+(setq default-abbrev-mode t)
+
+
 ;; should restore all buffers, etc.
 (resume)
-
-
 (message "********** successfully initialized **********")
