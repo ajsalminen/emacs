@@ -431,17 +431,14 @@ they are not (due to semantic considerations)."
   :type 'boolean)
 
 (defcustom magit-remote-ref-format 'remote-slash-branch
-  "What format to use for autocompleting refs, in pariticular for remotes.
+  "How to format refs when autocompleting, in particular for remotes.
 
 Autocompletion is used by functions like `magit-checkout',
 `magit-interactive-rebase' and others which offer branch name
 completion.
 
-The value 'branch-then-remote means remotes will be of the form
-\"branch (remote)\", while the value 'remote-slash-branch means that
-they'll be of the form \"remote/branch\".  I.e. something that's
-listed as \"remotes/upstream/next\" by \"git branch -l -a\" will
-be \"upstream/next\"."
+`remote-slash-branch'  Format refs as \"remote/branch\".
+`branch-then-remote'   Format refs as \"branch (remote)\"."
   :group 'magit
   :type '(choice (const :tag "branch (remote)" branch-then-remote)
                  (const :tag "remote/branch" remote-slash-branch))
@@ -6146,12 +6143,20 @@ restore the window state that was saved before ediff was called."
   (interactive (list (magit-read-rev-with-default "Diff working tree with")))
   (magit-diff (or rev "HEAD")))
 
-(defun magit-diff-with-mark (commit)
-  (interactive (list (or (magit-commit-at-point)
-                         (magit-read-rev "Diff"))))
-  (unless magit-marked-commit
-    (error "No commit marked"))
-  (magit-diff (cons magit-marked-commit commit)))
+(defun magit-diff-with-mark (marked commit)
+  (interactive
+   (let* ((marked (or magit-marked-commit (error "No commit marked")))
+          (current (magit-get-current-branch))
+          (is-current (string= (magit-name-rev marked) current))
+          (commit (or (magit-commit-at-point)
+                      (magit-read-rev
+                       (format "Diff marked commit %s with" marked)
+                       (unless is-current current)
+                       (when is-current
+                         (cons (concat "refs/heads/" current)
+                               magit-uninteresting-refs))))))
+     (list marked commit)))
+  (magit-diff (cons marked commit)))
 
 ;;; Wazzup Mode
 
