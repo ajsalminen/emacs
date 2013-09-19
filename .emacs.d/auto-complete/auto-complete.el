@@ -1,11 +1,11 @@
 ;;; auto-complete.el --- Auto Completion for GNU Emacs
 
-;; Copyright (C) 2008, 2009, 2010, 2011, 2012  Tomohiro Matsuyama
+;; Copyright (C) 2008, 2009, 2010, 2011, 2012, 2013  Tomohiro Matsuyama
 
 ;; Author: Tomohiro Matsuyama <m2ym.pub@gmail.com>
 ;; URL: http://cx4a.org/software/auto-complete
 ;; Keywords: completion, convenience
-;; Version: 1.4
+;; Version: 1.4.0
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -42,6 +42,8 @@
 ;;; Code:
 
 
+
+(defconst ac-version "1.4.0")
 
 (eval-when-compile
   (require 'cl))
@@ -432,7 +434,7 @@ If there is no common part, this will be nil.")
     (define-key map "\C-\M-p" 'ac-quick-help-scroll-up)
 
     (dotimes (i 9)
-      (let ((symbol (intern (format "ac-complete-%d" (1+ i)))))
+      (let ((symbol (intern (format "ac-complete-select-%d" (1+ i)))))
         (fset symbol
               `(lambda ()
                  (interactive)
@@ -900,8 +902,7 @@ You can not use it in source definition like (prefix . `NAME')."
   (unless ac-prefix-overlay
     (let (newline)
       ;; Insert newline to make sure that cursor always on the overlay
-      (when (and (eq ac-point (point-max))
-                 (eq ac-point (point)))
+      (when (eobp)
         (popup-save-buffer-state
           (insert "\n"))
         (setq newline t))
@@ -1381,9 +1382,16 @@ that have been made before in this function.  When `buffer-undo-list' is
   (interactive)
   (when (ac-menu-live-p)
     (ac-cancel-show-menu-timer)
-    (ac-cancel-quick-help-timer)
     (ac-show-menu)
-    (popup-isearch ac-menu :callback 'ac-isearch-callback)))
+    (if ac-use-quick-help
+        (let ((popup-menu-show-quick-help-function
+               (if (ac-quick-help-use-pos-tip-p)
+                   'ac-pos-tip-show-quick-help
+                 'popup-menu-show-quick-help)))
+          (popup-isearch ac-menu
+                         :callback 'ac-isearch-callback
+                         :help-delay ac-quick-help-delay))
+      (popup-isearch ac-menu :callback 'ac-isearch-callback))))
 
 
 
