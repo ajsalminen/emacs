@@ -4690,6 +4690,8 @@ FORMAT-STRING is like `format', but it can have multiple %-sequences."
 
 (setq default-abbrev-mode t)
 
+(require 'gitconfig-mode)
+(add-to-list 'auto-mode-alist '("/\\.gittrees\\'" . gitconfig-mode))
 
 ;; should restore all buffers, etc.
 (resume)
