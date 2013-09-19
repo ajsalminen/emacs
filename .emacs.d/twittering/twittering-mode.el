@@ -287,6 +287,12 @@ directly. Use `twittering-current-timeline-spec-string' or
 (defvar twittering-server-info-alist nil
   "Alist of server information.")
 
+(defvar twittering-api-limit-info-alist '()
+  "Alist of an API identifier and an alist representing rate limit for the API.")
+
+(defvar twittering-timeline-spec-to-api-table '()
+  "Alist of a timeline spec and an API identifier for retrieving the timeline.")
+
 
 (defvar twittering-mode-init-hook nil
   "*Hook run after initializing global variables for `twittering-mode'.")
@@ -802,6 +808,44 @@ as a list of a string on Emacs21."
 	    (if (<= len maxelt)
 		added
 	      (butlast added (- len maxelt)))))))
+
+(if (fboundp 'assoc-string)
+    (defalias 'twittering-assoc-string 'assoc-string)
+  (defun twittering-assoc-string (key list &optional case-fold)
+    "Like `assoc' but specifically for strings (and symbols).
+This returns the first element of LIST whose car matches the string or
+symbol KEY, or nil if no match exists.  When performing the
+comparison, symbols are first converted to strings, and unibyte
+strings to multibyte.  If the optional arg CASE-FOLD is non-nil, case
+is ignored.
+
+Unlike `assoc', KEY can also match an entry in LIST consisting of a
+single string, rather than a cons cell whose car is a string.
+
+This is reimplemented version of `assoc-string' which is not
+defined in Emacs21."
+    (let* ((key (if (stringp key)
+		    key
+		  (symbol-name key)))
+	   (regexp (concat "\\`" key "\\'"))
+	   (rest list)
+	   (result nil)
+	   (case-fold-search case-fold))
+      (while (not (null rest))
+	(let* ((current (car rest))
+	       (current-key
+		(if (listp current)
+		    (car current)
+		  current))
+	       (current-key
+		(if (stringp current-key)
+		    current-key
+		  (symbol-name current-key))))
+	  (if (string-match key current-key)
+	      (setq result current
+		    rest nil)
+	    (setq rest (cdr rest)))))
+      result)))
 
 ;;;;
 ;;;; Debug mode
@@ -3681,16 +3725,80 @@ exiting abnormally by decoding unknown numeric character reference."
 ;;;; JSON parser with a fallback character
 ;;;;
 
+(defconst twittering-surrogate-pair-regexp
+  (if (<= 23 emacs-major-version)
+      ;; Literal strings such as "\uXXXX" is not allowed in Emacs 21
+      ;; and earlier. A character of invalid code point such as U+D800
+      ;; is not allowed in Emacs 22.
+      ;; To avoid errors caused by literal strings invalid in Emacs 22
+      ;; and earlier, the regexp is generated indirectly.
+      (format "[%c-%c][%c-%c]"
+	      (decode-char 'ucs #xd800)
+	      (decode-char 'ucs #xdbff)
+	      (decode-char 'ucs #xdc00)
+	      (decode-char 'ucs #xdfff))
+    ;; A regexp that never matches any strings.
+    "\\'\\`")
+  "Regexp to match a surrogate pair for CESU-8.
+In Emacs 22 and earlier, this variable is initialized by a regexp
+that never matches any string because code points for a surrogate pair,
+from U+D800 to U+DFFF, are invalid.")
+
+(defun twittering-decode-surrogate-pairs-as-cesu-8 (str)
+  "Decode surrogate pairs in STR similarly to CESU-8.
+If STR includes surrogate pairs represented by code points from U+D800 to
+U+DFFF, decode them with CESU-8 and return the result.
+
+A character not in the Basic Multilingual Plane is represented by a surrogate
+pair in JSON (RFC4627). This is similar to CESU-8. But the function
+`json-read' in `json.el' does not correctly decode surrogate pairs. Therefore,
+`json-read' may return a string including invalid code points from U+D800 to
+U+DFFF. This function decodes such invalid code points."
+  (let ((str str)
+	(prev 0)
+	(current 0)
+	(result ""))
+    (while (setq current
+		 (string-match twittering-surrogate-pair-regexp str prev))
+      (let* ((next (match-end 0))
+	     (decoded-str
+	      (decode-coding-string
+	       (mapconcat
+		(lambda (c)
+		  (let* ((code-point (encode-char c 'ucs))
+			 (b1 (/ code-point #x100))
+			 (b2 (% code-point #x100)))
+		    (unibyte-string b1 b2)))
+		(match-string 0 str)
+		"")
+	       'utf-16)))
+	(setq result
+	      (concat result
+		      (substring str prev current)
+		      decoded-str))
+	(setq prev next)))
+    (setq result (concat result (substring str prev)))
+    result))
+
+(defadvice json-read-string (after twittering-decode-surrogate-pairs-as-cesu-8)
+  (when (<= 23 emacs-major-version)
+    (setq ad-return-value
+	  (twittering-decode-surrogate-pairs-as-cesu-8 ad-return-value))))
+
 (defun twittering-json-read (&rest args)
   "Wrapped `json-read' in order to avoid decoding errors.
 `json-read' is called after activating the advice
 `twittering-add-fail-over-to-decode-char'.
 This prevents `json-read' from exiting abnormally by decoding an unknown
 numeric character reference."
-  (let ((activated (ad-is-active 'decode-char)))
+  (let ((activated (ad-is-active 'decode-char))
+	(json-activated (ad-is-active 'json-read-string)))
     (ad-enable-advice
      'decode-char 'after 'twittering-add-fail-over-to-decode-char)
     (ad-activate 'decode-char)
+    (ad-enable-advice 'json-read-string 'after
+		      'twittering-decode-surrogate-pairs-as-cesu-8)
+    (ad-activate 'json-read-string)
     (unwind-protect
 	(condition-case err
 	    (apply 'json-read args)
@@ -3699,9 +3807,15 @@ numeric character reference."
 	   nil))
       (ad-disable-advice 'decode-char 'after
 			 'twittering-add-fail-over-to-decode-char)
+      (ad-disable-advice 'json-read-string 'after
+			 'twittering-decode-surrogate-pairs-as-cesu-8)
       (if activated
 	  (ad-activate 'decode-char)
-	(ad-deactivate 'decode-char)))))
+	(ad-deactivate 'decode-char))
+      (if json-activated
+	  (ad-activate 'json-read-string)
+	(ad-deactivate 'json-read-string))
+      )))
 
 ;;;;
 ;;;; Window configuration
@@ -4250,10 +4364,18 @@ Return cons of the spec and the rest string."
     nil)
    ))
 
-(defun twittering-string-to-timeline-spec (spec-str)
+(defun twittering-string-to-timeline-spec (spec-str &optional noerror)
   "Convert SPEC-STR into a timeline spec.
-Return nil if SPEC-STR is invalid as a timeline spec."
-  (let ((result-pair (twittering-extract-timeline-spec spec-str)))
+If SPEC-STR is invalid as a timeline spec string, raise an error or return
+nil if NOERROR is non-nil."
+  (let ((result-pair
+	 (condition-case err
+	     (twittering-extract-timeline-spec spec-str)
+	   (error
+	    (if noerror
+		nil
+	      (signal (car err) (cdr err))
+	      nil)))))
     (if (and result-pair (string= "" (cdr result-pair)))
 	(car result-pair)
       nil)))
@@ -4319,10 +4441,12 @@ If SPEC is not a search timeline spec, return nil."
        (cadr spec)))
 
 (defun twittering-equal-string-as-timeline (spec-str1 spec-str2)
-  "Return non-nil if SPEC-STR1 equals SPEC-STR2 as a timeline spec."
+  "Return non-nil if SPEC-STR1 equals SPEC-STR2 as a timeline spec.
+If either SPEC-STR1 or SPEC-STR2 is invalid as a timeline spec string,
+return nil."
   (if (and (stringp spec-str1) (stringp spec-str2))
-      (let ((spec1 (twittering-string-to-timeline-spec spec-str1))
-	    (spec2 (twittering-string-to-timeline-spec spec-str2)))
+      (let ((spec1 (twittering-string-to-timeline-spec spec-str1 t))
+	    (spec2 (twittering-string-to-timeline-spec spec-str2 t)))
 	(equal spec1 spec2))
     nil))
 
@@ -4661,7 +4785,9 @@ string and the number of new statuses for the timeline."
 		      (twittering-render-timeline
 		       buffer twittering-new-tweets-statuses t)))
 		(when rendered-tweets
-		  (run-hooks 'twittering-new-tweets-hook)
+		  (when (not (equal spec other-spec))
+		    ;; The hook has been alreadly invoked for `spec'.
+		    (run-hooks 'twittering-new-tweets-hook))
 		  `(,other-spec-string ,(length rendered-tweets)))))))
 	(twittering-get-buffer-list))))))
 
@@ -4915,31 +5041,79 @@ TIME must be an Emacs internal representation as a return value of
 ;;;; Server info
 ;;;;
 
+(defun twittering-update-api-table (spec api-string)
+  "Register a pair of a timeline spec and an API for retrieving the timeline.
+SPEC is a timeline spec. API-STRING is an identifier of an API for retrieving
+the timeline."
+  (let ((current (assoc spec twittering-timeline-spec-to-api-table)))
+    (if (null current)
+	(add-to-list 'twittering-timeline-spec-to-api-table
+		     `(,spec . ,api-string))
+      (setcdr current api-string))))
+
+(defun twittering-make-rate-limit-alist (header-info)
+  "Make a rate-limit information alist from HEADER-INFO.
+Key symbols of a returned alist are following; limit, remaining, reset-time.
+Values bound to limit and remaining is a positive integer and
+one bound to reset-time is an Emacs time (result of `seconds-to-time')."
+  (let ((symbol-table
+	 '(("X-Rate-Limit-Limit" . limit)
+	   ("X-Rate-Limit-Remaining" . remaining)
+	   ("X-Rate-Limit-Reset" . reset-time)
+	   ;; For Twitter API v1.0.
+	   ("X-RateLimit-Limit" . limit)
+	   ("X-RateLimit-Remaining" . remaining)
+	   ("X-RateLimit-Reset" . reset-time))))
+    (remove
+     nil
+     (mapcar (lambda (entry)
+	       (let ((sym
+		      (cdr
+		       (twittering-assoc-string (car entry) symbol-table t))))
+		 (cond
+		  ((memq sym '(limit remaining))
+		   `(,sym . ,(string-to-number (cdr entry))))
+		  ((eq sym 'reset-time)
+		   `(,sym
+		     . ,(seconds-to-time (string-to-number (cdr entry)))))
+		  (t
+		   nil))))
+	     header-info))))
+
+(defun twittering-update-rate-limit-info (api-string spec header-info)
+  "Register rate-limit information.
+API-STRING is an identifier of an API. SPEC is a timeline spec that had been
+retrieved by the API. HEADER-INFO is an alist generated from the HTTP response
+header of the API."
+  (let* ((api-string
+	  (if (eq twittering-service-method 'twitter)
+	      ;; The key for Twitter API v1.0 is nil.
+	      nil
+	    api-string))
+	 (current (assoc api-string twittering-api-limit-info-alist))
+	 (rate-limit-alist (twittering-make-rate-limit-alist header-info)))
+    (twittering-update-api-table spec api-string)
+    (if (null current)
+	(add-to-list 'twittering-api-limit-info-alist
+		     `(,api-string . ,rate-limit-alist))
+      (setcdr current rate-limit-alist))))
+
 (defun twittering-update-server-info (connection-info header-info)
   (let* ((new-entry-list (mapcar 'car header-info))
 	 (account-info (cdr (assq 'account-info connection-info)))
 	 (account
-	  (twittering-get-from-account-info "screen_name" account-info)))
+	  (twittering-get-from-account-info "screen_name" account-info))
+	 (spec (cdr (assq 'timeline-spec connection-info)))
+	 (api-string
+	  (cdr (assq 'uri-without-query (assq 'request connection-info)))))
+    (twittering-update-rate-limit-info api-string spec header-info)
     (when (remove t (mapcar
 		     (lambda (entry)
 		       (equal (assoc entry header-info)
 			      (assoc entry twittering-server-info-alist)))
 		     new-entry-list))
       (setq twittering-server-info-alist
-	    (append (mapcar
-		     (lambda (entry)
-		       ;; Replace a header name for the Twitter REST API v1.1
-		       ;; with that for the Twitter REST API v1.0.
-		       (cond
-			((string= "X-Rate-Limit-Limit" (car entry))
-			 `("X-RateLimit-Limit" . ,(cdr entry)))
-			((string= "X-Rate-Limit-Remaining" (car entry))
-			 `("X-RateLimit-Remaining" . ,(cdr entry)))
-			((string= "X-Rate-Limit-Reset" (car entry))
-			 `("X-RateLimit-Reset" . ,(cdr entry)))
-			(t
-			 entry)))
-		     header-info)
+	    (append header-info
 		    (remove nil (mapcar
 				 (lambda (entry)
 				   (if (member (car entry) new-entry-list)
@@ -5045,31 +5219,41 @@ TIME must be an Emacs internal representation as a return value of
 		(cdr (assoc account twittering-cookie-alist))))
        ";"))))
 
-(defun twittering-get-server-info (field)
-  (let* ((table
-	  '((ratelimit-remaining . "X-RateLimit-Remaining")
-	    (ratelimit-limit . "X-RateLimit-Limit")
-	    (ratelimit-reset . "X-RateLimit-Reset")))
-	 (numeral-field '(ratelimit-remaining ratelimit-limit))
-	 (unix-epoch-time-field '(ratelimit-reset))
-	 (field-name (cdr (assq field table)))
-	 (field-value (cdr (assoc field-name twittering-server-info-alist))))
-    (when (and field-name field-value)
-      (cond
-       ((memq field numeral-field)
-	(string-to-number field-value))
-       ((memq field unix-epoch-time-field)
-	(seconds-to-time (string-to-number (concat field-value ".0"))))
-       (t
-	nil)))))
+(defun twittering-get-ratelimit-alist (&optional spec)
+  (let ((api-string
+	 (cdr (assoc spec twittering-timeline-spec-to-api-table))))
+    (cdr (assoc api-string twittering-api-limit-info-alist))))
 
-(defun twittering-get-ratelimit-remaining ()
-  (or (twittering-get-server-info 'ratelimit-remaining)
+(defun twittering-get-ratelimit-remaining (&optional spec)
+  (or (cdr (assq 'remaining (twittering-get-ratelimit-alist spec)))
       0))
 
-(defun twittering-get-ratelimit-limit ()
-  (or (twittering-get-server-info 'ratelimit-limit)
+(defun twittering-get-ratelimit-limit (&optional spec)
+  (or (cdr (assq 'limit (twittering-get-ratelimit-alist spec)))
       0))
+
+(defun twittering-get-ratelimit-indicator-string (&optional spec)
+  "Make an indicator string of rate-limit information of SPEC."
+  (cond
+   ((eq twittering-service-method 'twitter)
+    ;; Twitter API v1.0.
+    (format "%d/%d"
+	    (twittering-get-ratelimit-remaining)
+	    (twittering-get-ratelimit-limit)))
+   (t
+    (mapconcat
+     (lambda (api-string)
+       (let* ((alist (cdr (assoc api-string twittering-api-limit-info-alist)))
+	      (remaining (cdr (assq 'remaining alist)))
+	      (limit (cdr (assq 'limit alist))))
+	 (format "%s/%s"
+		 (if remaining (number-to-string remaining) "?")
+		 (if limit (number-to-string limit) "?"))))
+     (twittering-remove-duplicates
+      (mapcar (lambda (spec)
+		(cdr (assoc spec twittering-timeline-spec-to-api-table)))
+	      (twittering-get-primary-base-timeline-specs spec)))
+     "+"))))
 
 ;;;;
 ;;;; Abstract layer for Twitter API
@@ -7861,9 +8045,8 @@ static char * unplugged_xpm[] = {
 	   ,@(when twittering-proxy-use '("proxy")))))
     (concat active-mode-indicator
 	    (when twittering-display-remaining
-	      (format " %d/%d"
-		      (twittering-get-ratelimit-remaining)
-		      (twittering-get-ratelimit-limit)))
+	      (let ((spec (twittering-current-timeline-spec)))
+		(twittering-get-ratelimit-indicator-string spec)))
 	    (when enabled-options
 	      (concat "[" (mapconcat 'identity enabled-options " ") "]")))))
 
@@ -9500,7 +9683,7 @@ If FORCE is non-nil, all active buffers are updated forcibly."
     (twittering-update-service-configuration)
     (let* ((buffer-list (twittering-get-active-buffer-list))
 	   (primary-spec-list
-	    (delete-dups
+	    (twittering-remove-duplicates
 	     (apply 'append
 		    (mapcar
 		     (lambda (buffer)
@@ -10394,7 +10577,7 @@ Pairs of a key symbol and an associated value are following:
 	(while not-posted-p
 	  (setq status (read-from-minibuffer prompt status map nil 'twittering-tweet-history nil t))
 	  (let ((status status))
-	    (if (< 140 (length status))
+	    (if (< 140 (twittering-effective-length status))
 		(setq prompt "status (too long): ")
 	      (setq prompt "status: ")
 	      (when (twittering-status-not-blank-p status)
