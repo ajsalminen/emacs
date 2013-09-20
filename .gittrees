@@ -10,10 +10,6 @@
         url = https://github.com/naota/navi2ch
 	path = .emacs.d/navi2ch
 	branch = master
-[subtree "org-mode"]
-	url = git://orgmode.org/org-mode.git
-	path = .emacs.d/org-mode
-	branch = master
 [subtree "twittering"]
 	url = https://github.com/hayamiz/twittering-mode.git
 	path = .emacs.d/twittering
