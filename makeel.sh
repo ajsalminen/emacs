@@ -1,115 +1,158 @@
-platform='unknown'
+set_make_params(){
+    current_dirname=$(pwd)
+    platform='unknown'
 
-unamestr=`uname`
-install_string=''
-emacs_string''
-eed=~/.emacs.d
-org_make_string=''
+    unamestr=`uname`
+    install_string=''
+    emacs_string=''
+    eed=~/.emacs.d
+    org_make_string=''
 
-if [[ "$unamestr" == 'Linux' ]]; then
-    platform='linux'
-    EMACS=`which emacs`
-elif [[ "$unamestr" == 'Darwin' ]]; then
-    platform='freebsd'
-    install_string='EMACS=/Applications/Emacs.app/Contents/MacOS/Emacs LISPDIR=/Applications/Emacs.app/Contents/Resources/site-lisp'
-    emacs_string='--with-emacs=/Applications/Emacs.app/Contents/MacOS/Emacs'
-    prefix='/Applications'
-    lispdir=$prefix'/Emacs.app/Contents/Resources/site-lisp'
-    infodir=$prefix'/Emacs.app/Contents/Resources/info'
-    lisp_string='--with-lispdir='$lispdir
-    lisplocal_string='--with-lispdir=~/emacs.d/site-lisp'
-fi
+    if [[ "$unamestr" == 'Linux' ]]; then
+        platform='linux'
+        EMACS=`which emacs`
+    elif [[ "$unamestr" == 'Darwin' ]]; then
+        platform='freebsd'
+        install_string='EMACS=/Applications/Emacs.app/Contents/MacOS/Emacs LISPDIR=/Applications/Emacs.app/Contents/Resources/site-lisp'
+        emacs_string='--with-emacs=/Applications/Emacs.app/Contents/MacOS/Emacs'
+        prefix='/Applications'
+        lispdir=$prefix'/Emacs.app/Contents/Resources/site-lisp'
+        infodir=$prefix'/Emacs.app/Contents/Resources/info'
+        lisp_string='--with-lispdir='$lispdir
+        lisplocal_string='--with-lispdir=~/emacs.d/site-lisp'
+    fi
+}
 
-cd $eed/org-mode
-make clean
-make --makefile=$eed/orgmakefile_mac
-make install --makefile=$eed/orgmakefile_mac
-
-cd $eed/cedet-1.0
-make clean
-make
-
-cd $eed/emacs-w3m
-autoconf
-make clean
-
-if [[ "$unamestr" == 'Linux' ]]; then
-    ./configure
-    make
-    make install
-elif [[ "$unamestr" == 'Darwin' ]]; then
-    ./configure $emacs_string $lisp_string
-    make
-    make install
+make_org(){
+    cd $eed/org-mode
     make clean
-    ./configure $emacs_string $lisplocal_string
+    make --makefile=$eed/orgmakefile_mac
+    make install --makefile=$eed/orgmakefile_mac
+    cd $current_dirname
+}
+
+make_cedet(){
+    cd $eed/cedet-1.0
+    make clean
     make
-    make install
-fi
+    cd $current_dirname
+}
 
-cd $eed/el-get/bbdb
-make clean
-./configure $emacs_string
-make autoloads
-make
+make_w3m(){
+    cd $eed/emacs-w3m
+    autoconf
+    make clean
 
-cd $eed/el-get/apel
-make clean
-make $install_string
-make install $install_string
+    if [[ "$unamestr" == 'Linux' ]]; then
+        ./configure
+        make
+        make install
+    elif [[ "$unamestr" == 'Darwin' ]]; then
+        ./configure $emacs_string $lisp_string
+        make
+        make install
+        make clean
+        ./configure $emacs_string $lisplocal_string
+        make
+        make install
+    fi
+    cd $current_dirname
+}
 
-cd $eed/el-get/flim
-make clean
-make $install_string
-make install $install_string
+make_bbdb(){
+    cd $eed/el-get/bbdb
+    make clean
+    ./configure $emacs_string
+    make autoloads
+    make
+    cd $current_dirname
+}
 
-cd $eed/el-get/semi
-make clean
-make $install_string
-make install $install_string
+make_and_install(){
+    if [ "$1" ]
+    then
+        cd $eed/$1
+        make clean
+        make $install_string
+        make install $install_string
+    else
+        echo "specify directory"
+    fi
+    cd $current_dirname
+}
 
-cd $eed/el-get/wanderlust
-make clean
-make $install_string
-make install $install_string
+make_elget(){
+    if [ "$1" ]
+    then
+        dirname="el-get/${$1}"
+        make_and_install $dirname
+    fi
+}
 
-cd $eed/org-mode
-make clean
-make $install_string
-make install $install_string
+make_apel(){
+    make_elget "apel"
+}
 
-cd $eed/muse-3.20
-make clean
-make $install_string
-make install $install_string
+make_flim(){
+    make_elget "flim"
+}
 
-cd $eed/auto-complete-1.3.1
-make clean
-make $install_string
+make_semi(){
+    make_elget "semi"
+}
 
-cd $eed/scala
-make clean
-make
+make_wanderlust(){
+    make_elget "wanderlust"
+}
 
-rm -rf $eed/tramp-2.2.1
-tar xzvf $eed/tramp-2.2.1.tar.gz
-cd $eed/tramp-2.2.1
-make clean
-./configure --with-contrib
-make $install_string
-sudo make install
-cd $eed
-rm -rf tramp-2.2.1
+make_org2(){
+    make_and_install "org-mode"
+}
 
-for i in `ls $eed`; do cd $eed/$i && make; done;
-find $eed/site-lisp -type f -name *.el -print0 | xargs -0 emacs -batch -f batch-byte-compile
-find $eed/elpa/ -type f -name *.el -print0 | xargs -0 emacs -batch -f batch-byte-compile
-find $eed/haskell-mode/ -type f -name *.el -print0 | xargs -0 emacs -batch -f batch-byte-compile
-find $eed/reftex*/lisp -type f -name *.el -print0 | xargs -0 emacs -batch -f batch-byte-compile
-find $eed/elib* -type f -name *.el -print0 | xargs -0 emacs -batch -f batch-byte-compile
-find $eed/jdee-*/lisp -type f -name *.el -print0 | xargs -0 emacs -batch -f batch-byte-compile
-find $eed/ensime*/elisp -type f -name *.el -print0 | xargs -0 emacs -batch -f batch-byte-compile
-for i in `find $eed/* -type f -name *.el`; do emacs -batch -f batch-byte-compile $i; done;
-#cd $eed/bbdb-* && make
-#cd $eed/bbdb-*/lisp && make
-cd $eed/yatex* && make elc
+make_muse(){
+    make_elget "muse-3.20"
+}
+
+make_ac(){
+    cd $eed/auto-complete-1.3.1
+    make clean
+    make $install_string
+}
+
+make_scala(){
+    cd $eed/scala
+    make clean
+    make
+    cd $current_dirname
+}
+
+make_tramp(){
+    rm -rf $eed/tramp-2.2.1
+    tar xzvf $eed/tramp-2.2.1.tar.gz
+    cd $eed/tramp-2.2.1
+    make clean
+    ./configure --with-contrib
+    make $install_string
+    sudo make install
+    cd $eed
+    rm -rf tramp-2.2.1
+    cd $current_dirname
+}
+
+byte_compile_all_lisp(){
+    for i in `ls $eed`; do cd $eed/$i && make; done;
+    find $eed/site-lisp -type f -name *.el -print0 | xargs -0 emacs -batch -f batch-byte-compile
+    find $eed/elpa/ -type f -name *.el -print0 | xargs -0 emacs -batch -f batch-byte-compile
+    find $eed/haskell-mode/ -type f -name *.el -print0 | xargs -0 emacs -batch -f batch-byte-compile
+    find $eed/reftex*/lisp -type f -name *.el -print0 | xargs -0 emacs -batch -f batch-byte-compile
+    find $eed/elib* -type f -name *.el -print0 | xargs -0 emacs -batch -f batch-byte-compile
+    find $eed/jdee-*/lisp -type f -name *.el -print0 | xargs -0 emacs -batch -f batch-byte-compile
+    find $eed/ensime*/elisp -type f -name *.el -print0 | xargs -0 emacs -batch -f batch-byte-compile
+    for i in `find $eed/* -type f -name *.el`; do emacs -batch -f batch-byte-compile $i; done;
+    #cd $eed/bbdb-* && make
+    #cd $eed/bbdb-*/lisp && make
+    cd $eed/yatex* && make elc
+    cd $current_dirname
+}
+
+set_make_params
