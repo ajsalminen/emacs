@@ -25,9 +25,10 @@ set_make_params(){
 
 make_org(){
     cd $eed/org-mode
+    cp $eed/org_make_mac_new $eed/org-mode/local.mk
     make clean
-    make --makefile=$eed/orgmakefile_mac
-    make install --makefile=$eed/orgmakefile_mac
+    make
+    make install
     cd $current_dirname
 }
 
@@ -105,10 +106,6 @@ make_wanderlust(){
     make_elget "wanderlust"
 }
 
-make_org2(){
-    make_and_install "org-mode"
-}
-
 make_muse(){
     make_elget "muse-3.20"
 }
@@ -156,3 +153,29 @@ byte_compile_all_lisp(){
 }
 
 set_make_params
+
+make_all_elisp(){
+    make_org
+    make_cedet
+    make_w3m
+    make_bbdb
+    make_apel
+    make_flim
+    make_semi
+    make_wanderlust
+    make_muse
+    make_ac
+    make_scala
+    make_tramp
+    byte_compile_all_lisp
+}
+
+
+while [ $# -gt 0 ]; do
+    opt="$1"
+    shift
+    case "$opt" in
+        --all) make_all_elisp ;;
+        *) die "Unexpected option: $opt" ;;
+    esac
+done
