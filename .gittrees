@@ -1,28 +1,28 @@
-[subtree ".emacs.d/auto-complete"]
+[subtree "auto-complete"]
 	url = https://github.com/auto-complete/auto-complete.git
 	path = .emacs.d/auto-complete
 	branch = master
-[subtree ".emacs.d/magit"]
+[subtree "magit"]
 	url = https://github.com/magit/magit.git
 	path = .emacs.d/magit
 	branch = master
-[subtree ".emacs.d/navi2ch"]
+[subtree "navi2ch"]
         url = https://github.com/naota/navi2ch
 	path = .emacs.d/navi2ch
 	branch = master
-[subtree ".emacs.d/org-mode"]
+[subtree "org-mode"]
 	url = git://orgmode.org/org-mode.git
 	path = .emacs.d/org-mode
 	branch = master
-[subtree ".emacs.d/twittering"]
+[subtree "twittering"]
 	url = https://github.com/hayamiz/twittering-mode.git
 	path = .emacs.d/twittering
 	branch = master
-[subtree ".emacs.d/yasnippet-go"]
+[subtree "yasnippet-go"]
 	url = https://github.com/dominikh/yasnippet-go.git
 	path = .emacs.d/yasnippet-go
 	branch = master
-[subtree ".emacs.d/yasnippet"]
+[subtree "yasnippet"]
 	url = https://github.com/capitaomorte/yasnippet.git
 	path = .emacs.d/yasnippet
 	branch = master
