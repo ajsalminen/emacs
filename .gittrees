@@ -22,3 +22,7 @@
 	url = https://github.com/capitaomorte/yasnippet.git
 	path = .emacs.d/yasnippet
 	branch = master
+[subtree ".emacs.d/org-mode"]
+	url = git://orgmode.org/org-mode.git
+	path = .emacs.d/org-mode
+	branch = master
