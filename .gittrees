@@ -2,10 +2,6 @@
 	url = https://github.com/auto-complete/auto-complete.git
 	path = .emacs.d/auto-complete
 	branch = master
-[subtree "magit"]
-	url = https://github.com/magit/magit.git
-	path = .emacs.d/magit
-	branch = master
 [subtree "navi2ch"]
         url = https://github.com/naota/navi2ch
 	path = .emacs.d/navi2ch

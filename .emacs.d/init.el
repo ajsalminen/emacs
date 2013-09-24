@@ -234,7 +234,8 @@
     (load
      (if (<= emacs-major-version 24)
 	 (expand-file-name "~/.emacs.d/package-backport/package.el")
-       (expand-file-name "~/.emacs.d/elpa/package.el")))
+       ;; (expand-file-name "~/.emacs.d/elpa/package.el")
+       ))
   (require 'package)
   (setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
                            ("marmalade" . "http://marmalade-repo.org/packages/")
@@ -4682,6 +4683,9 @@ FORMAT-STRING is like `format', but it can have multiple %-sequences."
 ;; (define-key global-map (kbd "C-x S") 'save-current-configuration)
 ;; (define-key global-map (kbd "C-x F") 'resume)
 (add-hook 'kill-emacs-hook 'save-current-configuration)
+
+
+(message "LOADING: extra settings")
 
 (setq abbrev-file-name "~/.abbrev_defs")
 (setq save-abbrevs t)
