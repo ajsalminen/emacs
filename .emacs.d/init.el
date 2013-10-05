@@ -5,110 +5,24 @@
        (funcall mode -1)))
  '(menu-bar-mode tool-bar-mode scroll-bar-mode))
 
-;;; UNCOMMENT THIS TO DEBUG TROUBLE GETTING EMACS UP AND RUNNING.
-(setq debug-on-error t)
-(setq eval-expression-debug-on-error t)
-(setq lang "en_US")
-(setq inhibit-splash-screen t)
-
-
-;; workaround for cocoa emacs byte-compiling
-(when (eq window-system 'ns)
-  (setq warning-suppress-types nil)
-  (setq ispell-program-name "/usr/local/bin/aspell"))
-
 ;; the mother of all load paths
-(setq more-load-paths '("~/.emacs.d/auctex-11.86"
-                        "~/.emacs.d/auctex-11.86/preview"
-                        "~/.emacs.d/auto-complete"
-                        "~/.emacs.d/bbdb-2.35/lisp/"
-                        "~/.emacs.d/cedet-1.0/common/"
-                        "~/.emacs.d/color-theme"
-                        "~/.emacs.d/dictionary-el/"
-                        "~/.emacs.d/el-get/bbdb/lisp/"
+;; TODO: consolidate "lisp" folder and "site-lisp"
+(let ((default-directory "~/.emacs.d/lisp/"))
+  (normal-top-level-add-to-load-path '("."))
+  (normal-top-level-add-subdirs-to-load-path))
+
+(setq more-load-paths '("~/.emacs.d/el-get/bbdb/lisp/"
                         "~/.emacs.d/el-get/bbdb-vcard/"
                         "~/.emacs.d/el-get/el-get"
                         "~/.emacs.d/el-get/google-weather"
-                        "~/.emacs.d/elib-1.0"
-                        "~/.emacs.d/emacs-w3m"
-                        "~/.emacs.d/ensime_2.9.1-0.7.6/elisp"
-                        "~/.emacs.d/ess-5.11/lisp"
-                        "~/.emacs.d/jdee/dist/jdee-2.4.1/lisp"
-                        "~/.emacs.d/magit"
-                        "~/.emacs.d/malabar-1.5-SNAPSHOT/lisp"
-                        "~/.emacs.d/mu-cite"
-                        "~/.emacs.d/mu4e"
-                        "~/.emacs.d/muse-3.20/lisp"
-                        "~/.emacs.d/navi2ch"
-                        "~/.emacs.d/org-mode/contrib/lisp"
-                        "~/.emacs.d/org-mode/lisp"
-                        "~/.emacs.d/reftex-4.34a/lisp"
-                        "~/.emacs.d/rhtml"
-                        "~/.emacs.d/rinari"
-                        "~/.emacs.d/site-lisp"
-                        "~/.emacs.d/skype"
-                        "~/.emacs.d/twittering"
-                        "~/.emacs.d/vim"
-                        "~/.emacs.d/yasnippet"
-                        "~/.emacs.d/yatex1.74.4"))
+			"~/.emacs.d/site-lisp"))
 
 (setq load-path (append load-path more-load-paths))
 
-
-;; (defun kill-ci-buffer ()
-;;  (interactive)
-;;  (switch-to-buffer " *Compiler Input*")
-;;  (set-buffer-modified-p nil)
-;;  (kill-buffer " *Compiler Input*"))
-
-;; (kill-ci-buffer)
-
-(setq font-lock-verbose nil)
-(setq byte-compile-verbose nil)
-(setq bcc-cache-directory "~/.elispcache")
-
-;; Emervency stuff that I want before debugging init files
-;; On Mac OS X, Emacs launched from a bundle
-;; needs paths to be set explicitly
-(add-to-list 'exec-path (getenv "PATH"))
-(push "/usr/local/bin/scala/bin/" exec-path)
-(push "/usr/local/bin/" exec-path)
-(push "/usr/bin/" exec-path)
-;; Setup PATH
+(require 'init-loader)
+(init-loader-load "~/.emacs.d/inits")
 
 (eval-when-compile (require 'cl))
-(when (and (>= emacs-major-version 23) (eq window-system 'ns))
-  (setq mac-option-key-is-meta nil)
-  (setq mac-command-key-is-meta t)
-  (setq mac-command-modifier 'meta)
-  (setq mac-option-modifier nil)
-  (setq mac-option-modifier 'super)
-
-  (when (not (featurep 'aquamacs))
-    (mac-set-input-method-parameter `japanese `cursor-color "yellow")
-    (mac-set-input-method-parameter "com.google.inputmethod.Japanese.base" `cursor-color "yellow")
-
-    ;; really important when typing commasand such
-    (mac-add-key-passed-to-system 'shift)))
-
-(when (and (>= emacs-major-version 23) (or (eq window-system 'ns) (eq window-system 'x)))
-  (setenv "PATH" (shell-command-to-string "source ~/.zshrc; echo -n $PATH")) ;
-  (when (eq window-system 'x)
-    (setenv "PATH" (concat "/usr/local/texlive/2010/bin/i386-linux:" (getenv "PATH"))))
-  ;; Update exec-path with the contents of $PATH
-  (loop for path in (split-string (getenv "PATH") ":") do
-        (add-to-list 'exec-path path)))
-
-(require 'color-theme)
-(require 'color-theme-invaders)
-(eval-after-load "color-theme"
-  '(progn
-     (color-theme-initialize)
-     (color-theme-invaders)))
-
-(defun color-theme-reset ()
-  (interactive)
-  (color-theme-reset-faces))
 
 (require 'paredit)
 (require 'highlight-parentheses)
@@ -123,37 +37,6 @@
 (add-hook 'slime-repl-mode-hook (lambda () (rainbow-delimiters-mode t) (paredit-mode t)))
 
 (require 'bookmark)
-(require 'anything-config)
-
-;; (require 'anything-startup)
-(global-set-key (kbd "C-z") 'anything)
-(global-set-key (kbd "C-h h") 'anything)
-
-(setq anything-idle-delay 0.3)
-(setq anything-input-idle-delay 0.2)
-(setq anything-candidate-number-limit 100)
-(require 'anything-c-shell-history)
-(require 'anything-yaetags)
-(global-set-key (kbd "M-.") 'anything-yaetags-find-tag)
-;; (global-set-key (kbd "M-.") 'find-tag)
-
-(require 'anything-match-plugin)
-(require 'eijiro)
-(setq eijiro-directory "~/Downloads/EDP-124/EIJIRO/") ; 英辞郎の辞書を置いているディレクトリ
-
-(setq anything-sources
-      '(anything-c-source-recentf
-        anything-c-source-info-pages
-        anything-c-source-info-elisp
-        anything-c-source-buffers
-        ;; anything-c-source-shell-history
-        anything-c-source-file-name-history
-        anything-c-source-locate
-        anything-c-source-occur))
-
-(require 'descbinds-anything)
-(descbinds-anything-install)
-(defalias 'rf 'anything-recentf)
 
 (require 'icicles)
 (icy-mode 1)
@@ -227,461 +110,6 @@
         (format-network-address (car info) t))))
 
 ;; emergency settings end here
-
-;;; This was installed by package-install.el.
-;;; This provides support for the package system and
-;;; interfacing with ELPA, the package archive.
-;;; Move this code earlier if you want to reference
-;;; packages in your .emacs.
-
-;; for package backports
-(when (<= emacs-major-version 24)
-  (add-to-list 'load-path "~/.emacs.d/package-backport"))
-
-(when
-    (load
-     (if (<= emacs-major-version 24)
-	 (expand-file-name "~/.emacs.d/package-backport/package.el")
-       ;; (expand-file-name "~/.emacs.d/elpa/package.el")
-       ))
-  (require 'package)
-  (setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
-                           ("marmalade" . "http://marmalade-repo.org/packages/")
-                           ("melpa" . "http://melpa.milkbox.net/packages/")))
-  ;; (add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/") t)
-  ;; (add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/"))
-  (package-initialize))
-
-;; user the snippent below to bootstrap el-get
-;; don't leave uncommented unless you like pain
-
-(defun redo-el-get ()
-  (interactive)
-  (progn
-    (ignore-errors
-      (delete-directory "~/.emacs.d/el-get" t))
-    (url-retrieve
-     "https://github.com/dimitri/el-get/raw/master/el-get-install.el"
-     (lambda (s)
-       (end-of-buffer)
-       (eval-print-last-sexp)))))
-
-;; separate el-get stuff into its own file
-(add-to-list 'load-path "~/.emacs.d/el-get/el-get")
-
-(unless (require 'el-get nil 'noerror)
-  (with-current-buffer
-      (url-retrieve-synchronously
-       "https://raw.github.com/dimitri/el-get/master/el-get-install.el")
-    (goto-char (point-max))
-    (eval-print-last-sexp)))
-
-;; (el-get 'sync)
-;; (require 'el-get)
-
-(setq el-get-git-shallow-clone t)
-
-(defun el-get-rebuild ()
-  (interactive)
-  (let* ((package-list (directory-files el-get-dir nil "^[^\\.]")))
-    (mapcar '(lambda (arg) (el-get-post-install arg)) package-list)))
-
-(defun el-get-can-exit-p ()
-  (or (not (get 'el-get-standard-packages 'customized-value))
-      (customize-save-variable 'el-get-standard-packages el-get-standard-packages)))
-
-(defun force-git-add-after-el-get (package-path)
-  (let* ((git-executable (el-get-executable-find "git"))
-         (name (format "*git add subdir %s*" package))   )
-    (message "===========================================")
-    (message (format "cd %s && %s add %s/" el-get-dir git-executable package-path))
-    (shell-command (format "cd %s && %s add %s/" el-get-dir git-executable package-path))
-    (message "===========================================")))
-
-(add-hook 'el-get-post-install-hooks 'force-git-add-after-el-get)
-(add-hook 'el-get-post-update-hooks 'force-git-add-after-el-get)
-
-;; (setq el-get-init-files-pattern "~/emacs/init.d/[0-9]*.el")
-;; (setq el-get-sources nil)
-(setq el-get-sources
-      '(google-weather
-        ;; (:name ecb
-        ;; :depends (cedet)
-        ;; :type cvs
-        ;; :module "ecb"
-        ;; :url ":pserver:anonymous@ecb.cvs.sourceforge.net:/cvsroot/ecb"
-        ;; :build ((concat "make CEDET=" " EMACS=" el-get-emacs))
-        ;; )
-        (:name bbdb-vcard
-               :depends (bbdb)
-               :type git
-               :url "https://github.com/trebb/bbdb-vcard.git"
-               :features bbdb-vcard)
-        (:name tail
-               :after (lambda ()
-                        (autoload 'tail-file "tail.el" nil t)))
-        ;; (:name ecb
-        ;; :after (lambda ()
-        ;; (setq ecb-layout-name "left8")
-        ;; ;;(setq ecb-auto-activate t)
-        ;; (setq ecb-tip-of-the-day nil)
-        ;; (setq ecb-fix-window-size (quote width))
-        ;; (setq ecb-compile-window-width (quote edit-window))
-        ;; (setq ecb-major-modes-deactivate '(wl-mode tramp-mode))
-        ;; ;;(setq ecb-major-modes-activate '(text-mode LaTeX-mode latex-mode))
-        ;; (setq ecb-windows-width 25)))
-        ;; (:name apel
-        ;; :type git
-        ;; :module "apel"
-        ;; :url "https://github.com/wanderlust/apel.git"
-        ;; :build
-        ;; (mapcar
-        ;; (lambda (target)
-        ;; (list el-get-emacs
-        ;; (split-string "-batch -q -no-site-file -l APEL-MK -f")
-        ;; target
-        ;; "prefix" "site-lisp" "site-lisp"))
-        ;; '("compile-apel" "install-apel"))
-        ;; :load-path ("site-lisp/apel" "site-lisp/emu"))
-        ;; (:name flim
-        ;; :type git
-        ;; :module "flim"
-        ;; :url "https://github.com/wanderlust/flim.git"
-        ;; :build
-        ;; (mapcar
-        ;; (lambda (target)
-        ;; (list el-get-emacs
-        ;; (mapcar (lambda (pkg)
-        ;; (mapcar (lambda (d) `("-L" ,d)) (el-get-load-path pkg)))
-        ;; '("apel"))
-
-        ;; (split-string "-batch -q -no-site-file -l FLIM-MK -f")
-        ;; target
-        ;; "prefix" "site-lisp" "site-lisp"))
-        ;; '("compile-flim" "install-flim"))
-        ;; :load-path ("site-lisp/flim"))
-        ;; (:name semi
-        ;; :type git
-        ;; :module "semi"
-        ;; :url "https://github.com/wanderlust/semi.git"
-        ;; :build
-        ;; (mapcar
-        ;; (lambda (target)
-        ;; (list el-get-emacs
-        ;; (mapcar (lambda (pkg)
-        ;; (mapcar (lambda (d) `("-L" ,d)) (el-get-load-path pkg)))
-        ;; '("apel" "flim"))
-        ;; (split-string "-batch -q -no-site-file -l SEMI-MK -f")
-        ;; target
-        ;; "prefix" "NONE" "NONE"))
-        ;; '("compile-semi" "install-semi")))
-        (:name bbdb
-               :type git
-               :url "git://github.com/baron/bbdb.git"
-               ;; :load-path ("./lisp" "./bits")
-               ;; :build ("autoconf" "./configure" "make autoloads" "make")
-               ;; ;; :build/darwin ("autoconf" "./configure --with-emacs=/Applications/Emacs.app/Contents/MacOS/Emacs" "make autoloads" "make")
-               ;; :build/darwin (("autoconf") ("./configure --with-emacs=/Applications/Emacs.app/Contents/MacOS/Emacs") ("make autoloads") (cp ) ("make"))
-
-               :load-path ("./lisp")
-               ;; if using vm, add `--with-vm-dir=DIR' after ./configure
-               :build `("autoconf" ,(concat "./configure --with-emacs=" el-get-emacs)
-                        "make clean" "rm -f lisp/bbdb-autoloads.el"
-                        "make bbdb")
-               :features bbdb-loaddefs
-               :autoloads nil
-
-               ;; :features bbdb
-               ;; ;; :after (lambda () (bbdb-initialize))
-               ;; :info "texinfo"
-
-               ;; :type git
-               ;; :url "https://github.com/barak/BBDB.git"
-               ;; :load-path ("./lisp" "./bits")
-               ;; :build ("./configure" "make autoloads" "make")
-               ;; :build/darwin `(,(concat "./configure --with-emacs=" el-get-emacs) "make autoloads" "make")
-               ;; :features bbdb
-               ;; :autoloads nil
-               ;; :post-init (lambda () (bbdb-initialize))
-               ;; :info "texinfo"
-               ;; :type git
-               ;; :url "git://git.savannah.nongnu.org/bbdb.git"
-               ;; :load-path ("./lisp")
-               ;; :build `(,(concat "make EMACS=" el-get-emacs "-C lisp"))
-               ;; :features bbdb
-               ;; :autoloads nil
-               ;; :post-init (lambda () (bbdb-initialize))
-               ;; :info "texinfo"
-
-               :after (lambda ()
-                        (setq
-                         bbdb-offer-save 1 ;; 1 means save-without-asking
-                         bbdb-use-pop-up t ;; allow popups for addresses
-                         bbdb-electric-p t ;; be disposable with SPC
-                         bbdb-popup-target-lines 1 ;; very small
-                         bbdb-dwim-net-address-allow-redundancy t ;; always use full name
-                         bbdb-quiet-about-name-mismatches 2 ;; show name-mismatches 2 secs
-                         bbdb-always-add-address t ;; add new addresses to existing...
-                         ;; ...contacts automatically
-                         bbdb-canonicalize-redundant-nets-p t ;; x@foo.bar.cx => x@bar.cx
-                         bbdb-completion-type nil ;; complete on anything
-                         bbdb-complete-name-allow-cycling t ;; cycle through matches
-                         ;; this only works partially
-                         bbbd-message-caching-enabled t ;; be fast
-                         bbdb-use-alternate-names t ;; use AKA
-                         bbdb-elided-display t ;; single-line addresses
-                         ;; auto-create addresses from mail
-                         bbdb/mail-auto-create-p 'bbdb-ignore-some-messages-hook
-                         bbdb-ignore-some-messages-alist ;; don't ask about fake addresses
-                         ;; NOTE: there can be only one entry per HEADer (such as To, From)
-                         ;; http://flex.ee.uec.ac.jp/texi/bbdb/bbdb_11.html
-                         '(( "From" . "no.?reply\\|DAEMON\\|daemon\\|facebookmail\\|twitter"))))
-               (bbdb-insinuate-message)
-               (bbdb-autoinitialize)
-               (bbdb-mua-auto-update-init 'gnus 'message 'wl)
-               (add-hook 'mail-setup-hook 'bbdb-insinuate-sendmail)
-
-               )
-
-
-        (:name wanderlust
-               :description "Wanderlust bootstrap."
-               :depends semi
-               :type github
-               :pkgname "wanderlust/wanderlust"
-               :build (mapcar
-                       (lambda (target-and-dirs)
-                         (list el-get-emacs
-                               (mapcar (lambda (pkg)
-                                         (mapcar (lambda (d) `("-L" ,d)) (el-get-load-path pkg)))
-                                       (append
-                                        '("apel" "flim" "semi")
-                                        (when (el-get-package-exists-p "bbdb") (list "bbdb"))))
-                               "--eval" (el-get-print-to-string
-                                         '(progn (setq wl-install-utils t)
-                                                 (setq wl-info-lang "en")
-                                                 (setq wl-news-lang "en")))
-
-                               (split-string "-batch -q -no-site-file -l WL-MK -f")
-                               target-and-dirs))
-                       '(("wl-texinfo-format" "doc")
-                         ("compile-wl-package" "site-lisp" "icons")
-                         ("install-wl-package" "site-lisp" "icons")))
-               :info "doc/wl.info"
-               :load-path ("site-lisp/wl" "utils"))
-
-        ;; (:name wanderlust
-        ;; ;; :type git
-        ;; ;; :module "wanderlust"
-        ;; ;; :depends (apel flim semi)
-        ;; ;; :url "https://github.com/wanderlust/wanderlust.git"
-        ;; ;; :build (mapcar
-        ;; ;; (lambda (target-and-dirs)
-        ;; ;; (list el-get-emacs
-        ;; ;; (mapcar (lambda (pkg)
-        ;; ;; (mapcar (lambda (d) `("-L" ,d)) (el-get-load-path pkg)))
-        ;; ;; '("apel" "flim" "semi"))
-
-        ;; ;; "--eval" (prin1-to-string
-        ;; ;; '(progn (setq wl-install-utils t)
-        ;; ;; (setq wl-info-lang "en")
-        ;; ;; (setq wl-news-lang "en")))
-
-        ;; ;; (split-string "-batch -q -no-site-file -l WL-MK -f")
-        ;; ;; target-and-dirs))
-        ;; ;; '(("wl-texinfo-format" "doc")
-        ;; ;; ("compile-wl-package" "site-lisp" "icons")
-        ;; ;; ("install-wl-package" "site-lisp" "icons")))
-        ;; ;; :info "doc/wl.info"
-        ;; ;; :load-path ("site-lisp/wl" "utils")
-        ;; :after (lambda ()
-        ;; (autoload 'wl "wl" "Wanderlust" t)
-        ;; (autoload 'wl-other-frame "wl" "Wanderlust on new frame." t)
-        ;; (autoload 'wl-draft "wl-draft" "Write draft with Wanderlust." t)
-        ;; (if (featurep 'ecb)
-        ;; (add-hook 'wl-init-hook 'ecb-deactivate))
-        ;; ;;(add-hook 'wl-exit-hook 'ecb-activate)
-        ;; (require 'mime-w3m)
-        ;; (defalias 'wle 'wl-exit)
-        ;; (defalias 'wlo 'wl-other-frame)
-        ;; (add-hook 'mime-view-mode-hook
-        ;; (lambda ()
-        ;; (local-set-key "s" 'w3m-view-this-url-new-session)))
-        ;; (add-hook 'wl-init-hook (lambda ()
-        ;; (require 'bbdb-wl)
-        ;;                                       (:name wanderlust
-        ;;                                               ;; :type git
-        ;;                                               ;; :module "wanderlust"
-        ;;                                               ;; :depends (apel flim semi)
-        ;;                                               ;; :url "https://github.com/wanderlust/wanderlust.git"
-        ;;                                               ;; :build (mapcar
-        ;;                                               ;; (lambda (target-and-dirs)
-        ;;                                               ;; (list el-get-emacs
-        ;;                                               ;; (mapcar (lambda (pkg)
-        ;;                                               ;; (mapcar (lambda (d) `("-L" ,d)) (el-get-load-path pkg)))
-        ;;                                               ;; '("apel" "flim" "semi"))
-
-        ;;                                               ;; "--eval" (prin1-to-string
-        ;;                                               ;; '(progn (setq wl-install-utils t)
-        ;;                                               ;; (setq wl-info-lang "en")
-        ;;                                               ;; (setq wl-news-lang "en")))
-
-        ;;                                               ;; (split-string "-batch -q -no-site-file -l WL-MK -f")
-        ;;                                               ;; target-and-dirs))
-        ;;                                               ;; '(("wl-texinfo-format" "doc")
-        ;;                                               ;; ("compile-wl-package" "site-lisp" "icons")
-        ;;                                               ;; ("install-wl-package" "site-lisp" "icons")))
-        ;;                                               ;; :info "doc/wl.info"
-        ;;                                               ;; :load-path ("site-lisp/wl" "utils")
-        ;;                                               :after (lambda ()
-        ;;                                                       (autoload 'wl "wl" "Wanderlust" t)
-        ;;                                                       (autoload 'wl-other-frame "wl" "Wanderlust on new frame." t)
-        ;;                                                       (autoload 'wl-draft "wl-draft" "Write draft with Wanderlust." t)
-        ;;                                                       (if (featurep 'ecb)
-        ;;                                                       (add-hook 'wl-init-hook 'ecb-deactivate))
-        ;;                                                       ;;(add-hook 'wl-exit-hook 'ecb-activate)
-        ;;                                                       (require 'mime-w3m)
-        ;;                                                       (defalias 'wle 'wl-exit)
-        ;;                                                       (defalias 'wlo 'wl-other-frame)
-        ;;                                                       (add-hook 'mime-view-mode-hook
-        ;;                                                               (lambda ()
-        ;;                                                               (local-set-key "s" 'w3m-view-this-url-new-session)))
-        ;;                                                       (add-hook 'wl-init-hook (lambda ()
-        ;;                                                                               (require 'bbdb-wl)
-        ;;                                                                               (bbdb-wl-setup)))
-        ;;                                                       (require 'wl-draft)
-        ;;                                                       (add-hook 'wl-draft-mode-hook
-        ;;                                                               (lambda ()
-        ;;                                                               (flyspell-mode t)
-        ;;                                                               (define-key wl-draft-mode-map (kbd "<tab>") 'bbdb-complete-name)))
-        ;;                                                       (require 'offlineimap)
-        ;;                                                       (setq offlineimap-enable-mode-line-p t)
-        ;;                                                       (defun kill-offlineimap ()
-        ;;                                                       (interactive)
-        ;;                                                       (shell-command "kill `cat ~/.offlineimap/pid`")
-        ;;                                                       (ignore-errors
-        ;;                                                       (save-excursion
-        ;;                                                              (set-buffer (get-buffer-create "*OfflineIMAP*"))
-        ;;                                                              (offlineimap-kill))))
-        ;;                                                       (defun restart-offlineimap ()
-        ;;                                                       (interactive)
-        ;;                                                       (ignore-errors
-        ;;                                                       (kill-offlineimap))
-        ;;                                                       (offlineimap))
-        ;;                                                       (defun resync-offlineimap ()
-        ;;                                                       (interactive)
-        ;;                                                       (condition-case err
-        ;;                                                              (offlineimap-resync)
-        ;;                                                       (error
-        ;;                                                       (offlineimap))))
-
-        ;;                                                       (add-hook 'wl-init-hook 'restart-offlineimap)
-        ;;                                                       (add-hook 'wl-exit-hook 'resync-offlineimap)
-        ;;                                                       (add-hook 'wl-summary-exit-hook 'resync-offlineimap)
-        ;;                                                       (add-hook 'wl-summary-prepared-hook '(lambda ()
-        ;;                                                                                               (wl-summary-rescan "date" t )
-        ;;                                                                                               (beginning-of-buffer)))
-
-        ;;                                                       (defun imapfilter ()
-        ;;                                                       (interactive)
-        ;;                                                       (message "calling imapfilter…")
-        ;;                                                       (when (and (file-readable-p "~/.imapfilter/config.lua")
-        ;;                                                               (executable-find "imapfilter"))
-        ;;                                                       (if (start-process "imapfilter" "imapfilter" "imapfilter")
-        ;;                                                               (message "imapfilter ran fine.")
-        ;;                                                              (message "error running imapfilter!"))))
-
-        ;;                                                       (add-hook 'wl-folder-check-entity-pre-hook 'imapfilter)
-
-        ;;                                                       (setq wl-icon-directory "~/.emacs.d/el-get/wanderlust/icons")
-        ;;                                                       (require 'wl-gravatar)
-        ;;                                                       (setq wl-highlight-x-face-function 'wl-gravatar-insert)
-        ;;                                                       (setq gnus-gravatar-directory "~/.emacs-gravatar/")
-        ;;                                                       (setq gravatar-unregistered-icon 'identicon)
-        ;;                                                       (setq wl-gravatar-retrieve-once t)
-
-        ;;                                                       (autoload 'mu-cite-original "mu-cite" nil t)
-        ;;                                                       (setq mu-cite-prefix-format '("> "))
-        ;;                                                       (setq mu-cite-top-format '("\n\n" full-name "'s message :\n\n"))
-        ;;                                                       (add-hook 'mail-citation-hook (function mu-cite-original))
-        ;;                                                       ;; (unless (assq 'signature wl-draft-config-sub-func-alist)
-        ;;                                                       ;; (wl-append wl-draft-config-sub-func-alist
-        ;;                                                       ;; '((signature . wl-draft-config-sub-signature))))
-        ;;                                                       (defun wl-draft-config-sub-signature (content)
-        ;;                                                       "Insert the signature at the end of the MIME message."
-        ;;                                                       (let ((signature-insert-at-eof nil)
-        ;;                                                               (signature-file-name content))
-        ;;                                                       (goto-char (mime-edit-content-end))
-        ;;                                                       (insert-signature)))
-        ;;                                                       )) (bbdb-wl-setup)))
-        ;; (require 'wl-draft)
-        ;; (add-hook 'wl-draft-mode-hook
-        ;; (lambda ()
-        ;; (flyspell-mode t)
-        ;; (define-key wl-draft-mode-map (kbd "<tab>") 'bbdb-complete-name)))
-        ;; (require 'offlineimap)
-        ;; (setq offlineimap-enable-mode-line-p t)
-        ;; (defun kill-offlineimap ()
-        ;; (interactive)
-        ;; (shell-command "kill `cat ~/.offlineimap/pid`")
-        ;; (ignore-errors
-        ;; (save-excursion
-        ;; (set-buffer (get-buffer-create "*OfflineIMAP*"))
-        ;; (offlineimap-kill))))
-        ;; (defun restart-offlineimap ()
-        ;; (interactive)
-        ;; (ignore-errors
-        ;; (kill-offlineimap))
-        ;; (offlineimap))
-        ;; (defun resync-offlineimap ()
-        ;; (interactive)
-        ;; (condition-case err
-        ;; (offlineimap-resync)
-        ;; (error
-        ;; (offlineimap))))
-
-        ;; (add-hook 'wl-init-hook 'restart-offlineimap)
-        ;; (add-hook 'wl-exit-hook 'resync-offlineimap)
-        ;; (add-hook 'wl-summary-exit-hook 'resync-offlineimap)
-        ;; (add-hook 'wl-summary-prepared-hook '(lambda ()
-        ;; (wl-summary-rescan "date" t )
-        ;; (beginning-of-buffer)))
-
-        ;; (defun imapfilter ()
-        ;; (interactive)
-        ;; (message "calling imapfilter…")
-        ;; (when (and (file-readable-p "~/.imapfilter/config.lua")
-        ;; (executable-find "imapfilter"))
-        ;; (if (start-process "imapfilter" "imapfilter" "imapfilter")
-        ;; (message "imapfilter ran fine.")
-        ;; (message "error running imapfilter!"))))
-
-        ;; (add-hook 'wl-folder-check-entity-pre-hook 'imapfilter)
-
-        ;; (setq wl-icon-directory "~/.emacs.d/el-get/wanderlust/icons")
-        ;; (require 'wl-gravatar)
-        ;; (setq wl-highlight-x-face-function 'wl-gravatar-insert)
-        ;; (setq gnus-gravatar-directory "~/.emacs-gravatar/")
-        ;; (setq gravatar-unregistered-icon 'identicon)
-        ;; (setq wl-gravatar-retrieve-once t)
-
-        ;; (autoload 'mu-cite-original "mu-cite" nil t)
-        ;; (setq mu-cite-prefix-format '("> "))
-        ;; (setq mu-cite-top-format '("\n\n" full-name "'s message :\n\n"))
-        ;; (add-hook 'mail-citation-hook (function mu-cite-original))
-        ;; ;; (unless (assq 'signature wl-draft-config-sub-func-alist)
-        ;; ;; (wl-append wl-draft-config-sub-func-alist
-        ;; ;; '((signature . wl-draft-config-sub-signature))))
-        ;; (defun wl-draft-config-sub-signature (content)
-        ;; "Insert the signature at the end of the MIME message."
-        ;; (let ((signature-insert-at-eof nil)
-        ;; (signature-file-name content))
-        ;; (goto-char (mime-edit-content-end))
-        ;; (insert-signature)))
-        ;; ))
-        ))
-(el-get 'sync)
-(message "LOADING: el-get initialized")
 
 
 ;; All my custom settings that differ and/or can't be under version control
@@ -958,27 +386,6 @@
 ;; (add-hook 'TeX-mode-hook 'reftex-toc)
 
 
-;; for some reason hitting backspace in latex mode with CJK IME on
-;; could be screen lines
-
-(when (or (eq window-system 'mac) (eq window-system 'ns))
-  ;; makes the input act funny
-  (defun backspace-cjk-hack ()
-    (interactive)
-    (progn
-      (delete-backward-char 1)
-      (keyboard-quit)))
-
-  ;; (defun newline-cjk-hack ()
-  ;; (interactive)
-  ;; (progn
-  ;; (newline)
-  ;; (keyboard-quit)))
-
-  (add-hook 'LaTeX-mode-hook (lambda ()
-                               ;; (define-key LaTeX-mode-map (kbd "<return>") 'newline-cjk-hack)
-                               (define-key LaTeX-mode-map (kbd "<backspace>") 'backspace-cjk-hack))))
-
 (message "LOADING: pre ESS")
 
 (setq ess-etc-directory "~/.emacs.d/ess-5.11/etc")
@@ -1010,8 +417,8 @@
       '("~/.emacs.d/mysnippets"
         "~/.emacs.d/yasnippet-go/go-mode"
         ))
-(yas/load-directory "~/.emacs.d/yasnippet/snippets")
-(setq yas/root-directory "~/.emacs.d/mysnippets")
+(yas/load-directory "~/.emacs.d/lisp/yasnippet/snippets")
+(setq yas/root-directory "~/.emacs.d/lisp/mysnippets")
 
 
 ;; (mapc 'yas/load-directory yas/root-directory)
@@ -1156,188 +563,9 @@
 
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 
-;;; Mac AntiAlias
-(setq mac-allow-anti-aliasing t)
-
-;;Font settings for CJK fonts on Cocoa Emacs
-(when (and (>= emacs-major-version 23) (or (eq window-system 'mac) (eq window-system 'ns)))
-  (create-fontset-from-ascii-font
-   "-apple-monaco-medium-normal-normal-*-12-*" nil "hirakaku12")
-
-  (set-default-font "fontset-hirakaku12")
-  (add-to-list 'default-frame-alist '(font . "fontset-hirakaku12"))
-
-  (set-fontset-font
-   "fontset-hirakaku12"
-   'japanese-jisx0208
-   "-apple-hiragino_kaku_gothic_pro-medium-normal-normal-*-14-*-iso10646-1")
-
-  (set-fontset-font
-   "fontset-hirakaku12"
-   'jisx0201
-   "-apple-hiragino_kaku_gothic_pro-medium-normal-normal-*-14-*-iso10646-1")
-
-  (set-fontset-font
-   "fontset-hirakaku12"
-   'japanese-jisx0212
-   "-apple-hiragino_kaku_gothic_pro-medium-normal-normal-*-14-*-iso10646-1")
-
-  (set-fontset-font
-   "fontset-hirakaku12"
-   'katakana-jisx0201
-   "-apple-hiragino_kaku_gothic_pro-medium-normal-normal-*-14-*-iso10646-1")
-
-  (if (fboundp 'ns-toggle-fullscreen)
-      (global-set-key "\M-\r" 'ns-toggle-fullscreen))
-
-  ;; fix fonts
-  (defun fix-mac-fonts ()
-    (interactive)
-    (let* ((size 12) ; ASCIIフォントのサイズ [9/10/12/14/15/17/19/20/...]
-           (asciifont "Menlo") ; ASCIIフォント
-           (jpfont "Hiragino Kaku Gothic Pro") ; 日本語フォント
-           (h (* size 10))
-           (fontspec (font-spec :family asciifont))
-           (jp-fontspec (font-spec :family jpfont)))
-      (set-face-attribute 'default nil :family asciifont :height h)
-      (set-fontset-font nil 'japanese-jisx0213.2004-1 jp-fontspec)
-      (set-fontset-font nil 'japanese-jisx0213-2 jp-fontspec)
-      (set-fontset-font nil 'katakana-jisx0201 jp-fontspec) ; 半角カナ
-      (set-fontset-font nil '(#x0080 . #x024F) fontspec) ; 分音符付きラテン
-      (set-fontset-font nil '(#x0370 . #x03FF) fontspec) ; ギリシャ文字
-      ))
-
-  ;; apologetic hack to make sure my mac input is used
-  (defun set-mac-input ()
-    (interactive)
-    (progn
-      (setq default-input-method "MacOSX")
-      (set-input-method "MacOSX")
-      (toggle-input-method)))
-
-  (add-hook 'after-init-hook 'set-mac-input))
-
-(when (and (< emacs-major-version 23) (eq window-system 'mac))
-  (set-face-attribute 'default nil
-                      :family "monaco"
-                      :height 130)
-
-  (set-fontset-font "fontset-default"
-                    'katakana-jisx0201
-                    '("ヒラギノ丸ゴ pro w4*" . "jisx0201.*"))
-
-  (set-fontset-font "fontset-default"
-                    'japanese-jisx0208
-                    '("ヒラギノ丸ゴ pro w4*" . "jisx0208.*")))
-
 (blink-cursor-mode nil)
 (setq blink-cursor-interval nil)
 (setq blink-cursor-interval 0.8)
-
-(message "LOADING: mac setup stuff")
-
-;; Ubuntu related settings
-(when (and (= emacs-major-version 23) (eq window-system 'x))
-  ;; (add-hook 'after-init-hook (lambda () (toggle-fullscreen)))
-
-  ;; (global-set-key "\M-\r" 'toggle-fullscreen)
-  (add-hook 'after-make-frame-functions 'toggle-fullscreen)
-  (setq x-super-keysym 'meta)
-  (setq x-alt-keysym 'meta)
-
-  (defun swapcaps ()
-    (interactive)
-    (shell-command "setxkbmap -option \"ctrl:swapcaps\""))
-
-  (global-set-key (kbd "<menu>") 'smex-with-toggle)
-
-  (defun setup-scim ()
-    (interactive)
-    (require 'scim-bridge-ja)
-    ;; C-SPC は Set Mark に使う
-    (scim-define-common-key ?\C-\s nil)
-    (scim-define-common-key ?\C-\\ t)
-    (scim-define-common-key ?\C-\S-\s t)
-
-    ;; (global-set-key (kbd "C-\\") 'scim-mode)
-
-    ;; C-/ は Undo に使う
-    (scim-define-common-key ?\C-/ nil)
-    ;; SCIMの状態によってカーソル色を変化させる
-    (setq scim-cursor-color '("red" "blue" "limegreen"))
-    ;; C-j で半角英数モードをトグルする
-    (scim-define-common-key ?\C-j t)
-    ;; SCIM-Anthy 使用時に、選択領域を再変換できるようにする
-    (scim-define-common-key 'S-henkan nil)
-    (global-set-key [S-henkan] 'scim-anthy-reconvert-region)
-    ;; SCIM がオフのままローマ字入力してしまった時に、プリエディットに入れ直す
-    (global-set-key [C-henkan] 'scim-transfer-romaji-into-preedit))
-
-  (defun setup-mozc ()
-    (interactive)
-    (require 'mozc) ; or (load-file "path-to-mozc.el")
-    (set-language-environment "Japanese")
-    (setq default-input-method "japanese-mozc"))
-
-  (progn
-    (setup-scim)
-    (add-hook 'after-init-hook 'scim-mode-on))
-
-  ;; (set-face-font 'variable-pitch "Droid Sans Mono-11")
-  ;; (set-face-font 'default "Droid Sans Mono-11")
-  ;; (set-default-font "Bitstream Vera Sans Mono-11")
-  )
-
-(defun font-existsp (font)
-  "Check that a font exists: http://www.emacswiki.org/emacs/SetFonts#toc8"
-  (and (window-system)
-       (fboundp 'x-list-fonts)
-       (x-list-fonts font)))
-
-(defun set-ubuntu-fonts ()
-  (interactive)
-  (if (eq window-system 'x)
-      ;; settings that never quite worked
-      ;; (progn
-      ;; ;;set one
-      ;; (set-default-font "Droid Sans Mono-12")
-      ;; (set-default-font "Bitstream Vera Sans Mono-11")
-      ;; (set-fontset-font (frame-parameter nil 'font)
-      ;; 'japanese-jisx0208
-      ;; '("Sans" . "unicode-bmp"))
-
-      ;; ;; set two
-      ;; (set-default-font "Inconsolata-12")
-      ;; (set-face-font 'variable-pitch "Inconsolata-12")
-      ;; (set-fontset-font (frame-parameter nil 'font)
-      ;; 'japanese-jisx0208
-      ;; '("Takaoゴシック" . "unicode-bmp")
-      ;; )
-      ;; )
-
-
-
-      (progn
-        (set-face-attribute 'default nil
-                            :family (if (font-existsp "Droid Sans Mono Slashed")
-                                        "Droid Sans Mono Slashed"
-                                      "Droid Sans Mono")
-                            :height 110)
-        (set-fontset-font "fontset-default"
-                          'japanese-jisx0208
-                          '("Droid Sans Fallback" . "iso10646-1"))
-        (set-fontset-font "fontset-default"
-                          'katakana-jisx0201
-                          '("Droid Sans Fallback" . "iso10646-1"))
-        (setq face-font-rescale-alist
-              '((".*Droid_Sans_Mono.*" . 1.0)
-                (".*Droid_Sans_Mono-medium.*" . 1.0)
-                (".*Droid_Sans_Fallback.*" . 1.2)
-                (".*Droid_Sans_Fallback-medium.*" . 1.2)))
-        )))
-
-(if (eq window-system 'x)
-    (add-hook 'after-init-hook (lambda () (set-ubuntu-fonts))))
 
 ;; recentf stuff
 (require 'recentf)
@@ -1873,13 +1101,6 @@ directory, select directory. Lastly the file is opened."
     (message "Files for mobile viewer staged")))
 
 
-;; only use this on a mac
-(when (and (>= emacs-major-version 23) (or (eq window-system 'ns) (eq window-system 'x)))
-  (require 'todochiku)
-  (setq todochiku-icons-directory "~/.emacs.d/todochiku-icons")
-  (add-hook 'org-timer-done-hook '(lambda()
-                                    (todochiku-message "Pomodoro" "completed" (todochiku-icon 'alarm)))))
-
 (setq org-timer-default-timer 25)
 (setq org-clock-string-limit 35)
 
@@ -1894,18 +1115,6 @@ directory, select directory. Lastly the file is opened."
 
 
 (add-hook 'org-capture-after-finalize-hook '(lambda() (org-agenda-redo)))
-
-(when (eq window-system 'ns)
-  (defun org-toggle-iimage-in-org ()
-    "display images in your org file"
-    (interactive)
-    (if (face-underline-p 'org-link)
-        (set-face-underline-p 'org-link nil)
-      (set-face-underline-p 'org-link t))
-    (iimage-mode))
-
-  (add-hook 'org-mode-hook 'turn-on-iimage-mode)
-  (setq org-google-weather-icon-directory "~/Dropbox/status"))
 
 (add-to-list 'org-modules 'org-habit)
 (setq org-habit-graph-column 70)
@@ -2338,32 +1547,7 @@ nEnd:")
           (lambda ()
             (define-key objc-mode-map (kbd "C-c C-r") 'xcode:buildandrun)))
 
-(when (or (eq window-system 'ns) (featurep 'carbon-emacs-package))
 
-
-  (require 'xcode-document-viewer)
-  ;; (setq xcdoc:document-path "/Developer/Documentation/DocSets/com.apple.adc.documentation.AppleiOS4_3.iOSLibrary.docset")
-  (setq xcdoc:document-path "~/Library/Developer/Shared/Documentation/DocSets/com.apple.adc.documentation.AppleiOS5_1.iOSLibrary.docset")
-  (setq xcdoc:open-w3m-other-buffer nil)
-
-  (require 'anything-apple-docset)
-  (setq anything-apple-docset-path xcdoc:document-path)
-  (anything-apple-docset-init)
-
-  (require 'apple-reference-browser)
-  (setq arb:docset-path xcdoc:document-path)
-  (setq arb:open-w3m-other-buffer nil)
-  (define-key global-map "\C-cd" 'arb:search)
-
-
-  ;; hook の設定
-  (add-hook 'objc-mode-hook
-            (lambda ()
-              (define-key objc-mode-map (kbd "C-c w") 'arb:search)
-              (define-key objc-mode-map (kbd "C-c h") 'xcdoc:ask-search))))
-
-;; end of iphone-related settings
-(message "LOADING: xcode/iphone stuff")
 
 ;; Common copying and pasting functions
 (defun copy-word (&optional arg)
@@ -2830,9 +2014,6 @@ nEnd:")
   (weblogger-publish-entry))
 
 (define-key weblogger-entry-mode-map "\C-x\C-s" 'publish-post)
-
-(when (eq window-system 'mac)
-  (remove-hook 'minibuffer-setup-hook 'mac-change-language-to-us))
 
 (require 'auto-install)
 (setq auto-install-directory "~/.emacs.d/site-lisp/")
