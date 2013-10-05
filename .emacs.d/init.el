@@ -1,8 +1,16 @@
+;; Turn off early to avoid momentary display.
+(mapc
+ (lambda (mode)
+   (if (fboundp mode)
+       (funcall mode -1)))
+ '(menu-bar-mode tool-bar-mode scroll-bar-mode))
+
 ;;; UNCOMMENT THIS TO DEBUG TROUBLE GETTING EMACS UP AND RUNNING.
 (setq debug-on-error t)
 (setq eval-expression-debug-on-error t)
 (setq lang "en_US")
 (setq inhibit-splash-screen t)
+
 
 ;; workaround for cocoa emacs byte-compiling
 (when (eq window-system 'ns)
@@ -3800,7 +3808,7 @@ FORMAT-STRING is like `format', but it can have multiple %-sequences."
   (if (y-or-n-p (format "Are you sure you want to exit Emacs? "))
       (if (< emacs-major-version 22)
           (save-buffers-kill-terminal)
-        (save-buffers-kill-emacs))
+        (save-buffers-kill-emacs t))
     (message "Canceled exit")))
 
 (global-set-key (kbd "C-x C-c") 'ask-before-closing)
