@@ -11,6 +11,15 @@
   (normal-top-level-add-to-load-path '("."))
   (normal-top-level-add-subdirs-to-load-path))
 
+;; (let ((default-directory (expand-file-name "~/.emacs.d/site-lisp/")))
+;;   (add-to-list 'load-path default-directory)
+;;   (if (fboundp 'normal-top-level-add-subdirs-to-load-path)
+;;       (normal-top-level-add-subdirs-to-load-path)))
+
+;; (let ((default-directory "~/.emacs.d/site-lisp/"))
+;;   (normal-top-level-add-to-load-path '("."))
+;;   (normal-top-level-add-subdirs-to-load-path))
+
 (setq more-load-paths '("~/.emacs.d/el-get/bbdb/lisp/"
                         "~/.emacs.d/el-get/bbdb-vcard/"
                         "~/.emacs.d/el-get/el-get"
@@ -112,17 +121,6 @@
 ;; emergency settings end here
 
 
-;; All my custom settings that differ and/or can't be under version control
-(setq custom-file "~/custom.el")
-(load custom-file 'noerror)
-(setq blog-file "~/blogs.el")
-(load blog-file 'noerror)
-
-(setq Info-directory-list
-      '("/usr/local/share/info" "~/info" "~/devdocs" "/usr/share/info" "/usr/local/info" "/usr/share/info/emacs-23"))
-(message "LOADING: loaded custom stuff")
-
-
 ;;; this was installed by package-install.el.
 ;;; This provides support for the package system and
 ;;; interfacing with ELPA, the package archive.
@@ -147,13 +145,7 @@
 (message "LOADING: packages initialized")
 
 
-(setq initial-scratch-message nil)
-
 ;;(require 'byte-code-cache)
-
-(let ((default-directory "~/.emacs.d/site-lisp/"))
-  (normal-top-level-add-to-load-path '("."))
-  (normal-top-level-add-subdirs-to-load-path))
 
 (let ((nfsdir "~/.emacs.d/site-lisp")
       (cachedir "~/.elispcache"))
@@ -163,34 +155,10 @@
   (setq elisp-cache-freshness-delay 0)
   (elisp-cache nfsdir cachedir))
 
-
-(setq-default indent-tabs-mode nil)
-
-(defun ib ()
-  "indent whole buffer"
-  (interactive)
-  (delete-trailing-whitespace)
-  (indent-region (point-min) (point-max) nil)
-  (untabify (point-min) (point-max)))
-
-(require 'auto-install)
-
 (require 'work-timer)
-
-
 (setq work-timer-working-time 30)
 ;;(defalias 'work-timer-start 'p)
 
-(defun short-file-name ()
-  "Display the file path and name in the modeline"
-  (interactive "*")
-  (setq-default mode-line-buffer-identification '("%12b")))
-
-(defun long-file-name ()
-  "Display the full file path and name in the modeline"
-  (interactive "*")
-  (setq-default mode-line-buffer-identification
-                '("%S:" (buffer-file-name "%f"))))
 
 (defface egoge-display-time
   '((((type x w32 mac))
@@ -228,41 +196,8 @@
 
 (message "LOADING: scala lift stuff")
 
-;; Frame fiddling
-(defun set-frame-size-according-to-resolution ()
-  (interactive)
-  (if window-system
-      (progn
-        ;; use 120 char wide window for largeish displays
-        ;; and smaller 80 column windows for smaller displays
-        ;; pick whatever numbers make sense for you
-        (if (> (x-display-pixel-width) 1280)
-            (add-to-list 'default-frame-alist (cons 'width 160))
-          (add-to-list 'default-frame-alist (cons 'width 80)))
-        ;; for the height, subtract a couple hundred pixels
-        ;; from the screen height (for panels, menubars and
-        ;; whatnot), then divide by the height of a char to
-        ;; get the height we want
-        (add-to-list 'default-frame-alist
-                     (cons 'height (/ (- (x-display-pixel-height) 200) (frame-char-height)))))))
-
-(defun arrange-frame (w h x y)
-  "Set the width, height, and x/y position of the current frame"
-  (let ((frame (selected-frame)))
-    (delete-other-windows)
-    (set-frame-position frame x y)
-    (set-frame-size frame w h)))
 
 (defalias 'yes-or-no-p 'y-or-n-p)
-
-;; Hard Code the window dimensions, that's how we roll
-;; (set-frame-position (selected-frame) 45 0)
-;; (add-to-list 'default-frame-alist (cons 'width 150))
-;; (add-to-list 'default-frame-alist (cons 'height 47))
-;; (message "windows dimensions")
-
-(setq truncate-lines nil)
-(setq truncate-partial-width-windows nil)
 
 (load "auctex.el" nil t t)
 (load "preview-latex.el" nil t t)
@@ -401,16 +336,6 @@
 
 (add-to-list 'same-window-buffer-names "*Buffer List*")
 
-;; Reload .emacs file by typing: Mx reload.
-(defun reload-init ()
-  "Reloads .emacs interactively."
-  (interactive)
-  (load "~/.emacs.d/init.el"))
-
-(if (file-exists-p "~/projects/ghub")
-    (setq default-directory "~/projects/ghub"))
-
-
 (require 'yasnippet)
 ;; Develop and keep personal snippets under ~/emacs.d/mysnippets
 (setq yas-snippet-dirs
@@ -514,42 +439,6 @@
 
 (message "LOADING: yasnippet loading")
 
-(defun no-pdf ()
-  "Run pdftotext on the entire buffer."
-  (interactive)
-  (let ((modified (buffer-modified-p)))
-    (erase-buffer)
-    (shell-command
-     (concat "pdftotext " (buffer-file-name) " -")
-     (current-buffer)
-     t)
-    (set-buffer-modified-p modified)))
-
-;; get text from pdf instead of viewer
-;; not needed on ubuntu
-(when (or (< emacs-major-version 23) (featurep 'carbon-emacs-package))
-  (add-to-list 'auto-mode-alist '("\\.pdf\\'" . no-pdf)))
-
-
-(defun transparency (value)
-  "Sets the transparency of the frame window. 0=transparent/100=opaque"
-  (interactive "nTransparency Value 0 - 100 opaque:")
-  (set-frame-parameter (selected-frame) 'alpha `(,value ,value)))
-
-
-;;(set-frame-parameter (selected-frame) 'alpha '(<active> [<inactive>]))
-(set-frame-parameter (selected-frame) 'alpha '(100 100))
-(add-to-list 'default-frame-alist '(alpha 100 100))
-
-(eval-when-compile (require 'cl))
-(defun toggle-transparency ()
-  (interactive)
-  (if (/=
-       (cadr (frame-parameter nil 'alpha))
-       100)
-      (set-frame-parameter nil 'alpha '(100 100))
-    (set-frame-parameter nil 'alpha '(80 50))))
-
 
 ;; (global-set-key (kbd "C-c t") 'toggle-transparency)
 (global-set-key (kbd "C-c t") '(lambda() (interactive) (recenter 1)))
@@ -557,15 +446,6 @@
 (require 'maxframe)
 ;; (add-hook 'window-setup-hook 'maximize-frame t)
 
-;; just the frame thanks
-(tool-bar-mode -1)
-(scroll-bar-mode -1)
-
-(add-hook 'before-save-hook 'delete-trailing-whitespace)
-
-(blink-cursor-mode nil)
-(setq blink-cursor-interval nil)
-(setq blink-cursor-interval 0.8)
 
 ;; recentf stuff
 (require 'recentf)
@@ -579,19 +459,10 @@
 
 (message "LOADING: recentf stuff")
 
-(transient-mark-mode 1)
-(setq gc-cons-threshold 4000)
-(setq gc-cons-percentage 0.05)
-(setq use-dialog-box nil)
 (defalias 'message-box 'message)
-(setq echo-keystrokes 0.1)
-(setq history-length 1000)
-
 
 (require 'dired+)
 (define-key dired-mode-map "W" 'diredp-mark-region-files)
-
-(setenv (concat "/usr/local/libexec/git-core" ";" (getenv "GIT_EXEC_PATH")))
 
 (require 'magit)
 (require 'magit-svn)
@@ -609,153 +480,7 @@
 (require 'gist)
 (setq gist-use-curl t)
 
-;; (setq popwin:special-display-config nil)
-
-(require 'popwin)
-(setq display-buffer-function 'popwin:display-buffer)
-(setq popwin:popup-window-height 0.5)
-(setq special-display-function
-      'popwin:special-display-popup-window)
-(push '(dired-mode :position top) popwin:special-display-config)
-(push '("*Compile-Log*" :height 10) popwin:special-display-config)
-(push '("*Shell Command Output*" :height 30) popwin:special-display-config)
-;; (push '("*compilation*" :height 10) popwin:special-display-config)
-(push '("*Warnings*" :height 10 :noselect t) popwin:special-display-config)
-(push '("*mu4e-loading*" :height 10 :noselect t) popwin:special-display-config)
-(push '("*Help*" :height 10 :noselect nil) popwin:special-display-config)
-(push '(ess-help-mode :height 20) popwin:special-display-config)
-(push '("*translated*" :height 10 :noselect t) popwin:special-display-config)
-(push '("*Process List*" :height 10) popwin:special-display-config)
-(push '("*Locate*" :height 10 :noselect t) popwin:special-display-config)
-(push '("*Moccur*" :height 20 :position bottom) popwin:special-display-config)
-(push '("*wget.*" :regexp t :height 10 :position bottom) popwin:special-display-config)
-(push '(" *auto-async-byte-compile*" :height 10) popwin:special-display-config)
-(push '("\*grep\*.*" :regexp t :height 20) popwin:special-display-config)
-(push '("function\-in\-.*" :regexp t) popwin:special-display-config)
-(push '("*magit-diff*") popwin:special-display-config)
-(push '("*wclock*" :height 10 :noselect t :position bottom) popwin:special-display-config)
-(push '(Man-mode :stick t :height 20) popwin:special-display-config)
-(push '("*Google Translate*" :height 20 :stick t :position bottom :noselect t) popwin:special-display-config)
-
-(defun popwin:define-advice (func buffer)
-  (eval `(defadvice ,func (around popwin activate)
-           (save-window-excursion ad-do-it)
-           (popwin:popup-buffer ,buffer)
-           (goto-char (point-min)))))
-
-(popwin:define-advice 'vc-diff "*vc-diff*")
-(popwin:define-advice 'magit-diff-working-tree "*magit-diff*")
-(popwin:define-advice 'describe-key "*Help*")
-(popwin:define-advice 'describe-function "*Help*")
-(popwin:define-advice 'describe-mode "*Help*")
-;; (popwin:define-advice 'auto-async-byte-compile "*auto-async-byte-compile*")
-;; (popwin:define-advice 'text-translator-all "*translated*")
-
-(setq warning-suppress-types '(undo discard-info))
-
-(defvar prev-buffer-input-method nil "save previously set inputmethod")
-(make-variable-buffer-local 'prev-buffer-input-method)
-
-(require 'vim)
-
-(defun vim-mode-toggle-with-input ()
-  (interactive)
-  (if vim-mode
-      (progn
-        (activate-input-method (if (boundp 'prev-buffer-input-method)
-                                   prev-buffer-input-method
-                                 current-input-method))
-        (vim-mode 0))
-    (progn
-      (setq prev-buffer-input-method current-input-method)
-      (inactivate-input-method)
-      (vim-mode t))))
-
-(global-set-key (kbd "C-c v") 'vim-mode-toggle-with-input)
-
-(message "LOADING: vim mode")
-
-(defun input-mode-toggle-enter ()
-  (interactive)
-  (progn
-    (activate-input-method (if (boundp 'prev-buffer-input-method)
-                               prev-buffer-input-method
-                             current-input-method))))
-
-(add-hook 'vim:insert-mode-on-hook 'input-mode-toggle-enter)
-
-(vim:omap (kbd "SPC") 'vim:scroll-page-down)
-(vim:omap (kbd "S-SPC") 'vim:scroll-page-up)
-(vim:nmap (kbd "C-z") 'anything)
-(vim:nmap (kbd "C-S-z") 'vim:activate-emacs-mode)
-(vim:map (kbd "C-S-z") 'vim:activate-normal-mode :keymap vim:emacs-keymap)
-
-(push '(magit-mode . insert) vim:initial-modes)
-(push '(magit-log-edit-mode . insert) vim:initial-modes)
-(push '(w3m-mode . insert) vim:initial-modes)
-(push '(eshell-mode . insert) vim:initial-modes)
-(push '(debugger-mode . insert) vim:initial-modes)
-
-;; (vim:omap (kbd "SPC") 'vim:scroll-page-down)
-;; (vim:ovim:insert-mode-on-hook
-;; upon entering vim mode
-
-;; (defun input-mode-toggle-exit ()
-;; (interactive)
-;; (progn
-;; (setq prev-buffer-input-method current-input-method)
-;; (inactivate-input-method)))
-
-;; (remove-hook 'vim:insert-mode-off-hook 'input-mode-toggle-exit)
-
-;; ----- sdicが呼ばれたときの設定
-(autoload 'sdic-describe-word "sdic" "search word" t nil)
-;;(setq sdicf-array-command "/usr/local/bin/sary")
-;; (setq sdic-eiwa-dictionary-list
-;; '((sdicf-client "/usr/local/share/dict/eijirou.sdic" (strategy array))))
-;; (setq sdic-waei-dictionary-list
-;; '((sdicf-client "/usr/local/share/dict/gene.sdic" (strategy array))))
-
-(eval-after-load "sdic"
-  '(progn
-     ;; saryのコマンドをセットする
-     (setq sdicf-array-command "/usr/local/bin/sary")
-     ;; sdicファイルのある位置を設定し、arrayコマンドを使用するよう設定(現在のところ英和のみ)
-;;; (setq sdic-eiwa-dictionary-list
-;;; '((sdicf-client "/usr/local/share/dict/eijirou.sdic" (strategy array))))
-     ;; saryを直接使用できるように sdicf.el 内に定義されているarrayコマンド用関数を強制的に置換
-     (fset 'sdicf-array-init 'sdicf-common-init)
-     (fset 'sdicf-array-quit 'sdicf-common-quit)
-     (fset 'sdicf-array-search
-           (lambda (sdic pattern &optional case regexp)
-             (sdicf-array-init sdic)
-             (if regexp
-                 (signal 'sdicf-invalid-method '(regexp))
-               (save-excursion
-                 (set-buffer (sdicf-get-buffer sdic))
-                 (delete-region (point-min) (point-max))
-                 (apply 'sdicf-call-process
-                        sdicf-array-command
-                        (sdicf-get-coding-system sdic)
-                        nil t nil
-                        (if case
-                            (list "-i" pattern (sdicf-get-filename sdic))
-                          (list pattern (sdicf-get-filename sdic))))
-                 (goto-char (point-min))
-                 (let (entries)
-                   (while (not (eobp)) (sdicf-search-internal))
-                   (nreverse entries))))))
-     ;; おまけ--辞書バッファ内で移動した時、常にバッファの一行目になるようにする
-     (defadvice sdic-forward-item (after sdic-forward-item-always-top activate)
-       (recenter 0))
-     (defadvice sdic-backward-item (after sdic-backward-item-always-top activate)
-       (recenter 0))))
-
-(autoload 'sdic-describe-word "sdic" "英単語の意味を調べる" t nil)
-;; (global-set-key "\C-cd" 'sdic-describe-word)
-(autoload 'sdic-describe-word-at-point "sdic" "カーソルの位置の英単語の意味を調べる" t nil)
-(global-set-key "\C-cD" 'sdic-describe-word-at-point)
-
+(message "LOADING: highlight stuff start")
 
 ;; ;; highlight current line
 ;; (require 'highline)
@@ -783,10 +508,8 @@
 ;; (col-highlight-set-interval 200000)
 ;; (set-face-background 'col-highlight "#222")
 
-;; Display line and column numbers
-(setq line-number-mode t)
-(setq column-number-mode t)
 
+(message "highlight stuff end")
 
 ;; (add-hook 'iswitchb-minibuffer-setup-hook (lambda () (toggle-iswitchb-input)))
 ;; (add-hook 'minibuffer-setup-hook (lambda () (activate-input-method nil)))
@@ -855,32 +578,6 @@ directory, select directory. Lastly the file is opened."
      (file-cache-add-directory-list load-path)))
 
 
-;; utf-8 all the way
-(setq current-language-environment "UTF-8")
-(prefer-coding-system 'utf-8)
-(set-default-coding-systems 'utf-8)
-(set-keyboard-coding-system 'utf-8)
-(set-selection-coding-system 'utf-8)
-(set-terminal-coding-system 'utf-8)
-(setq default-buffer-file-coding-system 'utf-8)
-(setq locale-coding-system 'utf-8)
-
-
-(if (or (< emacs-major-version 23) (featurep 'carbon-emacs-package))
-    (utf-translate-cjk-mode 1)
-  (setq utf-translate-cjk-mode nil) ; disable CJK coding/encoding (Chinese/Japanese/Korean characters)
-  (set-language-environment 'Japanese)
-  (set-keyboard-coding-system 'utf-8-mac) ; For old Carbon emacs on OS X only
-  (setq locale-coding-system 'utf-8)
-  (set-default-coding-systems 'utf-8)
-  (set-terminal-coding-system 'utf-8)
-  (set-selection-coding-system 'utf-8)
-  (set-language-environment 'Japanese))
-
-(when
-    (featurep 'carbon-emacs-package)
-  (setq default-input-method "MacOSX"))
-
 (require 'cursor-chg)
 
 (defun recompile-emacsd ()
@@ -889,37 +586,12 @@ directory, select directory. Lastly the file is opened."
 
 (defalias 'brd 'recompile-emacsd)
 
-;; Carbon Emacs keep Spotlight from triggering
-(when
-    (featurep 'carbon-emacs-package)
-  (mac-add-ignore-shortcut '(control)))
-
 ;; Remember the place
 (require 'saveplace)
 (setq-default save-place t)
 (savehist-mode t)
 (setq server-visit-hook (quote (save-place-find-file-hook)))
 
-;; toggle-max-window
-(when (featurep 'carbon-emacs-package)
-  (defun toggle-max-window ()
-    (interactive)
-    (if (frame-parameter nil 'fullscreen)
-        (set-frame-parameter nil 'fullscreen nil)
-      (set-frame-parameter nil 'fullscreen 'fullboth)))
-
-  (global-set-key "\M-\r" 'toggle-max-window)
-  (add-hook 'after-init-hook (lambda () (set-frame-parameter nil 'fullscreen 'fullboth)))
-  (add-hook 'after-make-frame-functions (lambda (frame) (set-frame-parameter frame 'fullscreen 'fullboth))))
-
-(defun toggle-fullscreen (&optional f)
-  (interactive)
-  (let ((current-value (frame-parameter nil 'fullscreen)))
-    (set-frame-parameter nil 'fullscreen
-                         (if (equal 'fullboth current-value)
-                             (if (boundp 'old-fullscreen) old-fullscreen nil)
-                           (progn (setq old-fullscreen current-value)
-                                  'fullboth)))))
 
 ;; I always compile my .emacs, saves me about two seconds
 ;; startuptime. But that only helps if the .emacs.elc is newer
@@ -997,276 +669,6 @@ directory, select directory. Lastly the file is opened."
   (cfw:open-org-calendar))
 
 
-;; org-modeを利用するための設定
-(require 'org-install)
-(require 'org-clock)
-(require 'org-timer)
-(require 'org-habit)
-
-(require 'google-weather)
-(require 'org-google-weather)
-
-(define-key global-map "\C-cc" 'org-capture)
-
-(setq org-export-with-sub-superscripts nil)
-(setq org-startup-indented t)
-(setq org-agenda-tags-column -79)
-(setq org-tags-column -40)
-
-(setq org-startup-truncated nil)
-(setq org-return-follows-link t)
-
-(setq org-agenda-include-diary t)
-(setq org-agenda-window-setup 'other-frame)
-(setq org-agenda-restore-windows-after-quit t)
-
-;; (setq org-agenda-clockreport-parameter-plist '(:link nil :maxlevel 2 :fileskip0 t :compact t))
-(setq org-agenda-clockreport-parameter-plist '(:link nil :maxlevel 2 :fileskip0 t :compact t :properties ("fee") :formula "@2$2=vsum(@3$2..@>$2)"))
-(setq org-agenda-clockreport-parameter-plist '(:link nil :maxlevel 2 :fileskip0 t :compact t :timestamp t :properties ("fee") :formula "@2$3=vsum(@2$3..@>$3)"))
-
-;; Set to the location of your Org files on your local system
-(setq org-directory "~/org")
-(setq org-agenda-files (list "~/org"))
-
-(setq org-tag-faces
-      '(("trans" .(:italic t :background "DodgerBlue1"))
-        ("work" . (:italic t :background "dark blue"))))
-
-(setq org-capture-templates
-      '(("i" "Inbox" entry (file+headline "~/org/todo.org" "Inbox") "** TODO %? \n %i :inbox: %a \n SCHEDULED: %T \n %U")
-        ("r" "Research" entry (file+headline "~/org/diss.org" "Research") "** TODO %? :research: \n %a")
-        ("e" "Translation" entry (file+headline "~/org/trans.org" "Translation")  "** TODO %? :trans: \n :PROPERTIES: \n :type: %^{type|standard|pro|proofreading} \n :lang: %^{lang|je|ej} \n :END:\n %^{fee}p \n %^{chars}p \n :SCHEDULED: %t \n")
-        ("T" "Writing" entry (file+headline "~/org/write.org" "Writing") "** TODO %? :write: \n %a")
-        ("w" "Work" entry (file+headline "~/org/work.org" "Work") "** TODO %? :work: \n SCHEDULED: %t \n")
-        ("l" "RIL" entry (file+headline "~/org/ril.org" "Ril") "** TODO %? :ril: \n %a")
-        ("d" "Dev" entry (file+headline "~/org/dev.org" "Dev") "** TODO %? :dev: %i %a")
-        ("h" "HJ" entry (file+headline "~/org/hj.org" "HJ") "* TODO %? :hj: \n \n Entered on %U\n %i\n %a")
-        ("a" "Activity" entry (file+headline "~/org/activity.org" "Activity") "** TODO %? :activity: \n %a")
-        ("p" "Personal" entry (file+headline "~/org/personal.org" "Personal") "* TODO %? :personal: \n SCHEDULED: %t \n \nEntered on %U\n %i\n %a")))
-
-(setq org-todo-keyword-faces
-      '(("TODO" . org-warning)
-        ("DEFERRED" . shadow)
-        ("CANCELED" . (:foreground "blue" :weight bold))))
-
-
-
-;; Set to the name of the file where new notes will be stored
-(setq org-mobile-inbox-for-pull "~/org/flagged.org")
-;; Set to <your Dropbox root directory>/MobileOrg.
-(setq org-mobile-directory "~/Dropbox/MobileOrg")
-(setq org-agenda-skip-unavailable-files t)
-(setq org-log-done-with-time t)
-
-
-(setq org-default-notes-file (concat org-directory "memo.org"))
-(setq org-log-done 'time)
-(setq org-todo-keywords
-      '((sequence "TODO(t)" "WAIT(w@/!)" "|" "DONE(d!)" "CANCELED(c@)")))
-
-;;(setq org-refile-targets (quote ((org-agenda-files :regexp . "*"))))
-(setq org-refile-targets (quote ((org-agenda-files :level . 1))))
-
-
-(setq org-clock-persist 'history)
-(setq org-clock-modeline-total 'current)
-(org-clock-persistence-insinuate)
-
-(setq org-timer-timer-is-countdown t)
-
-
-
-;;copied straight from org, don't redisplay frames after push
-(defun org-mobile-push-unobtrusive ()
-  (interactive)
-  (let ((a-buffer (get-buffer org-agenda-buffer-name)))
-    (let ((org-agenda-buffer-name "*SUMO*")
-          (org-agenda-filter org-agenda-filter)
-          (org-agenda-redo-command org-agenda-redo-command))
-      (save-window-excursion
-        (org-mobile-check-setup)
-        (org-mobile-prepare-file-lists)
-        (run-hooks 'org-mobile-pre-push-hook)
-        (message "Creating agendas...")
-        (let ((inhibit-redisplay t)) (org-mobile-create-sumo-agenda))
-        (message "Creating agendas...done")
-        (org-save-all-org-buffers) ; to save any IDs created by this process
-        (message "Copying files...")
-        (org-mobile-copy-agenda-files)
-        (message "Writing index file...")
-        (org-mobile-create-index-file)
-        (message "Writing checksums...")
-        (org-mobile-write-checksums)
-        (run-hooks 'org-mobile-post-push-hook)))
-    (message "Files for mobile viewer staged")))
-
-
-(setq org-timer-default-timer 25)
-(setq org-clock-string-limit 35)
-
-(add-hook 'org-clock-in-hook '(lambda ()
-                                (if (not org-timer-current-timer)
-                                    (org-timer-set-timer '(25)))))
-
-(add-hook 'org-clock-out-hook '(lambda ()
-                                 (org-timer-cancel-timer)
-                                 (setq org-mode-line-string nil)))
-
-
-
-(add-hook 'org-capture-after-finalize-hook '(lambda() (org-agenda-redo)))
-
-(add-to-list 'org-modules 'org-habit)
-(setq org-habit-graph-column 70)
-(setq org-enforce-todo-dependencies t)
-
-(defun org-summary-todo (n-done n-not-done)
-  "Switch entry to DONE when all subentries are done, to TODO otherwise."
-  (let (org-log-done org-log-states) ; turn off logging
-    (org-todo (if (= n-not-done 0) "DONE" "TODO"))))
-
-(remove-hook 'org-after-todo-statistics-hook 'org-summary-todo)
-
-(defun org-cmp-title (a b)
-  "Compare the titles of string A and B"
-  (cond ((string-lessp a b) -1)
-        ((string-lessp b a) +1)
-        (t nil)))
-
-(setq org-agenda-cmp-user-defined 'org-cmp-title)
-
-;; for when timestamps get garbled by locale
-(defun org-fix-timestamp ()
-  (interactive)
-  (save-excursion
-    (goto-char (point-min))
-    (while (re-search-forward org-ts-regexp-both nil)
-      (org-timestamp-change 0))))
-
-(setq org-google-weather-format "[ %i %c, %L [%l,%h] %s ]")
-
-(defun org-clock-in-out-later (start end)
-  "…"
-  (interactive "nEnter start:
-nEnd:")
-  (message "Name is: %d, Age is: %d" start end)
-  (org-clock-in nil start)
-  (org-clock-out nil end))
-
-
-;; "String to return to describe the weather.
-;; Valid %-sequences are:
-;; - %i the icon
-;; - %c means the weather condition
-;; - %L the supplied location
-;; - %C the city the weather is for
-;; - %l the lower temperature
-;; - %h the higher temperature
-;; - %s the temperature unit symbol"
-
-(setq org-agenda-sorting-strategy
-      '((agenda habit-up time-up alpha-up tag-up user-defined-up priority-down)
-        (todo user-defined-up todo-state-up priority-up effort-down)
-        (tags user-defined-up)
-        (search category-keep)))
-
-(setq org-timer-default-timer 25)
-
-(add-hook 'org-clock-in-hook '(lambda ()
-                                (if (not org-timer-current-timer)
-                                    (org-timer-set-timer '(16)))))
-
-(setq org-agenda-custom-commands
-      '(("W" tags "work")
-        ("w" tags-todo "work")
-        ("g" tags-todo "trans")
-        ("j" todo "WAIT"
-         (tags-todo "work"))
-        ("J" todo-tree "WAIT")
-        ("h" agenda ""
-         ((org-agenda-show-all-dates nil)))
-        ("o" "Agenda and Office-related tasks"
-         ((agenda)
-          (tags-todo "work")))
-        ("U" tags "work"
-         ((org-show-following-heading nil)
-          (org-show-hierarchy-above nil)))
-        ("f" "flagged" tags ""
-         ((org-agenda-files
-           '("~/org/flagged.org"))))
-        ("z" "Agenda and Office-related tasks"
-         ((agenda)
-          (org-agenda-files
-           '("~/org/flagged.org"))))
-        ("c" agenda "work"
-         ((org-agenda-ndays 1)
-          (org-scheduled-past-days 900)
-          (org-deadline-warning-days 0)
-          (org-agenda-filter-preset
-           '("+work"))))))
-
-(setq org-icalendar-use-scheduled '(todo-start event-if-todo))
-
-(setq system-time-locale "C")
-
-(add-to-list 'auto-mode-alist '("\\.org$" . org-mode))
-(global-set-key "\C-cl" 'org-store-link)
-
-(global-set-key "\C-ca" 'org-agenda)
-(global-set-key "\C-cb" 'org-iswitchb)
-
-(add-hook 'org-mode-hook 'turn-on-font-lock) ; Org buffers only
-(add-hook 'org-mode-hook
-          (lambda ()
-            (define-key org-agenda-mode-map "C" 'cfw:open-org-calendar)
-            (define-key org-mode-map (kbd "C-'") 'smex-with-toggle)))
-;;(add-hook 'org-mode-hook 'smart-tab-mode-off)
-
-
-(defun org-mobile-pullpush ()
-  (interactive)
-  (save-excursion
-    (progn
-      (org-mobile-pull)
-      (org-mobile-push-unobtrusive)
-      (message "all org mobile files pushed"))))
-
-(defun org-sync-mobile-after-save (&optional force)
-  (interactive)
-  (when (and (eq major-mode 'org-mode)
-             (member buffer-file-name org-agenda-files))
-    (save-excursion
-      (org-mobile-pullpush))))
-
-(defadvice org-save-all-org-buffers (after sync-all-mobile-org-after-saving-in-agenda last)
-  (org-sync-mobile-after-save))
-
-(defadvice org-agenda-exit (after sync-all-mobile-org-after-saving-in-agenda-exit activate)
-  (org-sync-mobile-after-save))
-
-;; (ad-deactivate 'org-save-all-org-buffers)
-;; (ad-activate 'org-save-all-org-buffers)
-;; (ad-deactivate 'org-agenda-exit)
-;; (ad-activate 'org-agenda-exit)
-
-;; (require 'deferred)
-;; (run-at-time t 3600 (lambda () (deferred:call(org-mobile-pullpush))))
-
-(defun org-read-date-and-adjust-timezone ()
-  (date-to-time (format "%s %s" (org-read-date t) (car (cdr (current-time-zone))))))
-
-(defun org-clock-in-and-out ()
-  (interactive)
-  (progn
-    (org-clock-in nil (org-read-date-and-adjust-timezone))
-    (org-clock-out nil (org-read-date-and-adjust-timezone))))
-
-(define-key org-mode-map (kbd "\C-c i") 'org-clock-in-and-out)
-
-(message "LOADING: org-mode stuff")
-
-
-
 ;; ここまで
 
 ;; 思いついたコードやメモコードを書いて保存できるようにするための設定
@@ -1314,13 +716,6 @@ nEnd:")
 (add-hook 'objc-mode-hook
           (lambda ()
             (define-key c-mode-base-map (kbd "C-c o") 'ff-find-other-file)))
-
-;; load-path を通す
-(let ((default-directory (expand-file-name "~/.emacs.d/site-lisp/")))
-  (add-to-list 'load-path default-directory)
-  (if (fboundp 'normal-top-level-add-subdirs-to-load-path)
-      (normal-top-level-add-subdirs-to-load-path)))
-
 
 (require 'auto-complete-clang)
 (setq clang-completion-suppress-error 't)
@@ -1547,53 +942,6 @@ nEnd:")
           (lambda ()
             (define-key objc-mode-map (kbd "C-c C-r") 'xcode:buildandrun)))
 
-
-
-;; Common copying and pasting functions
-(defun copy-word (&optional arg)
-  "Copy words at point into kill-ring"
-  (interactive "P")
-  (save-excursion
-    (let ((beg (progn (if (looking-back "[a-zA-Z0-9]" 1) (backward-word 1)) (point)))
-          (end (progn (forward-word arg) (point))))
-      (copy-region-as-kill beg end))))
-
-(global-set-key (kbd "C-c w") (quote copy-word))
-
-(defun copy-line (&optional arg)
-  "Save current line into Kill-Ring without mark the line "
-  (interactive "P")
-  (let ((beg (line-beginning-position))
-        (end (line-end-position arg)))
-    (copy-region-as-kill beg end)))
-
-(global-set-key (kbd "C-c k") (quote copy-line))
-
-(defun copy-paragraph (&optional arg)
-  "Copy paragraphes at point"
-  (interactive "P")
-  (save-excursion
-    (let ((beg (progn (backward-paragraph 1) (point)))
-          (end (progn (forward-paragraph arg) (point))))
-      (copy-region-as-kill beg end))))
-
-(global-set-key (kbd "C-c p") (quote copy-paragraph))
-
-(defun copy-string (&optional arg)
-  "Copy a sequence of string into kill-ring"
-  (interactive)
-  (setq onPoint (point))
-  (let ((beg (progn (re-search-backward "[\t ]" (line-beginning-position) 3 1)
-                    (if (looking-at "[\t ]") (+ (point) 1) (point))))
-        (end (progn (goto-char onPoint) (re-search-forward "[\t ]" (line-end-position) 3 1)
-                    (if (looking-back "[\t ]") (- (point) 1) (point) ) )))
-    (copy-region-as-kill beg end))
-  (goto-char onPoint))
-
-
-(global-set-key (kbd "C-c r") (quote copy-string))
-(global-set-key (kbd "C-c s") 'ispell-word)
-(global-set-key (kbd "M-s") 'ispell)
 
 (require 'basic-edit-toolkit)
 
@@ -1837,81 +1185,7 @@ nEnd:")
 (bookmark-bmenu-list)
 
 (require 'alpaca)
-(require 'twittering-mode)
-(autoload 'twittering-numbering "twittering-numbering" nil t)
-(add-hook 'twittering-mode-hook 'twittering-numbering)
 
-(setq twittering-connection-type-order
-      '(wget curl urllib-http native urllib-https))
-
-(setq twittering-use-master-password t)
-(setq twittering-url-show-status nil)
-(setq twittering-number-of-tweets-on-retrieval 200)
-(setq twittering-icon-mode nil)
-;; (setq twittering-timer-interval 900)
-
-(if (and (boundp 'jmp-api-key) (boundp 'jmp-user-name))
-    (progn (defvar jmp-api-url
-             (format "http://api.j.mp/shorten?version=2.0.1&login=%s&apiKey=%s&format=text&longUrl=" jmp-user-name jmp-api-key))
-           (add-to-list 'twittering-tinyurl-services-map
-                        `(jmp . ,jmp-api-url))
-           ;; api key and other information in custom.el
-           (setq twittering-tinyurl-service 'jmp)))
-
-(define-key twittering-mode-map (kbd "S-<tab>") 'twittering-goto-previous-thing)
-(define-key twittering-mode-map (kbd "<S-tab>") 'twittering-goto-previous-thing)
-(define-key twittering-mode-map (kbd "<S-iso-lefttab>") 'twittering-goto-previous-thing)
-(define-key twittering-mode-map [(shift tab)] 'twittering-goto-previous-thing)
-(define-key twittering-mode-map (kbd "S-TAB") 'twittering-goto-previous-thing)
-(define-key twittering-mode-map (kbd "S-<return>") 'wwo)
-
-(add-hook 'twittering-edit-mode-hook (lambda ()
-                                       (ispell-minor-mode)
-                                       (flyspell-mode)))
-
-(add-hook 'twittering-mode-hook (lambda ()
-                                  (twittering-search "emacs exclude:retweets filter:links")
-                                  (twittering-search "emacs exclude:retweets")))
-
-(defalias 'tw 'twittering-mode)
-(defalias 'tt 'twittering-update-status-interactive)
-
-(setq twittering-initial-timeline-spec-string
-      '(":home"
-        ":replies"
-        ":favorites"
-        ":direct_messages"
-        ":search/lift scala/"
-        ":search/twitter/"
-        ":search/keysnail/"
-        ":search/vimperator/"
-        ":search/emacs/"
-        ":search/eshell/"
-        "richstyles/foo"))
-
-(define-key twittering-edit-mode-map "\M-j" 'twittering-edit-replace-at-point)
-(define-key twittering-edit-mode-map "\M-q" 'twittering-edit-cancel-status)
-(define-key twittering-edit-mode-map "\M-s" 'twittering-edit-post-status)
-
-(defun twittering-mode-exit ()
-  "twittering-mode を終了する。"
-  (interactive)
-  (when (y-or-n-p "Really exit twittering-mode? ")
-    (if twittering-timer
-        (twittering-stop))
-    (dolist (buf (twittering-get-buffer-list))
-      (if (get-buffer buf)
-          (kill-buffer buf))))
-  (garbage-collect))
-
-(defalias 'twe 'twittering-mode-exit)
-(message "LOADING: twittering mode setup")
-
-
-(setq frame-title-format '("" invocation-name "@" system-name " "
-                           global-mode-string "%b %+%+ %f" ))
-
-;;(require 'auto-install)
 ;;(require 'todochiku)
 ;;(load-file "~/.emacs.d/site-lisp/work-timer.el")
 
@@ -1925,73 +1199,6 @@ nEnd:")
 (global-set-key (kbd "C-x t m") 'pomodoro-work)
 (global-set-key (kbd "C-x t d") 'pomodoro-done)
 (global-set-key (kbd "C-x t l") 'pomodoro-later)
-
-;; Backups
-(require 'backup-dir)
-
-(make-directory "~/.saves/" t)
-(defvar temp-directory "~/.saves")
-
-;; localize it for safety.
-(make-variable-buffer-local 'backup-inhibited)
-
-(setq bkup-backup-directory-info
-      '((t "~/.saves" ok-create full-path prepend-name)))
-
-(setq backup-by-copying t
-      backup-by-copying-when-linked t
-      backup-by-copying-when-mismatch t
-      backup-directory-alist '(("." . "~/.saves")) ; don't litter my fs tree
-      delete-old-versions t
-      kept-new-versions 20
-      kept-old-versions 2
-      make-backup-files t
-      version-control t)
-
-(setq-default delete-old-versions t)
-
-(setq backup-directory-alist
-      `((".*" . ,temp-directory)))
-(setq auto-save-file-name-transforms
-      `((".*" ,temp-directory t)))
-(setq backup-directory-alist
-      `((".*" . ,temp-directory)))
-
-(defun force-backup-of-buffer ()
-  (setq buffer-backed-up nil))
-
-(add-hook 'before-save-hook 'force-backup-of-buffer)
-
-(setq vc-make-backup-files t)
-
-;; One of the main issues for me is that my home directory is
-;; NFS mounted. By setting all the autosave directories in /tmp,
-;; things run much quicker
-(setq auto-save-directory (concat temp-directory "/autosave")
-      auto-save-hash-directory (concat temp-directory "/autosave-hash")
-      auto-save-directory-fallback "/var/tmp/"
-      auto-save-list-file-prefix (concat temp-directory "/autosave-")
-      auto-save-hash-p nil
-      auto-save-timeout 15
-      auto-save-interval 20)
-(make-directory auto-save-directory t)
-
-(message "LOADING: auto save stuff")
-
-(defun unfill-paragraph ()
-  (interactive)
-  (let ((fill-column (point-max)))
-    (fill-paragraph nil)))
-
-(defun unfill-region (start end)
-  (interactive "r")
-  (let ((fill-column (point-max)))
-    (fill-region start end nil)))
-
-(add-to-list 'bkup-backup-directory-info
-             (list tramp-file-name-regexp ""))
-(setq tramp-bkup-backup-directory-info bkup-backup-directory-info)
-
 
 (require 'weblogger)
 (require 'zencoding-mode)
@@ -2007,7 +1214,7 @@ nEnd:")
 
 ;;(add-hook 'weblogger-entry-mode-hook 'textile-minor-mode)
 
-(message "LOADING: dddf2")
+(message "LOADING: blogging")
 (defun publish-post ()
   (interactive)
   (textile-to-html-buffer-respect-weblogger)
@@ -2034,32 +1241,6 @@ nEnd:")
 
 (require 'summarye)
 
-(message "LOADING: point stuff")
-
-(defun point-to-top ()
-  "Put cursor on top line of window, like Vi's H."
-  (interactive)
-  (move-to-window-line 0))
-
-(defun point-to-bottom ()
-  "Put cursor at bottom of last visible line, like Vi's L."
-  (interactive)
-  (move-to-window-line -1)
-  (re-search-backward "\\S " (point-min) t 5))
-
-(defun point-to-middle ()
-  "Put cursor on middle line of window"
-  (interactive)
-  (let ((win-height (if (> (count-screen-lines) (window-height))
-                        (window-height)
-                      (count-screen-lines))))
-    (move-to-window-line (floor (* win-height 0.4)))))
-
-(global-set-key (kbd "C-x x") 'point-to-top)
-(global-set-key (kbd "C-x c") 'point-to-bottom)
-(global-set-key (kbd "C-x g") 'point-to-middle)
-(global-set-key (kbd "C-x r e") 'string-insert-rectangle)
-
 (defun my-ido-keys ()
   "Add my keybindings for ido."
   (define-key ido-completion-map "\C-k" 'ido-next-match)
@@ -2072,11 +1253,6 @@ nEnd:")
 
 (require 'fuzzy)
 (turn-on-fuzzy-isearch)
-
-(defalias 'hb 'hide-body)
-(defalias 'sb 'show-all)
-(defalias 'he 'hide-entry)
-(defalias 'se 'show-entry)
 
 (require 'enclose)
 (enclose-remove-encloser "'")
@@ -2286,10 +1462,15 @@ nEnd:")
 
 (message "LOADING: sr-speedbar")
 
-(setq tramp-bkup-backup-directory-info nil)
 (require 'backup-dir)
+(setq tramp-bkup-backup-directory-info nil)
 (add-to-list 'bkup-backup-directory-info
              (list tramp-file-name-regexp ""))
+(add-to-list 'bkup-backup-directory-info
+             (list tramp-file-name-regexp ""))
+(setq tramp-bkup-backup-directory-info bkup-backup-directory-info)
+
+
 
 (autoload 'ange-ftp "ange-ftp" nil t)
 ;;(add-hook 'ange-ftp-process-startup-hook 'ecb-deactivate)
@@ -2568,75 +1749,9 @@ the mode-line."
 (load "~/.emacs.d/nxhtml/autostart.el")
 (setq mumamo-chunk-coloring 'no-chunks-colored)
 
-;; numbering rects usage:
-;; http://d.hatena.ne.jp/rubikitch/20110221/seq
-(eval-when-compile (require 'cl))
-(defun number-rectangle (start end format-string from)
-  "Delete (don't save) text in the region-rectangle, then number it."
-  (interactive
-   (list (region-beginning) (region-end)
-         (read-string "Number rectangle: " (if (looking-back "^ *") "%d. " "%d"))
-         (read-number "From: " 1)))
-  (save-excursion
-    (goto-char start)
-    (setq start (point-marker))
-    (goto-char end)
-    (setq end (point-marker))
-    (delete-rectangle start end)
-    (goto-char start)
-    (loop with column = (current-column)
-          while (<= (point) end)
-          for i from from do
-          (insert (format format-string i))
-          (forward-line 1)
-          (move-to-column column)))
-  (goto-char start))
-
-(defun count-string-matches (regexp string)
-  (with-temp-buffer
-    (insert string)
-    (count-matches regexp (point-min) (point-max))))
-(defun seq (format-string from to)
-  "Insert sequences with FORMAT-STRING.
-FORMAT-STRING is like `format', but it can have multiple %-sequences."
-  (interactive
-   (list (read-string "Input sequence Format: ")
-         (read-number "From: " 1)
-         (read-number "To: ")))
-  (save-excursion
-    (loop for i from from to to do
-          (insert (apply 'format format-string
-                         (make-list (count-string-matches "%[^%]" format-string) i))
-                  "\n")))
-  (end-of-line))
-
-(defun duplicate-this-line-forward (n)
-  "Duplicates the line point is on. The point is next line.
- With prefix arg, duplicate current line this many times."
-  (interactive "p")
-  (when (eq (point-at-eol)(point-max))
-    (save-excursion (end-of-line) (insert "\n")))
-  (save-excursion
-    (beginning-of-line)
-    (dotimes (i n)
-      (insert-buffer-substring (current-buffer) (point-at-bol)(1+ (point-at-eol))))))
-
-(message "LOADING: number rect")
 
 (require 'gse-number-rect)
 (global-set-key "\C-hj" 'number-rectangle)
-
-(defun byte-compile-all-my-files ()
-  "byte compile everything"
-  (interactive)
-  (byte-recompile-directory "~/.emacs.d/site-lisp" 0 t)
-  (byte-recompile-directory "~/.emacs.d" 0 t)
-  (byte-recompile-directory "~/.emacs.d/wanderlust" 0 t)
-  (byte-recompile-directory "~/.emacs.d/vim" 0 t)
-  (byte-recompile-directory "~/.emacs.d/ensime_2.9.1-0.7.6/elisp" 0 t)
-  (byte-recompile-directory "~/.emacs.d/twittering" 0 t))
-
-(defalias 'by 'byte-compile-all-my-files)
 
 (require 'nazna)
 
@@ -2645,14 +1760,6 @@ FORMAT-STRING is like `format', but it can have multiple %-sequences."
 (require 'rainbow-mode)
 
 (require 'move-region)
-
-(defvar current-time-format "%a %H:%M:%S")
-
-(defun echo-time-now ()
-  (interactive)
-  (message (format-time-string current-time-format (current-time))))
-
-(defalias 'ti 'echo-time-now)
 
 (require 'bm)
 
@@ -2678,14 +1785,6 @@ FORMAT-STRING is like `format', but it can have multiple %-sequences."
 (autoload 'tidy-save-settings "tidy" "Save settings to `tidy-config-file'" t)
 (autoload 'tidy-build-menu "tidy" "Install an options menu for HTML Tidy." t)
 
-(defun toggle-line-spacing ()
-  "Toggle line spacing between no extra space to extra half line height."
-  (interactive)
-  (if (eq line-spacing nil)
-      (setq-default line-spacing 0.5) ; add 0.5 height between lines
-    (setq-default line-spacing nil)))
-
-(defalias 'ts 'toggle-line-spacing)
 
 (defun sudo-edit (&optional arg)
   (interactive "p")
@@ -2795,35 +1894,6 @@ FORMAT-STRING is like `format', but it can have multiple %-sequences."
 
 (add-to-list 'auto-mode-alist '("\\.doc\\'" . no-word))
 
-(defalias 'ir 'indent-region)
-
-(defun fixup-spaces ()
-  (interactive)
-  (save-excursion
-    (if(eq mark-active
-           nil)
-        (progn
-          (beginning-of-line)
-          ;; (line-beginning-position)
-          (while (re-search-forward "[ ]+" (line-end-position) t)
-            (replace-match " " nil nil)))
-      (progn
-        (goto-char (region-beginning))
-        (while (re-search-forward "[ ]+" (region-end) t)
-          (replace-match " " nil nil))))))
-
-(defun fixup-buffer-spaces ()
-  (interactive)
-  (save-excursion
-    (mark-whole-buffer)
-    (fixup-spaces)))
-
-(defun save-elisp-to-local ()
-  (interactive)
-  (write-file "~/.emacs.d/site-lisp/"))
-
-(message "LOADING: save elisp")
-
 (require 'sequential-command-config)
 (sequential-command-setup-keys)
 
@@ -2909,45 +1979,6 @@ FORMAT-STRING is like `format', but it can have multiple %-sequences."
 
 (message "LOADING: find file")
 
-(defvar view-mode-original-keybind nil)
-(defun view-mode-set-window-controls (prefix-key)
-  (unless view-mode-original-keybind
-    (dolist (l (cdr view-mode-map))
-      (if (equal ?s (car l))
-          (setq view-mode-original-keybind (list prefix-key (cdr l))))))
-  (define-key view-mode-map prefix-key view-mode-window-control-map))
-
-(defun view-mode-unset-window-controls()
-  (when view-mode-original-keybind
-    (define-key view-mode-map (car view-mode-original-keybind)
-      (cadr view-mode-original-keybind))
-    (setq view-mode-original-keybind nil)))
-
-
-
-;; view-mode時に、手軽にウィンドウ移動、切替を行えるようにする。
-(defvar view-mode-window-control-map nil)
-(unless view-mode-window-control-map
-  (setq view-mode-window-control-map (make-sparse-keymap))
-
-  (define-key view-mode-window-control-map (kbd "l") 'windmove-right)
-  (define-key view-mode-window-control-map (kbd "h") 'windmove-left)
-  (define-key view-mode-window-control-map (kbd "k") 'windmove-down)
-  (define-key view-mode-window-control-map (kbd "j") 'windmove-up)
-
-  (define-key view-mode-window-control-map (kbd "d") 'delete-window)
-  (define-key view-mode-window-control-map (kbd "wh") 'split-window-horizontally)
-  (define-key view-mode-window-control-map (kbd "wv") 'split-window-vertically)
-  (define-key view-mode-window-control-map (kbd "o") 'delete-other-windows)
-  )
-
-(defun view-mode-set-vi-keybindings ()
-  (define-many-keys view-mode-map pager-keybind)
-  (hl-line-mode 1)
-  (view-mode-set-window-controls "s")
-  )
-
-(add-hook 'view-mode-hook 'view-mode-set-vi-keybindings)
 
 
 (which-func-mode 1)
@@ -2982,18 +2013,6 @@ FORMAT-STRING is like `format', but it can have multiple %-sequences."
 (setq auto-mode-alist
       (cons '("\\.md" . markdown-mode) auto-mode-alist))
 
-;; prompt when quitting Emacs in GUI
-(defun ask-before-closing ()
-  "Ask whether or not to close, and then close if y was pressed"
-  (interactive)
-  (if (y-or-n-p (format "Are you sure you want to exit Emacs? "))
-      (if (< emacs-major-version 22)
-          (save-buffers-kill-terminal)
-        (save-buffers-kill-emacs t))
-    (message "Canceled exit")))
-
-(global-set-key (kbd "C-x C-c") 'ask-before-closing)
-
 (require 'rebound)
 (rebound-mode t)
 
@@ -3010,31 +2029,6 @@ FORMAT-STRING is like `format', but it can have multiple %-sequences."
   (migemo-init))
 
 
-(require 'diminish)
-(diminish 'abbrev-mode "Abv")
-(diminish 'auto-complete-mode)
-(diminish 'auto-highlight-symbol-mode)
-(diminish 'eldoc-mode)
-(diminish 'flyspell-mode "f")
-(diminish 'highlight-parentheses-mode)
-(diminish 'rainbow-delimiters-mode)
-(diminish 'icicle-mode)
-(diminish 'paredit-mode "PE")
-(diminish 'reftex-mode)
-(if (featurep 'scim)
-    (diminish 'scim-mode))
-(diminish 'undo-tree-mode)
-(diminish 'window-number-mode)
-;; (diminish 'yas/minor-mode "Y")
-
-(add-hook 'emacs-lisp-mode-hook
-          (lambda()
-            (setq mode-name "el")))
-
-(add-hook 'LaTeX-mode-hook
-          (lambda()
-            (setq TeX-base-mode-name "lx")))
-
 (require 'muse-mode)
 (require 'muse-html)
 (require 'muse-latex)
@@ -3049,16 +2043,6 @@ FORMAT-STRING is like `format', but it can have multiple %-sequences."
       '(("Journal" ("~/journal/"
                     :default "journal"))))
 
-(defun date (arg)
-  (interactive "P")
-  (insert (if arg
-              (format-time-string "%d.%m.%Y")
-            (format-time-string "%Y-%m-%d"))))
-
-(defun timestamp ()
-  (interactive)
-  (insert (format-time-string "%Y-%m-%d %H:%M:%S")))
-
 (require 'load-directory)
 
 ;; delete this after the power crisis
@@ -3066,11 +2050,6 @@ FORMAT-STRING is like `format', but it can have multiple %-sequences."
 ;; (require 'yasima)
 ;; (yasima-mode)
 
-(defadvice save-buffers-kill-emacs (around no-query-kill-emacs activate)
-  "Prevent annoying \"Active processes exist\" query when you quit Emacs."
-  (flet ((process-list ())) ad-do-it))
-
-(message "LOADING: dddf25")
 
 (require 'sql)
 ;; (autoload 'sql-mode "sql-mode" "SQL Editing Mode" t)
@@ -3477,105 +2456,6 @@ FORMAT-STRING is like `format', but it can have multiple %-sequences."
 (setq longlines-wrap-follows-window-size t)
 (global-visual-line-mode)
 
-(defun what-face (pos)
-  (interactive "d")
-  (let ((face (or (get-char-property (point) 'read-face-name)
-                  (get-char-property (point) 'face))))
-    (if face (message "Face: %s" face) (message "No face at %d" pos))))
-
-(defun menu-bar-redisplay-hack ()
-  (interactive)
-  (progn
-    (tool-bar-mode)
-    (tool-bar-mode -1)))
-
-(defun make-three-split-frame ()
-  (interactive)
-  (set-frame-width (selected-frame) 185)
-  (set-frame-height (selected-frame) 50)
-  (delete-other-windows)
-  (split-window-right)
-  (split-window-below)
-  (menu-bar-redisplay-hack))
-
-(defun make-laptop-wide-frame ()
-  (interactive)
-  (set-frame-width (selected-frame) 185)
-  (set-frame-height (selected-frame) 50)
-  (menu-bar-redisplay-hack))
-
-
-(global-set-key (kbd "C-S-n")
-                (lambda ()
-                  (interactive)
-                  (ignore-errors (next-line 5))))
-
-(global-set-key (kbd "C-S-p")
-                (lambda ()
-                  (interactive)
-                  (ignore-errors (previous-line 5))))
-
-(global-set-key (kbd "C-S-f")
-                (lambda ()
-                  (interactive)
-                  (ignore-errors (forward-char 5))))
-
-(global-set-key (kbd "C-S-b")
-                (lambda ()
-                  (interactive)
-                  (ignore-errors (backward-char 5))))
-
-(defun toggle-window-split ()
-  (interactive)
-  (if (= (count-windows) 2)
-      (let* ((this-win-buffer (window-buffer))
-             (next-win-buffer (window-buffer (next-window)))
-             (this-win-edges (window-edges (selected-window)))
-             (next-win-edges (window-edges (next-window)))
-             (this-win-2nd (not (and (<= (car this-win-edges)
-                                         (car next-win-edges))
-                                     (<= (cadr this-win-edges)
-                                         (cadr next-win-edges)))))
-             (splitter
-              (if (= (car this-win-edges)
-                     (car (window-edges (next-window))))
-                  'split-window-horizontally
-                'split-window-vertically)))
-        (delete-other-windows)
-        (let ((first-win (selected-window)))
-          (funcall splitter)
-          (if this-win-2nd (other-window 1))
-          (set-window-buffer (selected-window) this-win-buffer)
-          (set-window-buffer (next-window) next-win-buffer)
-          (select-window first-win)
-          (if this-win-2nd (other-window 1))))))
-
-(defun rotate-windows ()
-  "Rotate your windows"
-  (interactive)
-  (cond ((not (> (count-windows)1))
-         (message "You can't rotate a single window!"))
-        (t
-         (setq i 1)
-         (setq numWindows (count-windows))
-         (while  (< i numWindows)
-           (let* (
-                  (w1 (elt (window-list) i))
-                  (w2 (elt (window-list) (+ (% i numWindows) 1)))
-
-                  (b1 (window-buffer w1))
-                  (b2 (window-buffer w2))
-
-                  (s1 (window-start w1))
-                  (s2 (window-start w2))
-                  )
-             (set-window-buffer w1  b2)
-             (set-window-buffer w2 b1)
-             (set-window-start w1 s2)
-             (set-window-start w2 s1)
-             (setq i (1+ i)))))))
-
-
 ;; (require 'ido-ubiquitous)
 ;; (ido-ubiquitous-mode 1)
 
@@ -3585,46 +2465,6 @@ FORMAT-STRING is like `format', but it can have multiple %-sequences."
 
 (require 'browse-kill-ring)
 
-(defun apply-named-macro-to-region-lines (top bottom)
-  "Apply named keyboard macro to all lines in the region."
-  (interactive "r")
-  (let ((macro (intern
-                (completing-read "kbd macro (name): "
-                                 obarray
-                                 (lambda (elt)
-                                   (and (fboundp elt)
-                                        (or (stringp (symbol-function elt))
-                                            (vectorp (symbol-function elt))
-                                            (get elt 'kmacro))))
-                                 t))))
-    (apply-macro-to-region-lines top bottom macro)))
-
-(defun apply-function-to-region-lines (fn)
-  (interactive "aFunction to apply to lines in region: ")
-  (save-excursion
-    (goto-char (region-end))
-    (let ((end-marker (copy-marker (point-marker)))
-          next-line-marker)
-      (goto-char (region-beginning))
-      (if (not (bolp))
-          (forward-line 1))
-      (setq next-line-marker (point-marker))
-      (while (< next-line-marker end-marker)
-        (let ((start nil)
-              (end nil))
-          (goto-char next-line-marker)
-          (save-excursion
-            (setq start (point))
-            (forward-line 1)
-            (set-marker next-line-marker (point))
-            (setq end (point)))
-          (save-excursion
-            (let ((mark-active nil))
-              (narrow-to-region start end)
-              (funcall fn)
-              (widen)))))
-      (set-marker end-marker nil)
-      (set-marker next-line-marker nil))))
 
 ;; magic invocations to prevent encoding errors for cjk
 (setq utf-translate-cjk-mode nil) ; disable CJK coding/encoding (Chinese/Japanese/Korean characters)
@@ -3735,113 +2575,6 @@ FORMAT-STRING is like `format', but it can have multiple %-sequences."
 
 ;; (global-set-key "\C-c\C-w" 'alc)
 
-(defun select-current-line ()
-  (interactive)
-  (move-beginning-of-line nil)
-  (set-mark-command nil)
-  (move-end-of-line nil)
-  (setq deactivate-mark nil))
-
-(defun strip-whitespace-and-newlines-in-region (start end)
-  (interactive "*r")
-  (save-excursion
-    (save-restriction
-      (narrow-to-region start end)
-      (goto-char (point-min))
-      (while (re-search-forward "[ \t\r\n]+" nil t)
-        (replace-match "" nil nil))
-      )))
-
-(defun strip-whitespace-and-newlines-in-region (start end)
-  (interactive "*r")
-  (save-excursion
-    (save-restriction
-      (narrow-to-region start end)
-      (goto-char (point-min))
-      (while (re-search-forward "[ \t\r\n]+" nil t)
-        (replace-match "" nil nil))
-      )))
-
-(defun strip-whitespace-and-newlines-in-region-or-line ()
-  (interactive)
-  (let (beg end)
-    (if (region-active-p)
-        (setq beg (region-beginning) end (region-end))
-      (setq beg (line-beginning-position) end (line-end-position)))
-    (strip-whitespace-and-newlines-in-region beg end)))
-
-(global-set-key (kbd "M-L") (lambda ()
-                              (interactive)
-                              (strip-whitespace-and-newlines-in-region-or-line)))
-
-(defun strip-whitespace-in-region (start end)
-  (interactive "*r")
-  (save-excursion
-    (save-restriction
-      (narrow-to-region start end)
-      (goto-char (point-min))
-      (while (re-search-forward "[ \t\r]+" nil t)
-        (replace-match "" nil nil))
-      )))
-
-(defun my-forward-word (arg)
-  (interactive "p")
-  (let ((char-category
-         '(lambda (ch)
-            (when ch
-              (let* ((c (char-category-set ch))
-                     ct)
-                (cond
-                 ((aref c ?a)
-                  (cond
-                   ((or (and (>= ?z ch) (>= ch ?a))
-                        (and (>= ?Z ch) (>= ch ?A))
-                        (and (>= ?9 ch) (>= ch ?0))
-                        (= ch ?-) (= ch ?_))
-                    'alphnum)
-                   (t
-                    'ex-alphnum)))
-                 ((aref c ?j) ; Japanese
-                  (cond
-                   ((aref c ?K) 'katakana)
-                   ((aref c ?A) '2alphnum)
-                   ((aref c ?H) 'hiragana)
-                   ((aref c ?C) 'kanji)
-                   (t 'ja)))
-                 ((aref c ?k) 'hankaku-kana)
-                 ((aref c ?r) 'j-roman)
-                 (t 'etc))))))
-        (direction 'char-after)
-        char type)
-    (when (null arg) (setq arg 1))
-    (when (> 0 arg)
-      (setq arg (- arg))
-      (setq direction 'char-before))
-    (while (> arg 0)
-      (setq char (funcall direction))
-      (setq type (funcall char-category char))
-      (while (and (prog1 (not (eq (point) (point-max)))
-                    (cond ((eq direction 'char-after)
-                           (goto-char (1+ (point))))
-                          (t
-                           (goto-char (1- (point))))))
-                  (eq type (funcall char-category (funcall direction)))))
-      (setq arg (1- arg)))
-    type))
-
-(defun my-backward-word (arg)
-  (interactive "p")
-  (my-forward-word (- (or arg 1))))
-
-;; 素のforward-word, backward-wordを潰す
-(global-set-key "\M-F" 'my-forward-word)
-(global-set-key "\M-B" 'my-backward-word)
-(global-set-key "\M-f" 'forward-word)
-(global-set-key "\M-b" 'backward-word)
-
-(global-set-key (kbd "M-K") (lambda ()
-                  (interactive)
-                  (join-line -1)))
 
 (require 'highlight-symbol)
 
