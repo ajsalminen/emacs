@@ -28,8 +28,19 @@
 
 (setq load-path (append load-path more-load-paths))
 
+(setq initsplit-sort-customizations t)
+(setq initsplit-default-directory "~/.emacs.d/inits/")
+(setq initsplit-dynamic-customizations-alist
+      '(("^w3m-" "16-w3m-init.el" nil)
+	("^\\(preview\\|font-latex\\|latex\\|tex\\)-"
+	 "17-tex-init.el" nil)
+	))
+
 (require 'init-loader)
-(init-loader-load "~/.emacs.d/inits")
+(init-loader-load "~/.emacs.d/inits/")
+
+;; FIXME: doesn't seem to work
+(require 'initsplit)
 
 (eval-when-compile (require 'cl))
 
