@@ -1,5 +1,11 @@
 (eval-when-compile (require 'cl))
 
+(defun machine-ip-address (dev)
+  "Return IP address of a network device."
+  (let ((info (network-interface-info dev)))
+    (if info
+        (format-network-address (car info) t))))
+
 (defun ib ()
   "indent whole buffer"
   (interactive)
@@ -525,3 +531,102 @@ FORMAT-STRING is like `format', but it can have multiple %-sequences."
 (global-set-key (kbd "M-K") (lambda ()
                               (interactive)
                               (join-line -1)))
+
+;; quick and dirty buffer menu sorting
+(define-key Buffer-menu-mode-map (kbd "M-s s") '(lambda() (interactive) (Buffer-menu-sort 2)))
+(define-key Buffer-menu-mode-map (kbd "M-s d") '(lambda() (interactive) (Buffer-menu-sort 3)))
+(define-key Buffer-menu-mode-map (kbd "M-s f") '(lambda() (interactive) (Buffer-menu-sort 4)))
+(define-key Buffer-menu-mode-map (kbd "M-s g") '(lambda() (interactive) (Buffer-menu-sort 5)))
+
+(defun show-file-name ()
+  "Show the full path file name in the minibuffer."
+  (interactive)
+  (message (buffer-file-name)))
+
+(add-hook 'before-save-hook
+          '(lambda ()
+             (or (file-exists-p (file-name-directory buffer-file-name))
+                 (make-directory (file-name-directory buffer-file-name) t))))
+
+(defun sudo-edit (&optional arg)
+  (interactive "p")
+  (if arg
+      (find-file (concat "/sudo:root@localhost:" (ido-read-file-name "File: ")))
+    (find-alternate-file (concat "/sudo:root@localhost:" buffer-file-name))))
+
+(defun sudo-edit-current-file ()
+  (interactive)
+  (find-alternate-file (concat "/sudo:root@localhost:" (buffer-file-name (current-buffer)))))
+
+(message "LOADING: sudo edit (not working)")
+
+;; ;; code from failed sudo attempt
+;; (require 'sudo)
+
+;; (defun sudo-before-save-hook ()
+;; (set (make-local-variable 'sudo:file) (buffer-file-name))
+;; (when sudo:file
+;; (unless(file-writable-p sudo:file)
+;; (set (make-local-variable 'sudo:old-owner-uid) (nth 2 (file-attributes sudo:file)))
+;; (when (numberp sudo:old-owner-uid)
+;; (unless (= (user-uid) sudo:old-owner-uid)
+;; (when (y-or-n-p
+;; (format "File %s is owned by %s, save it with sudo? "
+;; (file-name-nondirectory sudo:file)
+;; (user-login-name sudo:old-owner-uid)))
+;; (sudo-chown-file (int-to-string (user-uid)) (sudo-quoting sudo:file))
+;; (add-hook 'after-save-hook
+;; (lambda ()
+;; (sudo-chown-file (int-to-string sudo:old-owner-uid)
+;; (sudo-quoting sudo:file))
+;; (if sudo-clear-password-always
+;; (sudo-kill-password-timeout)))
+;; nil ;; not append
+;; t ;; buffer local hook
+;; )))))))
+
+
+;; (add-hook 'before-save-hook 'sudo-before-save-hook)
+
+;; credit to Benjamin Riefenstahl <Benjamin.Riefenstahl@epost.de>
+(defun benny-antiword-file-handler (operation &rest args)
+  ;; First check for the specific operations
+  ;; that we have special handling for.
+  (cond ((eq operation 'insert-file-contents)
+         (apply 'benny-antiword-insert-file args))
+        ((eq operation 'file-writable-p)
+         nil)
+        ((eq operation 'write-region)
+         (error "Word documents can't be written"))
+        ;; Handle any operation we don't know about.
+        (t (let ((inhibit-file-name-handlers
+                  (cons 'benny-antiword-file-handler
+                        (and (eq inhibit-file-name-operation operation)
+                             inhibit-file-name-handlers)))
+                 (inhibit-file-name-operation operation))
+             (apply operation args)))))
+
+(defun benny-antiword-insert-file (filename &optional visit beg end replace)
+  (set-buffer-modified-p nil)
+  (setq buffer-file-name (file-truename filename))
+  (setq buffer-read-only t)
+  (let ((start (point))
+        (inhibit-read-only t))
+    (if replace (delete-region (point-min) (point-max)))
+    (save-excursion
+      (let ((coding-system-for-read 'utf-8)
+            (filename (encode-coding-string
+                       buffer-file-name
+                       (or file-name-coding-system
+                           default-file-name-coding-system))))
+        (call-process "antiword" nil t nil "-m" "UTF-8.txt"
+                      filename))
+      (list buffer-file-name (- (point) start)))))
+
+(defun no-word ()
+  (interactive)
+  (progn
+    (benny-antiword-insert-file (buffer-file-name) nil nil nil t)
+    (beginning-of-buffer)))
+
+(add-to-list 'auto-mode-alist '("\\.doc\\'" . no-word))
