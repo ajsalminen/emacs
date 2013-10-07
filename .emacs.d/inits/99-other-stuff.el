@@ -41,17 +41,6 @@
  )
 (message "LOADING: packages initialized")
 
-
-;;(require 'byte-code-cache)
-
-(let ((nfsdir "~/.emacs.d/site-lisp")
-      (cachedir "~/.elispcache"))
-  (setq load-path (append load-path (list cachedir nfsdir)))
-  (require 'elisp-cache)
-  (setq elisp-cache-byte-compile-files t)
-  (setq elisp-cache-freshness-delay 0)
-  (elisp-cache nfsdir cachedir))
-
 (require 'work-timer)
 (setq work-timer-working-time 30)
 ;;(defalias 'work-timer-start 'p)
