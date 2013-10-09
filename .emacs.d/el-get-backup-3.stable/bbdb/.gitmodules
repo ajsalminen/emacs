@@ -1,3 +1,0 @@
-[submodule "extern/bbdb-vcard"]
-	path = extern/bbdb-vcard
-	url = git://github.com/trebb/bbdb-vcard.git

@@ -630,3 +630,6 @@ FORMAT-STRING is like `format', but it can have multiple %-sequences."
     (beginning-of-buffer)))
 
 (add-to-list 'auto-mode-alist '("\\.doc\\'" . no-word))
+
+
+(defalias 'yes-or-no-p 'y-or-n-p)

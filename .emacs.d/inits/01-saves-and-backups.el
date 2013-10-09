@@ -1,12 +1,14 @@
 ;;(require 'byte-code-cache)
 
-(let ((nfsdir "~/.emacs.d/site-lisp")
-      (cachedir "~/.elispcache"))
-  (setq load-path (append load-path (list cachedir nfsdir)))
-  (require 'elisp-cache)
-  (setq elisp-cache-byte-compile-files t)
-  (setq elisp-cache-freshness-delay 0)
-  (elisp-cache nfsdir cachedir))
+;; FIXME: decide on using this
+
+;; (let ((nfsdir "~/.emacs.d/site-lisp")
+;;       (cachedir "~/.elispcache"))
+;;   (setq load-path (append load-path (list cachedir nfsdir)))
+;;   (require 'elisp-cache)
+;;   (setq elisp-cache-byte-compile-files t)
+;;   (setq elisp-cache-freshness-delay 0)
+;;   (elisp-cache nfsdir cachedir))
 
 
 ;; Backups
