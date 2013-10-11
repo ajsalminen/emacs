@@ -83,14 +83,11 @@
 (require 'gitconfig-mode)
 (add-to-list 'auto-mode-alist '("/\\.gittrees\\'" . gitconfig-mode))
 
-;; should restore all buffers, etc.
-;; (revive:prop-buffer-name ("*scratch*" . nil))
-;; (setq revive:ignore-buffer-pattern ".*scratch.*")
-(progn
-  (resume)
-  (require 'scratch-persist))
 
-;; (require 'scratch-persist)
+(require 'scratch-persist)
+
+(setq revive:ignore-buffer-pattern "^ \\*\\|\\*scratch\\*\\|scratch\.el")
+(resume)
 
 (message "init completed in %.2fms"
          (sanityinc/time-subtract-millis (current-time) before-init-time))
