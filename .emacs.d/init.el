@@ -27,7 +27,7 @@
                         "~/.emacs.d/el-get/el-get"
                         "~/.emacs.d/el-get/google-weather"
                         "~/.emacs.d/inits"
-			"~/.emacs.d/site-lisp"))
+                        "~/.emacs.d/site-lisp"))
 
 (setq load-path (append load-path more-load-paths))
 
@@ -37,9 +37,9 @@
 (setq initsplit-default-directory "~/.emacs.d/inits/")
 (setq initsplit-dynamic-customizations-alist
       '(("^w3m-" "16-w3m-init.el" nil)
-	("^\\(preview\\|font-latex\\|latex\\|tex\\)-"
-	 "17-tex-init.el" nil)
-	))
+        ("^\\(preview\\|font-latex\\|latex\\|tex\\)-"
+         "17-tex-init.el" nil)
+        ))
 
 (require 'init-loader)
 (setq init-loader-show-log-after-init t)
@@ -84,7 +84,13 @@
 (add-to-list 'auto-mode-alist '("/\\.gittrees\\'" . gitconfig-mode))
 
 ;; should restore all buffers, etc.
-(resume)
+;; (revive:prop-buffer-name ("*scratch*" . nil))
+;; (setq revive:ignore-buffer-pattern ".*scratch.*")
+(progn
+  (resume)
+  (require 'scratch-persist))
+
+;; (require 'scratch-persist)
 
 (message "init completed in %.2fms"
          (sanityinc/time-subtract-millis (current-time) before-init-time))

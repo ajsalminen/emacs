@@ -82,9 +82,6 @@
 
 (message "LOADING: scala lift stuff")
 
-
-(defalias 'yes-or-no-p 'y-or-n-p)
-
 (load "auctex.el" nil t t)
 (load "preview-latex.el" nil t t)
 
@@ -224,12 +221,6 @@
 
 (require 'yasnippet)
 ;; Develop and keep personal snippets under ~/emacs.d/mysnippets
-(setq yas-snippet-dirs
-      '("~/.emacs.d/mysnippets"
-        "~/.emacs.d/yasnippet-go/go-mode"
-        ))
-(yas/load-directory "~/.emacs.d/lisp/yasnippet/snippets")
-(setq yas/root-directory "~/.emacs.d/lisp/mysnippets")
 
 
 ;; (mapc 'yas/load-directory yas/root-directory)

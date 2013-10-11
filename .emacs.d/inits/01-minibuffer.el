@@ -14,16 +14,15 @@
      ;; This is your old M-x.
      (global-set-key (kbd "C-c C-c M-x") 'execute-extended-command)
      (iswitchb-mode 1)
-     (global-set-key (kbd "C-'") 'smex))
+     (global-set-key (kbd "C-'") 'smex)
+     (defun my-ido-keys ()
+       "Add my keybindings for ido."
+       (define-key ido-completion-map "\C-k" 'ido-next-match)
+       (define-key ido-completion-map "\C-j" 'ido-prev-match)
+       (define-key ido-completion-map "\C-n" 'ido-next-match)
+       (define-key ido-completion-map "\C-p" 'ido-prev-match))
 
-  (defun my-ido-keys ()
-    "Add my keybindings for ido."
-    (define-key ido-completion-map "\C-k" 'ido-next-match)
-    (define-key ido-completion-map "\C-j" 'ido-prev-match)
-    (define-key ido-completion-map "\C-n" 'ido-next-match)
-    (define-key ido-completion-map "\C-p" 'ido-prev-match))
-
-  (add-hook 'ido-setup-hook 'my-ido-keys))
+     (add-hook 'ido-setup-hook 'my-ido-keys)))
 
 ;; (require 'smex)
 ;; (smex-initialize)
