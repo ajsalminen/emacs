@@ -83,12 +83,15 @@
 (require 'gitconfig-mode)
 (add-to-list 'auto-mode-alist '("/\\.gittrees\\'" . gitconfig-mode))
 
+(load-file (expand-file-name "~/.emacs.d/keymacros.el"))
 
 (require 'scratch-persist)
 
+;; this is needed for scratch-persist to play well with revive.el
+;; otherwise the startup is interupted
 (setq revive:ignore-buffer-pattern "^ \\*\\|\\*scratch\\*\\|scratch\.el")
 (resume)
-
+(server-start)
 (message "init completed in %.2fms"
          (sanityinc/time-subtract-millis (current-time) before-init-time))
 (message "********** successfully initialized **********")

@@ -112,15 +112,15 @@ Files to save text are stored in the directory specified by the
 (put 'w3m-form-face 'face-alias 'w3m-form)
 
 (defface w3m-form-inactive
-  ;; A copy of the `shadow' face.
+  ;; A copy of the `shadow' face, plus `underline'.
   '((((class color grayscale) (min-colors 88) (background light))
-     :foreground "grey50")
+     (:foreground "grey50" :underline t))
     (((class color grayscale) (min-colors 88) (background dark))
-     :foreground "grey70")
+     (:foreground "grey70" :underline t))
     (((class color) (min-colors 8) (background light))
-     :foreground "green")
+     (:foreground "green" :underline t))
     (((class color) (min-colors 8) (background dark))
-     :foreground "yellow"))
+     (:foreground "yellow" :underline t)))
   "Face used to dim inactive forms."
   :group 'w3m-face)
 
@@ -1436,7 +1436,6 @@ selected rather than \(as usual\) some other window.  See
 	(insert value)
 	(set-buffer-modified-p nil)
 	(when readonly
-	  (w3m-add-face-property (point-min) (point-max) 'w3m-form-inactive)
 	  (set-buffer-modified-p nil)
 	  (setq buffer-read-only t))
 	(goto-char (point-min))
