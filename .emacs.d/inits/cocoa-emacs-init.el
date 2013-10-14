@@ -5,12 +5,6 @@
   (setq warning-suppress-types nil)
   (setq ispell-program-name "/usr/local/bin/aspell"))
 
-
-(when (memq window-system '(mac ns))
-  (progn
-    (require 'exec-path-from-shell)
-    (exec-path-from-shell-initialize)))
-
 ;; (add-to-list 'exec-path (getenv "PATH"))
 ;; (push "/usr/local/bin/scala/bin/" exec-path)
 ;; (push "/usr/local/bin/" exec-path)

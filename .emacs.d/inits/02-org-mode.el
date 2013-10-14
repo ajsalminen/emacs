@@ -219,8 +219,7 @@ nEnd:")
 (add-hook 'org-mode-hook 'turn-on-font-lock) ; Org buffers only
 (add-hook 'org-mode-hook
           (lambda ()
-            (define-key org-agenda-mode-map "C" 'cfw:open-org-calendar)
-            (define-key org-mode-map (kbd "C-'") 'smex-with-toggle)))
+            (define-key org-agenda-mode-map "C" 'cfw:open-org-calendar)))
 ;;(add-hook 'org-mode-hook 'smart-tab-mode-off)
 
 

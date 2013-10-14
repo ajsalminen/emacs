@@ -1,3 +1,10 @@
+(require 'color-moccur)
+(require 'moccur-edit)
+(setq moccur-split-word t)
+(global-set-key (kbd "C-c o") 'occur-by-moccur)
+
+(require 'anything-c-moccur)
+
 (defvar view-mode-original-keybind nil)
 (defun view-mode-set-window-controls (prefix-key)
   (unless view-mode-original-keybind
@@ -29,6 +36,57 @@
   (define-key view-mode-window-control-map (kbd "wv") 'split-window-vertically)
   (define-key view-mode-window-control-map (kbd "o") 'delete-other-windows)
   )
+
+
+(require 'viewer)
+(viewer-stay-in-setup)
+(setq viewer-modeline-color-unwritable "tomato"
+      viewer-modeline-color-view "orange")
+(viewer-change-modeline-color-setup)
+
+
+(setq view-read-only t)
+(defvar pager-keybind
+  `( ;; vi-like
+    ("a" . ,(lambda () (interactive)
+              (let ((anything-c-moccur-enable-initial-pattern nil))
+                (anything-c-moccur-occur-by-moccur))))
+    (";" . anything)
+    ("h" . backward-word)
+    ("l" . forward-word)
+    ("j" . next-line)
+    ("k" . previous-line)
+    ("b" . scroll-down)
+    (" " . scroll-up)
+    ;; w3m-like
+    ;; ("m" . gene-word)
+    ("i" . win-delete-current-window-and-squeeze)
+    ("w" . forward-word)
+    ("e" . backward-word)
+    ("(" . point-undo)
+    (")" . point-redo)
+    ("J" . ,(lambda () (interactive) (scroll-up 1)))
+    ("K" . ,(lambda () (interactive) (scroll-down 1)))
+    ;; bm-easy
+    ;; ("." . bm-toggle)
+    ;; ("[" . bm-previous)
+    ;; ("]" . bm-next)
+    ;; langhelp-like
+    ("c" . scroll-other-window-down)
+    ("v" . scroll-other-window)
+    ))
+
+;; adapted from
+;; http://d.hatena.ne.jp/derui/20100223/1266929390
+
+(defun define-many-keys (keymap key-table &optional includes)
+  (let (key cmd)
+    (dolist (key-cmd key-table)
+      (setq key (car key-cmd)
+            cmd (cdr key-cmd))
+      (if (or (not includes) (member key includes))
+          (define-key keymap key cmd))))
+  keymap)
 
 (defun view-mode-set-vi-keybindings ()
   (define-many-keys view-mode-map pager-keybind)

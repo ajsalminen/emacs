@@ -492,14 +492,7 @@
   (cfw:open-org-calendar))
 
 
-;; ここまで
 
-;; 思いついたコードやメモコードを書いて保存できるようにするための設定
-;; (auto-install-from-emacswiki "open-junk-file.el")
-(require 'open-junk-file)
-(setq open-junk-file-format "~/junk/%Y%m%d_%H%M%s_junk.utf")
-(global-set-key "\C-c\C-j" 'open-junk-file)
-;; ここまで
 
 
 
@@ -553,11 +546,6 @@
   (weblogger-publish-entry))
 
 (define-key weblogger-entry-mode-map "\C-x\C-s" 'publish-post)
-
-(require 'auto-install)
-(setq auto-install-directory "~/.emacs.d/site-lisp/")
-(auto-install-update-emacswiki-package-name t)
-(auto-install-compatibility-setup)
 
 ;; (require 'auto-async-byte-compile)
 ;; (setq auto-async-byte-compile-exclude-files-regexp "org\\|junk\\|\\.revive\\.el\\|init\\.el")
@@ -1092,9 +1080,6 @@ the mode-line."
 
 (message "LOADING: savekill")
 
-(require 'sequential-command-config)
-(sequential-command-setup-keys)
-
 (require 'transpose-frame)
 
 (add-to-list 'auto-mode-alist
@@ -1111,62 +1096,6 @@ the mode-line."
 (defalias 'g 'google-code)
 
 (require 'elisp-format)
-
-(require 'color-moccur)
-(require 'moccur-edit)
-(setq moccur-split-word t)
-(global-set-key (kbd "C-c o") 'occur-by-moccur)
-
-(message "LOADING: moccur")
-
-;; adapted from
-;; http://d.hatena.ne.jp/derui/20100223/1266929390
-(require 'viewer)
-(viewer-stay-in-setup)
-(setq viewer-modeline-color-unwritable "tomato"
-      viewer-modeline-color-view "orange")
-(viewer-change-modeline-color-setup)
-
-
-(setq view-read-only t)
-(defvar pager-keybind
-  `( ;; vi-like
-    ("a" . ,(lambda () (interactive)
-              (let ((anything-c-moccur-enable-initial-pattern nil))
-                (anything-c-moccur-occur-by-moccur))))
-    (";" . anything)
-    ("h" . backward-word)
-    ("l" . forward-word)
-    ("j" . next-line)
-    ("k" . previous-line)
-    ("b" . scroll-down)
-    (" " . scroll-up)
-    ;; w3m-like
-    ;; ("m" . gene-word)
-    ("i" . win-delete-current-window-and-squeeze)
-    ("w" . forward-word)
-    ("e" . backward-word)
-    ("(" . point-undo)
-    (")" . point-redo)
-    ("J" . ,(lambda () (interactive) (scroll-up 1)))
-    ("K" . ,(lambda () (interactive) (scroll-down 1)))
-    ;; bm-easy
-    ;; ("." . bm-toggle)
-    ;; ("[" . bm-previous)
-    ;; ("]" . bm-next)
-    ;; langhelp-like
-    ("c" . scroll-other-window-down)
-    ("v" . scroll-other-window)
-    ))
-
-(defun define-many-keys (keymap key-table &optional includes)
-  (let (key cmd)
-    (dolist (key-cmd key-table)
-      (setq key (car key-cmd)
-            cmd (cdr key-cmd))
-      (if (or (not includes) (member key includes))
-          (define-key keymap key cmd))))
-  keymap)
 
 (defadvice find-file
   (around find-file-switch-to-view-file (file &optional wild) activate)
@@ -1659,73 +1588,6 @@ the mode-line."
 (unless (eq system-type 'windows-nt)
   (set-selection-coding-system 'utf-8))
 (prefer-coding-system 'utf-8)
-
-;; ucs-normalize-NFC-region で濁点分離を直す
-;; M-x ucs-normalize-NFC-buffer または "C-x RET u" で、
-;; バッファ全体の濁点分離を直します。
-;; 参考：
-;; http://d.hatena.ne.jp/nakamura001/20120529/1338305696
-;; http://www.sakito.com/2010/05/mac-os-x-normalization.html
-
-(require 'ucs-normalize)
-(prefer-coding-system 'utf-8-hfs)
-(setq file-name-coding-system 'utf-8-hfs)
-(setq locale-coding-system 'utf-8-hfs)
-
-(defun ucs-normalize-NFC-buffer ()
-  (interactive)
-  (ucs-normalize-NFC-region (point-min) (point-max))
-  )
-
-(global-set-key (kbd "C-x RET u") 'ucs-normalize-NFC-buffer)
-
-
-(require 'google-translate)
-(setq google-translate-default-source-language "ja")
-(setq google-translate-default-target-language "en")
-
-(defun google-translate-flip-languages ()
-  (interactive)
-  (let* ((src-lang google-translate-default-source-language)
-         (tgt-lang google-translate-default-target-language))
-    (setq google-translate-default-source-language tgt-lang)
-    (setq google-translate-default-target-language src-lang)))
-
-(defun google-translate-region-or-line ()
-  (interactive)
-  (let (beg end)
-    (progn
-      (if (region-active-p)
-          (setq beg (region-beginning) end (region-end))
-        (setq beg (line-beginning-position) end (line-end-position)))
-      (let* ((langs (google-translate-read-args nil nil))
-             (source-language (car langs))
-             (target-language (cadr langs)))
-        (google-translate-translate
-         source-language target-language
-         (buffer-substring-no-properties beg end)
-         ))
-      )))
-
-;; takes prefix arg to toggle languages
-(defun google-translate-region-or-line ()
-  (interactive)
-  (let (beg end)
-    (progn
-      (if (region-active-p)
-          (setq beg (region-beginning) end (region-end))
-        (setq beg (line-beginning-position) end (line-end-position)))
-      (let* ((langs (google-translate-read-args nil nil))
-             (source-language (car langs))
-             (target-language (cadr langs))
-             (string (buffer-substring-no-properties beg end)))
-        (if current-prefix-arg
-            (google-translate-translate source-language target-language string)
-          (google-translate-translate target-language source-language string)
-          )))))
-
-(global-set-key "\C-c\C-w" 'google-translate-at-point)
-(global-set-key (kbd "C-c g") 'google-translate-region-or-line)
 
 (require 'http-get)
 

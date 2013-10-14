@@ -3,6 +3,7 @@
 ;; obsolete init condition
 (when (and (executable-find "cmigemo")
            (require 'migemo))
+
   (progn
     (require 'migemo)
     (setq migemo-command "cmigemo")
@@ -43,3 +44,19 @@
 (define-key global-map (kbd "C-x SPC") 'ace-jump-mode-pop-mark)
 (define-key global-map (kbd "C-c SPC") 'ace-jump-mode)
 ;; ace jump end
+
+
+;; junk file
+;; 思いついたコードやメモコードを書いて保存できるようにするための設定
+;; (auto-install-from-emacswiki "open-junk-file.el")
+(require 'open-junk-file)
+(setq open-junk-file-format "~/junk/%Y%m%d_%H%M%s_junk.utf")
+(global-set-key "\C-c\C-j" 'open-junk-file)
+;; junk file end
+
+;; auto install
+(require 'auto-install)
+(setq auto-install-directory "~/.emacs.d/site-lisp/")
+(auto-install-update-emacswiki-package-name t)
+(auto-install-compatibility-setup)
+;; auto install end
