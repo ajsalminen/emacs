@@ -397,7 +397,9 @@
 
 (global-set-key "\C-xb" 'iswitchb-toggle-input-method)
 
-
+;; FIXME: probably don't need iswitchb
+(ido-mode t)
+(setq ido-enable-flex-matching t) ; fuzzy matching is a must have
 
 (message "LOADING: cache files")
 
