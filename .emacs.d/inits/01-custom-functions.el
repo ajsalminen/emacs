@@ -633,3 +633,22 @@ FORMAT-STRING is like `format', but it can have multiple %-sequences."
 
 
 (defalias 'yes-or-no-p 'y-or-n-p)
+
+(when (executable-find "vlc")
+
+  (defun vlc-command (&rest args)
+    (interactive)
+    (shell-command (concat "vlc " (mapconcat 'identity args " "))))
+
+  (defun vlc-play ()
+    (interactive)
+    (vlc-command "play"))
+
+  (defun vlc-pause ()
+    (interactive)
+    (vlc-command "pause"))
+
+  (defalias 'vlc 'vlc-command)
+  (defalias 'vlp 'vlc-play)
+  (defalias 'vlpp 'vlc-pause)
+  )

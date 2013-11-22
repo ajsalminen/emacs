@@ -60,3 +60,8 @@
 (auto-install-update-emacswiki-package-name t)
 (auto-install-compatibility-setup)
 ;; auto install end
+
+;; tab completion
+(require 'smart-tab)
+(global-smart-tab-mode 1)
+;; tab completion end

@@ -75,3 +75,5 @@
 
 (setq safe-local-variable-values '((whitespace-style face tabs spaces trailing lines space-before-tab::space newline indentation::space empty space-after-tab::space space-mark tab-mark newline-mark)
                                    ))
+
+(setq sentence-end-double-space nil)

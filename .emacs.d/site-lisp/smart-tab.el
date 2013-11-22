@@ -98,7 +98,7 @@ If current major mode is not found in this alist, fall back to
   "If FUNCTION is `fboundp' call it with ARGS."
   `(let ((function ,function))
      (if (fboundp function)
-	 (apply function ,@args nil))))
+         (apply function ,@args nil))))
 
 (defun smart-tab-call-completion-function ()
   "Get a completion function according to current major mode."
@@ -109,9 +109,9 @@ If current major mode is not found in this alist, fall back to
     (if (null completion-function)
         (if (and (not (minibufferp))
                  (memq 'auto-complete-mode minor-mode-list)
-		 (boundp' auto-complete-mode)
+                 (boundp' auto-complete-mode)
                  auto-complete-mode)
-	    (smart-tab-funcall 'ac-start :force-init t)
+            (smart-tab-funcall 'ac-start :force-init t)
           (if smart-tab-using-hippie-expand
               (hippie-expand nil)
             (dabbrev-expand nil)))
@@ -184,9 +184,6 @@ Null prefix argument turns off the mode."
                   (member major-mode smart-tab-disabled-major-modes))
           (smart-tab-mode-off)))))
 
-;;;###autoload
-; Elint fix: Call to undefined function: global-smart-tab-mode-enable-in-buffers
-(autoload 'global-smart-tab-mode-enable-in-buffers "smart-tab")
 (define-globalized-minor-mode global-smart-tab-mode
   smart-tab-mode
   smart-tab-mode-on

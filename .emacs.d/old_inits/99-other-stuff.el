@@ -418,7 +418,7 @@
 (setq server-visit-hook (quote (save-place-find-file-hook)))
 
 
-;; I always compile my .emacs, saves me about two seconds
+;; I always compile my .emacs, saves me about two second
 ;; startuptime. But that only helps if the .emacs.elc is newer
 ;; than the .emacs. So compile .emacs if it's not.
 (when (and user-init-file
@@ -1631,5 +1631,3 @@ the mode-line."
 
 (autoload 'word-count-mode "word-count"
   "Minor mode to count words." t nil)
-
-(setq sentence-end-double-space nil)
