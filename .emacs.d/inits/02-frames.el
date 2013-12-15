@@ -1,20 +1,16 @@
 ;; Frame fiddling
 (defun set-frame-size-according-to-resolution ()
-  (interactive)
-  (if window-system
-      (progn
-        ;; use 120 char wide window for largeish displays
-        ;; and smaller 80 column windows for smaller displays
-        ;; pick whatever numbers make sense for you
-        (if (> (x-display-pixel-width) 1280)
-            (add-to-list 'default-frame-alist (cons 'width 160))
-          (add-to-list 'default-frame-alist (cons 'width 80)))
-        ;; for the height, subtract a couple hundred pixels
-        ;; from the screen height (for panels, menubars and
-        ;; whatnot), then divide by the height of a char to
-        ;; get the height we want
-        (add-to-list 'default-frame-alist
-                     (cons 'height (/ (- (x-display-pixel-height) 200) (frame-char-height)))))))
+    (interactive)
+    (if window-system
+    (progn
+      (if (> (x-display-pixel-width) 1500) ;; 1500 is the delimiter marging in px to consider the screen big
+             (set-frame-width (selected-frame) 237) ;; on the big screen make the fram 237 columns big
+             (set-frame-width (selected-frame) 177)) ;; on the small screen we use 177 columns
+      (setq my-height (/ (- (x-display-pixel-height) 90) ;; cut 150 px of the screen height and use the rest as height for the frame
+                               (frame-char-height)))
+      (set-frame-height (selected-frame) my-height)
+      (set-frame-position (selected-frame) 3 3) ;; position the frame 3 pixels left and 90 px down
+  )))
 
 (defun arrange-frame (w h x y)
   "Set the width, height, and x/y position of the current frame"

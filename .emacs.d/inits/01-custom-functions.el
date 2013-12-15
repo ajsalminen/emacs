@@ -652,3 +652,12 @@ FORMAT-STRING is like `format', but it can have multiple %-sequences."
   (defalias 'vlp 'vlc-play)
   (defalias 'vlpp 'vlc-pause)
   )
+
+
+;; to ensure that junk files get saved by default
+(defun write-and-find-file (filename)
+  (progn
+    (message filename)
+
+    (find-file-other-window filename)
+    (write-file filename)))

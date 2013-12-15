@@ -42,7 +42,7 @@
         ))
 
 (require 'init-loader)
-(setq init-loader-show-log-after-init t)
+(setq init-loader-show-log-after-init nil)
 (setq init-loader-byte-compile t)
 
 (init-loader-load "~/.emacs.d/inits/")
@@ -91,6 +91,7 @@
 ;; otherwise the startup is interupted
 (setq revive:ignore-buffer-pattern "^ \\*\\|\\*scratch\\*\\|scratch\.el")
 (resume)
+(set-frame-size-according-to-resolution)
 (server-start)
 (message "init completed in %.2fms"
          (sanityinc/time-subtract-millis (current-time) before-init-time))

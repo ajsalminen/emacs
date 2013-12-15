@@ -13,8 +13,10 @@
 ;; frame stuff
 
 ;;(set-frame-parameter (selected-frame) 'alpha '(<active> [<inactive>]))
-(set-frame-parameter (selected-frame) 'alpha '(100 100))
-(add-to-list 'default-frame-alist '(alpha 100 100))
+
+;; commenting this out so the restore stuff kicks in
+;; (set-frame-parameter (selected-frame) 'alpha '(100 100))
+;; (add-to-list 'default-frame-alist '(alpha 100 100))
 
 ;; just the frame thanks
 (tool-bar-mode -1)
@@ -77,3 +79,5 @@
                                    ))
 
 (setq sentence-end-double-space nil)
+
+(setq open-junk-file-find-file-function 'write-and-find-file)
