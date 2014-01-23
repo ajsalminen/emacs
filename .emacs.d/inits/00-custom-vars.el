@@ -81,3 +81,5 @@
 (setq sentence-end-double-space nil)
 
 (setq open-junk-file-find-file-function 'write-and-find-file)
+
+(delete-selection-mode 1)
