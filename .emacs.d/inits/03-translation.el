@@ -29,6 +29,50 @@
     (setq google-translate-default-source-language tgt-lang)
     (setq google-translate-default-target-language src-lang)))
 
+;; The functions below are a mess of copy and pasted code, redifined functions and other egregious crimes to programming
+
+
+;;  a native function to add the translated string to the clipboard
+(defun google-translate-translate-just-yank (source-language target-language text)
+  "Translate TEXT from SOURCE-LANGUAGE to TARGET-LANGUAGE.
+
+Pops up a buffer named *Google Translate* with available translations
+of TEXT.  To deal with multi-line regions, sequences of white space
+are replaced with a single space.  If the region contains not text, a
+message is printed."
+  (let ((text-stripped
+         (replace-regexp-in-string "[[:space:]\n\r]+" " " text)))
+    (if (or (= (length text-stripped) 0)
+            (string= text-stripped " "))
+        (message "Nothing to translate.")
+      (let* ((json
+              (json-read-from-string
+               (google-translate-insert-nulls
+                (google-translate-http-response-body
+                 (google-translate-format-request-url
+                  `(("client" . "t")
+                    ("ie"     . "UTF-8")
+                    ("oe"     . "UTF-8")
+                    ("sl"     . ,source-language)
+                    ("tl"     . ,target-language)
+                    ("text"   . ,text-stripped)))))))
+             (text-phonetic
+              (mapconcat #'(lambda (item) (aref item 3))
+                         (aref json 0) ""))
+             (translation
+              (mapconcat #'(lambda (item) (aref item 0))
+                         (aref json 0) ""))
+             (translation-phonetic
+              (mapconcat #'(lambda (item) (aref item 2))
+                         (aref json 0) ""))
+             (dict (aref json 1)))
+        ;; the line below was added to add the translated string to the kill ring
+          (let ((oldbuf (current-buffer)))
+            (progn
+              (kill-new translation)
+              (switch-to-buffer oldbuf)))
+        ))))
+
 (defun google-translate-region-or-line ()
   (interactive)
   (let (beg end)
@@ -62,5 +106,100 @@
           (google-translate-translate target-language source-language string)
           )))))
 
+(defun google-translate-region-or-line-just-yank ()
+  (interactive)
+  (let (beg end)
+    (progn
+      (if (region-active-p)
+          (setq beg (region-beginning) end (region-end))
+        (setq beg (line-beginning-position) end (line-end-position)))
+      (let* ((langs (google-translate-read-args nil nil))
+             (source-language (car langs))
+             (target-language (cadr langs))
+             (string (buffer-substring-no-properties beg end)))
+        (if current-prefix-arg
+            (google-translate-translate-just-yank source-language target-language string)
+          (google-translate-translate-just-yank target-language source-language string)
+          )))))
+
 (global-set-key "\C-c\C-w" 'google-translate-at-point)
 (global-set-key (kbd "C-c g") 'google-translate-region-or-line)
+(global-set-key (kbd "C-c G") 'google-translate-region-or-line-just-yank)
+
+;;  a native function to add the translated string to the clipboard
+(defun google-translate-translate (source-language target-language text)
+  "Translate TEXT from SOURCE-LANGUAGE to TARGET-LANGUAGE.
+
+Pops up a buffer named *Google Translate* with available translations
+of TEXT.  To deal with multi-line regions, sequences of white space
+are replaced with a single space.  If the region contains not text, a
+message is printed."
+  (let ((text-stripped
+         (replace-regexp-in-string "[[:space:]\n\r]+" " " text)))
+    (if (or (= (length text-stripped) 0)
+            (string= text-stripped " "))
+        (message "Nothing to translate.")
+      (let* ((json
+              (json-read-from-string
+               (google-translate-insert-nulls
+                (google-translate-http-response-body
+                 (google-translate-format-request-url
+                  `(("client" . "t")
+                    ("ie"     . "UTF-8")
+                    ("oe"     . "UTF-8")
+                    ("sl"     . ,source-language)
+                    ("tl"     . ,target-language)
+                    ("text"   . ,text-stripped)))))))
+             (text-phonetic
+              (mapconcat #'(lambda (item) (aref item 3))
+                         (aref json 0) ""))
+             (translation
+              (mapconcat #'(lambda (item) (aref item 0))
+                         (aref json 0) ""))
+             (translation-phonetic
+              (mapconcat #'(lambda (item) (aref item 2))
+                         (aref json 0) ""))
+             (dict (aref json 1)))
+        ;; the line below was added to add the translated string to the kill ring
+        (kill-new translation)
+        (with-output-to-temp-buffer "*Google Translate*"
+          (set-buffer "*Google Translate*")
+          (insert
+           (format "Translate from %s to %s:\n"
+                   (if (string-equal source-language "auto")
+                       (format "%s (detected)"
+                               (google-translate-language-display-name
+                                (aref json 2)))
+                     (google-translate-language-display-name
+                      source-language))
+                   (google-translate-language-display-name
+                    target-language)))
+          (google-translate-paragraph
+           text
+           'google-translate-text-face)
+          (when (and google-translate-show-phonetic
+                     (not (string-equal text-phonetic "")))
+            (google-translate-paragraph
+             text-phonetic
+             'google-translate-phonetic-face))
+          (google-translate-paragraph
+           translation
+           'google-translate-translation-face)
+          (when (and google-translate-show-phonetic
+                     (not (string-equal translation-phonetic "")))
+            (google-translate-paragraph
+             translation-phonetic
+             'google-translate-phonetic-face))
+          (when dict
+            ;; DICT is, if non-nil, a dictionary article represented by
+            ;; a vector of items, where each item is a 2-element vector
+            ;; whose zeroth element is the name of a part of speech and
+            ;; whose first element is a vector of translations for that
+            ;; part of speech.
+            (loop for item across dict do
+                  (let ((index 0))
+                    (unless (string-equal (aref item 0) "")
+                      (insert (format "\n%s\n" (aref item 0)))
+                      (loop for translation across (aref item 1) do
+                            (insert (format "%2d. %s\n"
+                                            (incf index) translation))))))))))))
