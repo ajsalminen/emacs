@@ -31,64 +31,6 @@
 
 ;; The functions below are a mess of copy and pasted code, redifined functions and other egregious crimes to programming
 
-
-;;  a native function to add the translated string to the clipboard
-(defun google-translate-translate-just-yank (source-language target-language text)
-  "Translate TEXT from SOURCE-LANGUAGE to TARGET-LANGUAGE.
-
-Pops up a buffer named *Google Translate* with available translations
-of TEXT.  To deal with multi-line regions, sequences of white space
-are replaced with a single space.  If the region contains not text, a
-message is printed."
-  (let ((text-stripped
-         (replace-regexp-in-string "[[:space:]\n\r]+" " " text)))
-    (if (or (= (length text-stripped) 0)
-            (string= text-stripped " "))
-        (message "Nothing to translate.")
-      (let* ((json
-              (json-read-from-string
-               (google-translate-insert-nulls
-                (google-translate-http-response-body
-                 (google-translate-format-request-url
-                  `(("client" . "t")
-                    ("ie"     . "UTF-8")
-                    ("oe"     . "UTF-8")
-                    ("sl"     . ,source-language)
-                    ("tl"     . ,target-language)
-                    ("text"   . ,text-stripped)))))))
-             (text-phonetic
-              (mapconcat #'(lambda (item) (aref item 3))
-                         (aref json 0) ""))
-             (translation
-              (mapconcat #'(lambda (item) (aref item 0))
-                         (aref json 0) ""))
-             (translation-phonetic
-              (mapconcat #'(lambda (item) (aref item 2))
-                         (aref json 0) ""))
-             (dict (aref json 1)))
-        ;; the line below was added to add the translated string to the kill ring
-          (let ((oldbuf (current-buffer)))
-            (progn
-              (kill-new translation)
-              (switch-to-buffer oldbuf)))
-        ))))
-
-(defun google-translate-region-or-line ()
-  (interactive)
-  (let (beg end)
-    (progn
-      (if (region-active-p)
-          (setq beg (region-beginning) end (region-end))
-        (setq beg (line-beginning-position) end (line-end-position)))
-      (let* ((langs (google-translate-read-args nil nil))
-             (source-language (car langs))
-             (target-language (cadr langs)))
-        (google-translate-translate
-         source-language target-language
-         (buffer-substring-no-properties beg end)
-         ))
-      )))
-
 ;; takes prefix arg to toggle languages
 (defun google-translate-region-or-line ()
   (interactive)
@@ -106,25 +48,8 @@ message is printed."
           (google-translate-translate target-language source-language string)
           )))))
 
-(defun google-translate-region-or-line-just-yank ()
-  (interactive)
-  (let (beg end)
-    (progn
-      (if (region-active-p)
-          (setq beg (region-beginning) end (region-end))
-        (setq beg (line-beginning-position) end (line-end-position)))
-      (let* ((langs (google-translate-read-args nil nil))
-             (source-language (car langs))
-             (target-language (cadr langs))
-             (string (buffer-substring-no-properties beg end)))
-        (if current-prefix-arg
-            (google-translate-translate-just-yank source-language target-language string)
-          (google-translate-translate-just-yank target-language source-language string)
-          )))))
-
 (global-set-key "\C-c\C-w" 'google-translate-at-point)
 (global-set-key (kbd "C-c g") 'google-translate-region-or-line)
-(global-set-key (kbd "C-c G") 'google-translate-region-or-line-just-yank)
 
 ;;  a native function to add the translated string to the clipboard
 (defun google-translate-translate (source-language target-language text)
