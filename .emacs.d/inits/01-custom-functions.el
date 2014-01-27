@@ -58,6 +58,8 @@
                            (progn (setq old-fullscreen current-value)
                                   'fullboth)))))
 
+(global-set-key (kbd "M-RET") 'toggle-fullscreen)
+
 ;; Common copying and pasting functions
 (defun copy-word (&optional arg)
   "Copy words at point into kill-ring"
