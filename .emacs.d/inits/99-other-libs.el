@@ -65,3 +65,9 @@
 (require 'smart-tab)
 (global-smart-tab-mode 1)
 ;; tab completion end
+
+
+;; window switching
+(require 'switch-window)
+(global-set-key (kbd "C-x o") 'switch-window)
+;; window switching end

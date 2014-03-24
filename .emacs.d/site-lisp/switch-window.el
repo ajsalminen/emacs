@@ -1,10 +1,10 @@
-;;; dim-switch-window.el --- A *visual* way to choose a window to switch to
+;;; switch-window.el --- A *visual* way to choose a window to switch to
 ;;
 ;; Copyright (C) 2010 Dimitri Fontaine
 ;;
 ;; Author: Dimitri Fontaine <dim@tapoueh.org>
-;; URL: http://www.emacswiki.org/emacs/switch-window.el
-;; Version: 0.9
+;; URL: http://tapoueh.org/emacs/switch-window.html
+;; Version: 0.11
 ;; Created: 2010-04-30
 ;; Keywords: window navigation
 ;; Licence: WTFPL, grab your copy here: http://sam.zoy.org/wtfpl/
@@ -14,9 +14,19 @@
 ;; Install:
 ;;  (require 'switch-window)
 ;;
-;; It'll take over your C-x o binding.
+;; Rebind your C-x o key:
+;;  (global-set-key (kbd "C-x o") 'switch-window)
 ;;
 ;; Changelog
+;;
+;; 0.11 - 2013-09-14
+;;
+;;  - restore point to end-of-buffer for windows where it was the case after
+;;    switching, fixing an anoying bug.
+;;
+;; 0.10 - 2011-06-19
+;;
+;;  - implement M-x delete-other-window (thanks developernotes on github)
 ;;
 ;; 0.9 - 2010-11-11 - emacs22 called, it wants some support
 ;;
@@ -66,14 +76,38 @@
   :type 'boolean
   :group 'switch-window)
 
-(defun switch-window-enumerate ()
-  "Return a list of one-letter strings to label current windows"
-  (subseq
+(defcustom switch-window-shortcut-style 'quail
+  "Use either keyboard layout or alphabet shortcut style"
+  :type '(choice (const :tag "Alphabet" 'alphabet)
+                 (const :tag "Keyboard Layout" 'quail)
+                 (const :tag "Qwerty Homekeys Layout" 'qwerty))
+  :group 'switch-window)
+
+(defcustom switch-window-qwerty-shortcuts
+  '("a" "s" "d" "f" "j" "k" "l" ";" "w" "e" "i" "o")
+  "The list of characters used when switch-window-shortcut-style is 'qwerty'"
+  :type 'list
+  :group 'switch-window)
+
+(defun switch-window-list-keyboard-keys ()
+  "Return a list of current keyboard layout keys"
    (loop with layout = (split-string quail-keyboard-layout "")
 	 for row from 1 to 4
 	 nconc (loop for col from 1 to 10
-		     collect (nth (+ 1 (* 2 col) (* 30 row)) layout)))
-   0 (length (switch-window-list))))
+		     collect (nth (+ 1 (* 2 col) (* 30 row)) layout))))
+
+(defun switch-window-list-keys ()
+  "Return a list of keys to use depending on `switch-window-shortcut-style'"
+  (cond ((eq switch-window-shortcut-style 'qwerty)
+         switch-window-qwerty-shortcuts)
+        ((eq switch-window-shortcut-style 'alphabet)
+         (loop for i from 0 to 25
+               collect (byte-to-string (+ (string-to-char "a") i))))
+        (t (switch-window-list-keyboard-keys))))
+
+(defun switch-window-enumerate ()
+  "Return a list of one-letter strings to label current windows"
+  (loop for w being the windows for x in (switch-window-list-keys) collect x))
 
 (defun switch-window-label (num)
   "Return the label to use for a given window number"
@@ -108,33 +142,67 @@ from-current-window is not nil"
         (if (fboundp 'text-scale-increase)
 	    (insert label)
 	  (insert (propertize label 'face
-			      (list :height (* h switch-window-increase
+			      (list :height (* (* h switch-window-increase)
 					       (if (> w h) 2 1))))))))
     (set-window-buffer win buf)
     buf))
 
-(defun switch-to-window-number (n)
-  "move to given window, target is the place of the window in (switch-window-list)"
-  (let ((c 1))
-    (dolist (win (switch-window-list))
-      (when (eq c n)
-	(select-window win))
-      (setq c (1+ c)))
-    (unless (minibuffer-window-active-p (selected-window))
-      (message "Moved to %S"
-	       (substring-no-properties
-		(buffer-name (window-buffer (selected-window))))))))
+(defun apply-to-window-index (action n message-format)
+  "apply action to given window index, target is the place of the
+   window in (switch-window-list)"
+  (loop for c from 1
+	for win in (switch-window-list)
+	until (= c n)
+	finally (funcall action win))
+  ;; be verbose about it
+  (unless (minibuffer-window-active-p (selected-window))
+    (message message-format
+	     (substring-no-properties
+	      (buffer-name (window-buffer (selected-window)))))))
 
+(defun switch-window-list-eobp ()
+  "Return a list of all the windows where `eobp' is currently
+   true so that we can restore that important property (think
+   auto scrolling) after switching."
+  (loop for win in (switch-window-list)
+	when (with-current-buffer (window-buffer win) (eobp))
+	collect win))
+
+(defun switch-window-restore-eobp (eobp-window-list)
+  "For each window in EOBP-WINDOW-LIST move the point to end of buffer."
+  (loop for win in eobp-window-list
+	do (with-current-buffer (window-buffer win) (end-of-buffer))))
+
+;;;###autoload
+(defun delete-other-window ()
+  "Display an overlay in each window showing a unique key, then
+ask user which window to delete"
+  (interactive)
+  (if (> (length (window-list)) 1)
+      (progn
+        (let ((index (prompt-for-selected-window "Delete window: ")))
+          (apply-to-window-index 'delete-window index "")))))
+
+;;;###autoload
 (defun switch-window ()
   "Display an overlay in each window showing a unique key, then
 ask user for the window where move to"
   (interactive)
   (if (< (length (window-list)) 3)
       (call-interactively 'other-window)
+    (progn
+      (let ((index (prompt-for-selected-window "Move to window: "))
+	    (eobps (switch-window-list-eobp)))
+        (apply-to-window-index 'select-window index "Moved to %S")
+	(switch-window-restore-eobp eobps)))))
 
+(defun prompt-for-selected-window (prompt-message)
+  "Display an overlay in each window showing a unique key, then
+ask user for the window to select"
     (let ((config (current-window-configuration))
 	  (num 1)
 	  (minibuffer-num nil)
+	  (eobps (switch-window-list-eobp))
 	  key buffers
 	  window-points
 	  dedicated-windows)
@@ -160,18 +228,22 @@ ask user for the window where move to"
 		       (if minibuffer-num
 			   (format "Move to window [minibuffer is %s]: "
 				   (switch-window-label minibuffer-num))
-			 "Move to window: ")
+			 prompt-message)
 		       nil switch-window-timeout))))
 
 		(if (or (null input) (eq input 'return))
-		    (keyboard-quit) ; timeout or RET
+		    (progn
+		      (switch-window-restore-eobp eobps)
+		      (keyboard-quit))	; timeout or RET
 		  (unless (symbolp input)
 		    (let* ((wchars (mapcar 'string-to-char
 					   (switch-window-enumerate)))
 			   (pos (position input wchars)))
 		      (if pos
 			  (setq key (1+ pos))
-			(keyboard-quit))))))))
+			(progn
+			  (switch-window-restore-eobp eobps)
+			  (keyboard-quit)))))))))
 
 	;; get those huge numbers away
 	(mapc 'kill-buffer buffers)
@@ -179,9 +251,8 @@ ask user for the window where move to"
 	(dolist (w window-points)
 	  (set-window-point (car w) (cdr w)))
 	(dolist (w dedicated-windows)
-	  (set-window-dedicated-p (car w) (cdr w)))
-	(when key
-	  (switch-to-window-number key))))))
+	  (set-window-dedicated-p (car w) (cdr w))))
+      key))
 
-(global-set-key (kbd "C-x o") 'switch-window)
 (provide 'switch-window)
+;;; switch-window.el ends here

@@ -262,5 +262,7 @@ nEnd:")
     (org-clock-out nil (org-read-date-and-adjust-timezone))))
 
 (define-key org-mode-map (kbd "\C-c i") 'org-clock-in-and-out)
+(define-key org-mode-map (kbd "C-'") 'smex)
+
 
 (message "LOADING: org-mode stuff")
