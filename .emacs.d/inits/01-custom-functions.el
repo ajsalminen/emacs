@@ -475,6 +475,16 @@ FORMAT-STRING is like `format', but it can have multiple %-sequences."
         (replace-match "" nil nil))
       )))
 
+
+;;; Stefan Monnier <foo at acm.org>. It is the opposite of fill-paragraph
+(defun unfill-paragraph ()
+  "Takes a multi-line paragraph and makes it into a single line of text."
+  (interactive)
+  (let ((fill-column (point-max)))
+    (fill-paragraph nil)))
+
+(define-key global-map "\M-q" 'unfill-paragraph)
+
 (defun my-forward-word (arg)
   (interactive "p")
   (let ((char-category
