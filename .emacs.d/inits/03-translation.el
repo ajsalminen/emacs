@@ -19,6 +19,7 @@
 
 
 (require 'google-translate)
+(require 'google-translate-default-ui)
 (setq google-translate-default-source-language "ja")
 (setq google-translate-default-target-language "en")
 
@@ -128,3 +129,48 @@ message is printed."
                       (loop for translation across (aref item 1) do
                             (insert (format "%2d. %s\n"
                                             (incf index) translation))))))))))))
+
+
+
+(defun google-translate-translate (source-language target-language text)
+  "Translate TEXT from SOURCE-LANGUAGE to TARGET-LANGUAGE.
+
+Pops up a buffer named *Google Translate* with available translations
+of TEXT. To deal with multi-line regions, sequences of white space
+are replaced with a single space. If the region contains not text, a
+message is printed."
+  (let* ((buffer-name "*Google Translate*")
+         (json (google-translate-request source-language
+                                         target-language
+                                         text)))
+    (if (null json)
+        (message "Nothing to translate.")
+      (let* ((auto-detected-language (aref json 2))
+             (text-phonetic (google-translate-json-text-phonetic json))
+             (translation (google-translate-json-translation json))
+             (translation-phonetic (google-translate-json-translation-phonetic json))
+             (detailed-translation (google-translate-json-detailed-translation json))
+             (suggestion (when (null detailed-translation)
+                           (google-translate-json-suggestion json))))
+
+        ;; the line below was added to add the translated string to the kill ring
+        (kill-new translation)
+        (with-output-to-temp-buffer buffer-name
+          (set-buffer buffer-name)
+          (google-translate--buffer-output-translation-title source-language
+                                                             target-language
+                                                             auto-detected-language)
+          (google-translate--buffer-output-translating-text text)
+          (when detailed-translation
+            (google-translate--buffer-output-text-phonetic text-phonetic))
+          (google-translate--buffer-output-translation translation)
+          (when detailed-translation
+            (google-translate--buffer-output-translation-phonetic translation-phonetic))
+          (if detailed-translation
+              (google-translate--buffer-output-detailed-translation
+               detailed-translation
+               translation)
+            (when suggestion
+              (google-translate--buffer-output-suggestion suggestion
+                                                          source-language
+                                                          target-language))))))))

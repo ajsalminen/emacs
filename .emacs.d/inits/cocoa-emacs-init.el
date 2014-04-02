@@ -116,6 +116,10 @@
       (set-input-method "MacOSX")
       (toggle-input-method)))
 
+  ;; カーソルの色
+  (mac-set-input-method-parameter "com.google.inputmethod.Japanese.base" `cursor-color "red")
+  (mac-set-input-method-parameter "com.google.inputmethod.Japanese.Roman" `cursor-color "green")
+
   (add-hook 'after-init-hook 'set-mac-input))
 
 ;; only use this on a mac
