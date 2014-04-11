@@ -178,8 +178,15 @@ message is printed."
 (defun translate-window-configuration ()
     "setup translation windows"
     (interactive)
+
     (progn
       (delete-other-windows)
+
+      ;; some hackish steps to ensure the window gets fitted to scree (not fullscreen)
+      (set-frame-width (selected-frame) 30)
+      (toggle-frame-maximized)
+      (modify-all-frames-parameters '((fullscreen . maximized)))
+
       (recenter)
       (select-window (split-window-right))
       (select-window (split-window-vertically))
