@@ -174,3 +174,19 @@ message is printed."
               (google-translate--buffer-output-suggestion suggestion
                                                           source-language
                                                           target-language))))))))
+
+(defun translate-window-configuration ()
+    "setup translation windows"
+    (interactive)
+    (progn
+      (delete-other-windows)
+      (recenter)
+      (select-window (split-window-right))
+      (select-window (split-window-vertically))
+      (split-window-vertically)
+      (delete-window)
+      (other-window 1)
+      (switch-to-buffer "*Google Translate*")
+      (other-window 1)))
+
+(defalias 'tin 'translate-window-configuration)
