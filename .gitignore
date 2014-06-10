@@ -46,6 +46,7 @@ CVS
 .emacs.d/var/pcache/*
 .emacs.d/wg
 .emacs.d/yatex1.74.4/lp.el
+.emacs.d/projectile-bookmarks.eld
 .org-id-locations
 org-clock-save.el
 ac-comphist.dat
