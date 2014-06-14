@@ -63,14 +63,17 @@
 (setq org-default-notes-file (concat org-directory "memo.org"))
 (setq org-log-done 'time)
 (setq org-todo-keywords
-      '((sequence "TODO(t)" "WAIT(w@/!)" "|" "DONE(d!)" "CANCELED(c@)")))
+      '((sequence "TODO(t)" "WAIT(w@/!)" "PENDING(p)" "|" "DONE(d!)" "CANCELED(c@)")))
+
+(setq org-todo-keyword-faces
+      '(("PENDING" . (:foreground "purple" :weight bold))))
 
 ;;(setq org-refile-targets (quote ((org-agenda-files :regexp . "*"))))
 (setq org-refile-targets (quote ((org-agenda-files :level . 1))))
 
 
 (setq org-clock-persist 'history)
-(setq org-clock-modeline-total 'current)
+(setq org-clock-mode-line-total 'current)
 (org-clock-persistence-insinuate)
 
 (setq org-timer-timer-is-countdown t)
