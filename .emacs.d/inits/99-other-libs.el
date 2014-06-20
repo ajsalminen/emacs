@@ -64,7 +64,26 @@
 ;; tab completion
 (require 'smart-tab)
 (global-smart-tab-mode 1)
+(setq smart-tab-using-hippie-expand t)
+
 ;; tab completion end
+
+;; company mode
+(global-company-mode t)
+
+;; make company use my own colors
+(require 'color)
+
+(let ((bg (face-attribute 'default :background)))
+  (custom-set-faces
+   `(company-tooltip ((t (:inherit default :background ,(color-lighten-name bg 2)))))
+   `(company-scrollbar-bg ((t (:background ,(color-lighten-name bg 10)))))
+   `(company-scrollbar-fg ((t (:background ,(color-lighten-name bg 5)))))
+   `(company-tooltip-selection ((t (:inherit font-lock-function-name-face))))
+   `(company-tooltip-common ((t (:inherit font-lock-constant-face))))))
+
+;; (push 'company-robe company-backends)
+;; company mode end
 
 
 ;; window switching
