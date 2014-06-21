@@ -10,12 +10,12 @@
 (eval-after-load "smex-autoloads"
   '(progn
      (setq smex-auto-update t)
-     (global-set-key (kbd "M-x") 'smex)
+     (global-set-key (kbd "M-x") 'execute-extended-command)
      (global-set-key (kbd "M-X") 'smex-major-mode-commands)
      ;; This is your old M-x.
      (global-set-key (kbd "C-c C-c M-x") 'execute-extended-command)
      (iswitchb-mode 1)
-     (global-set-key (kbd "C-'") 'execute-extended-command)
+     (global-set-key (kbd "C-'") 'smex)
      (setq ido-enable-flex-matching t)
      (setq ido-everywhere t)
      (defun my-ido-keys ()

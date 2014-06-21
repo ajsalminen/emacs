@@ -25,6 +25,8 @@
 (push '("*wclock*" :height 10 :noselect t :position bottom) popwin:special-display-config)
 (push '(Man-mode :stick t :height 20) popwin:special-display-config)
 (push '("*Google Translate*" :height 20 :stick t :position bottom :noselect t) popwin:special-display-config)
+(push '(direx:direx-mode :position left :width 25 :dedicated t)
+      popwin:special-display-config)
 
 (defun popwin:define-advice (func buffer)
   (eval `(defadvice ,func (around popwin activate)
