@@ -1,9 +1,10 @@
 (eval-after-load 'icicles
   '(progn
      (icy-mode 1)
+     (setq icicle-apropos-complete-keys (list (kbd "<tab>")))
      (global-set-key "\C-x\ \C-r" 'icicle-recent-file)
-     ;;(setq icicle-TAB-completion-methods (quote (fuzzy basic vanilla)))
-     ))
+     (setq icicle-TAB-completion-methods '(fuzzy basic vanilla))
+     (setq icicle-default-cycling-mode 'apropos)))
 
 
 (eval-after-load "smex-autoloads"
@@ -14,7 +15,9 @@
      ;; This is your old M-x.
      (global-set-key (kbd "C-c C-c M-x") 'execute-extended-command)
      (iswitchb-mode 1)
-     (global-set-key (kbd "C-'") 'smex)
+     (global-set-key (kbd "C-'") 'execute-extended-command)
+     (setq ido-enable-flex-matching t)
+     (setq ido-everywhere t)
      (defun my-ido-keys ()
        "Add my keybindings for ido."
        (define-key ido-completion-map "\C-k" 'ido-next-match)
@@ -23,6 +26,27 @@
        (define-key ido-completion-map "\C-p" 'ido-prev-match))
 
      (add-hook 'ido-setup-hook 'my-ido-keys)))
+
+
+
+;; (setq ido-decorations '("{" "}" " | " " | ..." "[" "]" " [No match]" " [Matched]" " [Not readable]" " [Too big]" " [Confirm]"))
+;; (setq ido-decorations (quote ("\n-> " "" "\n   " "\n   ..." "[" "]" " [No match]" " [Matched]" " [Not readable]" " [Too big]" " [Confirm]")))
+;; (defun ido-disable-line-truncation () (set (make-local-variable 'truncate-lines) nil))
+;; (add-hook 'ido-minibuffer-setup-hook 'ido-disable-line-truncation)
+
+
+;;
+;;; Key configuration for modal cycling within minibuffer
+;; No need for configuration. They already work if configured for apropos-cycle.
+;; (add-to-list 'icicle-modal-cycle-up-keys   (kbd "C-p"))
+;; (add-to-list 'icicle-modal-cycle-down-keys (kbd "C-n"))
+;;
+;;; Key configuration for cycling fuzzy matching
+;; icicle-apropos-complete-keys: S-tab by default
+;; icicle-apropos-cycle-previous/next-keys: [next]/[prior] by default
+;; (setq icicle-apropos-cycle-previous-keys (list (kbd "<A-tab>") (kbd "C-p") (kbd "<prior>")))
+;; (setq icicle-apropos-cycle-next-keys     (list                 (kbd "C-n") (kbd "<next>")))
+;;
 
 ;; (require 'smex)
 ;; (smex-initialize)
