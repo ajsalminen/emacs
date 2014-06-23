@@ -1,3 +1,6 @@
+(require 'rvm)
+(rvm-use-default)
+
 (require 'flymake-ruby)
 (add-hook 'ruby-mode-hook 'flymake-ruby-load)
 (setq ruby-deep-indent-paren nil)
@@ -7,5 +10,4 @@
 (projectile-global-mode)
 (add-hook 'ruby-mode-hook 'projectile-on)
 (add-hook 'projectile-mode-hook 'projectile-rails-on)
-
 (add-hook 'ruby-mode-hook 'robe-mode)
