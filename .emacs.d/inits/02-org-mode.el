@@ -22,8 +22,10 @@
 (setq org-agenda-restore-windows-after-quit t)
 
 ;; (setq org-agenda-clockreport-parameter-plist '(:link nil :maxlevel 2 :fileskip0 t :compact t))
-(setq org-agenda-clockreport-parameter-plist '(:link nil :maxlevel 2 :fileskip0 t :compact t :properties ("fee") :formula "@2$2=vsum(@3$2..@>$2)"))
-(setq org-agenda-clockreport-parameter-plist '(:link nil :maxlevel 2 :fileskip0 t :compact t :timestamp t :properties ("fee") :formula "@2$3=vsum(@2$3..@>$3)"))
+(setq org-agenda-clockreport-parameter-plist '(:link nil :maxlevel 2 :fileskip0 t :compact t :timestamp t :properties ("fee" "chars" "rate") :formula "$5=if($4 > 0,round($3/$4), string(\"\"))::@2$3=vsum(@2$3..@>$3)::@2$4=vsum(@2$4..@>$4)"))
+
+
+
 
 ;; Set to the location of your Org files on your local system
 (setq org-directory "~/org")
