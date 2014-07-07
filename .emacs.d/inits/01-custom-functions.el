@@ -685,7 +685,7 @@ FORMAT-STRING is like `format', but it can have multiple %-sequences."
        (let* ((fn-list (dired-get-marked-files nil arg)))
          (mapc 'find-file fn-list)))))
 
-(defun paste-over-mode
+(defun paste-over-mode ()
     (interactive)
   (delete-selection-mode 1))
 
