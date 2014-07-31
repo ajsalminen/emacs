@@ -123,5 +123,5 @@ e.g. Sunday, September 17, 2000."
 
 
 ;; customized from here
-(if (file-directory-p "~/journal/")
-    (setq-default journal-dir "~/journal/"))
+(if (file-directory-p "~/dailylog/")
+    (setq-default journal-dir "~/dailylog/"))
