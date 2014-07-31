@@ -183,3 +183,6 @@
 
 ;; end of iphone-related settings
 (message "LOADING: xcode/iphone stuff")
+
+(when (memq window-system '(mac ns))
+  (exec-path-from-shell-initialize))

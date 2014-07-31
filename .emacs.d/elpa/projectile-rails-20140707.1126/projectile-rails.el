@@ -4,7 +4,7 @@
 
 ;; Author:            Adam Sokolnicki <adam.sokolnicki@gmail.com>
 ;; URL:               https://github.com/asok/projectile-rails
-;; Version: 20140703.234
+;; Version: 20140707.1126
 ;; X-Original-Version:           0.5.0
 ;; Keywords:          rails, projectile
 ;; Package-Requires:  ((projectile "1.0.0-cvs") (inflections "1.1") (inf-ruby "2.2.6") (f "0.13.0"))
@@ -645,7 +645,7 @@ Returns a hash table with keys being short names and values being relative paths
   (string-match-p "\\*\\(Minibuf-[0-9]+\\|helm mini\\)\\*" (buffer-name)))
 
 (defun projectile-rails-extract-region (partial-name)
-  (interactive (list (read-string "The name of the partial: " default-directory)))
+  (interactive (list (file-truename (read-file-name "The name of the partial: " default-directory))))
   (let ((projectile-rails-expand-snippet nil)
         (snippet (cdr (assoc (f-ext partial-name) projectile-rails-extracted-region-snippet)))
         (path (replace-regexp-in-string "\/_" "/" (s-chop-prefix

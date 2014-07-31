@@ -7,10 +7,11 @@
                                 (progn
                                   (setq x-select-enable-clipboard nil)
                                   (save-current-configuration)
-				  ;; from here
+                                  ;; from here
                                   (setq kill-ring (cdr kill-ring))
                                   (setq kill-ring (cdr kill-ring))
                                   (setq x-select-enable-clipboard clipboard-enabled-var)
-                                  (with-temp-buffer
-                                    (insert (car kill-ring))
-                                    (clipboard-kill-ring-save (goto-char (point-min)) (goto-char (point-max))))))))
+                                  (if (car kill-ring)
+                                      (with-temp-buffer
+                                        (insert (car kill-ring))
+                                        (clipboard-kill-ring-save (goto-char (point-min)) (goto-char (point-max)))))))))

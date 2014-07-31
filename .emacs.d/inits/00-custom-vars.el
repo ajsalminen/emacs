@@ -83,3 +83,6 @@
 (setq open-junk-file-find-file-function 'write-and-find-file)
 
 (delete-selection-mode 1)
+
+(add-hook 'text-mode-hook 'turn-on-visual-line-mode)
+(setq visual-line-fringe-indicators '(left-curly-arrow right-curly-arrow))
