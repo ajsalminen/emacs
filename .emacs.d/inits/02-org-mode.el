@@ -6,6 +6,15 @@
 
 (require 'google-weather)
 (require 'org-google-weather)
+(require 'org-pomodoro)
+
+(defun custom-org-agenda-mode-defaults ()
+  (org-defkey org-agenda-mode-map "I" 'org-pomodoro)
+  (org-defkey org-agenda-mode-map "O" 'org-pomodoro)
+  (org-defkey org-agenda-mode-map (kbd "C-c C-x C-i") 'org-pomodoro)
+  (org-defkey org-agenda-mode-map (kbd "C-c C-x C-o") 'org-pomodoro))
+
+(add-hook 'org-agenda-mode-hook 'custom-org-agenda-mode-defaults 'append)
 
 (define-key global-map "\C-cc" 'org-capture)
 
