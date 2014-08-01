@@ -686,6 +686,12 @@ FORMAT-STRING is like `format', but it can have multiple %-sequences."
          (mapc 'find-file fn-list)))))
 
 (defun paste-over-mode ()
-    (interactive)
+  (interactive)
   (delete-selection-mode 1))
 
+(defun kill-other-buffers ()
+  "Kill all other buffers."
+  (interactive)
+  (mapc 'kill-buffer (delq (current-buffer) (buffer-list))))
+
+(defalias 'mg 'magit-status)

@@ -11,6 +11,8 @@
 (setq display-time-mail-string "")
 (setq display-time-default-load-average nil)
 (display-time-mode)
+;; (column-number-mode)
+;; (size-indication-mode)
 
 (defvar mode-line-cleaner-alist
   '( ;; For minor-mode, first char is 'space'
@@ -43,9 +45,15 @@
 
 (add-hook 'after-change-major-mode-hook 'clean-mode-line)
 
-
 (setq mode-line-format
-      '("%e"
+      '("[%+]"
+	"%e|"
+	"%@|"
+	;; "%p|"
+	"%P|"
+	"%c|"
+	"%i|"
+	"[L:%l]"
         mode-line-front-space
         mode-line-mule-info
         mode-line-client
@@ -54,13 +62,14 @@
         mode-line-remote
         mode-line-frame-identification
         mode-line-buffer-identification
-        "   "
+        " "
         mode-line-position
-        (vc-mode vc-mode) 
-        "  "
+        ;; (vc-mode vc-mode)
+        " "
         mode-line-misc-info "|"
         mode-line-modes "|"
         mode-line-end-spaces))
+
 
 (setq frame-title-format '("" invocation-name "@" system-name "     "
                            global-mode-string))
@@ -69,5 +78,4 @@
 (require 'powerline)
 (setq powerline-default-separator 'bar)
 (powerline-default-theme)
-
 
