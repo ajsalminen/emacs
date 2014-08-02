@@ -8,6 +8,14 @@
 (require 'org-google-weather)
 (require 'org-pomodoro)
 
+(setq org-pomodoro-length 50)
+(setq org-pomodoro-format "Pom:%s")
+(setq org-pomodoro-time-format "%.2m:%.2s")
+(setq org-pomodoro-short-break-length 10)
+(setq org-clock-clocked-in-display 'frame-title)
+
+(set-face-attribute 'org-pomodoro-mode-line 'nil :foreground "Red")
+
 (defun custom-org-agenda-mode-defaults ()
   (org-defkey org-agenda-mode-map "I" 'org-pomodoro)
   (org-defkey org-agenda-mode-map "O" 'org-pomodoro)
@@ -86,7 +94,7 @@
 
 
 (setq org-clock-persist 'history)
-(setq org-clock-mode-line-total 'current)
+(setq org-clock-mode-line-total 'auto)
 (org-clock-persistence-insinuate)
 
 (setq org-timer-timer-is-countdown t)
@@ -118,16 +126,16 @@
     (message "Files for mobile viewer staged")))
 
 
-(setq org-timer-default-timer 25)
+;; (setq org-timer-default-timer 25)
 (setq org-clock-string-limit 35)
 
-(add-hook 'org-clock-in-hook '(lambda ()
-                                (if (not org-timer-current-timer)
-                                    (org-timer-set-timer '(25)))))
+;; (add-hook 'org-clock-in-hook '(lambda ()
+;;                                 (if (not org-timer-current-timer)
+;;                                     (org-timer-set-timer '(25)))))
 
-(add-hook 'org-clock-out-hook '(lambda ()
-                                 (org-timer-cancel-timer)
-                                 (setq org-mode-line-string nil)))
+;; (add-hook 'org-clock-out-hook '(lambda ()
+;;                                  (org-timer-cancel-timer)
+;;                                  (setq org-mode-line-string nil)))
 
 
 
@@ -187,11 +195,11 @@ nEnd:")
         (tags user-defined-up)
         (search category-keep)))
 
-(setq org-timer-default-timer 25)
+;; (setq org-timer-default-timer 25)
 
-(add-hook 'org-clock-in-hook '(lambda ()
-                                (if (not org-timer-current-timer)
-                                    (org-timer-set-timer '(16)))))
+;; (add-hook 'org-clock-in-hook '(lambda ()
+;;                                 (if (not org-timer-current-timer)
+;;                                     (org-timer-set-timer '(16)))))
 
 (setq org-agenda-custom-commands
       '(("W" tags "work")

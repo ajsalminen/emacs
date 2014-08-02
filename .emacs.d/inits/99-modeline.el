@@ -20,11 +20,16 @@
     (paredit-mode . " Pe")
     (eldoc-mode . "")
     (abbrev-mode . "")
+    (fundamental-mode . "")
+    (text-mode . "tx")
+    (smart-tab-mode . "")
+    (fundamental-mode . "")
     (undo-tree-mode . " Ut")
     (elisp-slime-nav-mode . " EN")
-    (projectile-mode . "PJ")
+    (projectile-mode . " PJ")
     (helm-gtags-mode . " HG")
     (flymake-mode . " Fm")
+    (company-mode . " Co")
     ;; Major modes
     (lisp-interaction-mode . "Li")
     (python-mode . "Py")
@@ -45,32 +50,6 @@
 
 (add-hook 'after-change-major-mode-hook 'clean-mode-line)
 
-(setq mode-line-format
-      '("[%+]"
-	"%e|"
-	"%@|"
-	;; "%p|"
-	"%P|"
-	"%c|"
-	"%i|"
-	"[L:%l]"
-        mode-line-front-space
-        mode-line-mule-info
-        mode-line-client
-        mode-line-modified
-        mode-line-auto-compile
-        mode-line-remote
-        mode-line-frame-identification
-        mode-line-buffer-identification
-        " "
-        mode-line-position
-        ;; (vc-mode vc-mode)
-        " "
-        mode-line-misc-info "|"
-        mode-line-modes "|"
-        mode-line-end-spaces))
-
-
 (setq frame-title-format '("" invocation-name "@" system-name "     "
                            global-mode-string))
 
@@ -79,3 +58,28 @@
 (setq powerline-default-separator 'bar)
 (powerline-default-theme)
 
+(setq mode-line-format
+      '("[%+]"
+        "%e|"
+        "%@|"
+        ;; "%p|"
+        "%P|"
+        "%c|"
+        "%I|"
+        "[L:%l]"
+        mode-line-front-space
+        mode-line-mule-info
+        mode-line-client
+        mode-line-modified
+        mode-line-auto-compile
+        mode-line-remote
+        ;; mode-line-frame-identification
+        ;; mode-line-buffer-identification
+        " "
+        ;; mode-line-position
+        ;; (vc-mode vc-mode)
+        " "
+        mode-line-misc-info "|"
+        ;; mode-line-modes "|"
+        ;; mode-line-end-spaces
+        ))
