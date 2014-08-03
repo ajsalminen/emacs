@@ -24,6 +24,17 @@
 
 (defalias 'op 'org-pomodoro)
 
+;; redefine method to keep the time already logged by pomodoro
+(defun org-pomodoro-killed ()
+  "Is invoked when a pomodoro was killed.
+This may send a notification, play a sound and adds log."
+  (org-pomodoro-notify "Pomodoro killed." "One does not simply kill a pomodoro!")
+  (when (org-clocking-p)
+    (org-clock-out))
+  (org-pomodoro-reset)
+  (run-hooks 'org-pomodoro-killed-hook)
+  (org-pomodoro-update-mode-line))
+
 (add-hook 'org-agenda-mode-hook 'custom-org-agenda-mode-defaults 'append)
 
 (define-key global-map "\C-cc" 'org-capture)

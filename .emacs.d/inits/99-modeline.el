@@ -49,6 +49,7 @@
             (setq mode-name mode-str)))))
 
 (add-hook 'after-change-major-mode-hook 'clean-mode-line)
+(add-hook 'fundamental-mode-hook 'clean-mode-line)
 
 (setq frame-title-format '("" invocation-name "@" system-name "     "
                            global-mode-string))
