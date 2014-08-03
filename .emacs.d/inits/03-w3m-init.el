@@ -1,4 +1,4 @@
-(require 'w3m-load)
+;; (require 'w3m-load)
 
 (require 'w3m-extension)
 (autoload 'w3m-filter "w3m-filter")
