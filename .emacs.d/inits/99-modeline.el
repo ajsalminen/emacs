@@ -53,6 +53,17 @@
 (setq frame-title-format '("" invocation-name "@" system-name "     "
                            global-mode-string))
 
+(defun buffer-progress-percentage ()
+  (interactive)
+  (let* ((pos (point))
+         (total (buffer-size))
+         (percent (if (> total 50000)
+                      ;; Avoid overflow from multiplying by 100!
+                      (/ (+ (/ total 200) (1- pos)) (max (/ total 100) 1))
+                    (/ (+ (/ total 2) (* 100 (1- pos))) (max total 1))))
+         )
+    (message "(%d%%)" percent)
+))
 
 (require 'powerline)
 (setq powerline-default-separator 'bar)
@@ -67,14 +78,14 @@
         "%c|"
         "%I|"
         "[L:%l]"
-        mode-line-front-space
-        mode-line-mule-info
+        ;; mode-line-front-space
+        ;; mode-line-mule-info
         mode-line-client
         mode-line-modified
-        mode-line-auto-compile
+        ;; mode-line-auto-compile
         mode-line-remote
-        ;; mode-line-frame-identification
-        ;; mode-line-buffer-identification
+        mode-line-frame-identification
+        mode-line-buffer-identification
         " "
         ;; mode-line-position
         ;; (vc-mode vc-mode)

@@ -14,7 +14,7 @@
 (setq org-pomodoro-short-break-length 10)
 (setq org-clock-clocked-in-display 'frame-title)
 
-(set-face-attribute 'org-pomodoro-mode-line 'nil :foreground "Red")
+(set-face-attribute 'org-pomodoro-mode-line 'nil :background "Black" :foreground "Red")
 
 (defun custom-org-agenda-mode-defaults ()
   (org-defkey org-agenda-mode-map "I" 'org-pomodoro)
