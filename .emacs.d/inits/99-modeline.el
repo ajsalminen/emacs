@@ -65,9 +65,9 @@
     (message "(%d%%)" percent)
 ))
 
-(require 'powerline)
-(setq powerline-default-separator 'bar)
-(powerline-default-theme)
+;; (require 'powerline)
+;; (setq powerline-default-separator 'bar)
+;; (powerline-default-theme)
 
 (setq mode-line-format
       '("[%+]"

@@ -29,3 +29,4 @@
 (require 'descbinds-anything)
 (descbinds-anything-install)
 (defalias 'rf 'anything-recentf)
+(setq recentf-max-menu-items 1000)
