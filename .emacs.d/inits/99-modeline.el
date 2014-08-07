@@ -4,9 +4,7 @@
 ;; ‘size-indication-mode’ (for Emacs 22 and up) – Enable or disable the current buffer size, Emacs 22 and later, see size-indication-mode
 ;; ‘display-battery-mode’ – Enable or disable laptop battery information, see DisplayBatteryMode.
 
-
-
-(setq display-time-format "%Y/%m/%d(%a) %H:%M")
+(setq display-time-format "[%H:%M]")
 (setq display-time-24hr-format t)
 (setq display-time-mail-string "")
 (setq display-time-default-load-average nil)

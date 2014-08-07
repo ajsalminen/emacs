@@ -1,5 +1,4 @@
 ;; (require 'w3m-load)
-
 (require 'w3m-extension)
 (autoload 'w3m-filter "w3m-filter")
 (setq w3m-use-filter t)
@@ -14,10 +13,14 @@
 ;;(add-hook 'w3m-mode-hook 'w3m-link-numbering-mode)
 (setq w3m-use-cookies t)
 
+
 (autoload 'wget "wget" "wget interface for Emacs." t)
 (autoload 'wget-web-page "wget" "wget interface to download whole web page." t)
 (setq wget-download-directory "~/Downloads")
 (setq wget-max-window-height 10)
+(setq w3m-verbose t)
+(setq w3m-message-silent nil)
+(setq url-show-status nil) ;;don't need to know how you're doing url-http
 
 (require 'w3m-wget)
 
@@ -42,13 +45,12 @@
              (format "*w3m: %s*" (or w3m-current-title
                                      w3m-current-url)) t)))
 
-(setq w3m-verbose t)
-(setq w3m-message-silent nil)
-(setq url-show-status nil) ;;don't need to know how you're doing url-http
 
 (autoload 'w3m-goto-url "w3m")
+
 (defalias 'www 'w3m)
 (defalias 'w3m-safe-view-this-url 'w3m-view-this-url)
+
 
 (defun wws ()
   "Use Google (English) to search for WHAT."
@@ -60,8 +62,8 @@
   (let ((url-at-point (thing-at-point 'url)))
     (message (format "browse url: %s" url-at-point))
     (if (and (not (eq url-at-point nil)) (string-match "https?://[a-zA-Z0-9\-]+[.]+[a-zA-Z0-9\-]+" url-at-point))
-        (w3m-view-url-with-external-browser url-at-point)
-      (w3m-view-url-with-external-browser))))
+        (w3m-view-url-with-browse-url url-at-point)
+      (message "no url at point"))))
 
 ;; (setq w3m-new-session-in-background nil)
 
@@ -90,7 +92,7 @@
 ;; (defalias 'wws 'w3m-search-google-web-en)
 (defalias 'wwe 'w3m-search-emacswiki)
 (defalias 'wwso 'w3m-search-stack-overflow)
-;; (defalias 'wwo 'w3m-view-url-with-external-browser)
+;; (defalias 'wwo 'w3m-view-url-with-browse-url)
 (defalias 'ww 'w3m-browse-clipboard)
 (setq browse-url-browser-function 'w3m)
 ;; (setq browse-url-browser-function 'browse-url-default-macosx-browser)
@@ -103,15 +105,15 @@
   (interactive)
   (w3m-search-advance "http://stackoverflow.com/search?q=" "Stack Overflow" 'utf-8))
 
-(defun w3m-search-alc (string)
-  "search alc"
-  (interactive "sSearch ALC: ")
-  (let ((search-string (format "http://eow.alc.co.jp/%s/UTF-8/" (w3m-url-encode-string string 'utf-8)))
-        (oldbuf (current-buffer))
-        (query (format "%s" string)))
-    (progn
-      (w3m-browse-url search-string)
-      (switch-to-buffer oldbuf))))
+;; (defun w3m-search-alc (string)
+;;   "search alc"
+;;   (interactive "sSearch ALC: ")
+;;   (let ((search-string (format "http://eow.alc.co.jp/%s/UTF-8/" (w3m-url-encode-string string 'utf-8)))
+;;         (oldbuf (current-buffer))
+;;         (query (format "%s" string)))
+;;     (progn
+;;       (w3m-browse-url search-string)
+;;       (switch-to-buffer oldbuf))))
 
 (defun w3m-search-alc (string)
   "search alc"
@@ -157,15 +159,15 @@
 
 (add-hook 'w3m-display-hook 'alc-w3m-displayed)
 
-(defun w3m-search-weblio (string)
-  "search alc"
-  (interactive "sSearch weblio: ")
-  (let ((search-string (format "http://ejje.weblio.jp/content/%s" (w3m-url-encode-string string 'utf-8)))
-        (oldbuf (current-buffer))
-        (query (format "%s" string)))
-    (progn
-      (w3m-browse-url search-string)
-      (switch-to-buffer oldbuf))))
+;; (defun w3m-search-weblio (string)
+;;   "search alc"
+;;   (interactive "sSearch weblio: ")
+;;   (let ((search-string (format "http://ejje.weblio.jp/content/%s" (w3m-url-encode-string string 'utf-8)))
+;;         (oldbuf (current-buffer))
+;;         (query (format "%s" string)))
+;;     (progn
+;;       (w3m-browse-url search-string)
+;;       (switch-to-buffer oldbuf))))
 
 (defun w3m-search-weblio (string)
   "search alc"
@@ -226,4 +228,6 @@
                                  (w3m-search-alc-at-point)
                                  ))
 
-(message "LOADING: w3m settings")
+
+
+(message "LOADING: w3m")
