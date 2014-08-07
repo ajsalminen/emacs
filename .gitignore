@@ -51,3 +51,4 @@ CVS
 org-clock-save.el
 ac-comphist.dat
 .yaoddmuse
+.emacs.d/web-vcs-log.org
