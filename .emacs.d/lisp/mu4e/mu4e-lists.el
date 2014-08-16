@@ -23,7 +23,7 @@
 ;;; Commentary:
 
 ;; In this file, we create a table of list-id -> shortname for mailing lists.
-
+;; The shortname (friendly) should a at most 8 characters, camel-case
 
 
 (defvar mu4e~mailing-lists
@@ -31,6 +31,7 @@
      ("boost-announce.lists.boost.org"                        . "BoostA")
      ("boost-interest.lists.boost.org"                        . "BoostI")
      ("conkeror.mozdev.org"                                   . "Conkeror")
+     ("curl-library.cool.haxx.se"                             . "LibCurl")
      ("crypto-gram-list.schneier.com "                        . "CryptoGr")
      ("dbus.lists.freedesktop.org"                            . "DBus")
      ("desktop-devel-list.gnome.org"                          . "GnomeDT")
@@ -41,6 +42,7 @@
      ("erlang-questions.erlang.org"                           . "Erlang")
      ("evolution-hackers.lists.ximian.com"                    . "EvoDev")
      ("farsight-devel.lists.sourceforge.net"                  . "Farsight")
+     ("mailman.lists.freedesktop.org"                         . "FDeskTop")
      ("gcc-help.gcc.gnu.org"                                  . "Gcc")
      ("gmime-devel-list.gnome.org"                            . "GMimeDev")
      ("gnome-shell-list.gnome.org"                            . "GnomeSh")
@@ -56,9 +58,9 @@
      ("guile-user.gnu.org"                                    . "GuileUsr")
      ("help-gnu-emacs.gnu.org"                                . "EmacsUsr")
      ("lggdh-algemeen.vvtp.tudelft.nl"                        . "LGGDH")
+     ("linux-bluetooth.vger.kernel.org"                       . "Bluez")
      ("maemo-developers.maemo.org"                            . "MaemoDev")
      ("maemo-users.maemo.org"                                 . "MaemoUsr")
-     ("mailman.lists.freedesktop.org"                         . "Mailman")
      ("monit-general.nongnu.org"                              . "Monit")
      ("mu-discuss.googlegroups.com"                           . "Mu")
      ("nautilus-list.gnome.org"                               . "Nautilus")
@@ -75,11 +77,12 @@
      ("xdg.lists.freedesktop.org"                             . "XDG")
      ("wl-en.lists.airs.net"                                  . "Wdrlust")
      ("wl-en.ml.gentei.org"                                   . "WdrLust")
+     ("xapian-devel.lists.xapian.org"                         . "Xapian")
      ("zsh-users.zsh.org"                                     . "ZshUsr"))
   "AList of mailing lists id -> shortname")
 
 (defvar mu4e-user-mailing-lists nil
-  "A list of (MAILING-LIST-ID . SHORTNAME); these are uses in
+  "A list of (MAILING-LIST-ID . SHORTNAME); these are used in
 addition to the 'built-in' list `mu4e~user-lists'.")
 
 (provide 'mu4e-lists)

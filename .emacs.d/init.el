@@ -25,6 +25,7 @@
 (setq more-load-paths '("~/.emacs.d/el-get/bbdb/lisp/"
                         "~/.emacs.d/el-get/bbdb-vcard/"
                         "~/.emacs.d/el-get/el-get"
+                        "~/.emacs.d/lisp/mu4e"
                         "~/.emacs.d/el-get/google-weather"
                         "~/.emacs.d/inits"
                         "~/.emacs.d/site-lisp"))
