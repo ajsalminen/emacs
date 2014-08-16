@@ -695,3 +695,9 @@ FORMAT-STRING is like `format', but it can have multiple %-sequences."
   (mapc 'kill-buffer (delq (current-buffer) (buffer-list))))
 
 (defalias 'mg 'magit-status)
+
+(defun wolfram-alpha-query (term)
+  (interactive (list (read-string "Ask Wolfram Alpha: " (word-at-point))))
+  (require 'w3m-search)
+  (w3m-browse-url (concat "http://m.wolframalpha.com/input/?i=" (w3m-search-escape-query-string
+                                                                 term))))
