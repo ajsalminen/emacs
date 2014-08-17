@@ -22,14 +22,11 @@ in subdirectory named in variable journal-dir, set in ~/.emacs,
 else in $HOME."
   (interactive
    (progn
-     (setq default-directory journal-dir)
      (setq filename (concat (format-time-string "%Y-%m-%d-%a" nil) ".txt"))
      (list (read-file-name
             "Open journal file: " journal-dir filename nil filename))
      ))
-  (find-file filename)
-  )
-
+  (find-file (concat journal-dir filename)))
 
 
 (defun now ()
