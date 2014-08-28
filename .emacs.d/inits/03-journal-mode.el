@@ -16,25 +16,23 @@
 ;;
 ;; Put this entire file into ".../site-lisp" or somewhere in emacs' path.
 
-(defun journal (filename)
-  "Open HTML file named after today's date, format YYYY-MM-DD-Day.html,
-in subdirectory named in variable journal-dir, set in ~/.emacs,
-else in $HOME."
-  (interactive
-   (progn
-     (setq filename (concat (format-time-string "%Y-%m-%d-%a" nil) ".txt"))
-     (list (read-file-name
-            "Open journal file: " journal-dir filename nil filename))
-     ))
-  (find-file (concat journal-dir filename)))
-
-
 (defun now ()
   "Insert string for the current time formatted like '2:34 PM'."
   (interactive)                 ; permit invocation in minibuffer
   (insert (format-time-string "%-I:%M %p"))
+  (newline)
   )
 
+(defun journal ()
+  "Open TEXT file named after today's date, format YYYY-MM-DD-Day.txt,
+in subdirectory named in variable journal-dir, set in ~/.emacs,
+else in $HOME."
+  (interactive)
+  (let* ((filename (concat (format-time-string "%Y-%m-%d-%a" nil) ".txt"))
+         (journal-path (concat journal-dir filename)))
+    (message "opening journal file: %s" journal-path)
+    (switch-to-buffer-other-window (find-file-noselect journal-path))
+    (now)))
 
 (defun today ()
   "Insert string for today's date nicely formatted in American style,

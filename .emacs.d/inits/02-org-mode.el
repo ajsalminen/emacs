@@ -8,13 +8,14 @@
 (require 'org-google-weather)
 (require 'org-pomodoro)
 
-(setq org-pomodoro-length 50)
+(setq org-pomodoro-length 30)
 (setq org-pomodoro-format "Pom:%s")
 (setq org-pomodoro-time-format "%.2m:%.2s")
-(setq org-pomodoro-short-break-length 10)
+(setq org-pomodoro-short-break-length 5)
 (setq org-clock-clocked-in-display 'frame-title)
 
 (set-face-attribute 'org-pomodoro-mode-line 'nil :background "Black" :foreground "Red")
+(set-face-attribute 'org-pomodoro-mode-line-break 'nil :background "Black" :foreground "Yellow")
 
 (defun custom-org-agenda-mode-defaults ()
   (org-defkey org-agenda-mode-map "I" 'org-pomodoro)
