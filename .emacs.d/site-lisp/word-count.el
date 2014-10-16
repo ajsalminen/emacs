@@ -2,7 +2,7 @@
 ;;
 ;; AUTHOR:  Hiroyuki Komatsu <komatsu@taiyaki.org>
 ;; LICENCE: GPL2
-;; $Id: word-count.el,v 1.3 2003/10/09 22:40:40 komatsu Exp $
+;; $Id: word-count.el,v 1.1.1.1 2002/08/25 14:24:46 komatsu Exp $
 ;;
 ;; How to install:
 ;; 1). Download this file from the following URL.
@@ -147,44 +147,6 @@
     alist)
   )
 
-(defun mell-alist-get-value (key alist)
-  "Return a value corresponded to KEY or 't' from ALIST."
-  (if (consp alist)
-      (let ((assoc-pair (assoc key alist)))
-        (if assoc-pair
-            (cdr assoc-pair)
-          (cdr (assoc t alist))))
-    alist))
-
-;; mell-string ------------------------------------------------------------
-
-(defun mell-string-split (string regexp)
-  "Divide STRING from REGEXP."
-  (let ((start 0) match-list splited-list)
-    (while (string-match regexp string start)
-      (setq match-list
-	    (append match-list (list (match-beginning 0) (match-end 0))))
-      (setq start (match-end 0))
-      )
-    (setq match-list (append '(0) match-list (list (length string))))
-    (while match-list
-      (setq splited-list
-	    (cons (substring string (nth 0 match-list) (nth 1 match-list))
-		  splited-list))
-      (setq match-list (nthcdr 2 match-list))
-      )
-    (reverse splited-list)))
-
-(defun mell-string-replace (target-string from-regexp to-string)
-  "Replace TARGET-STRING from FROM-REGEXP to TO-STRING."
-  (if (string-match from-regexp target-string)
-      (setq target-string
-	    (mapconcat '(lambda (x) x)
-		       (mell-string-split target-string from-regexp)
-		       to-string))
-    )
-  target-string)
-
 ;; mell-match ------------------------------------------------------------
 
 (defun mell-match-count-string (regexp string)
@@ -281,15 +243,8 @@
   "Regexp what is counted as words.")
 (defcustom word-count-non-line-regexp "^[\t ]*\n\\|^[\t ]+$"
   "Regexp what is not counted as lines.")
-(defcustom word-count-preremove-regexp-alist
-  '((latex-mode . ("\\\\%" "%.*$")) (tex-mode . ("\\\\%" "%.*$"))
-    (html-mode . ("<[^>]*>")) (sgml-mode . ("<[^>]*>"))
-    (t . nil))
-  "Regexp alist what is used by preremove operation.
-These regexps are replaced to one space (ie '\\\\%' -> ' ', '%.*$' -> ' ').
-A pair with 't' is a default.")
 (defcustom word-count-modeline-string " WC:"
-				  "String of modeline for word-count mode.")
+  "String of modeline for word-count mode.")
 (defcustom word-count-mode-hook nil
   "Function or functions called when word-count-mode is executed.")
 (defcustom word-count-mode-init-hook nil
@@ -413,65 +368,44 @@ A pair with 't' is a default.")
 	(end (or word-count-marker-end (point))))
     (concat
      word-count-modeline-string
-     (apply 'format "%d/%d/%d" (word-count-CWL-region beginning end))
+     (int-to-string (word-count-characters-region beginning end))
+     "/"
+     (int-to-string (word-count-words-region beginning end))
+     "/"
+     (int-to-string (word-count-lines-region beginning end))
+
      (if (mell-transient-region-active-p)
-	 (apply 'format " (%d/%d/%d)" (word-count-CWL-region)))
+	 (concat
+	  "("
+	  (int-to-string (word-count-characters-region))
+	  "/"
+	  (int-to-string (word-count-words-region))
+	  "/"
+	  (int-to-string (word-count-lines-region))
+	  ")"
+	  )
+       )
      )))
 
-(defun word-count-CWL-region (&optional start end)
-  (word-count-CWL-string (word-count-buffer-substring start end)))
-
-(defun word-count-CWL-string (string)
-  (setq string (word-count-preremove-string string))
-  (list
-   (word-count-characters-string string t)
-   (word-count-words-string      string t)
-   (word-count-lines-string      string t)
-   ))
-
 (defun word-count-characters-region (&optional start end)
-  (word-count-characters-string (word-count-buffer-substring start end)))
-
-(defun word-count-words-region (&optional start end)
-  (word-count-words-string (word-count-buffer-substring start end)))
-
-(defun word-count-lines-region (&optional start end)
-  (word-count-lines-string (word-count-buffer-substring start end)))
-
-(defun word-count-buffer-substring (&optional start end)
   (or start (setq start (region-beginning)))
   (or end (setq end (region-end)))
-  (buffer-substring start end))
+  (- (- end start)
+     (mell-match-count-region word-count-non-character-regexp start end))
+  )
 
+(defun word-count-words-region (&optional start end)
+  (or start (setq start (region-beginning)))
+  (or end (setq end (region-end)))
+  (mell-match-count-region word-count-word-regexp start end)
+  )
 
-(defun word-count-characters-string (string &optional nopreremove)
-  (or nopreremove
-      (setq string (word-count-preremove-string string)))
-  (- (length string)
-     (mell-match-count-string word-count-non-character-regexp string)
-     ))
-
-(defun word-count-words-string (string &optional nopreremove)
-  (or nopreremove
-      (setq string (word-count-preremove-string string)))
-  (mell-match-count-string word-count-word-regexp string))
-
-(defun word-count-lines-string (string &optional nopreremove)
-  (or nopreremove
-      (setq string (word-count-preremove-string string)))
-  (- (1+ (mell-match-count-string
-	  "\n" (substring string 0 (max 0 (1- (length string))))))
-     (mell-match-count-string word-count-non-line-regexp string)
-     ))
-
-
-(defun word-count-preremove-string (string &optional patterns)
-  (mapcar '(lambda (pattern)
-	     (setq string (mell-string-replace string pattern " ")))
-	  (or patterns
-	      (mell-alist-get-value major-mode
-				    word-count-preremove-regexp-alist)))
-  string)
+(defun word-count-lines-region (&optional start end)
+  (or start (setq start (region-beginning)))
+  (or end (setq end (region-end)))
+  (- (count-lines start end)
+     (mell-match-count-region word-count-non-line-regexp start end))
+  )
 
 (run-hooks 'word-count-mode-init-hook)
 (provide 'word-count)
