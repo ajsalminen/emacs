@@ -5,6 +5,7 @@
   (translate-window-configuration)
   (flyspell-mode))
 
+(require 'flyspell)
 (defun flyspell-save-word-to-dict ()
   (interactive)
   (let ((current-location (point))

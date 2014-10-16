@@ -1,3 +1,5 @@
+(add-hook 'text-mode-hook 'flyspell-mode)
+
 ;; Completion words longer than 4 characters
 (custom-set-variables
   '(ac-ispell-requires 3)

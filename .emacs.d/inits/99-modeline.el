@@ -62,7 +62,7 @@
                     (/ (+ (/ total 2) (* 100 (1- pos))) (max total 1))))
          )
     (message "(%d%%)" percent)
-))
+    ))
 
 ;; (require 'powerline)
 ;; (setq powerline-default-separator 'bar)
