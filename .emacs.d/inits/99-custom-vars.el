@@ -91,3 +91,5 @@
 (define-key visual-line-mode-map "\C-k" 'kill-line)
 
 (setq visual-line-fringe-indicators '(left-curly-arrow right-curly-arrow))
+
+(setq spray-wpm 800)

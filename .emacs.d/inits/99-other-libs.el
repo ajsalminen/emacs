@@ -96,3 +96,12 @@
 (require 'switch-window)
 (global-set-key (kbd "C-x o") 'switch-window)
 ;; window switching end
+
+
+(require 'synosaurus)
+(require 'synosaurus-wordnet)
+(setq synosaurus-lookup-function 'wordnet-lookup)
+(setq synosaurus-choose-method 'popup)
+
+;; (global-set-key (kbd "C-c s l") 'synosaurus-lookup)
+(global-set-key (kbd "C-c t") 'synosaurus-choose-and-replace)

@@ -8,10 +8,10 @@
 (require 'org-google-weather)
 (require 'org-pomodoro)
 
-(setq org-pomodoro-length 30)
+(setq org-pomodoro-length 50)
 (setq org-pomodoro-format "Pom:%s")
 (setq org-pomodoro-time-format "%.2m:%.2s")
-(setq org-pomodoro-short-break-length 5)
+(setq org-pomodoro-short-break-length 10)
 (setq org-clock-clocked-in-display 'frame-title)
 
 (set-face-attribute 'org-pomodoro-mode-line 'nil :background "Black" :foreground "Red")
@@ -70,7 +70,7 @@ This may send a notification, play a sound and adds log."
       '(("i" "Inbox" entry (file+headline "~/org/todo.org" "Inbox") "** TODO %? \n %i :inbox: %a \n SCHEDULED: %T \n %U")
         ("r" "Research" entry (file+headline "~/org/diss.org" "Research") "** TODO %? :research: \n %a")
         ("e" "Translation" entry (file+headline "~/org/trans.org" "Translation")  "** TODO %? :trans: \n :PROPERTIES: \n :type: %^{type|standard|pro|proofreading} \n :lang: %^{lang|je|ej} \n :END:\n %^{fee}p \n %^{chars}p \n :SCHEDULED: %t \n")
-        ("T" "Writing" entry (file+headline "~/org/write.org" "Writing") "** TODO %? :write: \n %a")
+        ("f" "Writing" entry (file+headline "~/org/write.org" "Writing") "** TODO %? :write: \n %a")
         ("w" "Work" entry (file+headline "~/org/work.org" "Work") "** TODO %? :work: \n SCHEDULED: %t \n")
         ("l" "RIL" entry (file+headline "~/org/ril.org" "Ril") "** TODO %? :ril: \n %a")
         ("d" "Dev" entry (file+headline "~/org/dev.org" "Dev") "** TODO %? :dev: %i %a")
