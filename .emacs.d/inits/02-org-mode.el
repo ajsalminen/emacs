@@ -53,7 +53,8 @@ This may send a notification, play a sound and adds log."
 (setq org-agenda-restore-windows-after-quit t)
 
 ;; (setq org-agenda-clockreport-parameter-plist '(:link nil :maxlevel 2 :fileskip0 t :compact t))
-(setq org-agenda-clockreport-parameter-plist '(:link nil :maxlevel 2 :fileskip0 t :compact t :timestamp t :properties ("fee" "chars" "rate") :formula "$5=if($4 > 0,round($3/$4), string(\"\"))::@2$3=vsum(@2$3..@>$3)::@2$4=vsum(@2$4..@>$4)"))
+;; (setq org-agenda-clockreport-parameter-plist '(:link nil :maxlevel 2 :fileskip0 t :compact t :timestamp t :properties ("fee" "chars" "rate") :formula "$5=if($4 > 0,round($3/$4), string(\"\"))::@2$3=vsum(@2$3..@>$3)::@2$4=vsum(@2$4..@>$4)"))
+(setq org-agenda-clockreport-parameter-plist '(:link nil :maxlevel 2 :fileskip0 t :compact t :timestamp t))
 
 
 
@@ -70,7 +71,7 @@ This may send a notification, play a sound and adds log."
       '(("i" "Inbox" entry (file+headline "~/org/todo.org" "Inbox") "** TODO %? \n %i :inbox: %a \n SCHEDULED: %T \n %U")
         ("r" "Research" entry (file+headline "~/org/diss.org" "Research") "** TODO %? :research: \n %a")
         ("e" "Translation" entry (file+headline "~/org/trans.org" "Translation")  "** TODO %? :trans: \n :PROPERTIES: \n :type: %^{type|standard|pro|proofreading} \n :lang: %^{lang|je|ej} \n :END:\n %^{fee}p \n %^{chars}p \n :SCHEDULED: %t \n")
-        ("f" "Writing" entry (file+headline "~/org/write.org" "Writing") "** TODO %? :write: \n %a")
+        ("f" "Writing" entry (file+headline "~/org/write.org" "Writing") "** TODO %? :write: \n :SCHEDULED: %t \n")
         ("w" "Work" entry (file+headline "~/org/work.org" "Work") "** TODO %? :work: \n SCHEDULED: %t \n")
         ("l" "RIL" entry (file+headline "~/org/ril.org" "Ril") "** TODO %? :ril: \n %a")
         ("d" "Dev" entry (file+headline "~/org/dev.org" "Dev") "** TODO %? :dev: %i %a")
@@ -216,6 +217,8 @@ nEnd:")
 (setq org-agenda-custom-commands
       '(("W" tags "work")
         ("w" tags-todo "work")
+        ("B" tags "write")
+        ("b" tags-todo "write")
         ("g" tags-todo "trans")
         ("j" todo "WAIT"
          (tags-todo "work"))

@@ -93,3 +93,5 @@
 (setq visual-line-fringe-indicators '(left-curly-arrow right-curly-arrow))
 
 (setq spray-wpm 800)
+
+(setq wc-goal-modeline-format "[%tw(%w)]")
