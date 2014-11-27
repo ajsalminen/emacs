@@ -35,6 +35,7 @@ CVS
 .emacs.d/eshell/
 .emacs.d/eshell/lastdir
 .emacs.d/history
+.emacs.d/image-dired/
 .emacs.d/jabber/elc-temp
 .emacs.d/kill-ring-saved.el
 .emacs.d/nxhtml/etc/schema/xhtml-loader.rnc
