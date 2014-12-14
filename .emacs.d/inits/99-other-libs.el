@@ -105,3 +105,7 @@
 
 ;; (global-set-key (kbd "C-c s l") 'synosaurus-lookup)
 (global-set-key (kbd "C-c t") 'synosaurus-choose-and-replace)
+
+(require 'dirtrack-buffer-name-track-mode)
+
+(require 'shell-current-directory)

@@ -8,6 +8,6 @@
 (global-set-key (kbd "C-c i a") 'rvm-activate-corresponding-ruby)
 
 (projectile-global-mode)
-(add-hook 'ruby-mode-hook 'projectile-on)
+(add-hook 'ruby-mode-hook 'projectile-mode)
 (add-hook 'projectile-mode-hook 'projectile-rails-on)
 (add-hook 'ruby-mode-hook 'robe-mode)

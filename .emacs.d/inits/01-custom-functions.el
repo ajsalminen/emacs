@@ -708,5 +708,27 @@ FORMAT-STRING is like `format', but it can have multiple %-sequences."
   (format-replace-strings '(("\x201C" . "\"")
                             ("\x201D" . "\"")
                             ("\x2018" . "'")
-                            ("\x2019" . "'"))
+                            ("\x2019" . "'")
+			    ("\u2026" . "..."))
                           nil beg end))
+
+(defun unfill-region (beg end)
+      "Unfill the region, joining text paragraphs into a single
+    logical line.  This is useful, e.g., for use with
+    `visual-line-mode'."
+      (interactive "*r")
+      (let ((fill-column (point-max)))
+        (fill-region beg end)))
+
+(defun prepare-text-file-formatting-ebook ()
+  (interactive)
+  (goto-char (point-min))
+  (while (re-search-forward "<.*?>" nil t)
+    (replace-match ""))
+    (goto-char (point-min))
+  (while (re-search-forward "\\\\\\*\\\\\\*\\\\\\*" nil t)
+    (replace-match "##\\\\\*\\\\\*\\\\\*"))
+  (replace-smart-quotes (point-min) (point-max))
+  (unfill-region (point-min) (point-max))
+  (format-replace-strings '(("\x201C" . "\""))
+                          nil (point-min) (point-max)))
