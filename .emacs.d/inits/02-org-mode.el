@@ -57,6 +57,15 @@ This may send a notification, play a sound and adds log."
 (setq org-agenda-clockreport-parameter-plist '(:link nil :maxlevel 2 :fileskip0 t :compact t :timestamp t))
 
 
+;; this is an old function to fix bug with report format
+(defun org-clocktable-indent-string (level)
+   (if (= level 1)
+       ""
+     (let ((str "\\__"))
+       (while (> level 2)
+         (setq level (1- level)
+               str (concat str "___")))
+       (concat str " "))))
 
 
 ;; Set to the location of your Org files on your local system
