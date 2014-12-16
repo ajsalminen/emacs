@@ -14,3 +14,11 @@
       (flyspell-do-correct 'save nil (car word) current-location (cadr word) (caddr word) current-location))))
 
 (define-key flyspell-mode-map [?\C-\:] 'flyspell-save-word-to-dict)
+
+(require 'dictionary)
+(eval-after-load 'text-mode
+  '(define-key text-mode-map (kbd "C-c d") 'dictionary-lookup-definition))
+
+(global-set-key "\C-cd" 'dictionary-lookup-definition)
+
+
