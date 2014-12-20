@@ -40,6 +40,7 @@ CVS
 .emacs.d/kill-ring-saved.el
 .emacs.d/nxhtml/etc/schema/xhtml-loader.rnc
 .emacs.d/php-doc
+.emacs.d/request
 .emacs.d/scratch.el
 .emacs.d/thumbs
 .emacs.d/tramp

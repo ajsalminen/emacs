@@ -5,7 +5,7 @@
 (setq twittering-connection-type-order
       '(wget curl urllib-http native urllib-https))
 
-(setq twittering-use-master-password t)
+(setq twittering-use-master-password nil)
 (setq twittering-url-show-status nil)
 (setq twittering-number-of-tweets-on-retrieval 200)
 (setq twittering-icon-mode nil)
@@ -66,4 +66,5 @@
   (garbage-collect))
 
 (defalias 'twe 'twittering-mode-exit)
+
 (message "LOADING: twittering mode setup")

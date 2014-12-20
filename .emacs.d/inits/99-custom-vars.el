@@ -15,3 +15,5 @@
 (setq spray-wpm 800)
 
 (setq wc-goal-modeline-format "[%tw(%w)]")
+
+
