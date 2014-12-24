@@ -4,6 +4,8 @@
 (setq blog-file "~/blogs.el")
 (load blog-file 'noerror)
 
+(setq org2blog/wp-buffer-kill-prompt nil)
+
 (setq Info-directory-list
       '("/usr/local/share/info" "~/info" "~/devdocs" "/usr/share/info" "/usr/local/info" "/usr/share/info/emacs-23"))
 

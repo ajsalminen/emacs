@@ -73,8 +73,8 @@
 
 (eval-after-load 'company
   '(progn
-       (define-key company-active-map (kbd "C-n") 'company-select-next)
-       (define-key company-active-map (kbd "C-p") 'company-select-previous)))
+     (define-key company-active-map (kbd "C-n") 'company-select-next)
+     (define-key company-active-map (kbd "C-p") 'company-select-previous)))
 
 
 ;; make company use my own colors
@@ -109,3 +109,21 @@
 (require 'dirtrack-buffer-name-track-mode)
 
 (require 'shell-current-directory)
+
+(autoload 'findr "findr" "Find file name." t)
+;; (define-key global-map [(meta control S)] 'findr)
+
+(autoload 'findr-search "findr" "Find text in files." t)
+;; (define-key global-map [(meta control s)] 'findr-search)
+
+(autoload 'findr-query-replace "findr" "Replace text in files." t)
+;; (define-key global-map [(meta control r)] 'findr-query-replace)
+
+(require 'eww-lnum)
+(eval-after-load "eww"
+  '(progn (define-key eww-mode-map "f" 'eww-lnum-follow)
+          (define-key eww-mode-map "F" 'eww-lnum-universal)))
+
+
+(require 'list-processes+)
+(defalias 'lp 'list-processes+)
