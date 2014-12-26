@@ -644,8 +644,6 @@ FORMAT-STRING is like `format', but it can have multiple %-sequences."
 (add-to-list 'auto-mode-alist '("\\.doc\\'" . no-word))
 
 
-(defalias 'yes-or-no-p 'y-or-n-p)
-
 (when (executable-find "vlc")
 
   (defun vlc-command (&rest args)
