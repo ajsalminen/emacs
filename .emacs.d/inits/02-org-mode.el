@@ -74,7 +74,12 @@ This may send a notification, play a sound and adds log."
 
 (setq org-tag-faces
       '(("trans" .(:italic t :background "DodgerBlue1"))
+        ("write" .(:italic t :background "purple"))
         ("work" . (:italic t :background "dark blue"))))
+
+(setq org-priority-faces '((?A . (:background "white" :foreground "red" :weight "bold"))
+                           (?B . (:foreground "yellow"))
+                           (?C . (:foreground "green"))))
 
 (setq org-capture-templates
       '(("i" "Inbox" entry (file+headline "~/org/todo.org" "Inbox") "** TODO %? \n %i :inbox: %a \n SCHEDULED: %T \n %U")
@@ -93,6 +98,8 @@ This may send a notification, play a sound and adds log."
 (setq org-todo-keyword-faces
       '(("TODO" . org-warning)
         ("DEFERRED" . shadow)
+        ("STARTED" . (:foreground "white" :background "dodgerblue1" :weight bold))
+        ("PENDING" . (:foreground "purple" :weight bold))
         ("CANCELED" . (:foreground "blue" :weight bold))))
 
 ;; Set to the name of the file where new notes will be stored
@@ -102,9 +109,14 @@ This may send a notification, play a sound and adds log."
 (setq org-agenda-skip-unavailable-files t)
 (setq org-log-done-with-time t)
 
+;; (setq org-todo-keywords
+;;       '((sequence "TODO(t)" "TODAY(y!)" "|" "STARTED(s!)" "|" "PAUSED(p!)" "|" "DONE(d!/!)")
+;;         (sequence "WAITING(w@/!)" "SOMEDAY(S!)" "OPEN(O@)" "|" "CANCELLED(c@/!)")))
+
+
 (setq org-todo-keywords
-      '((sequence "TODO(t)" "TODAY(y!)" "|" "STARTED(s!)" "|" "PAUSED(p!)" "|" "DONE(d!/!)")
-        (sequence "WAITING(w@/!)" "SOMEDAY(S!)" "OPEN(O@)" "|" "CANCELLED(c@/!)")))
+      '((sequence "TODO(t)" "STARTED(s!)" "PAUSED(p!)" "|" "DONE(d!/!)")))
+
 
 (setq org-clock-in-switch-to-state "STARTED")
 
@@ -112,9 +124,6 @@ This may send a notification, play a sound and adds log."
 (setq org-log-done 'time)
 ;; (setq org-todo-keywords
 ;;       '((sequence "TODO(t)" "WAIT(w@/!)" "PENDING(p)" "|" "DONE(d!)" "CANCELED(c@)")))
-
-(setq org-todo-keyword-faces
-      '(("PENDING" . (:foreground "purple" :weight bold))))
 
 ;;(setq org-refile-targets (quote ((org-agenda-files :regexp . "*"))))
 (setq org-refile-targets (quote ((org-agenda-files :level . 1))))
@@ -223,7 +232,7 @@ nEnd:")
 ;;         (search category-keep)))
 
 (setq org-agenda-sorting-strategy
-      '((agenda priority-down todo-state-down alpha-up tag-up habit-up time-up deadline-up user-defined-up scheduled-up)
+      '((agenda todo-state-down priority-down alpha-up tag-up habit-up time-up deadline-up user-defined-up scheduled-up)
         (todo user-defined-up todo-state-up priority-up effort-down)
         (tags user-defined-up)
         (search category-keep)))
@@ -242,7 +251,7 @@ nEnd:")
         ("g" tags-todo "trans")
         ("j" todo "WAIT"
          (tags-todo "work"))
-        ("s" todo "STARTED")
+        ("s" todo "STARTED|TODO")
         ("d" tags "books")
         ("J" todo-tree "WAIT")
         ("h" agenda ""
@@ -266,6 +275,11 @@ nEnd:")
           (org-deadline-warning-days 0)
           (org-agenda-filter-preset
            '("+work"))))))
+
+;; (setq org-agenda-include-all-todo t)
+;; (setq org-agenda-skip-function-global nil)
+;; (setq org-agenda-skip-function-global
+;;       '(org-agenda-skip-entry-if 'nottodo '("STARTED")))
 
 (setq org-icalendar-use-scheduled '(todo-start event-if-todo))
 
@@ -324,6 +338,16 @@ nEnd:")
 
 (define-key org-mode-map (kbd "\C-c i") 'org-clock-in-and-out)
 (define-key org-mode-map (kbd "C-'") 'smex)
+
+(setq org-file-apps
+      '((directory . emacs)
+        ("txt" . emacs)
+        ("tex" . emacs)
+        ("ltx" . emacs)
+        ("org" . emacs)
+        ("el" . emacs)
+        ("bib" . emacs)))
+
 
 
 (message "LOADING: org-mode stuff")
