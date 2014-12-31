@@ -49,16 +49,16 @@
     (set-frame-parameter nil 'alpha '(80 50))))
 
 
-(defun toggle-fullscreen (&optional f)
-  (interactive)
-  (let ((current-value (frame-parameter nil 'fullscreen)))
-    (set-frame-parameter nil 'fullscreen
-                         (if (equal 'fullboth current-value)
-                             (if (boundp 'old-fullscreen) old-fullscreen nil)
-                           (progn (setq old-fullscreen current-value)
-                                  'fullboth)))))
+;; (defun toggle-fullscreen (&optional f)
+;;   (interactive)
+;;   (let ((current-value (frame-parameter nil 'fullscreen)))
+;;     (set-frame-parameter nil 'fullscreen
+;;                          (if (equal 'fullboth current-value)
+;;                              (if (boundp 'old-fullscreen) old-fullscreen nil)
+;;                            (progn (setq old-fullscreen current-value)
+;;                                   'fullboth)))))
 
-(global-set-key (kbd "M-RET") 'toggle-fullscreen)
+;; (global-set-key (kbd "M-RET") 'toggle-fullscreen)
 
 ;; Common copying and pasting functions
 (defun copy-word (&optional arg)
@@ -175,6 +175,8 @@
   (with-temp-buffer
     (insert string)
     (count-matches regexp (point-min) (point-max))))
+
+
 (defun seq (format-string from to)
   "Insert sequences with FORMAT-STRING.
 FORMAT-STRING is like `format', but it can have multiple %-sequences."
@@ -706,6 +708,7 @@ FORMAT-STRING is like `format', but it can have multiple %-sequences."
   (format-replace-strings '(("\x201C" . "\"")
                             ("\x201D" . "\"")
                             ("\x2018" . "'")
+                            ("\x2014" . "--")
                             ("\x2019" . "'")
                             ("\u2026" . "..."))
                           nil beg end))
@@ -724,6 +727,8 @@ FORMAT-STRING is like `format', but it can have multiple %-sequences."
   (while (re-search-forward "<.*?>" nil t)
     (replace-match ""))
   (goto-char (point-min))
+  (while (re-search-forward "\\\\\\* \\\\\\* \\\\\\*" nil t)
+    (replace-match "##\\\\\*\\\\\*\\\\\*"))
   (while (re-search-forward "\\\\\\*\\\\\\*\\\\\\*" nil t)
     (replace-match "##\\\\\*\\\\\*\\\\\*"))
   (replace-smart-quotes (point-min) (point-max))
@@ -734,6 +739,8 @@ FORMAT-STRING is like `format', but it can have multiple %-sequences."
 
 (require 's)
 
+
+;; TODO: refactor these two methods for something more generalizable
 (defun split-and-titleize-backward-word ()
   "Convert word at point (or selected region) to split and capitalized."
   (interactive)
@@ -745,6 +752,30 @@ FORMAT-STRING is like `format', but it can have multiple %-sequences."
       (delete-region (car bounds) (cdr bounds))
       (insert (s-titleized-words text)))))
 
+(defun snake-backward-word ()
+  "Convert word at point (or selected region) to split and capitalized."
+  (interactive)
+  (let* ((bounds (if (use-region-p)
+                     (cons (region-beginning) (region-end))
+                   (bounds-of-thing-at-point 'symbol)))
+         (text   (buffer-substring-no-properties (car bounds) (cdr bounds))))
+    (when bounds
+      (delete-region (car bounds) (cdr bounds))
+      (insert (s-snake-case text)))))
+
+(defun uniquify-words-in-region ()
+  "delete dupes in region"
+  (interactive)
+  (let* ((bounds (when (use-region-p)
+                   (cons (region-beginning) (region-end))))
+         (text   (buffer-substring-no-properties (car bounds) (cdr bounds))))
+    (when bounds
+      (delete-region (car bounds) (cdr bounds))
+      (insert (format "%s\n"
+                      (mapconcat 'identity
+                                 (delete-dups
+                                  (split-string
+                                   text)) " "))))))
 
 (defun half-size-jpg-images-dir ()
   "uses mogrify command in shell then shows image size"
@@ -752,3 +783,5 @@ FORMAT-STRING is like `format', but it can have multiple %-sequences."
   (when (and (executable-find "mogrify") (executable-find "identify"))
     (shell-command "mogrify -resize 50% *.jpg")
     (shell-command "identify *.jpg")))
+
+(add-to-list 'auto-mode-alist '("\\.utf\\'" . text-mode))

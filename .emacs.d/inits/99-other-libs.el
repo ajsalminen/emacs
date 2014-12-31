@@ -127,3 +127,4 @@
 
 (require 'list-processes+)
 (defalias 'lp 'list-processes+)
+(require 'dired-sort)

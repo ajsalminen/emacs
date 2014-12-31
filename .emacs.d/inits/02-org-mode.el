@@ -81,6 +81,8 @@ This may send a notification, play a sound and adds log."
         ("r" "Research" entry (file+headline "~/org/diss.org" "Research") "** TODO %? :research: \n %a")
         ("e" "Translation" entry (file+headline "~/org/trans.org" "Translation")  "** TODO %? :trans: \n :PROPERTIES: \n :type: %^{type|standard|pro|proofreading} \n :lang: %^{lang|je|ej} \n :END:\n %^{fee}p \n %^{chars}p \n :SCHEDULED: %t \n")
         ("f" "Writing" entry (file+headline "~/org/write.org" "Writing") "** TODO %? :write: \n :SCHEDULED: %t \n")
+        ("b" "Book Orders" entry (file "~/org/books.org")  "* TODO process order for %^{prompt} :books: [/] \n %i \n %a \n :PROPERTIES: \n :SCHEDULED: %t \n** TODO [#A] order cover for %\\1 \n :PROPERTIES: \n :SCHEDULED: %t \n** TODO [#A] process text file format for %\\1 \n :PROPERTIES: \n :SCHEDULED: %t \n** TODO [#A] compile epub for %\\1 \n :PROPERTIES: \n :SCHEDULED: %t \n** TODO [#A] upload and publish %\\1 book\n :PROPERTIES: \n :SCHEDULED: %t \n")
+        ("v" "Make Book Order" entry (file "~/org/books.org")  "* TODO [#A] order book for %^{prompt} :books: \n\n %i \n\n %a \n :PROPERTIES: \n :SCHEDULED: %t \n")
         ("w" "Work" entry (file+headline "~/org/work.org" "Work") "** TODO %? :work: \n SCHEDULED: %t \n")
         ("l" "RIL" entry (file+headline "~/org/ril.org" "Ril") "** TODO %? :ril: \n %a")
         ("d" "Dev" entry (file+headline "~/org/dev.org" "Dev") "** TODO %? :dev: %i %a")
@@ -93,8 +95,6 @@ This may send a notification, play a sound and adds log."
         ("DEFERRED" . shadow)
         ("CANCELED" . (:foreground "blue" :weight bold))))
 
-
-
 ;; Set to the name of the file where new notes will be stored
 (setq org-mobile-inbox-for-pull "~/org/flagged.org")
 ;; Set to <your Dropbox root directory>/MobileOrg.
@@ -102,11 +102,16 @@ This may send a notification, play a sound and adds log."
 (setq org-agenda-skip-unavailable-files t)
 (setq org-log-done-with-time t)
 
+(setq org-todo-keywords
+      '((sequence "TODO(t)" "TODAY(y!)" "|" "STARTED(s!)" "|" "PAUSED(p!)" "|" "DONE(d!/!)")
+        (sequence "WAITING(w@/!)" "SOMEDAY(S!)" "OPEN(O@)" "|" "CANCELLED(c@/!)")))
+
+(setq org-clock-in-switch-to-state "STARTED")
 
 (setq org-default-notes-file (concat org-directory "memo.org"))
 (setq org-log-done 'time)
-(setq org-todo-keywords
-      '((sequence "TODO(t)" "WAIT(w@/!)" "PENDING(p)" "|" "DONE(d!)" "CANCELED(c@)")))
+;; (setq org-todo-keywords
+;;       '((sequence "TODO(t)" "WAIT(w@/!)" "PENDING(p)" "|" "DONE(d!)" "CANCELED(c@)")))
 
 (setq org-todo-keyword-faces
       '(("PENDING" . (:foreground "purple" :weight bold))))
@@ -172,7 +177,7 @@ This may send a notification, play a sound and adds log."
   (let (org-log-done org-log-states) ; turn off logging
     (org-todo (if (= n-not-done 0) "DONE" "TODO"))))
 
-(remove-hook 'org-after-todo-statistics-hook 'org-summary-todo)
+(add-hook 'org-after-todo-statistics-hook 'org-summary-todo)
 
 (defun org-cmp-title (a b)
   "Compare the titles of string A and B"
@@ -211,8 +216,14 @@ nEnd:")
 ;; - %h the higher temperature
 ;; - %s the temperature unit symbol"
 
+;; (setq org-agenda-sorting-strategy
+;;       '((agenda habit-up time-up alpha-up tag-up user-defined-up priority-down)
+;;         (todo user-defined-up todo-state-up priority-up effort-down)
+;;         (tags user-defined-up)
+;;         (search category-keep)))
+
 (setq org-agenda-sorting-strategy
-      '((agenda habit-up time-up alpha-up tag-up user-defined-up priority-down)
+      '((agenda priority-down todo-state-down alpha-up tag-up habit-up time-up deadline-up user-defined-up scheduled-up)
         (todo user-defined-up todo-state-up priority-up effort-down)
         (tags user-defined-up)
         (search category-keep)))
@@ -231,6 +242,8 @@ nEnd:")
         ("g" tags-todo "trans")
         ("j" todo "WAIT"
          (tags-todo "work"))
+        ("s" todo "STARTED")
+        ("d" tags "books")
         ("J" todo-tree "WAIT")
         ("h" agenda ""
          ((org-agenda-show-all-dates nil)))
