@@ -1,0 +1,1 @@
+(define-package "pbcopy" "20150114.303" "Emacs Interface to pbcopy" 'nil :url "https://github.com/jkp/pbcopy.el" :keywords '("mac" "osx" "pbcopy"))

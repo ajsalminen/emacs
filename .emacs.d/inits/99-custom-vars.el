@@ -16,4 +16,4 @@
 
 (setq wc-goal-modeline-format "[%tw(%w)]")
 
-
+(add-to-list 'default-frame-alist '(fullscreen . maximized))

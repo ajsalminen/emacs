@@ -59,13 +59,13 @@ This may send a notification, play a sound and adds log."
 
 ;; this is an old function to fix bug with report format
 (defun org-clocktable-indent-string (level)
-   (if (= level 1)
-       ""
-     (let ((str "\\__"))
-       (while (> level 2)
-         (setq level (1- level)
-               str (concat str "___")))
-       (concat str " "))))
+  (if (= level 1)
+      ""
+    (let ((str "\\__"))
+      (while (> level 2)
+        (setq level (1- level)
+              str (concat str "___")))
+      (concat str " "))))
 
 
 ;; Set to the location of your Org files on your local system
@@ -86,8 +86,8 @@ This may send a notification, play a sound and adds log."
         ("r" "Research" entry (file+headline "~/org/diss.org" "Research") "** TODO %? :research: \n %a")
         ("e" "Translation" entry (file+headline "~/org/trans.org" "Translation")  "** TODO %? :trans: \n :PROPERTIES: \n :type: %^{type|standard|pro|proofreading} \n :lang: %^{lang|je|ej} \n :END:\n %^{fee}p \n %^{chars}p \n :SCHEDULED: %t \n")
         ("f" "Writing" entry (file+headline "~/org/write.org" "Writing") "** TODO %? :write: \n :SCHEDULED: %t \n")
-        ("b" "Book Orders" entry (file "~/org/books.org")  "* TODO process order for %^{prompt} :books: [/] \n %i \n %a \n :PROPERTIES: \n :SCHEDULED: %t \n** TODO [#A] order cover for %\\1 \n :PROPERTIES: \n :SCHEDULED: %t \n** TODO [#A] process text file format for %\\1 \n :PROPERTIES: \n :SCHEDULED: %t \n** TODO [#A] compile epub for %\\1 \n :PROPERTIES: \n :SCHEDULED: %t \n** TODO [#A] upload and publish %\\1 book\n :PROPERTIES: \n :SCHEDULED: %t \n")
-        ("v" "Make Book Order" entry (file "~/org/books.org")  "* TODO [#A] order book for %^{prompt} :books: \n\n %i \n\n %a \n :PROPERTIES: \n :SCHEDULED: %t \n")
+        ("b" "Book Orders" entry (file "~/org/books.org")  "* TODO [#G] process publishing of [%^{prompt}] :books: [/] \n %i \n %a \n :PROPERTIES: \n :SCHEDULED: %t \n** TODO [#F] add cover of [%\\1] \n :PROPERTIES: \n :SCHEDULED: %t \n** TODO [#A] order cover for [%\\1] \n :PROPERTIES: \n :SCHEDULED: %t \n** TODO [#E] process text file format for [%\\1] \n :PROPERTIES: \n :SCHEDULED: %t \n** TODO [#D] compile epub for [%\\1] \n :PROPERTIES: \n :SCHEDULED: %t \n** TODO [#C] upload and publish [%\\1] book\n :PROPERTIES: \n :SCHEDULED: %t \n")
+        ("v" "Make Book Order" entry (file "~/org/books.org")  "* TODO [#A] order book for [%^{prompt}] :books: \n\n %i \n\n %a \n :PROPERTIES: \n :SCHEDULED: %t \n")
         ("w" "Work" entry (file+headline "~/org/work.org" "Work") "** TODO %? :work: \n SCHEDULED: %t \n")
         ("l" "RIL" entry (file+headline "~/org/ril.org" "Ril") "** TODO %? :ril: \n %a")
         ("d" "Dev" entry (file+headline "~/org/dev.org" "Dev") "** TODO %? :dev: %i %a")
@@ -231,11 +231,38 @@ nEnd:")
 ;;         (tags user-defined-up)
 ;;         (search category-keep)))
 
+(defun org-cmp-title (a b)
+  "Compare the titles of string A and B"
+  (cond ((string-lessp a b) -1)
+        ((string-lessp b a) +1)
+        (t nil)))
+
+(defun je/agenda-sort (a b)
+  "Sorting strategy for agenda items."
+  (let* ((ma (or (get-text-property 1 'org-marker a)
+                 (get-text-property 1 'org-hd-marker a)))
+         (mb (or (get-text-property 1 'org-marker b)
+                 (get-text-property 1 'org-hd-marker b)))
+         (def 1.0e+INF)
+         (da (org-entry-get ma "DEADLINE"))
+         (ta (if da (org-time-string-to-seconds da) def))
+         (db (org-entry-get mb "DEADLINE"))
+         (tb (if db (org-time-string-to-seconds db) def)))
+    (cond ((< ta tb) -1)
+          ((< tb ta) +1)
+          (t nil))))
+
+(setq org-agenda-cmp-user-defined nil)
+
 (setq org-agenda-sorting-strategy
-      '((agenda todo-state-down priority-down alpha-up tag-up habit-up time-up deadline-up user-defined-up scheduled-up)
-        (todo user-defined-up todo-state-up priority-up effort-down)
-        (tags user-defined-up)
+      '((agenda todo-state-down priority-down user-defined-up category-keep tag-up alpha-up habit-up time-up deadline-up scheduled-up)
+        (todo todo-state-up priority-down)
+        (tags priority-down)
         (search category-keep)))
+
+(setq org-default-priority ?H)
+(setq org-highest-priority ?A)
+(setq org-lowest-priority ?H)
 
 ;; (setq org-timer-default-timer 25)
 
@@ -342,6 +369,7 @@ nEnd:")
 (setq org-file-apps
       '((directory . emacs)
         ("txt" . emacs)
+        ("utf" . emacs)
         ("tex" . emacs)
         ("ltx" . emacs)
         ("org" . emacs)
