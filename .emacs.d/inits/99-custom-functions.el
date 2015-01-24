@@ -721,15 +721,31 @@ FORMAT-STRING is like `format', but it can have multiple %-sequences."
   (let ((fill-column (point-max)))
     (fill-region beg end)))
 
+
+(defun chomp-whitespace ()
+  "Chomp leading whitespace from file."
+  (interactive)
+  (goto-char (point-min))
+  (while (re-search-forward "^[ \t]+" nil t)
+    (replace-match "")))
+
 (defun prepare-text-file-formatting-ebook ()
   (interactive)
+  (whitespace-cleanup)
+  (chomp-whitespace)
   (goto-char (point-min))
   (while (re-search-forward "<.*?>" nil t)
     (replace-match ""))
   (goto-char (point-min))
+
+  (while (re-search-forward "[\\\\\\*\\\\\\*\\\\\\* ]+\\\\\\*\\\\\\*\\\\\\*" nil t)
+    (replace-match "##\\\\\*\\\\\*\\\\\*"))
   (while (re-search-forward "\\\\\\* \\\\\\* \\\\\\*" nil t)
     (replace-match "##\\\\\*\\\\\*\\\\\*"))
   (while (re-search-forward "\\\\\\*\\\\\\*\\\\\\*" nil t)
+    (replace-match "##\\\\\*\\\\\*\\\\\*"))
+
+  (while (re-search-forward "[\\*\\*\\* ]+\\*\\*\\*" nil t)
     (replace-match "##\\\\\*\\\\\*\\\\\*"))
   (replace-smart-quotes (point-min) (point-max))
   (unfill-region (point-min) (point-max))
