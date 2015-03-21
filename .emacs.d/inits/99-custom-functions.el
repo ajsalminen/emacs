@@ -1,4 +1,6 @@
 (eval-when-compile (require 'cl))
+(require 's)
+(require 'f)
 
 (defun machine-ip-address (dev)
   "Return IP address of a network device."
@@ -106,16 +108,6 @@
 (global-set-key (kbd "C-c s") 'ispell-word)
 (global-set-key (kbd "M-s") 'ispell)
 
-
-(defun unfill-paragraph ()
-  (interactive)
-  (let ((fill-column (point-max)))
-    (fill-paragraph nil)))
-
-(defun unfill-region (start end)
-  (interactive "r")
-  (let ((fill-column (point-max)))
-    (fill-region start end nil)))
 
 (message "LOADING: point stuff")
 
@@ -641,7 +633,7 @@ FORMAT-STRING is like `format', but it can have multiple %-sequences."
   (interactive)
   (progn
     (benny-antiword-insert-file (buffer-file-name) nil nil nil t)
-    (beginning-of-buffer)))
+    (goto-char (point-min))))
 
 (add-to-list 'auto-mode-alist '("\\.doc\\'" . no-word))
 
@@ -713,6 +705,12 @@ FORMAT-STRING is like `format', but it can have multiple %-sequences."
                             ("\u2026" . "..."))
                           nil beg end))
 
+;; Not sure why or if the 'nil' on the last line is needed
+;; (defun unfill-region (start end)
+;;   (interactive "r")
+;;   (let ((fill-column (point-max)))
+;;     (fill-region start end nil)))
+
 (defun unfill-region (beg end)
   "Unfill the region, joining text paragraphs into a single
     logical line.  This is useful, e.g., for use with
@@ -740,6 +738,9 @@ FORMAT-STRING is like `format', but it can have multiple %-sequences."
 
   (while (re-search-forward "[\\\\\\*\\\\\\*\\\\\\* ]+\\\\\\*\\\\\\*\\\\\\*" nil t)
     (replace-match "##\\\\\*\\\\\*\\\\\*"))
+  (while (re-search-forward "[\\\\\\\~]+" nil t)
+    (replace-match "##\\\\\*\\\\\*\\\\\*"))
+
   (while (re-search-forward "\\\\\\* \\\\\\* \\\\\\*" nil t)
     (replace-match "##\\\\\*\\\\\*\\\\\*"))
   (while (re-search-forward "\\\\\\*\\\\\\*\\\\\\*" nil t)
@@ -751,10 +752,6 @@ FORMAT-STRING is like `format', but it can have multiple %-sequences."
   (unfill-region (point-min) (point-max))
   (format-replace-strings '(("\x201C" . "\""))
                           nil (point-min) (point-max)))
-
-
-(require 's)
-
 
 ;; TODO: refactor these two methods for something more generalizable
 (defun split-and-titleize-backward-word ()
@@ -793,6 +790,11 @@ FORMAT-STRING is like `format', but it can have multiple %-sequences."
                                   (split-string
                                    text)) " "))))))
 
+(defun shell-region (start end)
+  "execute region in an inferior shell"
+  (interactive "r")
+  (shell-command  (buffer-substring-no-properties start end)))
+
 (defun half-size-jpg-images-dir ()
   "uses mogrify command in shell then shows image size"
   (interactive)
@@ -801,3 +803,72 @@ FORMAT-STRING is like `format', but it can have multiple %-sequences."
     (shell-command "identify *.jpg")))
 
 (add-to-list 'auto-mode-alist '("\\.utf\\'" . text-mode))
+
+
+(defun rename-file-and-buffer (new-name)
+  "Renames both current buffer and file it's visiting to NEW-NAME."
+  (interactive "sNew name: ")
+  (let ((name (buffer-name))
+        (filename (buffer-file-name)))
+    (if (not filename)
+        (message "Buffer '%s' is not visiting a file!" name)
+      (if (get-buffer new-name)
+          (message "A buffer named '%s' already exists!" new-name)
+        (progn
+          (rename-file name new-name 1)
+          (rename-buffer new-name)
+          (set-visited-file-name new-name)
+          (set-buffer-modified-p nil))))))
+
+(add-hook 'dired-mode-hook 'auto-revert-mode)
+
+(setq dired-auto-revert-buffer 'dired-directory-changed-p)
+
+
+;; ;; Auto refresh buffers
+;; (global-auto-revert-mode nil)
+
+;; ;; Also auto refresh dired, but be quiet about it
+;; (setq global-auto-revert-non-file-buffers nil)
+;; (setq auto-revert-verbose nil)
+
+(define-skeleton pandoc-skeleton
+  "pandoc skeleton"
+  "add files to skeleton"
+  "pandoc --toc --toc-depth=1 --standalone\n"
+  (shell-command-to-string "find *.txt -maxdepth 0 -name \"blurb*\" -prune -o -print")
+  " ../other_works.txt \n"
+  "--epub-cover-image="
+  (shell-command-to-string "ls *.jpg")
+  "-o \n"
+  (f-base (shell-command-to-string "ls *.jpg"))
+  ".epub")
+
+
+(defun pipe-to-markdown ()
+  "pipe text to markdown and copy to clipboard"
+  (interactive)
+  (let* ((bounds (if (use-region-p)
+                     (cons (region-beginning) (region-end))
+                   (bounds-of-thing-at-point 'symbol)))
+         (text   (buffer-substring-no-properties (car bounds) (cdr bounds))))
+    (when bounds
+      (shell-command-on-region (car bounds) (cdr bounds) "markdown")
+      (with-current-buffer (get-buffer-create "*Shell Command Output*")
+        (kill-new (buffer-string))))))
+
+
+(defun add-missing-punctuation ()
+  (interactive)
+  (goto-char (point-min))
+  (while (re-search-forward "<.*?>" nil t)
+    (replace-match ""))
+  (goto-char (point-min))
+
+  (while (re-search-forward "[^.?!][]\"')}]*\\($\\| $\\|\t\\|  \\)[ \t\n]*" nil t)
+    (replace-match ".\t\n"))
+
+  ;; (while (re-search-forward "[.?!][]\"')}]*\\($\\| $\\|\t\\|  \\)[ \t\n]*" nil t)
+  ;;   (replace-match "##\\\\\*\\\\\*\\\\\*"))
+
+  )

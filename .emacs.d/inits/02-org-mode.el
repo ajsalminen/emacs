@@ -8,10 +8,10 @@
 (require 'org-google-weather)
 (require 'org-pomodoro)
 
-(setq org-pomodoro-length 50)
+(setq org-pomodoro-length 15)
 (setq org-pomodoro-format "Pom:%s")
 (setq org-pomodoro-time-format "%.2m:%.2s")
-(setq org-pomodoro-short-break-length 10)
+(setq org-pomodoro-short-break-length 3)
 (setq org-clock-clocked-in-display 'frame-title)
 
 (set-face-attribute 'org-pomodoro-mode-line 'nil :background "Black" :foreground "Red")
@@ -88,6 +88,7 @@ This may send a notification, play a sound and adds log."
         ("f" "Writing" entry (file+headline "~/org/write.org" "Writing") "** TODO %? :write: \n :SCHEDULED: %t \n")
         ("b" "Book Orders" entry (file "~/org/books.org")  "* TODO [#G] process publishing of [%^{prompt}] :books: [/] \n %i \n %a \n :PROPERTIES: \n :SCHEDULED: %t \n** TODO [#F] add cover of [%\\1] \n :PROPERTIES: \n :SCHEDULED: %t \n** TODO [#A] order cover for [%\\1] \n :PROPERTIES: \n :SCHEDULED: %t \n** TODO [#E] process text file format for [%\\1] \n :PROPERTIES: \n :SCHEDULED: %t \n** TODO [#D] compile epub for [%\\1] \n :PROPERTIES: \n :SCHEDULED: %t \n** TODO [#C] upload and publish [%\\1] book\n :PROPERTIES: \n :SCHEDULED: %t \n")
         ("v" "Make Book Order" entry (file "~/org/books.org")  "* TODO [#A] order book for [%^{prompt}] :books: \n\n %i \n\n %a \n :PROPERTIES: \n :SCHEDULED: %t \n")
+        ("o" "Book-related tasks" entry (file "~/org/books.org")  "* TODO [#A] %^{prompt} :books: \n\n %i \n\n %a \n :PROPERTIES: \n :SCHEDULED: %t \n")
         ("w" "Work" entry (file+headline "~/org/work.org" "Work") "** TODO %? :work: \n SCHEDULED: %t \n")
         ("l" "RIL" entry (file+headline "~/org/ril.org" "Ril") "** TODO %? :ril: \n %a")
         ("d" "Dev" entry (file+headline "~/org/dev.org" "Dev") "** TODO %? :dev: %i %a")
@@ -98,9 +99,10 @@ This may send a notification, play a sound and adds log."
 (setq org-todo-keyword-faces
       '(("TODO" . org-warning)
         ("DEFERRED" . shadow)
-        ("STARTED" . (:foreground "white" :background "dodgerblue1" :weight bold))
+        ("STARTED" . (:foreground "white" :background "DodgerBlue1" :weight bold))
         ("PENDING" . (:foreground "purple" :weight bold))
         ("CANCELED" . (:foreground "blue" :weight bold))))
+
 
 ;; Set to the name of the file where new notes will be stored
 (setq org-mobile-inbox-for-pull "~/org/flagged.org")

@@ -37,6 +37,7 @@ CVS
 .emacs.d/history
 .emacs.d/image-dired/
 .emacs.d/jabber/elc-temp
+.emacs.d/jabber-global-message-log
 .emacs.d/kill-ring-saved.el
 .emacs.d/nxhtml/etc/schema/xhtml-loader.rnc
 .emacs.d/php-doc

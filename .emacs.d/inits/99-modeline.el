@@ -68,6 +68,35 @@
 ;; (setq powerline-default-separator 'bar)
 ;; (powerline-default-theme)
 
+
+(defun dot-truncate (string n)
+  "Truncate a string and add a leading ellipe if over a permitted length."
+  (if (> (length string) n)
+      (concat "…" (substring string (- 0 (- n 1))))
+    string))
+
+(defun shorten-buffer-name ()
+  (interactive)
+  (rename-buffer (concat (substring (file-name-nondirectory (buffer-file-name)) 0 12) (dot-truncate (abbreviate-file-name (buffer-file-name)) 10))))
+
+
+;; (setq mode-line-buffer-identification '(#("%09b" 0 4
+;;    (local-map
+;;     (keymap
+;;      (header-line keymap
+;;                   (mouse-3 . mode-line-next-buffer)
+;;                   (down-mouse-3 . ignore)
+;;                   (mouse-1 . mode-line-previous-buffer)
+;;                   (down-mouse-1 . ignore))
+;;      (mode-line keymap
+;;                 (mouse-3 . mode-line-next-buffer)
+;;                 (mouse-1 . mode-line-previous-buffer)))
+;;     mouse-face mode-line-highlight help-echo "Buffer name\nmouse-1: Previous buffer\nmouse-3: Next buffer" face mode-line-buffer-id))))
+
+
+;; (setq mode-line-buffer-identification '(:eval (dot-truncate (abbreviate-file-name (buffer-file-name)) 20)))
+;; (setq-default mode-line-buffer-identification '(buffer-file-name ("%f") ("%b")))
+
 (setq mode-line-format
       '("[%+]"
         "%e|"

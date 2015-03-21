@@ -5,7 +5,7 @@
 ;; of keywords
 (defun azon-uniquify (vec)
   (insert
-   (format "%s,\n"
+   (format "%s\n"
            (mapconcat 'identity
                       (delete-dups
                        (split-string
