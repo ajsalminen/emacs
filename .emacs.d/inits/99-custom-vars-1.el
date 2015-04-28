@@ -39,4 +39,26 @@
 
 (setenv (concat "/usr/local/libexec/git-core" ";" (getenv "GIT_EXEC_PATH")))
 
+;; for stereoscopic tetris
+(setq tetris-x-colors [[0 0 1] [0 0 1] [0 0 1] [1 0 0] [1 0 0] [1 0 0] [1 0 0]])
+
+;; (defvar tetris-mode-map
+;;   (let ((map (make-sparse-keymap 'tetris-mode-map)))
+;;     (define-key map "n"		'tetris-start-game)
+;;     (define-key map "q"		'tetris-end-game)
+;;     (define-key map "p"		'tetris-pause-game)
+
+;;     (define-key map " "		'tetris-move-bottom)
+;;     (define-key map [left]	'tetris-move-left)
+;;     (define-key map [right]	'tetris-move-right)
+;;     (define-key map [up]	'tetris-rotate-prev)
+;;     (define-key map [down]	'tetris-rotate-next)
+;;     map))
+
+
+(define-key tetris-mode-map "j" 'tetris-move-left)
+(define-key tetris-mode-map "k" 'tetris-move-right)
+(define-key tetris-mode-map "l" 'tetris-rotate-prev)
+(define-key tetris-mode-map ";" 'tetris-rotate-next)
+
 (message "LOADING: loaded custom stuff")

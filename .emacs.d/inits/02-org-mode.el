@@ -9,7 +9,8 @@
 (require 'org-pomodoro)
 
 (setq org-pomodoro-length 15)
-(setq org-pomodoro-format "Pom:%s")
+(setq org-pomodoro-format "Pom|%s")
+(setq org-pomodoro-short-break-format "Break|%s")
 (setq org-pomodoro-time-format "%.2m:%.2s")
 (setq org-pomodoro-short-break-length 3)
 (setq org-clock-clocked-in-display 'frame-title)
@@ -82,13 +83,14 @@ This may send a notification, play a sound and adds log."
                            (?C . (:foreground "green"))))
 
 (setq org-capture-templates
-      '(("i" "Inbox" entry (file+headline "~/org/todo.org" "Inbox") "** TODO %? \n %i :inbox: %a \n SCHEDULED: %T \n %U")
+      '(("i" "Inbox" entry (file+headline "~/org/inbox.org" "Inbox") "** TODO [#A] %^{prompt} :tasks: \n SCHEDULED: %t \n %a \n")
         ("r" "Research" entry (file+headline "~/org/diss.org" "Research") "** TODO %? :research: \n %a")
-        ("e" "Translation" entry (file+headline "~/org/trans.org" "Translation")  "** TODO %? :trans: \n :PROPERTIES: \n :type: %^{type|standard|pro|proofreading} \n :lang: %^{lang|je|ej} \n :END:\n %^{fee}p \n %^{chars}p \n :SCHEDULED: %t \n")
+        ("e" "Translation" entry (file+headline "~/org/trans.org" "Translation")  "** TODO %? :trans: \n :SCHEDULED: %t \n :PROPERTIES: \n :type: %^{type|standard|pro|proofreading} \n :lang: %^{lang|je|ej} \n :END:\n %^{fee}p \n %^{chars}p \n")
         ("f" "Writing" entry (file+headline "~/org/write.org" "Writing") "** TODO %? :write: \n :SCHEDULED: %t \n")
-        ("b" "Book Orders" entry (file "~/org/books.org")  "* TODO [#G] process publishing of [%^{prompt}] :books: [/] \n %i \n %a \n :PROPERTIES: \n :SCHEDULED: %t \n** TODO [#F] add cover of [%\\1] \n :PROPERTIES: \n :SCHEDULED: %t \n** TODO [#A] order cover for [%\\1] \n :PROPERTIES: \n :SCHEDULED: %t \n** TODO [#E] process text file format for [%\\1] \n :PROPERTIES: \n :SCHEDULED: %t \n** TODO [#D] compile epub for [%\\1] \n :PROPERTIES: \n :SCHEDULED: %t \n** TODO [#C] upload and publish [%\\1] book\n :PROPERTIES: \n :SCHEDULED: %t \n")
-        ("v" "Make Book Order" entry (file "~/org/books.org")  "* TODO [#A] order book for [%^{prompt}] :books: \n\n %i \n\n %a \n :PROPERTIES: \n :SCHEDULED: %t \n")
-        ("o" "Book-related tasks" entry (file "~/org/books.org")  "* TODO [#A] %^{prompt} :books: \n\n %i \n\n %a \n :PROPERTIES: \n :SCHEDULED: %t \n")
+        ;; ("b" "Book Orders" entry (file "~/org/books.org")  "* TODO [#G] process publishing of [%^{prompt}] :books: [/] \n %i \n %a \n :PROPERTIES: \n :SCHEDULED: %t \n** TODO [#F] add cover of [%\\1] \n :PROPERTIES: \n :SCHEDULED: %t \n** TODO [#A] order cover for [%\\1] \n :PROPERTIES: \n :SCHEDULED: %t \n** TODO [#E] process text file format for [%\\1] \n :PROPERTIES: \n :SCHEDULED: %t \n** TODO [#D] compile epub for [%\\1] \n :PROPERTIES: \n :SCHEDULED: %t \n** TODO [#C] upload and publish [%\\1] book\n :PROPERTIES: \n :SCHEDULED: %t \n")
+        ("b" "Book Orders" entry (file "~/org/books.org")  "* TODO [#G] process publishing of [%^{prompt}] :books: [/] \n :SCHEDULED: %t \n** TODO [#A] order cover for [%\\1] \n :SCHEDULED: %t \n** TODO [#D] create blurb and keywords [%\\1] \n :SCHEDULED: %t \n** TODO [#C] upload and publish [%\\1] book\n :SCHEDULED: %t \n")
+        ("v" "Make Book Order" entry (file "~/org/books.org")  "* TODO [#A] order book for [%^{prompt}] :books: \n :SCHEDULED: %t \n %i \n\n %a \n :PROPERTIES: \n")
+        ("o" "Book-related tasks" entry (file "~/org/books.org")  "* TODO [#A] %^{prompt} :books: \n  :SCHEDULED: %t \n %i \n\n %a \n")
         ("w" "Work" entry (file+headline "~/org/work.org" "Work") "** TODO %? :work: \n SCHEDULED: %t \n")
         ("l" "RIL" entry (file+headline "~/org/ril.org" "Ril") "** TODO %? :ril: \n %a")
         ("d" "Dev" entry (file+headline "~/org/dev.org" "Dev") "** TODO %? :dev: %i %a")
@@ -280,7 +282,7 @@ nEnd:")
         ("g" tags-todo "trans")
         ("j" todo "WAIT"
          (tags-todo "work"))
-        ("s" todo "STARTED|TODO")
+        ("S" todo "STARTED|TODO")
         ("d" tags "books")
         ("J" todo-tree "WAIT")
         ("h" agenda ""
@@ -379,5 +381,6 @@ nEnd:")
         ("bib" . emacs)))
 
 
+(add-hook 'org-mode-hook (lambda () (auto-revert-mode 1)))
 
 (message "LOADING: org-mode stuff")

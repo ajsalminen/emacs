@@ -9,3 +9,8 @@
 (setq bcc-cache-directory "~/.elispcache")
 
 ;; Emergency stuff that I want before debugging init files
+
+
+;; Since i'm using mac ports now
+(when (featurep 'mac)
+  (mac-auto-ascii-mode 1))

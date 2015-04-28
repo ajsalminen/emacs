@@ -13,6 +13,11 @@
          (output-doc-name (concat (file-name-sans-extension doc-name) ".txt")))
     (shell-command (concat "textutil -convert txt " doc-name))))
 
+(defun osx-open-in-dired ()
+  (interactive)
+  (let* ((doc-name (dired-file-name-at-point)))
+    (shell-command (concat "open " doc-name))))
+
 
 (defun lowercase-file-in-dired ()
   (interactive)

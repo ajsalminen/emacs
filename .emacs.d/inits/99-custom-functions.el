@@ -765,6 +765,7 @@ FORMAT-STRING is like `format', but it can have multiple %-sequences."
       (delete-region (car bounds) (cdr bounds))
       (insert (s-titleized-words text)))))
 
+;; removes apostrophes
 (defun snake-backward-word ()
   "Convert word at point (or selected region) to split and capitalized."
   (interactive)
@@ -774,7 +775,7 @@ FORMAT-STRING is like `format', but it can have multiple %-sequences."
          (text   (buffer-substring-no-properties (car bounds) (cdr bounds))))
     (when bounds
       (delete-region (car bounds) (cdr bounds))
-      (insert (s-snake-case text)))))
+      (insert (s-snake-case (replace-regexp-in-string "'" "" text))))))
 
 (defun uniquify-words-in-region ()
   "delete dupes in region"
@@ -844,6 +845,25 @@ FORMAT-STRING is like `format', but it can have multiple %-sequences."
   (f-base (shell-command-to-string "ls *.jpg"))
   ".epub")
 
+(define-skeleton markdown-link-skeleton
+  "for amazon with id"
+  nil
+  '(setq v1 (skeleton-read "Title? "))
+  '(setq v2 (concat "http://www.amazon.com/dp/" (skeleton-read "ISBN? ") ))
+  > "###[" v1 "](" v2 ")" \n
+  > "" \n
+  > "[" v2 "](" v2 ")")
+
+
+(define-skeleton markdown-url-skeleton
+  "just a plain link"
+  nil
+  '(setq v1 (skeleton-read "Title? "))
+  '(setq v2 (skeleton-read "ISBN? "))
+  > "###[" v1 "](" v2 ")" \n
+  > "" \n
+  > "[" v2 "](" v2 ")")
+
 
 (defun pipe-to-markdown ()
   "pipe text to markdown and copy to clipboard"
@@ -855,8 +875,12 @@ FORMAT-STRING is like `format', but it can have multiple %-sequences."
     (when bounds
       (shell-command-on-region (car bounds) (cdr bounds) "markdown")
       (with-current-buffer (get-buffer-create "*Shell Command Output*")
-        (kill-new (buffer-string))))))
-
+        (goto-char (point-min))
+        (while (re-search-forward "\\+\\([^+]+\\)\\+" nil t)
+          ;; This \\1 will be inserted literally as \1
+          (replace-match "<u>\\1</u>"))
+        (kill-new (buffer-substring (point-min) (point-max)))
+        ))))
 
 (defun add-missing-punctuation ()
   (interactive)
@@ -872,3 +896,37 @@ FORMAT-STRING is like `format', but it can have multiple %-sequences."
   ;;   (replace-match "##\\\\\*\\\\\*\\\\\*"))
 
   )
+
+
+(defun reb-query-replace (to-string)
+      "Replace current RE from point with `query-replace-regexp'."
+      (interactive
+       (progn (barf-if-buffer-read-only)
+              (list (query-replace-read-to (reb-target-binding reb-regexp)
+                                           "Query replace"  t))))
+      (with-current-buffer reb-target-buffer
+        (query-replace-regexp (reb-target-binding reb-regexp) to-string)))
+
+(defun strip-url-query (string)
+  (interactive)
+  (nth 0 (split-string string "?")))
+
+(defun strip-url-query-at-point ()
+  "strips url of question mark and beyond"
+  (interactive)
+  (let* ((url-string (thing-at-point 'url))
+         (bounds (bounds-of-thing-at-point 'url))
+         (new-url (strip-url-query url-string)))
+    (delete-region (car bounds) (cdr bounds))
+    (insert new-url)))
+
+;; this should be in the org init but depends on the functions above
+(defun org-capture-stripped-query-url (url)
+  "integrate into org capture"
+  (interactive "sEnter url: ")
+  (let* ((new-url (strip-url-query url)))
+    (org-insert-link nil new-url new-url)))
+
+(add-hook 'org-capture-mode-hook
+          (lambda ()
+            (define-key org-capture-mode-map "\C-cf" 'org-capture-stripped-query-url)))

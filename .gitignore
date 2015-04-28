@@ -55,3 +55,7 @@ org-clock-save.el
 ac-comphist.dat
 .yaoddmuse
 .emacs.d/web-vcs-log.org
+/.emacs.d/games/
+/.emacs.d/elpa/gnupg/pubring.gpg
+/.emacs.d/elpa/gnupg/secring.gpg
+/.emacs.d/elpa/gnupg/trustdb.gpg
