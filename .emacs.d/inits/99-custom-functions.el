@@ -727,6 +727,20 @@ FORMAT-STRING is like `format', but it can have multiple %-sequences."
   (while (re-search-forward "^[ \t]+" nil t)
     (replace-match "")))
 
+
+(defun replace-regexp-and-return (from to)
+  (save-excursion
+    (while (re-search-forward from nil t)
+      (replace-match to))))
+
+(setq chapter-strings-alist '("[\\\\\\* ]+\\\\\\*" "[\\\\\\*\\\\\\*\\\\\\* ]+\\\\\\*\\\\\\*\\\\\\*" "[\\\\\\\~]+" "\\\\\\* \\\\\\* \\\\\\*" "\\\\\\*\\\\\\*\\\\\\*" "[\\*\\*\\* ]+\\*\\*\\*"))
+
+(setq joined-chapter-string-list (mapconcat 'identity chapter-strings-alist "\\|"))
+
+(defun replace-chapter-breaks ()
+  (interactive)
+  (replace-regexp-and-return joined-chapter-string-list "##\\\\\*\\\\\*\\\\\*"))
+
 (defun prepare-text-file-formatting-ebook ()
   (interactive)
   (whitespace-cleanup)
@@ -735,23 +749,12 @@ FORMAT-STRING is like `format', but it can have multiple %-sequences."
   (while (re-search-forward "<.*?>" nil t)
     (replace-match ""))
   (goto-char (point-min))
-
-  (while (re-search-forward "[\\\\\\*\\\\\\*\\\\\\* ]+\\\\\\*\\\\\\*\\\\\\*" nil t)
-    (replace-match "##\\\\\*\\\\\*\\\\\*"))
-  (while (re-search-forward "[\\\\\\\~]+" nil t)
-    (replace-match "##\\\\\*\\\\\*\\\\\*"))
-
-  (while (re-search-forward "\\\\\\* \\\\\\* \\\\\\*" nil t)
-    (replace-match "##\\\\\*\\\\\*\\\\\*"))
-  (while (re-search-forward "\\\\\\*\\\\\\*\\\\\\*" nil t)
-    (replace-match "##\\\\\*\\\\\*\\\\\*"))
-
-  (while (re-search-forward "[\\*\\*\\* ]+\\*\\*\\*" nil t)
-    (replace-match "##\\\\\*\\\\\*\\\\\*"))
   (replace-smart-quotes (point-min) (point-max))
   (unfill-region (point-min) (point-max))
   (format-replace-strings '(("\x201C" . "\""))
-                          nil (point-min) (point-max)))
+                          nil (point-min) (point-max))
+  (goto-char (point-min))
+  (replace-chapter-breaks))
 
 ;; TODO: refactor these two methods for something more generalizable
 (defun split-and-titleize-backward-word ()
