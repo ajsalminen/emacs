@@ -92,19 +92,21 @@
 
 (global-set-key (kbd "C-c p") (quote copy-paragraph))
 
-(defun copy-string (&optional arg)
-  "Copy a sequence of string into kill-ring"
-  (interactive)
-  (setq onPoint (point))
-  (let ((beg (progn (re-search-backward "[\t ]" (line-beginning-position) 3 1)
-                    (if (looking-at "[\t ]") (+ (point) 1) (point))))
-        (end (progn (goto-char onPoint) (re-search-forward "[\t ]" (line-end-position) 3 1)
-                    (if (looking-back "[\t ]") (- (point) 1) (point) ) )))
-    (copy-region-as-kill beg end))
-  (goto-char onPoint))
+;; (defun copy-string (&optional arg)
+;;   "Copy a sequence of string into kill-ring"
+;;   (interactive)
+;;   (setq onPoint (point))
+;;   (let ((beg (progn (re-search-backward "[\t ]" (line-beginning-position) 3 1)
+;;                     (if (looking-at "[\t ]") (+ (point) 1) (point))))
+;;         (end (progn (goto-char onPoint) (re-search-forward "[\t ]" (line-end-position) 3 1)
+;;                     (if (looking-back "[\t ]") (- (point) 1) (point) ) )))
+;;     (copy-region-as-kill beg end))
+;;   (goto-char onPoint))
 
 
-(global-set-key (kbd "C-c r") (quote copy-string))
+;; (global-set-key (kbd "C-c r") 'copy-string)
+
+
 (global-set-key (kbd "C-c s") 'ispell-word)
 (global-set-key (kbd "M-s") 'ispell)
 
@@ -808,10 +810,11 @@ FORMAT-STRING is like `format', but it can have multiple %-sequences."
 
 (add-to-list 'auto-mode-alist '("\\.utf\\'" . text-mode))
 
-
 (defun rename-file-and-buffer (new-name)
   "Renames both current buffer and file it's visiting to NEW-NAME."
-  (interactive "sNew name: ")
+  (interactive (list
+                (read-string (format "New name: %s: " (buffer-name))
+                             (buffer-name) nil (buffer-name))))
   (let ((name (buffer-name))
         (filename (buffer-file-name)))
     (if (not filename)

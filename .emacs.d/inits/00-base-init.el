@@ -26,3 +26,6 @@
          ;; (init-loader-error-log (error-message-string e)) ；削除
          (init-loader-error-log (format "%s. %s" (locate-library el) (error-message-string e))) ;追加
          )))))
+
+
+(mouse-avoidance-mode 'exile)
